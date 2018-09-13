@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<VoiceCommands xmlns="http://schemas.microsoft.com/voicecommands/1.1">
+
+  <CommandSet xml:lang="en-us" Name="examplevcd">
+    <CommandPrefix>Basement</CommandPrefix>
+    <Example>Turn all color on</Example>
+
+    <Command Name="TurnCommand">
+      <Example>Turn everyting on</Example>
+      <ListenFor>Turn {function} {color}</ListenFor>
+      <Feedback>Turning {color} {function}</Feedback>
+      <Navigate Target="MainPage.xaml" />
+    </Command>
+
+    <Command Name="TurnCommandReverse">
+      <Example>Turn everyting on</Example>
+      <ListenFor>Turn {color} {function}</ListenFor>
+      <Feedback>Turning {color} {function}</Feedback>
+      <Navigate Target="MainPage.xaml" />
+    </Command>
+
+    <Command Name="LeaveCommandReverse">
+      <Example>Leave only red</Example>
+      <ListenFor>Leave [only] {color} [on]</ListenFor>
+      <Feedback>Leaving {color} on !</Feedback>
+      <Navigate Target="MainPage.xaml" />
+    </Command>
+
+    <Command Name="FollowTheBeat">
+      <Example>Leave only red</Example>
+      <ListenFor>Follow the beat</ListenFor>
+      <Feedback>Following the beat. Start dancing !</Feedback>
+      <Navigate Target="MainPage.xaml" />
+    </Command>
+
+    <Command Name="FollowTheBeatZone">
+      <Example>Leave only red</Example>
+      <ListenFor>Follow the beat by zone</ListenFor>
+      <Feedback>Following the beat. Hummm some ambiance!</Feedback>
+      <Navigate Target="MainPage.xaml" />
+    </Command>
+
+    <Command Name="FollowTheBeatRotate">
+      <Example>Leave only red</Example>
+      <ListenFor>Follow the beat and rotate</ListenFor>
+      <Feedback>Following the beat. There is a party in the house!</Feedback>
+      <Navigate Target="MainPage.xaml" />
+    </Command>
+
+    <PhraseList Label="function">
+      <Item>On</Item>
+      <Item>Off</Item>
+    </PhraseList>
+
+    <PhraseList Label="color">
+      <Item>Everything</Item>
+      <Item>Red</Item>
+      <Item>Green</Item>
+      <Item>Blue</Item>
+    </PhraseList>
+  </CommandSet>
+
+  <!-- Other CommandSets for other languages -->
+
+</VoiceCommands>

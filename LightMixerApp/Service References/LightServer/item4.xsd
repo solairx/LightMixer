@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/LightMixer.Model.Service" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/LightMixer.Model.Service" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:8088/LightMixer/RemoteLightService/?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/LaserDisplay" />
+  <xs:import schemaLocation="http://localhost:8088/LightMixer/RemoteLightService/?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/LightMixer.Model.Fixture" />
+  <xs:complexType name="LaserDataContract">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AutoChangeEvent" type="xs:boolean" />
+      <xs:element minOccurs="0" name="AutoChangeEventLaser" type="xs:boolean" />
+      <xs:element minOccurs="0" name="AutoMixDelay" type="xs:int" />
+      <xs:element minOccurs="0" name="Blue" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Green" type="xs:boolean" />
+      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/LaserDisplay" minOccurs="0" name="LaserColorMode" type="q1:ColorMode" />
+      <xs:element minOccurs="0" name="LaserPause" type="xs:boolean" />
+      <xs:element minOccurs="0" name="LaserSpeedAdj" type="xs:int" />
+      <xs:element minOccurs="0" name="LaserSpeedRatio" type="xs:int" />
+      <xs:element minOccurs="0" name="LedCurrentEventID" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ManualBeat" type="xs:boolean" />
+      <xs:element minOccurs="0" name="ManualBeatOnly" type="xs:boolean" />
+      <xs:element minOccurs="0" name="OnBeat" type="xs:boolean" />
+      <xs:element minOccurs="0" name="OnBeatReverse" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Red" type="xs:boolean" />
+      <xs:element minOccurs="0" name="UseBeatTurnOff" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="LaserDataContract" nillable="true" type="tns:LaserDataContract" />
+  <xs:complexType name="DmxDataContract">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AutoChangeColorOnBeat" type="xs:boolean" />
+      <xs:element minOccurs="0" name="AutoChangeGobo" type="xs:boolean" />
+      <xs:element minOccurs="0" name="AutoChangeProgram" type="xs:boolean" />
+      <xs:element minOccurs="0" name="BeatRepeat" type="xs:double" />
+      <xs:element minOccurs="0" name="Blue" type="xs:unsignedByte" />
+      <xs:element minOccurs="0" name="CurrentBoothEffect" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CurrentLedEffect" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CurrentMovingHeadEffect" nillable="true" type="xs:string" />
+      <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/LightMixer.Model.Fixture" minOccurs="0" name="CurrentMovingHeadGobo" type="q2:MovingHeadFixture.Gobo" />
+      <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/LightMixer.Model.Fixture" minOccurs="0" name="CurrentMovingHeadProgram" type="q3:MovingHeadFixture.Program" />
+      <xs:element minOccurs="0" name="Green" type="xs:unsignedByte" />
+      <xs:element minOccurs="0" name="MaxLightFlashIntesity" type="xs:double" />
+      <xs:element minOccurs="0" name="MaxLightIntesity" type="xs:double" />
+      <xs:element minOccurs="0" name="MaxLightIntesityMovingHead" type="xs:double" />
+      <xs:element minOccurs="0" name="MaxSpeed" type="xs:double" />
+      <xs:element minOccurs="0" name="Red" type="xs:unsignedByte" />
+      <xs:element minOccurs="0" name="SecondBetweenGoboChange" type="xs:int" />
+      <xs:element minOccurs="0" name="SecondBetweenProgramChange" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="DmxDataContract" nillable="true" type="tns:DmxDataContract" />
+</xs:schema>

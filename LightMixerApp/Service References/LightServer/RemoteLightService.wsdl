@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="RemoteLightService" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://localhost:8088/LightMixer/RemoteLightService/?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://localhost:8088/LightMixer/RemoteLightService/?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://localhost:8088/LightMixer/RemoteLightService/?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/LightMixer.Model.Fixture" />
+      <xsd:import schemaLocation="http://localhost:8088/LightMixer/RemoteLightService/?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/LaserDisplay" />
+      <xsd:import schemaLocation="http://localhost:8088/LightMixer/RemoteLightService/?xsd=xsd4" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+      <xsd:import schemaLocation="http://localhost:8088/LightMixer/RemoteLightService/?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/LightMixer.Model.Service" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IRemoteLightService_MovingHeadProgram_InputMessage">
+    <wsdl:part name="parameters" element="tns:MovingHeadProgram" />
+  </wsdl:message>
+  <wsdl:message name="IRemoteLightService_MovingHeadProgram_OutputMessage">
+    <wsdl:part name="parameters" element="tns:MovingHeadProgramResponse" />
+  </wsdl:message>
+  <wsdl:message name="IRemoteLightService_MovingHeadGobo_InputMessage">
+    <wsdl:part name="parameters" element="tns:MovingHeadGobo" />
+  </wsdl:message>
+  <wsdl:message name="IRemoteLightService_MovingHeadGobo_OutputMessage">
+    <wsdl:part name="parameters" element="tns:MovingHeadGoboResponse" />
+  </wsdl:message>
+  <wsdl:message name="IRemoteLightService_LaserColorModeList_InputMessage">
+    <wsdl:part name="parameters" element="tns:LaserColorModeList" />
+  </wsdl:message>
+  <wsdl:message name="IRemoteLightService_LaserColorModeList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:LaserColorModeListResponse" />
+  </wsdl:message>
+  <wsdl:message name="IRemoteLightService_LedEffectCollection_InputMessage">
+    <wsdl:part name="parameters" element="tns:LedEffectCollection" />
+  </wsdl:message>
+  <wsdl:message name="IRemoteLightService_LedEffectCollection_OutputMessage">
+    <wsdl:part name="parameters" element="tns:LedEffectCollectionResponse" />
+  </wsdl:message>
+  <wsdl:message name="IRemoteLightService_MovingHeadEffectCollection_InputMessage">
+    <wsdl:part name="parameters" element="tns:MovingHeadEffectCollection" />
+  </wsdl:message>
+  <wsdl:message name="IRemoteLightService_MovingHeadEffectCollection_OutputMessage">
+    <wsdl:part name="parameters" element="tns:MovingHeadEffectCollectionResponse" />
+  </wsdl:message>
+  <wsdl:message name="IRemoteLightService_BoothEffectCollection_InputMessage">
+    <wsdl:part name="parameters" element="tns:BoothEffectCollection" />
+  </wsdl:message>
+  <wsdl:message name="IRemoteLightService_BoothEffectCollection_OutputMessage">
+    <wsdl:part name="parameters" element="tns:BoothEffectCollectionResponse" />
+  </wsdl:message>
+  <wsdl:message name="IRemoteLightService_LaserEffectList_InputMessage">
+    <wsdl:part name="parameters" element="tns:LaserEffectList" />
+  </wsdl:message>
+  <wsdl:message name="IRemoteLightService_LaserEffectList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:LaserEffectListResponse" />
+  </wsdl:message>
+  <wsdl:message name="IRemoteLightService_UpdateLaser_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateLaser" />
+  </wsdl:message>
+  <wsdl:message name="IRemoteLightService_UpdateLaser_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateLaserResponse" />
+  </wsdl:message>
+  <wsdl:message name="IRemoteLightService_GetLaserStatus_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetLaserStatus" />
+  </wsdl:message>
+  <wsdl:message name="IRemoteLightService_GetLaserStatus_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetLaserStatusResponse" />
+  </wsdl:message>
+  <wsdl:message name="IRemoteLightService_UpdateDmx_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateDmx" />
+  </wsdl:message>
+  <wsdl:message name="IRemoteLightService_UpdateDmx_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateDmxResponse" />
+  </wsdl:message>
+  <wsdl:message name="IRemoteLightService_GetDmxStatus_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetDmxStatus" />
+  </wsdl:message>
+  <wsdl:message name="IRemoteLightService_GetDmxStatus_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetDmxStatusResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IRemoteLightService">
+    <wsdl:operation name="MovingHeadProgram">
+      <wsdl:input wsaw:Action="http://tempuri.org/IRemoteLightService/MovingHeadProgram" message="tns:IRemoteLightService_MovingHeadProgram_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IRemoteLightService/MovingHeadProgramResponse" message="tns:IRemoteLightService_MovingHeadProgram_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="MovingHeadGobo">
+      <wsdl:input wsaw:Action="http://tempuri.org/IRemoteLightService/MovingHeadGobo" message="tns:IRemoteLightService_MovingHeadGobo_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IRemoteLightService/MovingHeadGoboResponse" message="tns:IRemoteLightService_MovingHeadGobo_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="LaserColorModeList">
+      <wsdl:input wsaw:Action="http://tempuri.org/IRemoteLightService/LaserColorModeList" message="tns:IRemoteLightService_LaserColorModeList_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IRemoteLightService/LaserColorModeListResponse" message="tns:IRemoteLightService_LaserColorModeList_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="LedEffectCollection">
+      <wsdl:input wsaw:Action="http://tempuri.org/IRemoteLightService/LedEffectCollection" message="tns:IRemoteLightService_LedEffectCollection_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IRemoteLightService/LedEffectCollectionResponse" message="tns:IRemoteLightService_LedEffectCollection_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="MovingHeadEffectCollection">
+      <wsdl:input wsaw:Action="http://tempuri.org/IRemoteLightService/MovingHeadEffectCollection" message="tns:IRemoteLightService_MovingHeadEffectCollection_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IRemoteLightService/MovingHeadEffectCollectionResponse" message="tns:IRemoteLightService_MovingHeadEffectCollection_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="BoothEffectCollection">
+      <wsdl:input wsaw:Action="http://tempuri.org/IRemoteLightService/BoothEffectCollection" message="tns:IRemoteLightService_BoothEffectCollection_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IRemoteLightService/BoothEffectCollectionResponse" message="tns:IRemoteLightService_BoothEffectCollection_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="LaserEffectList">
+      <wsdl:input wsaw:Action="http://tempuri.org/IRemoteLightService/LaserEffectList" message="tns:IRemoteLightService_LaserEffectList_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IRemoteLightService/LaserEffectListResponse" message="tns:IRemoteLightService_LaserEffectList_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateLaser">
+      <wsdl:input wsaw:Action="http://tempuri.org/IRemoteLightService/UpdateLaser" message="tns:IRemoteLightService_UpdateLaser_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IRemoteLightService/UpdateLaserResponse" message="tns:IRemoteLightService_UpdateLaser_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetLaserStatus">
+      <wsdl:input wsaw:Action="http://tempuri.org/IRemoteLightService/GetLaserStatus" message="tns:IRemoteLightService_GetLaserStatus_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IRemoteLightService/GetLaserStatusResponse" message="tns:IRemoteLightService_GetLaserStatus_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateDmx">
+      <wsdl:input wsaw:Action="http://tempuri.org/IRemoteLightService/UpdateDmx" message="tns:IRemoteLightService_UpdateDmx_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IRemoteLightService/UpdateDmxResponse" message="tns:IRemoteLightService_UpdateDmx_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetDmxStatus">
+      <wsdl:input wsaw:Action="http://tempuri.org/IRemoteLightService/GetDmxStatus" message="tns:IRemoteLightService_GetDmxStatus_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IRemoteLightService/GetDmxStatusResponse" message="tns:IRemoteLightService_GetDmxStatus_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_IRemoteLightService" type="tns:IRemoteLightService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="MovingHeadProgram">
+      <soap:operation soapAction="http://tempuri.org/IRemoteLightService/MovingHeadProgram" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MovingHeadGobo">
+      <soap:operation soapAction="http://tempuri.org/IRemoteLightService/MovingHeadGobo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LaserColorModeList">
+      <soap:operation soapAction="http://tempuri.org/IRemoteLightService/LaserColorModeList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LedEffectCollection">
+      <soap:operation soapAction="http://tempuri.org/IRemoteLightService/LedEffectCollection" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MovingHeadEffectCollection">
+      <soap:operation soapAction="http://tempuri.org/IRemoteLightService/MovingHeadEffectCollection" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="BoothEffectCollection">
+      <soap:operation soapAction="http://tempuri.org/IRemoteLightService/BoothEffectCollection" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LaserEffectList">
+      <soap:operation soapAction="http://tempuri.org/IRemoteLightService/LaserEffectList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateLaser">
+      <soap:operation soapAction="http://tempuri.org/IRemoteLightService/UpdateLaser" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLaserStatus">
+      <soap:operation soapAction="http://tempuri.org/IRemoteLightService/GetLaserStatus" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateDmx">
+      <soap:operation soapAction="http://tempuri.org/IRemoteLightService/UpdateDmx" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDmxStatus">
+      <soap:operation soapAction="http://tempuri.org/IRemoteLightService/GetDmxStatus" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="RemoteLightService">
+    <wsdl:port name="BasicHttpBinding_IRemoteLightService" binding="tns:BasicHttpBinding_IRemoteLightService">
+      <soap:address location="http://localhost:8088/LightMixer/RemoteLightService/" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

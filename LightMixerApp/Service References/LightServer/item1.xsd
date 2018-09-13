@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/LaserDisplay" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/LaserDisplay" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="ArrayOfColorMode">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ColorMode" type="tns:ColorMode" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfColorMode" nillable="true" type="tns:ArrayOfColorMode" />
+  <xs:simpleType name="ColorMode">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Manual" />
+      <xs:enumeration value="Hard" />
+      <xs:enumeration value="Smooth" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="ColorMode" nillable="true" type="tns:ColorMode" />
+</xs:schema>
