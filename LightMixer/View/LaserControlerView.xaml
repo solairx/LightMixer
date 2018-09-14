@@ -20,7 +20,7 @@
     	<TextBlock HorizontalAlignment="Left" Margin="20,160,0,164" TextWrapping="Wrap" Width="102"><Run Language="en-ca" Text="Laser Speed Ratio"/></TextBlock>
     	<TextBlock HorizontalAlignment="Left" Height="22" Margin="20,201,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="84.633"><Run Language="en-ca" Text="Auto Mix Delay"/></TextBlock>
         <Slider Height="23" Margin="126,201,231,0" VerticalAlignment="Top" Maximum="100" TickFrequency="10" LargeChange="10" Value="{Binding LaserConfig.AutoMixDelay}"/>
-        <ComboBox HorizontalAlignment="Right" Height="25" Margin="0,116,51,0" VerticalAlignment="Top" Width="115" ItemsSource="{Binding LaserConfig.LaserColorModeList}" SelectedItem="{Binding LaserConfig.LaserColorMode}"/>
+        <ComboBox  HorizontalAlignment="Right" Height="25" Margin="0,116,51,0" VerticalAlignment="Top" Width="115" ItemsSource="{Binding LaserConfig.LaserColorModeList}" SelectedItem="{Binding LaserConfig.LaserColorMode}"/>
         <ListBox HorizontalAlignment="Right" Width="166" ItemsSource="{Binding LaserConfig.LaserEffectList}" SelectedValue="{Binding LaserConfig.LedCurrentEventID}" SelectedValuePath="ID" DisplayMemberPath="Name" Margin="0,172,19,19"/>
         <CheckBox Content="Red" HorizontalAlignment="Left" Margin="32,0,0,71.04" VerticalAlignment="Bottom" IsChecked="{Binding LaserConfig.Red}"/>
         <CheckBox Content="Green" HorizontalAlignment="Left" Margin="32,0,0,51.08" VerticalAlignment="Bottom" IsChecked="{Binding LaserConfig.Green}"/>
