@@ -114,7 +114,8 @@ namespace BeatDetector
                 if (BpmEvent != null)
                     BpmEvent(130, this);
 
-                int tracktorBeat = 20;// was 20 for traktor
+                int tracktorBeatMin = 50;// was 20 for traktor
+                int tracktorBeatMax = 85;// was 20 for traktor
                 if (e.IsShortMessage)
                 {
                     // Console.WriteLine("Midi Note:" + e.ShortMessage.Note + " value:" + e.ShortMessage.Velocity);
@@ -126,7 +127,7 @@ namespace BeatDetector
                         VelocityDeckB = e.ShortMessage.Velocity;
                         if (SliderPosition > 60)
                         {
-                            if (VelocityDeckB < tracktorBeat)
+                            if (VelocityDeckB < tracktorBeatMax && VelocityDeckB > tracktorBeatMin)
                             {
                                 if (!DeckBIsBeat)
                                 {
@@ -152,7 +153,7 @@ namespace BeatDetector
                         VelocityDeckA = e.ShortMessage.Velocity;
                         if (SliderPosition < 70)
                         {
-                            if (VelocityDeckA < tracktorBeat)
+                            if (VelocityDeckA < tracktorBeatMax && VelocityDeckA > tracktorBeatMin)
                             {
                                 if (!DeckAIsBeat)
                                 {
