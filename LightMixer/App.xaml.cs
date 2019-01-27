@@ -10,6 +10,7 @@ using Microsoft.Practices.Unity;
 using LightMixer.Model;
 using Phidgets;
 using Phidgets.Events;
+using LightMixer.View;
 
 namespace LightMixer
 {
@@ -29,13 +30,19 @@ namespace LightMixer
         public App()
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
-            kit = new InterfaceKit();
+            try
+            {
+                kit = new InterfaceKit();
 
-            kit.open("127.0.0.1", 5001);
+                kit.open("desktop-pjdgjgm", 5001);
 
-            kit.waitForAttachment();
-            kit.InputChange += new InputChangeEventHandler(kit_InputChange);
-
+                kit.waitForAttachment(250);
+                kit.InputChange += new InputChangeEventHandler(kit_InputChange);
+            }
+            catch (Exception vepx)
+            {
+             //   MessageBox.Show("Unable to connecto to the PhidGet, that might be expected");
+            }
             UnityContainer = new UnityContainer();
             SharedEffectModel mn = new SharedEffectModel();
             UnityContainer.RegisterInstance<SharedEffectModel>(mn);
@@ -53,7 +60,6 @@ namespace LightMixer
             {
                 MessageBox.Show("Can't open wcf service for Listen, " + vexp.Message);
             }
-
         }
 
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)

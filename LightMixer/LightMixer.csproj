@@ -266,7 +266,9 @@
     <Content Include="Microsoft.Practices.Prism.UnityExtensions.dll" />
     <Content Include="Microsoft.Practices.ServiceLocation.dll" />
     <Content Include="Microsoft.Practices.Unity.dll" />
-    <Content Include="phidget21.dll" />
+    <Content Include="phidget21.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Phidget21.NET.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
