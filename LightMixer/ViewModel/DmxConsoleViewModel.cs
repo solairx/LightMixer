@@ -113,8 +113,8 @@ namespace LightMixer.ViewModel
             int deviceId = 0;
             foreach (string deviceDescription in DeviceDescriptions)
             {
-                // if (deviceDescription.Contains("LoopBe"))
-                if (deviceDescription.Contains("Total"))
+                if (deviceDescription.Contains("LoopBe"))
+                //if (deviceDescription.Contains("Total"))
 
                 {
                     var foundDevice = MidiInputDevice.GetDeviceDescription(0);

@@ -65,8 +65,8 @@ namespace BeatDetector
             int deviceId = 0;
             foreach (string deviceDescription in DeviceDescriptions)
             {
-               // if (deviceDescription.Contains("LoopBe"))
-                if (deviceDescription.Contains("loopMIDI Port"))
+                if (deviceDescription.Contains("LoopBe"))
+                //if (deviceDescription.Contains("loopMIDI Port"))
 
                 {
                     var foundDevice = MidiInputDevice.GetDeviceDescription(0);
