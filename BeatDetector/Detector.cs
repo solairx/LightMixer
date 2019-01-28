@@ -5,13 +5,15 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Media;
 using Un4seen.Bass;
 using Un4seen.Bass.AddOn.Fx;
 using Un4seen.Bass.Misc;
 
 namespace BeatDetector
 {
-    public class BeatDetector : INotifyPropertyChanged 
+    public class BeatDetector : INotifyPropertyChanged
     {
         private int mStream = 0;
         private RECORDPROC _myRecProc;
@@ -34,6 +36,10 @@ namespace BeatDetector
         public delegate void BpmHandler(double Beat, object caller);
 
         private double _beatRepeat = 1;
+        private Brush _beatBackground;
+        private Brush _blackColor = new SolidColorBrush(Color.FromRgb(0, 0, 0));
+        private Brush _redColor = new SolidColorBrush(Color.FromRgb(255, 0, 0));
+
 
         public double BeatRepeat
         {
@@ -48,14 +54,41 @@ namespace BeatDetector
                 {
                     this.PropertyChanged(this, new PropertyChangedEventArgs(nameof(BeatRepeat)));
                 }
+                if (value > 1.05 || value < 0.95)
+                {
+                    BeatBackground = _redColor;
+                }
+                else
+                {
+                    BeatBackground = _blackColor;
+                }
+            }
+        }
+
+        public Brush BeatBackground
+        {
+            get
+            {
+                return _beatBackground;
+            }
+            set
+            {
+                _beatBackground = value;
+                if (this.PropertyChanged != null)
+                {
+                    this.PropertyChanged(this, new PropertyChangedEventArgs(nameof(BeatBackground)));
+                }
+                
             }
         }
 
 
         public BeatDetector()
         {
-
+            _beatBackground = _blackColor;
             this.OpenAndStartDevice(GetLoopBeDeviceId());
+
+            BeatRepeatProc();
 
         }
 
@@ -229,15 +262,6 @@ namespace BeatDetector
 
 
 
-                    if (lastBeatRunned.AddSeconds(1 / (currentBpm * BeatRepeat / 60)).Ticks < DateTime.Now.Ticks)
-                    {
-                        if (_beatRepeat > 1.25 || _beatRepeat < 0.75)
-                        {
-                            if (BeatEvent != null)
-                                BeatEvent(true, this);
-                            lastBeatRunned = DateTime.Now;
-                        }
-                    }
                     Console.WriteLine("{0} : {1}", e.ShortMessage.ID, e.ShortMessage.ToString());
                 }
                 else if (e.IsSysExMessage)
@@ -265,6 +289,29 @@ namespace BeatDetector
             catch (Exception vexp)
             {
             }
+        }
+
+        private void BeatRepeatProc()
+        {
+            Task.Factory.StartNew(() =>
+            {
+                while (true)
+                {
+                    System.Threading.Thread.Sleep(15);
+                    if (BeatRepeat > 1.25)
+                    {
+                        if (lastBeatRunned.AddSeconds(1 / (130 /*130 is bpm ?*/ * BeatRepeat / 60)).Ticks < DateTime.Now.Ticks)
+                        {
+                            if (_beatRepeat > 1.25 || _beatRepeat < 0.75)
+                            {
+                                if (BeatEvent != null)
+                                    BeatEvent(true, this);
+                                lastBeatRunned = DateTime.Now;
+                            }
+                        }
+                    }
+                }
+            });
         }
 
         public void Stop()

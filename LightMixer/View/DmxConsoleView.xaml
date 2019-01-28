@@ -12,7 +12,7 @@
         <TextBlock HorizontalAlignment="Left" Margin="20,4,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="105.327"><Run Language="en-ca" Text="RGB Led Effect"/></TextBlock>
         <TextBlock HorizontalAlignment="Left" Margin="119,188,0,0" TextWrapping="Wrap" RenderTransformOrigin="0.238,-1.128" Height="18" VerticalAlignment="Top"><Run Language="en-ca" Text="Int"/><Run Language="en-ca" Text="esity"/></TextBlock>
         <TextBlock HorizontalAlignment="Left" Margin="8,304,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.488,-0.376"><Run Language="en-ca" Text="Beat Repeat"/></TextBlock>
-        <Slider x:Name="slider" Margin="81,304,44,0" VerticalAlignment="Top" LargeChange="0.25" Value="{Binding BeatDetector.BeatRepeat}" Maximum="25" Minimum="0.1"/>
+        <Slider x:Name="slider" Margin="81,304,44,0" VerticalAlignment="Top" LargeChange="0.25" Value="{Binding BeatDetector.BeatRepeat}" Maximum="25" Minimum="0.1" Background="{Binding BeatDetector.BeatBackground}"/>
         <ListBox Height="108" Margin="166.5,21,0,0" VerticalAlignment="Top" ItemsSource="{Binding Chaser.MovingHeadEffectCollection}" SelectedItem="{Binding Chaser.CurrentMovingHeadEffect}" DisplayMemberPath="Name" HorizontalAlignment="Left" Width="117.5"  />
         <TextBlock Margin="166.5,1.04,196.54,0" TextWrapping="Wrap" VerticalAlignment="Top"><Run Language="en-ca" Text="Moving Head effect"/></TextBlock>
         <TextBlock HorizontalAlignment="Left" Margin="446,304,0,0" TextWrapping="Wrap" Text="{Binding Value, ElementName=slider}" VerticalAlignment="Top" Width="21"/>
