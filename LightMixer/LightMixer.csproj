@@ -250,6 +250,10 @@
       <Project>{0b5cad10-7334-468a-a6ae-d47cc1dd5b12}</Project>
       <Name>BeatDetector</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MidiController\MidiController.csproj">
+      <Project>{91ab987b-e47b-45ed-96ef-8223fcbc75f7}</Project>
+      <Name>MidiController</Name>
+    </ProjectReference>
     <ProjectReference Include="..\VisualControler\VisualControler.csproj">
       <Project>{724f1316-3e36-414d-b87b-9d318c080cd7}</Project>
       <Name>VisualControler</Name>

@@ -29,6 +29,7 @@ namespace LightMixer
 
         public App()
         {
+         //   this.Exit += App_Exit;
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
             try
             {
@@ -60,6 +61,11 @@ namespace LightMixer
             {
                 MessageBox.Show("Can't open wcf service for Listen, " + vexp.Message);
             }
+        }
+
+        private void App_Exit(object sender, ExitEventArgs e)
+        {
+            
         }
 
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)

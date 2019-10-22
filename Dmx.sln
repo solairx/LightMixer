@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.136
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenDmx", "ftditest1\OpenDmx.csproj", "{54AC2E62-FB55-49AB-9354-5B35D4D12160}"
 EndProject
@@ -36,11 +36,13 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "LightMixerAppUA.Shared", "L
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightMixerAppUA.WindowsPhone", "LightMixerAppUA.WindowsPhone\LightMixerAppUA.WindowsPhone.csproj", "{438C3654-1789-4558-85E0-2A4A2DF63F19}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MidiController", "MidiController\MidiController.csproj", "{91AB987B-E47B-45ED-96EF-8223FCBC75F7}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		LightMixerAppUA.Shared\LightMixerAppUA.Shared.projitems*{697adcf5-cae7-46f0-84d9-129a370ea55f}*SharedItemsImports = 13
 		LightMixerAppUA.Shared\LightMixerAppUA.Shared.projitems*{27f2f862-3c02-4c65-81b2-185990eb63ef}*SharedItemsImports = 4
 		LightMixerAppUA.Shared\LightMixerAppUA.Shared.projitems*{438c3654-1789-4558-85e0-2a4a2df63f19}*SharedItemsImports = 4
+		LightMixerAppUA.Shared\LightMixerAppUA.Shared.projitems*{697adcf5-cae7-46f0-84d9-129a370ea55f}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -205,6 +207,26 @@ Global
 		{438C3654-1789-4558-85E0-2A4A2DF63F19}.Release|x86.ActiveCfg = Release|x86
 		{438C3654-1789-4558-85E0-2A4A2DF63F19}.Release|x86.Build.0 = Release|x86
 		{438C3654-1789-4558-85E0-2A4A2DF63F19}.Release|x86.Deploy.0 = Release|x86
+		{91AB987B-E47B-45ED-96EF-8223FCBC75F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91AB987B-E47B-45ED-96EF-8223FCBC75F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91AB987B-E47B-45ED-96EF-8223FCBC75F7}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{91AB987B-E47B-45ED-96EF-8223FCBC75F7}.Debug|ARM.Build.0 = Debug|Any CPU
+		{91AB987B-E47B-45ED-96EF-8223FCBC75F7}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{91AB987B-E47B-45ED-96EF-8223FCBC75F7}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{91AB987B-E47B-45ED-96EF-8223FCBC75F7}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{91AB987B-E47B-45ED-96EF-8223FCBC75F7}.Debug|x64.Build.0 = Debug|Any CPU
+		{91AB987B-E47B-45ED-96EF-8223FCBC75F7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{91AB987B-E47B-45ED-96EF-8223FCBC75F7}.Debug|x86.Build.0 = Debug|Any CPU
+		{91AB987B-E47B-45ED-96EF-8223FCBC75F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91AB987B-E47B-45ED-96EF-8223FCBC75F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91AB987B-E47B-45ED-96EF-8223FCBC75F7}.Release|ARM.ActiveCfg = Release|Any CPU
+		{91AB987B-E47B-45ED-96EF-8223FCBC75F7}.Release|ARM.Build.0 = Release|Any CPU
+		{91AB987B-E47B-45ED-96EF-8223FCBC75F7}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{91AB987B-E47B-45ED-96EF-8223FCBC75F7}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{91AB987B-E47B-45ED-96EF-8223FCBC75F7}.Release|x64.ActiveCfg = Release|Any CPU
+		{91AB987B-E47B-45ED-96EF-8223FCBC75F7}.Release|x64.Build.0 = Release|Any CPU
+		{91AB987B-E47B-45ED-96EF-8223FCBC75F7}.Release|x86.ActiveCfg = Release|Any CPU
+		{91AB987B-E47B-45ED-96EF-8223FCBC75F7}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -218,47 +240,7 @@ Global
 		{697ADCF5-CAE7-46F0-84D9-129A370EA55F} = {25586DF0-DEB7-4DA3-AD3E-1610608CDC16}
 		{438C3654-1789-4558-85E0-2A4A2DF63F19} = {25586DF0-DEB7-4DA3-AD3E-1610608CDC16}
 	EndGlobalSection
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 11
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://ericcontant.visualstudio.com/defaultcollection
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = BeatDetector\\BeatDetector.csproj
-		SccProjectName1 = BeatDetector
-		SccLocalPath1 = BeatDetector
-		SccProjectUniqueName2 = DmxClient\\DmxClient.csproj
-		SccProjectTopLevelParentUniqueName2 = Dmx.sln
-		SccProjectName2 = DmxClient
-		SccLocalPath2 = DmxClient
-		SccProjectUniqueName3 = DmxLightingService\\DmxLightingService.csproj
-		SccProjectTopLevelParentUniqueName3 = Dmx.sln
-		SccProjectName3 = DmxLightingService
-		SccLocalPath3 = DmxLightingService
-		SccProjectUniqueName4 = ftditest1\\OpenDmx.csproj
-		SccProjectTopLevelParentUniqueName4 = Dmx.sln
-		SccProjectName4 = ftditest1
-		SccLocalPath4 = ftditest1
-		SccProjectUniqueName5 = LightMixer\\LightMixer.csproj
-		SccProjectName5 = LightMixer
-		SccLocalPath5 = LightMixer
-		SccProjectUniqueName6 = LightMixerAppUA.Shared\\LightMixerAppUA.Shared.projitems
-		SccProjectTopLevelParentUniqueName6 = Dmx.sln
-		SccProjectName6 = LightMixerAppUA.Shared
-		SccLocalPath6 = LightMixerAppUA.Shared
-		SccProjectUniqueName7 = LightMixerAppUA.Shared\\LightMixerAppUA.Shared.shproj
-		SccProjectTopLevelParentUniqueName7 = Dmx.sln
-		SccProjectName7 = LightMixerAppUA.Shared
-		SccLocalPath7 = LightMixerAppUA.Shared
-		SccProjectUniqueName8 = LightMixerAppUA.WindowsPhone\\LightMixerAppUA.WindowsPhone.csproj
-		SccProjectTopLevelParentUniqueName8 = Dmx.sln
-		SccProjectName8 = LightMixerAppUA.WindowsPhone
-		SccLocalPath8 = LightMixerAppUA.WindowsPhone
-		SccProjectUniqueName9 = LightMixerAppUA\\LightMixerAppUA.csproj
-		SccProjectTopLevelParentUniqueName9 = Dmx.sln
-		SccProjectName9 = LightMixerAppUA
-		SccLocalPath9 = LightMixerAppUA
-		SccProjectUniqueName10 = VisualControler\\VisualControler.csproj
-		SccProjectName10 = VisualControler
-		SccLocalPath10 = VisualControler
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6D08D1D4-0E7E-436D-BC36-86E4830B1592}
 	EndGlobalSection
 EndGlobal

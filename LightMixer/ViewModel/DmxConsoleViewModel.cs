@@ -13,6 +13,8 @@ using System.Windows;
 using System.Diagnostics;
 using System.Windows.Threading;
 using System.Collections;
+using MidiController;
+using System.Threading;
 
 namespace LightMixer.ViewModel
 {
@@ -27,6 +29,9 @@ namespace LightMixer.ViewModel
         private MIDIINPROC _midiInProc;
         private IntPtr _midiInHandle;
         private Dispatcher dispatcher;
+        public static Process MidiController;
+
+
         public DmxConsoleViewModel()
         {
             dispatcher = Dispatcher;
@@ -36,22 +41,48 @@ namespace LightMixer.ViewModel
 
             try
             {
+                
+                try
+                {
 
+                    foreach (var pro in Process.GetProcessesByName("LightMixer"))
+                    {
+                        if (Process.GetCurrentProcess().Id != pro.Id)
+                            pro.Kill();
+                        Thread.Sleep(2000);
+                    }
+                    foreach (var pro in Process.GetProcessesByName("MidiController"))
+                    {
+                        pro.Kill();
+                        Thread.Sleep(2000);
+                    }
+                }
+                catch (Exception vepx)
+                {
 
-                //this.OpenAndStartDevice(GetLoopBeDeviceId());
-
+                }
                 _midiInProc = new MIDIINPROC(MyMidiInProc);
-                MIDIError ret = Midi.MIDI_InOpen(ref _midiInHandle, GetLoopBeDeviceId(), _midiInProc, IntPtr.Zero, MIDIFlags.MIDI_IO_STATUS);
+                MIDIError ret = Midi.MIDI_InOpen(ref _midiInHandle, GetTotalControl(), _midiInProc, IntPtr.Zero, MIDIFlags.MIDI_IO_STATUS);
 
                 if (ret == MIDIError.MIDI_OK)
                 {
-                    // supply the device with 2 buffers
-                    // AddSysExBuffer(_midiInHandle, 1024);
-                    //  AddSysExBuffer(_midiInHandle, 1024);
-
                     ret = Midi.MIDI_InStart(_midiInHandle);
                     ret = Midi.MIDI_OutReset(_midiInHandle);
                 }
+
+                /*MidiController = Process.Start(new ProcessStartInfo
+                {
+                    FileName = "MidiController.exe",
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                    RedirectStandardInput = true,
+
+                });
+                MidiController.StandardInput.WriteLine(GetTotalControl()+1);
+                MidiController.StandardInput.WriteLine(CreateLedMessage(62, true).Message);
+                MidiController.StandardInput.WriteLine(CreateResetMessage().Message);*/
+
+
 
             }
             catch (Exception vexp)
@@ -60,15 +91,43 @@ namespace LightMixer.ViewModel
             }
         }
 
+        private static MidiShortMessage CreateLedMessage(byte note, bool on)
+        {
+            return new MidiShortMessage
+            {
+                StatusType = on ?MIDIStatus.NoteOn :  MIDIStatus.NoteOff,
+                Velocity = (byte)(on ? 127 : 0),
+                ControllerType = MIDIControllerType.User30Fine,
+                ControllerValue = 100,
+                MessageType = MIDIMessageType.Channel,
+                Controller = note,
+                Note = note,
+                Channel = note,
+            };
+        }
+
+        private static MidiShortMessage CreateResetMessage()
+        {
+            return new MidiShortMessage
+            {
+                StatusType = MIDIStatus.NoteOff,
+                Velocity = 0,
+                ControllerValue = 100,
+                ControllerType = MIDIControllerType.AllNotesOff,
+                
+                MessageType = MIDIMessageType.Channel,
+//                Controller = note,
+  //              Note = note,
+    //            Channel = note,
+            };
+        }
+
         public void AddSysExBuffer(IntPtr handle, int size)
         {
-            // prepare a empty midi header
             MIDI_HEADER header = new MIDI_HEADER(size);
             header.Prepare(true, handle);
-            // If the header was perpared successfully.
             if (header.HeaderPtr != IntPtr.Zero)
             {
-                // Add the buffer to the InputDevice.
                 Midi.MIDI_InAddBuffer(handle, header.HeaderPtr);
             }
         }
@@ -120,7 +179,7 @@ namespace LightMixer.ViewModel
             ProcessMessageForEncoder(shortMsg, 0, 0, this.Chaser.LedEffectCollection, this.Chaser.CurrentLedEffect, (a) => this.Chaser.CurrentLedEffect = a, 6);
             ProcessMessageForEncoder(shortMsg, 0, 1, this.Chaser.MovingHeadEffectCollection, this.Chaser.CurrentMovingHeadEffect, (a) => this.Chaser.CurrentMovingHeadEffect = a, 6);
             ProcessMessageForEncoder(shortMsg, 0, 3, this.Chaser.BoothEffectCollection, this.Chaser.CurrentBoothEffect, (a) => this.Chaser.CurrentBoothEffect = a, 6);
-            ProcessMessageForSlider(shortMsg, 0, 25, 0, this.BeatDetector.BeatRepeat, (a) => this.BeatDetector.BeatRepeat = a,0.05d);
+            ProcessMessageForSlider(shortMsg, 0, 25, 0, this.BeatDetector.BeatRepeat, (a) => this.BeatDetector.BeatRepeat = a, 0.05d);
             ProcessMessageCommand(shortMsg, 0, 67, () => this.ResetBeatCommand.Execute(null));
         }
 
@@ -130,6 +189,8 @@ namespace LightMixer.ViewModel
             {
                 p();
             }
+                        
+       //     MidiController.StandardInput.WriteLine(CreateLedMessage(62, false).Message);
         }
 
         private Dictionary<string, int> Skipper = new Dictionary<string, int>();
@@ -199,7 +260,7 @@ namespace LightMixer.ViewModel
             }
         }
 
-        private static int GetLoopBeDeviceId()
+        private static int GetTotalControl()
         {
 
             var DeviceDescriptions = new List<string>(MidiInputDevice.GetDeviceDescriptions());
@@ -272,11 +333,6 @@ namespace LightMixer.ViewModel
                 return new DelegateCommand(() => { BeatDetector.BeatRepeat = 1; });
             }
         }
-
-
-
-
-
     }
 }
 
