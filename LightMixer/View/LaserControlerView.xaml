@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="350" d:DesignWidth="553">
 	
-    <Grid>
+    <Grid Background="Black">
         <CheckBox Content="Laser Pause" HorizontalAlignment="Left" Margin="20,57,0,0" VerticalAlignment="Top" IsChecked="{Binding LaserConfig.LaserPause}"/>
         <CheckBox Content="Auto Change" HorizontalAlignment="Left" Margin="126,57,0,0" VerticalAlignment="Top" IsChecked="{Binding LaserConfig.AutoChangeEvent}"/>
         <CheckBox Content="Auto Change Laser Event" Margin="243,57,145.58,0" VerticalAlignment="Top" IsChecked="{Binding LaserConfig.AutoChangeEventLaser}"/>

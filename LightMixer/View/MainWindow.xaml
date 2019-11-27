@@ -10,30 +10,43 @@
         Title="MainWindow" 
         Background="Black"
         Foreground="White"
-		Height="1024" 
-		Width="768" WindowStyle="SingleBorderWindow">
-	<Window.Resources>
-		<ViewModel:MainWindowViewModel x:Key="MainWindowViewModelDataSource" d:IsDataSource="True"/>
-	</Window.Resources>
-	<Window.DataContext>
-		<Binding Mode="OneWay" Source="{StaticResource MainWindowViewModelDataSource}"/>
-	</Window.DataContext>
-    <StackPanel Orientation="Vertical" >
-        <TabControl MinHeight="600" TabStripPlacement="Left" >
-        	  <TabControl.Resources>  
-        	  	  <Style TargetType="{x:Type TabItem}">     
-        	  	  	 <Setter Property="Padding" Value="4" /> 
-					      <Setter Property="HeaderTemplate">   
-					      	     <Setter.Value>     
-					      	     	     <DataTemplate>    
-					      	     	     	        <ContentPresenter Content="{TemplateBinding Content}">      
-					      	     	     	        	        <ContentPresenter.LayoutTransform>          
-					      	     	     	        	        	      <RotateTransform Angle="0" />           
-                                                                </ContentPresenter.LayoutTransform>          
-                                                    </ContentPresenter>     
-                                         </DataTemplate> 
-                                 </Setter.Value>     
-                          </Setter>
+        Name="myMainWindow"
+    MinHeight="550"
+    MinWidth="700"
+		WindowStyle="SingleBorderWindow">
+    
+    <Window.Resources>
+        <ViewModel:MainWindowViewModel x:Key="MainWindowViewModelDataSource" d:IsDataSource="True"/>
+    </Window.Resources>
+    <Window.DataContext>
+        <Binding Mode="OneWay" Source="{StaticResource MainWindowViewModelDataSource}"/>
+    </Window.DataContext>
+    <Grid Name="MainGrid" SizeChanged="MainGrid_SizeChanged">
+
+        <Grid.LayoutTransform>
+            <ScaleTransform x:Name="ApplicationScaleTransform"
+                        CenterX="0"
+                        CenterY="0"
+                        ScaleX="{Binding ElementName=myMainWindow, Path=ScaleValue}"
+                        ScaleY="{Binding ElementName=myMainWindow, Path=ScaleValue}" />
+        </Grid.LayoutTransform>
+        
+        <TabControl TabStripPlacement="Left"  >
+            
+            <TabControl.Resources>
+                <Style TargetType="{x:Type TabItem}">
+                    <Setter Property="Padding" Value="4" />
+                    <Setter Property="HeaderTemplate">
+                        <Setter.Value>
+                            <DataTemplate>
+                                <ContentPresenter Content="{TemplateBinding Content}">
+                                    <ContentPresenter.LayoutTransform>
+                                        <RotateTransform Angle="0" />
+                                    </ContentPresenter.LayoutTransform>
+                                </ContentPresenter>
+                            </DataTemplate>
+                        </Setter.Value>
+                    </Setter>
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="TabItem">
@@ -55,14 +68,14 @@
                             </ControlTemplate>
                         </Setter.Value>
                     </Setter>
-                </Style> 
-              </TabControl.Resources>
-        	<TabItem Foreground="White" Header="Manual Dmx &#xd;&#xa;Control" Margin="0">
-        		
-				<View:ManualDmxControl>
-					
-				</View:ManualDmxControl>
-        	</TabItem>
+                </Style>
+            </TabControl.Resources>
+            <TabItem Foreground="White" Header="Manual Dmx &#xd;&#xa;Control" Margin="0">
+
+                <View:ManualDmxControl>
+
+                </View:ManualDmxControl>
+            </TabItem>
 
             <TabItem Foreground="White" Header="Service&#xd;&#xa;Setting" Margin="0" >
 
@@ -72,16 +85,17 @@
             </TabItem>
             <TabItem Header="Laser &#xd;&#xa;Console" Margin="0" Foreground="White">
                 <View:LaserControlerView>
-                    
+
                 </View:LaserControlerView>
             </TabItem>
             <TabItem Header="Dmx &#xd;&#xa;Console" Margin="0" Foreground="White">
                 <View:DmxConsoleView>
-                    
+             
+
                 </View:DmxConsoleView>
             </TabItem>
 
         </TabControl>
-        
-    </StackPanel>
+
+    </Grid>
 </Window>
