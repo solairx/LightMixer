@@ -57,18 +57,7 @@ namespace LightMixer.Model
          //   runningThread.IsBackground = true;
          //   runningThread.Start();
         }
-
-        private void Run()
-        {
-            while (true)
-            {
-                // do calculation here
-                //DmxFrameEvent();
-
-                DmxFrameCall(DmxChaser.LedType.HeadLed);
-                Thread.Sleep(25);
-            }
-        }
+              
 
         public byte GetMaxedByte(int val)
         {
@@ -89,7 +78,7 @@ namespace LightMixer.Model
 
         }
 
-        public abstract void DmxFrameCall(DmxChaser.LedType boothLed);
+        public abstract void DmxFrameCall(DmxChaser.LedType boothLed, IEnumerable<BeatDetector.VdjEvent> values);
     
 
         public void StartCalculation()

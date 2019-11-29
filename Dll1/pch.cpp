@@ -18,7 +18,7 @@ HRESULT VDJ_API CMyPlugin8::OnLoad()
 
 	OnParameter(ID_SLIDER_1);
 
-	
+
 
 	return S_OK;
 }
@@ -59,20 +59,21 @@ HRESULT VDJ_API CMyPlugin8::OnParameter(int id)
 			m_Wet = 0.5f;
 			HRESULT hr;
 			hr = SendCommand("effect_slider 1 50%");
-			
+
 		}
 		break;
 
 	case ID_SLIDER_1:
 		wchar_t str_author[512] = TEXT("");
 		double qRes;
-		
+
 		m_Dry = 1 - m_Wet;
 		break;
 	}
 
 	return S_OK;
 }
+HANDLE pipe;
 
 HRESULT VDJ_API CMyPlugin8::OnProcessSamples(float* buffer, int nb)
 {
@@ -80,28 +81,34 @@ HRESULT VDJ_API CMyPlugin8::OnProcessSamples(float* buffer, int nb)
 	result = AddToString("fileName", GetStringFromVDJ("get loaded_song \"Filename\""), result);
 	result = AddToString("filePath", GetStringFromVDJ("get loaded_song \"Filepath\""), result);
 	result = AddToString("beatNum", GetStringFromVDJ("get_beat_num"), result);
-	
+
 	result = AddToString("beatBar16", GetStringFromVDJ("get Beat_bar 16"), result);
+	result = AddToString("beatBar", GetStringFromVDJ("get Beat_bar"), result);
 	result = AddToString("beatPos", GetStringFromVDJ("get_beatpos"), result);
 	result = AddToString("bpm", GetStringFromVDJ("get_bpm"), result);
 	result = AddToString("position", GetStringFromVDJ("get_position"), result);
 
 	result = AddToString("volume", GetStringFromVDJ("get_volume"), result);
 	result = AddToString("deck", GetStringFromVDJ("get deck"), result);
+	result = AddToString("crossfader", GetStringFromVDJ("crossfader"), result);
 	result = AddToString("elapsed", GetStringFromVDJ("get_time elapsed 1000"), result);
 	result = result.append("\r\n");
-	
-	
-		
+
+
+
 	if (result.length() > 0)
 	{
-		HANDLE pipe = CreateFile(TEXT("\\\\.\\pipe\\virtualDJA"), GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, 0, NULL);
-		bool connected = ConnectNamedPipe(pipe, NULL);
+
 		DWORD numWritten;
-		WriteFile(pipe, result.c_str(), result.length(), &numWritten, NULL);
+		if (pipe !=0 && pipe != NULL && !WriteFile(pipe, result.c_str(), result.length(), &numWritten, NULL))
+		{
+			this->OnStart();
+		};
+
 	}
 	return S_OK;
 }
+
 std::string CMyPlugin8::AddToString(const char* vdjCommand, std::string result, std::string source)
 {
 	source.append(vdjCommand);
@@ -111,7 +118,29 @@ std::string CMyPlugin8::AddToString(const char* vdjCommand, std::string result, 
 	return source;
 }
 
-std::string CMyPlugin8::GetStringFromVDJ(const char *vdjCommand)
+HRESULT VDJ_API CMyPlugin8::OnStart()
+{
+	pipe = CreateFile(TEXT("\\\\.\\pipe\\virtualDJ"), GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, 0, NULL);
+	bool connected = ConnectNamedPipe(pipe, NULL);
+	if (!connected)
+	{
+		//DisconnectNamedPipe(pipe);
+	//	pipe = NULL;
+	}
+	return 0;
+}
+
+HRESULT VDJ_API CMyPlugin8::OnStop()
+{
+	if (pipe != 0)
+	{
+		DisconnectNamedPipe(pipe);
+		pipe = NULL;
+	}
+	return 0;
+}
+
+std::string CMyPlugin8::GetStringFromVDJ(const char* vdjCommand)
 {
 	HRESULT hr;
 	std::string fileName = "";

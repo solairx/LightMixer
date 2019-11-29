@@ -115,6 +115,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Model\ActiveDeckSelector.cs" />
+    <Compile Include="Model\DmxEffectSelector.cs" />
     <Compile Include="Model\Effect\Led\BreathingEffect.cs" />
     <Compile Include="Model\Effect\Led\RandomEffect.cs" />
     <Compile Include="Model\Service\IRemoteLightService.cs" />

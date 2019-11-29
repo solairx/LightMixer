@@ -12,7 +12,7 @@ namespace LightMixer.Model
         public MovingHeadDisco(BeatDetector.BeatDetector detector, Fixture.FixtureCollection currentValue, ObservableCollection<Fixture.FixtureGroup> vfixtureGroup)
             : base(detector, currentValue,vfixtureGroup,"default") { }
         
-        public override void DmxFrameCall(DmxChaser.LedType ledInstance)
+        public override void DmxFrameCall(DmxChaser.LedType ledInstance, IEnumerable<BeatDetector.VdjEvent> values)
         {
             
             

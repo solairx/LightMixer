@@ -35,6 +35,8 @@ public:
 	HRESULT VDJ_API OnProcessSamples(float* buffer, int nb);
 	std::string GetStringFromVDJ(const char* command);
 	std::string AddToString(const char* vdjCommand, std::string result, std::string source);
+	HRESULT VDJ_API OnStart();
+	HRESULT VDJ_API OnStop();
 private:
 	int m_Reset;
 	float m_Dry;

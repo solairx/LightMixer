@@ -12,7 +12,7 @@ namespace LightMixer.Model
         public FlashAllEffect(BeatDetector.BeatDetector detector, Fixture.FixtureCollection currentValue, ObservableCollection<Fixture.FixtureGroup> vfixtureGroup, string vSchema)
             : base(detector, currentValue,vfixtureGroup,vSchema) { }
 
-        public override void DmxFrameCall(DmxChaser.LedType ledInstance)
+        public override void DmxFrameCall(DmxChaser.LedType ledInstance, IEnumerable<BeatDetector.VdjEvent> values)
         {
             isBeat = false;
             var workingGroup = this.fixtureGroup.Where(o => o.Schema == Schema);

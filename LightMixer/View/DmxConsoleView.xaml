@@ -7,7 +7,7 @@
              mc:Ignorable="d" Height="537" Width="568">
 
     <Grid>
-        
+
         <ListBox HorizontalAlignment="Left" Margin="8,24,0,0" Width="134" ItemsSource="{Binding Chaser.LedEffectCollection}" SelectedItem="{Binding Chaser.CurrentLedEffect}" DisplayMemberPath="Name" Height="164" VerticalAlignment="Top"/>
         <Slider Margin="103,223,0,0" Maximum="100" Minimum="5" Value="{Binding SharedEffectModel.MaxLightIntesity}" TickFrequency="5" SmallChange="5" LargeChange="25" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="181"/>
         <TextBlock HorizontalAlignment="Left" Margin="20,4,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="105.327"><Run Language="en-ca" Text="RGB Led Effect"/></TextBlock>
@@ -33,6 +33,7 @@
         <Slider Margin="83,0,233,51" VerticalAlignment="Bottom" Minimum="0.1" Maximum="5" Value="{Binding SharedEffectModel.MaxSpeed}"/>
         <TextBlock HorizontalAlignment="Left" Margin="20,473,0,0" TextWrapping="Wrap" VerticalAlignment="Top"><Run Language="en-ca" Text="Speed"/></TextBlock>
         <CheckBox Content="Auto Color&#xd;&#xa;" HorizontalAlignment="Right" Margin="0,45,25.516,0" VerticalAlignment="Top" Height="16.92" IsChecked="{Binding SharedEffectModel.AutoChangeColorOnBeat}" />
+        <CheckBox Content="Auto Chaser" HorizontalAlignment="Right" Margin="0,67,18,0" VerticalAlignment="Top" Height="17" IsChecked="{Binding Chaser.AutoChaser}" />
         <TextBlock Margin="20,251,415,0" TextWrapping="Wrap" VerticalAlignment="Top"><Run Language="en-ca" Text="Head"/></TextBlock>
         <TextBlock HorizontalAlignment="Right" Margin="0,193,130,0" TextWrapping="Wrap" VerticalAlignment="Top"><Run Language="en-ca" Text="Flash"/></TextBlock>
         <Slider HorizontalAlignment="Left" Margin="346,233,0,0" VerticalAlignment="Top" Width="196" Minimum="1" Maximum="100" Value="{Binding SharedEffectModel.MaxLightFlashIntesity}"/>
@@ -43,6 +44,8 @@
         <TextBlock Margin="20,274,489,0" TextWrapping="Wrap" VerticalAlignment="Top"><Run Language="en-ca" Text="Booth"/></TextBlock>
         <Button Content="RST" HorizontalAlignment="Left" Margin="529,305,0,0" VerticalAlignment="Top" Width="29" Command="{Binding ResetBeatCommand}"/>
         <TextBlock Margin="20,228,415,0" TextWrapping="Wrap" VerticalAlignment="Top"><Run Text="DownLed"/><LineBreak/><Run/></TextBlock>
+        <TextBlock Text="{Binding Chaser.TrackName}" Margin="103,491,10,27"/>
+        <TextBlock Text="{Binding Chaser.POI}" Margin="8,491,456,27"/>
 
     </Grid>
 </UserControl>

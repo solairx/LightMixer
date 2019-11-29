@@ -13,7 +13,7 @@ namespace LightMixer.Model
         public ZoneFlashEffect(BeatDetector.BeatDetector detector, Fixture.FixtureCollection currentValue, ObservableCollection<Fixture.FixtureGroup> vfixtureGroup, string vSchema)
             : base(detector, currentValue,vfixtureGroup,vSchema) { }
 
-        public override void DmxFrameCall(DmxChaser.LedType ledInstance)
+        public override void DmxFrameCall(DmxChaser.LedType ledInstance, IEnumerable<BeatDetector.VdjEvent> values)
         {
             var currentGroups = this.fixtureGroup.Where(o => o.Schema == Schema);
             if (currentGroups.Count() == 0) return;

@@ -2,10 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Windows.Media;
 using Un4seen.Bass;
 using Un4seen.Bass.AddOn.Fx;
@@ -78,19 +77,23 @@ namespace BeatDetector
                 {
                     this.PropertyChanged(this, new PropertyChangedEventArgs(nameof(BeatBackground)));
                 }
-                
+
             }
         }
 
+        public VirtualDjServer VirtualDjServer { get; }
 
         public BeatDetector()
         {
             _beatBackground = _blackColor;
             this.OpenAndStartDevice(GetLoopBeDeviceId());
-
+            VirtualDjServer = new VirtualDjServer();
             BeatRepeatProc();
 
         }
+
+      
+
 
         private static int GetLoopBeDeviceId()
         {
@@ -322,4 +325,5 @@ namespace BeatDetector
             Bass.BASS_Free();
         }
     }
+
 }

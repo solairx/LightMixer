@@ -4,13 +4,16 @@ using System.Threading;
 using Microsoft.Practices.Unity;
 using LightMixer.Model.Fixture;
 using UIFrameWork;
-
+using System.Collections.Concurrent;
+using BeatDetector;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace LightMixer.Model
 {
-    public class DmxChaser : BaseViewModel,IDisposable 
+    public class DmxChaser : BaseViewModel, IDisposable
     {
-        private BeatDetector.BeatDetector mBpmDetector;
+        public BeatDetector.BeatDetector mBpmDetector;
         private DmxModel mModel;
         private Thread runningThread;
         private FixtureCollection fixtureCollection = new FixtureCollection();
@@ -19,11 +22,19 @@ namespace LightMixer.Model
         private ObservableCollection<EffectBase> _ledEffectCollection = new System.Collections.ObjectModel.ObservableCollection<EffectBase>();
         private ObservableCollection<EffectBase> _boothEffectCollection = new System.Collections.ObjectModel.ObservableCollection<EffectBase>();
         private ObservableCollection<EffectBase> _movingHeadEffectCollection = new System.Collections.ObjectModel.ObservableCollection<EffectBase>();
-        
+        private DmxEffectSelector DmxEffectSelector = new DmxEffectSelector();
+
 
         private EffectBase _CurrentLedEffect;
         private EffectBase _CurrentBoothEffect;
         private EffectBase _CurrentMovingHeadEffect;
+        private ConcurrentDictionary<int, VdjEvent> LastVdjEvent = new ConcurrentDictionary<int, VdjEvent>();
+        private BeatDetector.BeatDetector BeatDetector;
+        private ActiveDeckSelector ActiveDeckSelector;
+        private DateTime LastUpdateOnUI = DateTime.Now;
+        private string trackName;
+        private string pOI;
+        private bool autoChaser;
 
         public EffectBase CurrentBoothEffect
         {
@@ -33,9 +44,46 @@ namespace LightMixer.Model
             }
             set
             {
+                Dispatcher.Invoke(() =>
+                {
+                    _CurrentBoothEffect = value;
+                    this.OnPropertyChanged(o => this.CurrentBoothEffect);
+                });
+            }
+        }
 
-                _CurrentBoothEffect = value;
-                this.OnPropertyChanged(o => this.CurrentBoothEffect);
+        public string TrackName
+        {
+            get => trackName;
+            set
+            {
+                Dispatcher.Invoke(() =>
+                {
+                    trackName = value;
+                    this.OnPropertyChanged(o => this.trackName);
+                });
+            }
+        }
+
+        public bool AutoChaser
+        {
+            get => autoChaser; set
+            {
+                autoChaser = value;
+                this.OnPropertyChanged(o => this.AutoChaser);
+            }
+        }
+
+        public string POI
+        {
+            get => pOI;
+            set
+            {
+                Dispatcher.Invoke(() =>
+                {
+                    pOI = value;
+                    this.OnPropertyChanged(o => this.POI);
+                });
             }
         }
 
@@ -47,9 +95,11 @@ namespace LightMixer.Model
             }
             set
             {
-               
-                _CurrentLedEffect = value;
-                this.OnPropertyChanged(o => this.CurrentLedEffect);
+                Dispatcher.Invoke(() =>
+                {
+                    _CurrentLedEffect = value;
+                    this.OnPropertyChanged(o => this.CurrentLedEffect);
+                });
             }
         }
 
@@ -61,9 +111,11 @@ namespace LightMixer.Model
             }
             set
             {
-
-                _CurrentMovingHeadEffect = value;
-                this.OnPropertyChanged(o => this.CurrentMovingHeadEffect);
+                Dispatcher.Invoke(() =>
+                {
+                    _CurrentMovingHeadEffect = value;
+                    this.OnPropertyChanged(o => this.CurrentMovingHeadEffect);
+                });
             }
         }
 
@@ -106,9 +158,9 @@ namespace LightMixer.Model
             }
         }
 
-        public DmxChaser(DmxModel model) 
+        public DmxChaser(DmxModel model)
         {
-            
+            AutoChaser = true;
             RgbFixture fixtureLed3 = new RgbFixture(0);
             RgbFixture fixtureLed4 = new RgbFixture(3);
             RgbFixture fixtureLed5 = new RgbFixture(6);
@@ -144,7 +196,7 @@ namespace LightMixer.Model
             fixtureCollection.FixtureList.Add(bootDjLed6);
             fixtureCollection.FixtureList.Add(bootDjLed7);
             fixtureCollection.FixtureList.Add(bootDjLed8);
-            
+
 
             fixtureCollection.FixtureList.Add(new MovingHeadFixture(400));
             fixtureCollection.FixtureList.Add(new MovingHeadFixture(300));
@@ -195,7 +247,15 @@ namespace LightMixer.Model
 
 
             mModel = model;
-            ((LightMixer.App)LightMixer.App.Current).UnityContainer.RegisterInstance<BeatDetector.BeatDetector>(new BeatDetector.BeatDetector());
+            LastVdjEvent[1] = new VdjEvent();
+            LastVdjEvent[2] = new VdjEvent();
+            LastVdjEvent[3] = new VdjEvent();
+            LastVdjEvent[4] = new VdjEvent();
+            BeatDetector = new BeatDetector.BeatDetector();
+            ActiveDeckSelector = new ActiveDeckSelector();
+            ((LightMixer.App)LightMixer.App.Current).UnityContainer.RegisterInstance<BeatDetector.BeatDetector>(BeatDetector);
+            if (BeatDetector.VirtualDjServer != null)
+                BeatDetector.VirtualDjServer.VirtualDjServerEvent += VirtualDjServer_VirtualDjServerEvent;
             mBpmDetector = ((LightMixer.App)LightMixer.App.Current).UnityContainer.Resolve<BeatDetector.BeatDetector>();
             mBpmDetector.BeatEvent += new BeatDetector.BeatDetector.BeatHandler(mBpmDetector_BeatEvent);
 
@@ -224,7 +284,7 @@ namespace LightMixer.Model
             MovingHeadEffectCollection.Add(new MovingHeadFlashAll(mBpmDetector, fixtureCollection, fixtureGroupCollection));
             MovingHeadEffectCollection.Add(new MovingHeadAllOn(mBpmDetector, fixtureCollection, fixtureGroupCollection));
 
-            
+
             CurrentMovingHeadEffect = MovingHeadEffectCollection[0];
             CurrentLedEffect = LedEffectCollection[0];
             CurrentBoothEffect = BoothEffectCollection[0];
@@ -237,13 +297,19 @@ namespace LightMixer.Model
             runningThread.Start();
         }
 
+        private void VirtualDjServer_VirtualDjServerEvent(BeatDetector.VdjEvent vdjEvent)
+        {
+            LastVdjEvent[vdjEvent.Deck] = vdjEvent;
+
+        }
+
         void mBpmDetector_BeatEvent(bool Beat, object caller)
         {
-            if (this.LedEffectCollection.Count !=0)
+            if (this.LedEffectCollection.Count != 0)
                 if (Beat && this.LedEffectCollection[0]._sharedEffectModel.AutoChangeColorOnBeat)
-            {
-                this.LedEffectCollection[0]._sharedEffectModel.RotateColor();
-            }
+                {
+                    this.LedEffectCollection[0]._sharedEffectModel.RotateColor();
+                }
         }
 
         private void Run()
@@ -252,18 +318,32 @@ namespace LightMixer.Model
             {
                 try
                 {
-                    this.CurrentLedEffect.DmxFrameCall(LedType.HeadLed);
-                    this.CurrentMovingHeadEffect.DmxFrameCall(LedType.MovingHead);
-                    this.CurrentBoothEffect.DmxFrameCall(LedType.BoothLed);
+                    var activeDeck = ActiveDeckSelector.Select(LastVdjEvent.Values);
+                    if (DateTime.Now.Subtract(LastUpdateOnUI).Milliseconds > 500)
+                    {
+                        UpdateVDJUiElement(activeDeck);
+                    }
+                    DmxEffectSelector.Select(this, activeDeck);
+                    this.CurrentLedEffect.DmxFrameCall(LedType.HeadLed, activeDeck);
+                    this.CurrentMovingHeadEffect.DmxFrameCall(LedType.MovingHead, activeDeck);
+                    this.CurrentBoothEffect.DmxFrameCall(LedType.BoothLed, activeDeck);
                     byte?[] ledArray = fixtureCollection.render();
-                    
-                    ((LightMixer.App)LightMixer.App.Current).UnityContainer.Resolve<LightService.DmxServiceClient>().UpdateAllDmxValue(ConvertByteArray(ledArray));
-                    Thread.Sleep(25);
 
+                    ((LightMixer.App)LightMixer.App.Current).UnityContainer.Resolve<LightService.DmxServiceClient>().UpdateAllDmxValue(ConvertByteArray(ledArray));
                 }
-                catch (Exception vexp )
+                catch (Exception vexp)
                 {
                 }
+                Thread.Sleep(25);
+            }
+        }
+
+        private void UpdateVDJUiElement(IEnumerable<VdjEvent> activeDeck)
+        {
+            if (activeDeck.Count() > 0)
+            {
+                this.TrackName = activeDeck.FirstOrDefault().FileName;
+                this.POI = activeDeck.FirstOrDefault().GetCurrentPoi.Name;
             }
         }
 
@@ -286,9 +366,9 @@ namespace LightMixer.Model
                 EffectBase effect = caller as EffectBase;
                 return;
             }
-            
+
             byte?[] ledArray = fixtureCollection.render();
-               ((LightMixer.App)LightMixer.App.Current).UnityContainer.Resolve<LightService.DmxServiceClient>().UpdateAllDmxValue(ConvertByteArray(ledArray));
+            ((LightMixer.App)LightMixer.App.Current).UnityContainer.Resolve<LightService.DmxServiceClient>().UpdateAllDmxValue(ConvertByteArray(ledArray));
         }
 
 
@@ -304,8 +384,8 @@ namespace LightMixer.Model
 
         private byte[] ConvertByteArray(byte?[] arrayToConvert)
         {
-            byte [] res = new byte[arrayToConvert.Length];
-            int x =0;
+            byte[] res = new byte[arrayToConvert.Length];
+            int x = 0;
             for (x = 0; x < arrayToConvert.Length; x++)
             {
                 if (arrayToConvert[x].HasValue)

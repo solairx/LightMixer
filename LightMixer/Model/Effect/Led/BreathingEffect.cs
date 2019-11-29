@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Collections.ObjectModel;
 using LightMixer.Model.Fixture;
+using System.Collections.Generic;
 
 namespace LightMixer.Model
 {
@@ -11,7 +12,7 @@ namespace LightMixer.Model
         public BreathingEffect(BeatDetector.BeatDetector detector, Fixture.FixtureCollection currentValue, ObservableCollection<Fixture.FixtureGroup> vfixtureGroup, string vSchema)
             : base(detector, currentValue, vfixtureGroup, vSchema) { }
 
-        public override void DmxFrameCall(DmxChaser.LedType ledInstance)
+        public override void DmxFrameCall(DmxChaser.LedType ledInstance, IEnumerable<BeatDetector.VdjEvent> values)
         {
             if (direction)
                 next += 1 * _sharedEffectModel.MaxSpeed;
