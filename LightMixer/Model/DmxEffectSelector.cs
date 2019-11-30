@@ -34,7 +34,7 @@ namespace LightMixer.Model
                         dmxChaser.CurrentMovingHeadEffect = dmxChaser.MovingHeadEffectCollection.OfType<MovingHeadFlashAll>().First();
                         if (GetSecondBeforeNextPOI(workingEvent, nextPoi) < 5)
                         {
-                            dmxChaser.CurrentLedEffect = dmxChaser.LedEffectCollection.OfType<FlashAllEffect>().First();
+                            dmxChaser.CurrentLedEffect = dmxChaser.LedEffectCollection.OfType<AllOnEffect>().First();
                         }
                         else
                         {
@@ -47,12 +47,12 @@ namespace LightMixer.Model
 
                         if (GetSecondBeforeNextPOI(workingEvent, nextPoi) < 6)
                         {
-                            dmxChaser.mBpmDetector.BeatRepeat = 2;
+                            dmxChaser.mBpmDetector.BeatRepeat = 3;
                         }
 
                         if (GetSecondBeforeNextPOI(workingEvent, nextPoi) < 5)
                         {
-                            dmxChaser.mBpmDetector.BeatRepeat = 2.5;
+                            dmxChaser.mBpmDetector.BeatRepeat = 5;
                         }
 
                         if (GetSecondBeforeNextPOI(workingEvent, nextPoi) < 3)
