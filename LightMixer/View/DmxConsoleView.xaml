@@ -34,6 +34,7 @@
         <TextBlock HorizontalAlignment="Left" Margin="20,473,0,0" TextWrapping="Wrap" VerticalAlignment="Top"><Run Language="en-ca" Text="Speed"/></TextBlock>
         <CheckBox Content="Auto Color&#xd;&#xa;" HorizontalAlignment="Right" Margin="0,45,25.516,0" VerticalAlignment="Top" Height="16.92" IsChecked="{Binding SharedEffectModel.AutoChangeColorOnBeat}" />
         <CheckBox Content="Auto Chaser" HorizontalAlignment="Right" Margin="0,67,18,0" VerticalAlignment="Top" Height="17" IsChecked="{Binding Chaser.AutoChaser}" />
+        <CheckBox Content="Use Flash Tr" HorizontalAlignment="Right" Margin="0,89,21,0" VerticalAlignment="Top" Height="17" IsChecked="{Binding Chaser.UseFlashTransition}" />
         <TextBlock Margin="20,251,415,0" TextWrapping="Wrap" VerticalAlignment="Top"><Run Language="en-ca" Text="Head"/></TextBlock>
         <TextBlock HorizontalAlignment="Right" Margin="0,193,130,0" TextWrapping="Wrap" VerticalAlignment="Top"><Run Language="en-ca" Text="Flash"/></TextBlock>
         <Slider HorizontalAlignment="Left" Margin="346,233,0,0" VerticalAlignment="Top" Width="196" Minimum="1" Maximum="100" Value="{Binding SharedEffectModel.MaxLightFlashIntesity}"/>

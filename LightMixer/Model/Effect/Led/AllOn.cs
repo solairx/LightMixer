@@ -7,9 +7,9 @@ using LightMixer.Model.Fixture;
 
 namespace LightMixer.Model
 {
-    public class FlashAllEffect : EffectBase
+    public class AllOnEffect : EffectBase
     {
-        public FlashAllEffect(BeatDetector.BeatDetector detector, Fixture.FixtureCollection currentValue, ObservableCollection<Fixture.FixtureGroup> vfixtureGroup, string vSchema)
+        public AllOnEffect(BeatDetector.BeatDetector detector, Fixture.FixtureCollection currentValue, ObservableCollection<Fixture.FixtureGroup> vfixtureGroup, string vSchema)
             : base(detector, currentValue,vfixtureGroup,vSchema) { }
 
         public override void DmxFrameCall(DmxChaser.LedType ledInstance, IEnumerable<BeatDetector.VdjEvent> values)

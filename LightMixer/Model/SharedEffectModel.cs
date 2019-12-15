@@ -20,8 +20,8 @@ namespace LightMixer.Model
         private double _maxBoothFlashIntesity = 100;
         private double _maxSpeed = 1;
         private bool _autoChangeGobo = false;
-        private bool _autoChangeProgram = false;
-        private bool _autoChangeColorOnBeat = false;
+        private bool _autoChangeProgram = true;
+        private bool _autoChangeColorOnBeat = true;
         private int _secondBetweenGoboChange = 10;
         private int _secondBetweenProgramChange = 10;
         private DateTime _lastGoboChange = DateTime.Now;
@@ -30,7 +30,7 @@ namespace LightMixer.Model
         private byte _green = 255;
         private byte _blue = 255;
         private MovingHeadFixture.Gobo _currentMovingHeadGobo = MovingHeadFixture.Gobo.Open;
-        private MovingHeadFixture.Program _currentMovingHeadProgram = MovingHeadFixture.Program.Disable;
+        private MovingHeadFixture.Program _currentMovingHeadProgram = MovingHeadFixture.Program.Auto1;
 
         public SharedEffectModel()
         {
@@ -196,29 +196,72 @@ namespace LightMixer.Model
 
         }
 
+        private Color TargetColor = Colors.AliceBlue;
+
         public void RotateColor()
         {
             Color currentColor = Color.FromRgb(this.Red, this.Green, this.Blue);
-            Color newColor = Colors.AliceBlue;
+            Color newColor = TransitionColorTo(currentColor, TargetColor);
 
 
             if (CompareColor(currentColor, Colors.AliceBlue))
-                newColor = Colors.Red;
+                TargetColor = Colors.Red;
 
             else if (CompareColor(currentColor, Colors.Red))
-                newColor = Colors.Yellow;
+                TargetColor = Colors.Yellow;
             else if (CompareColor(currentColor, Colors.Yellow))
-                newColor = Colors.Blue;
+                TargetColor = Colors.Blue;
             else if (CompareColor(currentColor, Colors.Blue))
-                newColor = Colors.Beige;
+                TargetColor = Colors.Beige;
             else if (CompareColor(currentColor, Colors.Beige))
-                newColor = Colors.MistyRose;
+                TargetColor = Colors.MistyRose;
             else if (CompareColor(currentColor, Colors.MistyRose))
-                newColor = Colors.Purple;
+                TargetColor = Colors.Purple;
+            else if (CompareColor(currentColor, Colors.Purple))
+                TargetColor = Colors.AliceBlue;
 
             this.Red = newColor.R;
             this.Green = newColor.G;
             this.Blue = newColor.B;
+        }
+
+        public Color TransitionColorTo(Color current, Color target)
+        {
+            byte modifer = 1;
+            var newColor = new Color();
+            newColor.R = GetSpecterColorByte(current.R, target.R, modifer);
+            newColor.G = GetSpecterColorByte(current.G, target.G, modifer);
+            newColor.B = GetSpecterColorByte(current.B, target.B, modifer);
+            return newColor;
+        }
+
+        public byte GetSpecterColorByte(int current, int target, int modifier)
+        {
+            if (current == target)
+                return (byte)target;
+
+            if (target < current)
+            {
+                if (current - modifier >= target)
+                {
+                    return (byte)(current - modifier);
+                }
+                else
+                {
+                    return (byte)target;
+                }
+            }
+            else
+            {
+                if (current + modifier <= target)
+                {
+                    return (byte)(current + modifier);
+                }
+                else
+                {
+                    return (byte)target;
+                }
+            }
         }
 
         public bool CompareColor(Color a, Color b)

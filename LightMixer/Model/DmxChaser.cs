@@ -35,6 +35,7 @@ namespace LightMixer.Model
         private string trackName;
         private string pOI;
         private bool autoChaser;
+        private bool useFlashTransition =true;
 
         public EffectBase CurrentBoothEffect
         {
@@ -73,6 +74,16 @@ namespace LightMixer.Model
                 this.OnPropertyChanged(o => this.AutoChaser);
             }
         }
+
+        public bool UseFlashTransition
+        {
+            get => useFlashTransition; set
+            {
+                useFlashTransition = value;
+                this.OnPropertyChanged(o => this.UseFlashTransition);
+            }
+        }
+               
 
         public string POI
         {
@@ -260,18 +271,18 @@ namespace LightMixer.Model
             mBpmDetector.BeatEvent += new BeatDetector.BeatDetector.BeatHandler(mBpmDetector_BeatEvent);
 
             LedEffectCollection.Add(new AllOffEffect(mBpmDetector, fixtureCollection, fixtureGroupCollection, "default"));
-            LedEffectCollection.Add(new FlashAllEffect(mBpmDetector, fixtureCollection, fixtureGroupCollection, "default"));
+            LedEffectCollection.Add(new AllOnEffect(mBpmDetector, fixtureCollection, fixtureGroupCollection, "default"));
             LedEffectCollection.Add(new RandomEffect(mBpmDetector, fixtureCollection, fixtureGroupCollection, "default"));
             LedEffectCollection.Add(new BreathingEffect(mBpmDetector, fixtureCollection, fixtureGroupCollection, "default"));
-            LedEffectCollection.Add(new AllOnEffect(mBpmDetector, fixtureCollection, fixtureGroupCollection, "default"));
+            LedEffectCollection.Add(new FlashAllEffect(mBpmDetector, fixtureCollection, fixtureGroupCollection, "default"));
             LedEffectCollection.Add(new ZoneFlashEffect(mBpmDetector, fixtureCollection, fixtureGroupCollection, "default"));
             LedEffectCollection.Add(new ZoneRotateEffect(mBpmDetector, fixtureCollection, fixtureGroupCollection, "default"));
             LedEffectCollection.Add(new StaticColorFlashEffect(mBpmDetector, fixtureCollection, fixtureGroupCollection, "default"));
 
 
             BoothEffectCollection.Add(new AllOffEffect(mBpmDetector, fixtureCollection, fixtureGroupCollection, "booth"));
-            BoothEffectCollection.Add(new FlashAllEffect(mBpmDetector, fixtureCollection, fixtureGroupCollection, "booth"));
             BoothEffectCollection.Add(new AllOnEffect(mBpmDetector, fixtureCollection, fixtureGroupCollection, "booth"));
+            BoothEffectCollection.Add(new FlashAllEffect(mBpmDetector, fixtureCollection, fixtureGroupCollection, "booth"));
             BoothEffectCollection.Add(new RandomEffect(mBpmDetector, fixtureCollection, fixtureGroupCollection, "booth"));
             BoothEffectCollection.Add(new BreathingEffect(mBpmDetector, fixtureCollection, fixtureGroupCollection, "booth"));
             BoothEffectCollection.Add(new ZoneFlashEffect(mBpmDetector, fixtureCollection, fixtureGroupCollection, "booth"));
@@ -305,12 +316,9 @@ namespace LightMixer.Model
 
         void mBpmDetector_BeatEvent(bool Beat, object caller)
         {
-            if (this.LedEffectCollection.Count != 0)
-                if (Beat && this.LedEffectCollection[0]._sharedEffectModel.AutoChangeColorOnBeat)
-                {
-                    this.LedEffectCollection[0]._sharedEffectModel.RotateColor();
-                }
+            
         }
+              
 
         private void Run()
         {
@@ -319,16 +327,21 @@ namespace LightMixer.Model
                 try
                 {
                     var activeDeck = ActiveDeckSelector.Select(LastVdjEvent.Values);
-                    if (DateTime.Now.Subtract(LastUpdateOnUI).Milliseconds > 500)
+                    if (DateTime.Now.Subtract(LastUpdateOnUI).TotalMilliseconds > 100)
                     {
                         UpdateVDJUiElement(activeDeck);
+                        LastUpdateOnUI = DateTime.Now;
                     }
                     DmxEffectSelector.Select(this, activeDeck);
                     this.CurrentLedEffect.DmxFrameCall(LedType.HeadLed, activeDeck);
                     this.CurrentMovingHeadEffect.DmxFrameCall(LedType.MovingHead, activeDeck);
                     this.CurrentBoothEffect.DmxFrameCall(LedType.BoothLed, activeDeck);
                     byte?[] ledArray = fixtureCollection.render();
-
+                    if (this.LedEffectCollection.Count != 0)
+                        if (this.LedEffectCollection[0]._sharedEffectModel.AutoChangeColorOnBeat)
+                        {
+                            this.LedEffectCollection[0]._sharedEffectModel.RotateColor();
+                        }
                     ((LightMixer.App)LightMixer.App.Current).UnityContainer.Resolve<LightService.DmxServiceClient>().UpdateAllDmxValue(ConvertByteArray(ledArray));
                 }
                 catch (Exception vexp)

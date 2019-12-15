@@ -40,6 +40,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MidiController", "MidiContr
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SolairXLight", "Dll1\Dll1.vcxproj", "{03B9F361-8E01-4347-8E5E-247C98FEB637}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightMixerTests", "LightMixerTests\LightMixerTests.csproj", "{5AAD217F-B007-4224-8B35-374728AE2DCB}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		LightMixerAppUA.Shared\LightMixerAppUA.Shared.projitems*{27f2f862-3c02-4c65-81b2-185990eb63ef}*SharedItemsImports = 4
@@ -245,6 +247,26 @@ Global
 		{03B9F361-8E01-4347-8E5E-247C98FEB637}.Release|x64.Build.0 = Release|x64
 		{03B9F361-8E01-4347-8E5E-247C98FEB637}.Release|x86.ActiveCfg = Release|Win32
 		{03B9F361-8E01-4347-8E5E-247C98FEB637}.Release|x86.Build.0 = Release|Win32
+		{5AAD217F-B007-4224-8B35-374728AE2DCB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5AAD217F-B007-4224-8B35-374728AE2DCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5AAD217F-B007-4224-8B35-374728AE2DCB}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{5AAD217F-B007-4224-8B35-374728AE2DCB}.Debug|ARM.Build.0 = Debug|Any CPU
+		{5AAD217F-B007-4224-8B35-374728AE2DCB}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{5AAD217F-B007-4224-8B35-374728AE2DCB}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{5AAD217F-B007-4224-8B35-374728AE2DCB}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{5AAD217F-B007-4224-8B35-374728AE2DCB}.Debug|x64.Build.0 = Debug|Any CPU
+		{5AAD217F-B007-4224-8B35-374728AE2DCB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5AAD217F-B007-4224-8B35-374728AE2DCB}.Debug|x86.Build.0 = Debug|Any CPU
+		{5AAD217F-B007-4224-8B35-374728AE2DCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5AAD217F-B007-4224-8B35-374728AE2DCB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5AAD217F-B007-4224-8B35-374728AE2DCB}.Release|ARM.ActiveCfg = Release|Any CPU
+		{5AAD217F-B007-4224-8B35-374728AE2DCB}.Release|ARM.Build.0 = Release|Any CPU
+		{5AAD217F-B007-4224-8B35-374728AE2DCB}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{5AAD217F-B007-4224-8B35-374728AE2DCB}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{5AAD217F-B007-4224-8B35-374728AE2DCB}.Release|x64.ActiveCfg = Release|Any CPU
+		{5AAD217F-B007-4224-8B35-374728AE2DCB}.Release|x64.Build.0 = Release|Any CPU
+		{5AAD217F-B007-4224-8B35-374728AE2DCB}.Release|x86.ActiveCfg = Release|Any CPU
+		{5AAD217F-B007-4224-8B35-374728AE2DCB}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

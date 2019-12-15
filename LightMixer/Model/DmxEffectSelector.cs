@@ -26,56 +26,60 @@ namespace LightMixer.Model
             }
             else  if (currentPoi != null)
             {
+                PoiIsValidSelectEffect(dmxChaser, workingEvent, currentPoi, nextPoi);
+            }
 
-                if (currentPoi.IsBreak)
+        }
+
+        private static void PoiIsValidSelectEffect(DmxChaser dmxChaser, VdjEvent workingEvent, VDJPoi currentPoi, VDJPoi nextPoi)
+        {
+            if (currentPoi.IsBreak)
+            {
+                if (dmxChaser.UseFlashTransition && nextPoi != null && GetSecondBeforeNextPOI(workingEvent, nextPoi) < 10)
                 {
-                    if (nextPoi != null && GetSecondBeforeNextPOI(workingEvent, nextPoi) < 10)
+                    dmxChaser.CurrentMovingHeadEffect = dmxChaser.MovingHeadEffectCollection.OfType<MovingHeadFlashAll>().First();
+                    if (GetSecondBeforeNextPOI(workingEvent, nextPoi) < 5)
                     {
-                        dmxChaser.CurrentMovingHeadEffect = dmxChaser.MovingHeadEffectCollection.OfType<MovingHeadFlashAll>().First();
-                        if (GetSecondBeforeNextPOI(workingEvent, nextPoi) < 5)
-                        {
-                            dmxChaser.CurrentLedEffect = dmxChaser.LedEffectCollection.OfType<AllOnEffect>().First();
-                        }
-                        else
-                        {
-                            dmxChaser.CurrentLedEffect = dmxChaser.LedEffectCollection.OfType<ZoneFlashEffect>().First();
-                        }
-                        if (GetSecondBeforeNextPOI(workingEvent, nextPoi) < 8)
-                        {
-                            dmxChaser.mBpmDetector.BeatRepeat = 1.5;
-                        }
-
-                        if (GetSecondBeforeNextPOI(workingEvent, nextPoi) < 6)
-                        {
-                            dmxChaser.mBpmDetector.BeatRepeat = 3;
-                        }
-
-                        if (GetSecondBeforeNextPOI(workingEvent, nextPoi) < 5)
-                        {
-                            dmxChaser.mBpmDetector.BeatRepeat = 5;
-                        }
-
-                        if (GetSecondBeforeNextPOI(workingEvent, nextPoi) < 3)
-                        {
-                            dmxChaser.mBpmDetector.BeatRepeat = 10;
-                        }
+                        dmxChaser.CurrentLedEffect = dmxChaser.LedEffectCollection.OfType<FlashAllEffect>().First();
                     }
                     else
                     {
-                        dmxChaser.mBpmDetector.BeatRepeat = 1;
-                        dmxChaser.CurrentLedEffect = dmxChaser.LedEffectCollection.OfType<AllOffEffect>().First();
-                        dmxChaser.CurrentMovingHeadEffect = dmxChaser.MovingHeadEffectCollection.OfType<MovingHeadAllOn>().First();
+                        dmxChaser.CurrentLedEffect = dmxChaser.LedEffectCollection.OfType<ZoneFlashEffect>().First();
+                    }
+                    if (GetSecondBeforeNextPOI(workingEvent, nextPoi) < 8)
+                    {
+                        dmxChaser.mBpmDetector.BeatRepeat = 1.5;
+                    }
+
+                    if (GetSecondBeforeNextPOI(workingEvent, nextPoi) < 6)
+                    {
+                        dmxChaser.mBpmDetector.BeatRepeat = 3;
+                    }
+
+                    if (GetSecondBeforeNextPOI(workingEvent, nextPoi) < 5)
+                    {
+                        dmxChaser.mBpmDetector.BeatRepeat = 5;
+                    }
+
+                    if (GetSecondBeforeNextPOI(workingEvent, nextPoi) < 3)
+                    {
+                        dmxChaser.mBpmDetector.BeatRepeat = 10;
                     }
                 }
-
-                else if (currentPoi.IsEndBreak)
+                else
                 {
                     dmxChaser.mBpmDetector.BeatRepeat = 1;
-                    dmxChaser.CurrentLedEffect = dmxChaser.LedEffectCollection.OfType<ZoneRotateEffect>().First();
-                    dmxChaser.CurrentMovingHeadEffect = dmxChaser.MovingHeadEffectCollection.OfType<MovingHeadFlashAll>().First();
+                    dmxChaser.CurrentLedEffect = dmxChaser.LedEffectCollection.OfType<AllOffEffect>().First();
+                    dmxChaser.CurrentMovingHeadEffect = dmxChaser.MovingHeadEffectCollection.OfType<MovingHeadAllOn>().First();
                 }
             }
 
+            else if (currentPoi.IsEndBreak)
+            {
+                dmxChaser.mBpmDetector.BeatRepeat = 1;
+                dmxChaser.CurrentLedEffect = dmxChaser.LedEffectCollection.OfType<ZoneRotateEffect>().First();
+                dmxChaser.CurrentMovingHeadEffect = dmxChaser.MovingHeadEffectCollection.OfType<MovingHeadFlashAll>().First();
+            }
         }
 
         private static double GetSecondBeforeNextPOI(VdjEvent workingEvent, VDJPoi nextPoi)
