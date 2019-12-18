@@ -30,6 +30,8 @@ namespace LightMixer.Model
                         ((MovingHeadFixture)fixture).GreenValue = this.SetValueMovingHead(this._sharedEffectModel.Green, ledInstance);
                         ((MovingHeadFixture)fixture).BlueValue = this.SetValueMovingHead(this._sharedEffectModel.Blue, ledInstance);
                         ((MovingHeadFixture)fixture).Pan = 500;
+
+                    
                     }
                 }
 

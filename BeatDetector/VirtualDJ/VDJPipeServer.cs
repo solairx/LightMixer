@@ -9,7 +9,7 @@ namespace BeatDetector
     public class VirtualDjServer
     {
         private ConcurrentDictionary<Guid, VdjPipeServerInstance> InstanceList = new ConcurrentDictionary<Guid, VdjPipeServerInstance>();
-        private VDJXmlParser vdjDataBase;
+        public VDJXmlParser vdjDataBase;
 
         public event VirtualDjServerEventHandler VirtualDjServerEvent;
         public delegate void VirtualDjServerEventHandler(VdjEvent vdjEvent);

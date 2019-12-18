@@ -8,6 +8,9 @@ using System.Collections.Concurrent;
 using BeatDetector;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Practices.ObjectBuilder2;
+using System.Windows.Input;
+using Microsoft.Practices.Prism.Commands;
 
 namespace LightMixer.Model
 {
@@ -33,9 +36,21 @@ namespace LightMixer.Model
         private ActiveDeckSelector ActiveDeckSelector;
         private DateTime LastUpdateOnUI = DateTime.Now;
         private string trackName;
-        private string pOI;
+        private VDJPoi currentPoi;
         private bool autoChaser;
-        private bool useFlashTransition =true;
+        private bool useFlashTransition = true;
+        private SortableObservableCollection<VDJPoi> pois;
+        private VDJPoi selectedPOI;
+
+        public VDJPoi SelectedPOI
+        {
+            get => selectedPOI;
+            set
+            {
+                selectedPOI = value;
+                this.OnPropertyChanged(o => this.SelectedPOI);
+            }
+        }
 
         public EffectBase CurrentBoothEffect
         {
@@ -66,6 +81,9 @@ namespace LightMixer.Model
             }
         }
 
+        public VDJSong CurrentVdjSong { get; private set; }
+        public VdjEvent CurrentVDJEvent { get; private set; }
+
         public bool AutoChaser
         {
             get => autoChaser; set
@@ -83,18 +101,42 @@ namespace LightMixer.Model
                 this.OnPropertyChanged(o => this.UseFlashTransition);
             }
         }
-               
 
-        public string POI
+        public SortableObservableCollection<VDJPoi> POIs
         {
-            get => pOI;
+            get
+            {
+                return pois;
+            }
             set
             {
-                Dispatcher.Invoke(() =>
+                if (pois != value)
                 {
-                    pOI = value;
-                    this.OnPropertyChanged(o => this.POI);
-                });
+                    Dispatcher.Invoke(() =>
+                    {
+                        pois = value;
+                        this.OnPropertyChanged(o => this.POIs);
+                    });
+                }
+            }
+        }
+
+
+        public VDJPoi CurrentPoi
+        {
+            get => currentPoi;
+            set
+            {
+                if (currentPoi != value)
+                {
+                    Dispatcher.Invoke(() =>
+                    {
+                        currentPoi = value;
+                        pois?.ForEach(o => o.IsCurrent = false);
+                        currentPoi.IsCurrent = true;
+                        this.OnPropertyChanged(o => this.CurrentPoi);
+                    });
+                }
             }
         }
 
@@ -295,13 +337,9 @@ namespace LightMixer.Model
             MovingHeadEffectCollection.Add(new MovingHeadFlashAll(mBpmDetector, fixtureCollection, fixtureGroupCollection));
             MovingHeadEffectCollection.Add(new MovingHeadAllOn(mBpmDetector, fixtureCollection, fixtureGroupCollection));
 
-
             CurrentMovingHeadEffect = MovingHeadEffectCollection[0];
             CurrentLedEffect = LedEffectCollection[0];
             CurrentBoothEffect = BoothEffectCollection[0];
-
-
-
 
             runningThread = new Thread(new ThreadStart(Run));
             runningThread.IsBackground = true;
@@ -316,9 +354,87 @@ namespace LightMixer.Model
 
         void mBpmDetector_BeatEvent(bool Beat, object caller)
         {
-            
+
         }
-              
+
+        void Save()
+        {
+            this.BeatDetector.VirtualDjServer.vdjDataBase.Save();
+        }
+
+        public ICommand SaveCommand
+        {
+            get
+            {
+                return new DelegateCommand(() => Save());
+            }
+        }
+
+        public ICommand DeleteCommand
+        {
+            get
+            {
+                return new DelegateCommand(() =>
+                {
+                    if (selectedPOI == null)
+                    {
+                        return;
+                    }
+                    if (selectedPOI.IsNew)
+                    {
+                        this.POIs.Remove(selectedPOI);
+                    }
+                    else
+                    {
+                        SelectedPOI.IsDeleted = true;
+                    }
+                });
+            }
+        }
+
+        public ICommand CreateCommand
+        {
+            get
+            {
+                return new DelegateCommand(() =>
+                {
+                    var newPoi = CreatePOI();
+                    if (newPoi != null)
+                    {
+                        this.CurrentVdjSong.Pois.Add(newPoi);
+                        this.CurrentVdjSong.Pois.Sort(o => o.Position, System.ComponentModel.ListSortDirection.Ascending);
+                    }
+                });
+            }
+        }
+
+        private VDJPoi CreatePOI()
+        {
+            var nextId = pois.Max(o => o.ID) + 1;
+            var currentPoi = CurrentVDJEvent.GetCurrentPoi;
+            var vscanBPM = Convert.ToDouble(CurrentVdjSong?.Scans?.FirstOrDefault()?.Bpm);
+            var currentBPM = Convert.ToDouble(CurrentVDJEvent?.BPM);
+            var elapsed = Convert.ToDouble(CurrentVDJEvent?.Elapsed);
+            double position = 60 / vscanBPM / currentBPM * elapsed / 1000;
+            var poi = new VDJPoi(currentPoi.IsBreak?"End Break ": "Break " + nextId, position.ToString(), "remix", CurrentVdjSong?.Scans?.FirstOrDefault());
+            
+            poi.IsDeleted = false;
+            poi.IsNew = true;
+            return poi;
+        }
+
+        public ICommand ReloadCommand
+        {
+            get
+            {
+                return new DelegateCommand(() =>
+                {
+                    this.BeatDetector.VirtualDjServer.vdjDataBase.Reload();
+                });
+            }
+        }
+
+
 
         private void Run()
         {
@@ -355,8 +471,11 @@ namespace LightMixer.Model
         {
             if (activeDeck.Count() > 0)
             {
-                this.TrackName = activeDeck.FirstOrDefault().FileName;
-                this.POI = activeDeck.FirstOrDefault().GetCurrentPoi.Name;
+                this.TrackName = activeDeck.FirstOrDefault()?.FileName;
+                this.CurrentVdjSong = activeDeck.FirstOrDefault()?.VDJSong;
+                this.CurrentVDJEvent = activeDeck.FirstOrDefault();
+                this.CurrentPoi = activeDeck.FirstOrDefault()?.GetCurrentPoi;
+                this.POIs = activeDeck.FirstOrDefault()?.VDJSong?.Pois;
             }
         }
 

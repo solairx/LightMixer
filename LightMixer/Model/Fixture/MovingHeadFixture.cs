@@ -73,11 +73,13 @@ namespace LightMixer.Model.Fixture
 
         public override byte?[] Render()
         {
+            var panByte = BitConverter.GetBytes(Pan);
+            var tiltByte = BitConverter.GetBytes(Pan);
             byte?[] arr = new byte?[512];
-            arr[StartDmxAddress - 1] = 0;//x
-            arr[StartDmxAddress + 1] = 255; //y
-            arr[StartDmxAddress + 2] = 0;
-            arr[StartDmxAddress +3] = 0;
+            arr[StartDmxAddress ] = panByte[0];//x
+            arr[StartDmxAddress + 1] = panByte[1]; //y
+            arr[StartDmxAddress + 2] = tiltByte[0];
+            arr[StartDmxAddress +3] = tiltByte[1];
             arr[StartDmxAddress +4] = 255;  //shutter
             arr[StartDmxAddress +5] = RedValue;
             arr[StartDmxAddress +6] = GreenValue;

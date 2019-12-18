@@ -5,8 +5,30 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:LightMixer_ViewModel="clr-namespace:LightMixer.ViewModel"
              mc:Ignorable="d" Height="537" Width="568">
+    <UserControl.Resources>
+        <DataTemplate x:Key="PoisDataTemplate">
+            <TextBlock Text="{Binding Name}" >
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Background" Value="Transparent"></Setter>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsCurrent}" Value="True">
+                                <Setter Property="Background" Value="Green" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsDeleted}" Value="True">
+                                <Setter Property="Background" Value="Red" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsNew}" Value="True">
+                                <Setter Property="Background" Value="Orange" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+        </DataTemplate>
+    </UserControl.Resources>
 
-    <Grid>
+    <Grid Margin="0,0,0,-83">
 
         <ListBox HorizontalAlignment="Left" Margin="8,24,0,0" Width="134" ItemsSource="{Binding Chaser.LedEffectCollection}" SelectedItem="{Binding Chaser.CurrentLedEffect}" DisplayMemberPath="Name" Height="164" VerticalAlignment="Top"/>
         <Slider Margin="103,223,0,0" Maximum="100" Minimum="5" Value="{Binding SharedEffectModel.MaxLightIntesity}" TickFrequency="5" SmallChange="5" LargeChange="25" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="181"/>
@@ -26,11 +48,11 @@
         <ComboBox HorizontalAlignment="Left" Margin="37,380,0,0" Width="120" ItemsSource="{Binding SharedEffectModel.MovingHeadProgram}" SelectedValue="{Binding SharedEffectModel.CurrentMovingHeadProgram}" VerticalAlignment="Top"/>
         <ComboBox HorizontalAlignment="Left" Margin="37,420,0,0" VerticalAlignment="Top" Width="120" SelectedValue="{Binding SharedEffectModel.CurrentMovingHeadGobo}" ItemsSource="{Binding SharedEffectModel.MovingHeadGobo}"/>
         <Slider Margin="103,249,284,0" VerticalAlignment="Top" Value="{Binding SharedEffectModel.MaxLightIntesityMovingHead}" Maximum="100" Minimum="5"/>
-        <CheckBox Content="Program" Margin="221,0,197,135" VerticalAlignment="Bottom" IsChecked="{Binding SharedEffectModel.AutoChangeProgram}"/>
-        <CheckBox Content="Gobo" Margin="221,0,197,102" VerticalAlignment="Bottom" IsChecked="{Binding SharedEffectModel.AutoChangeGobo}"/>
+        <CheckBox Content="Program" Margin="221,0,197,218" VerticalAlignment="Bottom" IsChecked="{Binding SharedEffectModel.AutoChangeProgram}"/>
+        <CheckBox Content="Gobo" Margin="222,0,196,178" VerticalAlignment="Bottom" IsChecked="{Binding SharedEffectModel.AutoChangeGobo}"/>
         <Slider HorizontalAlignment="Right" Margin="0,387,0,128" Value="{Binding SharedEffectModel.SecondBetweenProgramChange}" Width="157" RenderTransformOrigin="-0.337,0.636"/>
-        <Slider HorizontalAlignment="Right" Margin="0,0,0,105" VerticalAlignment="Bottom" Value="{Binding SharedEffectModel.SecondBetweenGoboChange}" Width="157"/>
-        <Slider Margin="83,0,233,51" VerticalAlignment="Bottom" Minimum="0.1" Maximum="5" Value="{Binding SharedEffectModel.MaxSpeed}"/>
+        <Slider HorizontalAlignment="Right" Margin="0,0,0,178" VerticalAlignment="Bottom" Value="{Binding SharedEffectModel.SecondBetweenGoboChange}" Width="157"/>
+        <Slider Margin="193,0,123,67" VerticalAlignment="Bottom" Minimum="0.1" Maximum="5" Value="{Binding SharedEffectModel.MaxSpeed}"/>
         <TextBlock HorizontalAlignment="Left" Margin="20,473,0,0" TextWrapping="Wrap" VerticalAlignment="Top"><Run Language="en-ca" Text="Speed"/></TextBlock>
         <CheckBox Content="Auto Color&#xd;&#xa;" HorizontalAlignment="Right" Margin="0,45,25.516,0" VerticalAlignment="Top" Height="16.92" IsChecked="{Binding SharedEffectModel.AutoChangeColorOnBeat}" />
         <CheckBox Content="Auto Chaser" HorizontalAlignment="Right" Margin="0,67,18,0" VerticalAlignment="Top" Height="17" IsChecked="{Binding Chaser.AutoChaser}" />
@@ -45,8 +67,11 @@
         <TextBlock Margin="20,274,489,0" TextWrapping="Wrap" VerticalAlignment="Top"><Run Language="en-ca" Text="Booth"/></TextBlock>
         <Button Content="RST" HorizontalAlignment="Left" Margin="529,305,0,0" VerticalAlignment="Top" Width="29" Command="{Binding ResetBeatCommand}"/>
         <TextBlock Margin="20,228,415,0" TextWrapping="Wrap" VerticalAlignment="Top"><Run Text="DownLed"/><LineBreak/><Run/></TextBlock>
-        <TextBlock Text="{Binding Chaser.TrackName}" Margin="103,491,10,27"/>
-        <TextBlock Text="{Binding Chaser.POI}" Margin="8,491,456,27"/>
-
+        <TextBlock Text="{Binding Chaser.TrackName}" Margin="113,497,0,104"/>
+        <ListBox Margin="8,491,456,0" ItemsSource="{Binding Chaser.POIs}" ItemTemplate="{DynamicResource PoisDataTemplate}" SelectedItem="{Binding Chaser.SelectedPOI}" />
+        <Button Margin="450,591,21,11" Command="{Binding Chaser.SaveCommand}">Save</Button>
+        <Button Margin="450,561,21,41" Command="{Binding Chaser.ReloadCommand}" RenderTransformOrigin="-0.443,0.611">Reload</Button>
+        <Button Margin="148,558,323,44" Command="{Binding Chaser.DeleteCommand}">Delete</Button>
+        <Button Margin="148,591,323,11" Command="{Binding Chaser.CreateCommand}">Create</Button>
     </Grid>
 </UserControl>

@@ -86,16 +86,18 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseViewModel.cs" />
     <Compile Include="BeatDetector.cs" />
     <Compile Include="Detector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="VdjEvent.cs" />
-    <Compile Include="VDJPipeServer.cs" />
-    <Compile Include="VdjPipeServerInstance.cs" />
-    <Compile Include="VDJPoi.cs" />
-    <Compile Include="VDJScan.cs" />
-    <Compile Include="VDJSong.cs" />
-    <Compile Include="VDJXmlParser.cs" />
+    <Compile Include="VirtualDJ\SortableObservableCollection.cs" />
+    <Compile Include="VirtualDJ\VdjEvent.cs" />
+    <Compile Include="VirtualDJ\VDJPipeServer.cs" />
+    <Compile Include="VirtualDJ\VdjPipeServerInstance.cs" />
+    <Compile Include="VirtualDJ\VDJPoi.cs" />
+    <Compile Include="VirtualDJ\VDJScan.cs" />
+    <Compile Include="VirtualDJ\VDJSong.cs" />
+    <Compile Include="VirtualDJ\VDJXmlParser.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="bass.dll">

@@ -141,6 +141,7 @@
     <Compile Include="Model\Service\LaserDataContract.cs" />
     <Compile Include="Model\SharedEffectModel.cs" />
     <Compile Include="Model\Service\RemoteLightService.cs" />
+    <Compile Include="Model\SortableObservableCollection.cs" />
     <Compile Include="ViewModel\DmxConsoleViewModel.cs" />
     <Compile Include="ViewModel\LaserControlerViewModel.cs" />
     <Compile Include="ViewModel\DmxControlSettingViewModel.cs" />
