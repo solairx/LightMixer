@@ -229,8 +229,8 @@ namespace LightMixer.Model
             RgbFixture bootDjLed4 = new RgbFixture(33);
             RgbFixture bootDjLed5 = new RgbFixture(36);
             RgbFixture bootDjLed6 = new RgbFixture(39);
-            RgbFixture bootDjLed7 = new RgbFixture(42);
-            RgbFixture bootDjLed8 = new RgbFixture(45);
+            //RgbFixture bootDjLed7 = new RgbFixture(42);
+            //RgbFixture bootDjLed8 = new RgbFixture(45);
             //RgbFixture bootDjLed9 = new RgbFixture(48);
             fixtureCollection.FixtureList.Add(fixtureLed1);
             fixtureCollection.FixtureList.Add(fixtureLed2);
@@ -247,12 +247,12 @@ namespace LightMixer.Model
             fixtureCollection.FixtureList.Add(bootDjLed4);
             fixtureCollection.FixtureList.Add(bootDjLed5);
             fixtureCollection.FixtureList.Add(bootDjLed6);
-            fixtureCollection.FixtureList.Add(bootDjLed7);
-            fixtureCollection.FixtureList.Add(bootDjLed8);
+         //   fixtureCollection.FixtureList.Add(bootDjLed7);
+          //  fixtureCollection.FixtureList.Add(bootDjLed8);
 
 
-            fixtureCollection.FixtureList.Add(new MovingHeadFixture(400));
-            fixtureCollection.FixtureList.Add(new MovingHeadFixture(300));
+            fixtureCollection.FixtureList.Add(new MovingHeadFixture(399));
+            fixtureCollection.FixtureList.Add(new MovingHeadFixture(299)); /// remmeber that we have a 0 here , it start at 1 on the ctrl
 
             FixtureGroup group1 = new FixtureGroup();
             group1.FixtureInGroup.Add(fixtureLed1);
@@ -276,27 +276,33 @@ namespace LightMixer.Model
 
             FixtureGroup boothGroup1 = new FixtureGroup();
             boothGroup1.FixtureInGroup.Add(bootDjLed1);
-            boothGroup1.FixtureInGroup.Add(bootDjLed2);
             boothGroup1.Schema = "booth";
             fixtureGroupCollection.Add(boothGroup1);
 
             FixtureGroup boothGroup2 = new FixtureGroup();
-            boothGroup2.FixtureInGroup.Add(bootDjLed3);
-            boothGroup2.FixtureInGroup.Add(bootDjLed4);
+            boothGroup2.FixtureInGroup.Add(bootDjLed2);
             boothGroup2.Schema = "booth";
             fixtureGroupCollection.Add(boothGroup2);
 
             FixtureGroup boothGroup3 = new FixtureGroup();
-            boothGroup3.FixtureInGroup.Add(bootDjLed5);
-            boothGroup3.FixtureInGroup.Add(bootDjLed6);
+            boothGroup3.FixtureInGroup.Add(bootDjLed3);
             boothGroup3.Schema = "booth";
             fixtureGroupCollection.Add(boothGroup3);
 
             FixtureGroup boothGroup4 = new FixtureGroup();
-            boothGroup4.FixtureInGroup.Add(bootDjLed7);
-            boothGroup4.FixtureInGroup.Add(bootDjLed8);
+            boothGroup4.FixtureInGroup.Add(bootDjLed4);
             boothGroup4.Schema = "booth";
             fixtureGroupCollection.Add(boothGroup4);
+
+            FixtureGroup boothGroup5 = new FixtureGroup();
+            boothGroup5.FixtureInGroup.Add(bootDjLed5);
+            boothGroup5.Schema = "booth";
+            fixtureGroupCollection.Add(boothGroup5);
+
+            FixtureGroup boothGroup6 = new FixtureGroup();
+            boothGroup6.FixtureInGroup.Add(bootDjLed6);
+            boothGroup6.Schema = "booth";
+            fixtureGroupCollection.Add(boothGroup6);
 
 
             mModel = model;
@@ -305,6 +311,7 @@ namespace LightMixer.Model
             LastVdjEvent[3] = new VdjEvent();
             LastVdjEvent[4] = new VdjEvent();
             BeatDetector = new BeatDetector.BeatDetector();
+            SharedEffectModel.BeatDetector = BeatDetector;
             ActiveDeckSelector = new ActiveDeckSelector();
             ((LightMixer.App)LightMixer.App.Current).UnityContainer.RegisterInstance<BeatDetector.BeatDetector>(BeatDetector);
             if (BeatDetector.VirtualDjServer != null)
@@ -447,6 +454,10 @@ namespace LightMixer.Model
                     {
                         UpdateVDJUiElement(activeDeck);
                         LastUpdateOnUI = DateTime.Now;
+                        if (pois?.Any() == false)
+                        {
+                            BeatDetector.VirtualDjServer.vdjDataBase.CheckForRefresh();
+                        }
                     }
                     DmxEffectSelector.Select(this, activeDeck);
                     this.CurrentLedEffect.DmxFrameCall(LedType.HeadLed, activeDeck);

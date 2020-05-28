@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
 
@@ -99,9 +100,28 @@ namespace BeatDetector
         public void Reload()
         {
             var textReader = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-            VDJDatabase.Clear();
-            Load(textReader, VDJDatabase);
+            var newEntry = new Dictionary<string, VDJSong>();
+            Load(textReader, newEntry);
             textReader.Close();
+            VDJDatabase = newEntry;
+            LastUpdated = DateTime.Now;
+        }
+        private DateTime LastUpdated = DateTime.Now;
+
+        public void CheckForRefresh()
+        {
+            if (( DateTime.Now - LastUpdated).TotalSeconds > 5)
+            {
+                FileInfo fInfo = new FileInfo(filename);
+                if (LastUpdated < fInfo.LastWriteTime)
+                {
+                    LastUpdated = DateTime.Now.AddSeconds(10);
+                    Task.Factory.StartNew(() =>
+                    {
+                        Reload();
+                    });
+                }
+            }
         }
     }
 

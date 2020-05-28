@@ -61,7 +61,7 @@
         <TextBlock HorizontalAlignment="Right" Margin="0,193,130,0" TextWrapping="Wrap" VerticalAlignment="Top"><Run Language="en-ca" Text="Flash"/></TextBlock>
         <Slider HorizontalAlignment="Left" Margin="346,233,0,0" VerticalAlignment="Top" Width="196" Minimum="1" Maximum="100" Value="{Binding SharedEffectModel.MaxLightFlashIntesity}"/>
         <ListBox HorizontalAlignment="Right" Margin="0,21,123,0" Width="134" ItemsSource="{Binding Chaser.BoothEffectCollection}" SelectedItem="{Binding Chaser.CurrentBoothEffect}" DisplayMemberPath="Name" Height="167" VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Right" Margin="0,1.04,150.8,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="105.327" RenderTransformOrigin="3.114,0.313"><Run Language="en-ca" Text="Booth Led Effect"/></TextBlock>
+        <TextBlock HorizontalAlignment="Right" Margin="0,1.04,150.8,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="105.327" RenderTransformOrigin="3.114,0.313"><Run Language="en-ca" Text="Pool Led Effect"/></TextBlock>
         <Slider HorizontalAlignment="Left" Margin="346,272,0,0" VerticalAlignment="Top" Width="196" Minimum="1" Maximum="100" Value="{Binding SharedEffectModel.MaxBoothFlashIntesity}"/>
         <Slider Margin="103,272,284,0" VerticalAlignment="Top" Value="{Binding SharedEffectModel.MaxBoothIntesity}" Maximum="100" Minimum="5"/>
         <TextBlock Margin="20,274,489,0" TextWrapping="Wrap" VerticalAlignment="Top"><Run Language="en-ca" Text="Booth"/></TextBlock>

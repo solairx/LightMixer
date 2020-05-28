@@ -7,6 +7,7 @@ using System.Windows.Threading;
 using LightMixer.Model.Fixture;
 using System.Windows.Media;
 using UIFrameWork;
+using BeatDetector;
 
 namespace LightMixer.Model
 {
@@ -51,6 +52,8 @@ namespace LightMixer.Model
             }
 
         }
+
+        public static BeatDetector.BeatDetector BeatDetector { get; internal set; }
 
         public double MaxBoothIntesity
         {
@@ -227,7 +230,8 @@ namespace LightMixer.Model
 
         public Color TransitionColorTo(Color current, Color target)
         {
-            byte modifer = 1;
+            var beat = Convert.ToByte(BeatDetector?.BeatRepeat ?? 3 * 10) ;
+            byte modifer = beat;
             var newColor = new Color();
             newColor.R = GetSpecterColorByte(current.R, target.R, modifer);
             newColor.G = GetSpecterColorByte(current.G, target.G, modifer);

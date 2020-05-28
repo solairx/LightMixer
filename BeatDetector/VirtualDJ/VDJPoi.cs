@@ -95,6 +95,13 @@ namespace BeatDetector
 
         }
 
+        public bool IsNull 
+        { get
+            {
+                return Position == 1;
+            }
+        }
+
         public override bool Equals(object obj)
         {
             var poisToCompare = obj as VDJPoi;

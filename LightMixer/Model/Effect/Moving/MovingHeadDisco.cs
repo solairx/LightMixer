@@ -22,14 +22,13 @@ namespace LightMixer.Model
                     {
                         ((MovingHeadFixture)fixture).ColorMode = MovingHeadFixture.ColorMacro.Auto;
                         ((MovingHeadFixture)fixture).GoboPaturn = _sharedEffectModel.CurrentMovingHeadGobo;
-                        ((MovingHeadFixture)fixture).Pan = 32000;
+                        ((MovingHeadFixture)fixture).Pan = 500;
                         ((MovingHeadFixture)fixture).ProgramMode = MovingHeadFixture.Program.Disable;
 
                         ((MovingHeadFixture)fixture).Speed = this.GetMaxedByte(this._sharedEffectModel.MaxSpeed * this.bpm);
                         ((MovingHeadFixture)fixture).RedValue = this.SetValueMovingHead(this._sharedEffectModel.Red, ledInstance);
                         ((MovingHeadFixture)fixture).GreenValue = this.SetValueMovingHead(this._sharedEffectModel.Green, ledInstance);
                         ((MovingHeadFixture)fixture).BlueValue = this.SetValueMovingHead(this._sharedEffectModel.Blue, ledInstance);
-                        ((MovingHeadFixture)fixture).Pan = 500;
 
                     
                     }

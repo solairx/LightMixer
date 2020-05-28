@@ -21,6 +21,7 @@ namespace LightMixer.Model
             {
                 dmxChaser.mBpmDetector.BeatRepeat = 1;
                 dmxChaser.CurrentLedEffect = dmxChaser.LedEffectCollection.OfType<ZoneRotateEffect>().First();
+                dmxChaser.CurrentBoothEffect = dmxChaser.BoothEffectCollection.OfType<ZoneRotateEffect>().First();
                 dmxChaser.CurrentMovingHeadEffect = dmxChaser.MovingHeadEffectCollection.OfType<MovingHeadFlashAll>().First();
 
             }
@@ -41,10 +42,12 @@ namespace LightMixer.Model
                     if (GetSecondBeforeNextPOI(workingEvent, nextPoi) < 5)
                     {
                         dmxChaser.CurrentLedEffect = dmxChaser.LedEffectCollection.OfType<FlashAllEffect>().First();
+                        dmxChaser.CurrentBoothEffect = dmxChaser.BoothEffectCollection.OfType<FlashAllEffect>().First();
                     }
                     else
                     {
                         dmxChaser.CurrentLedEffect = dmxChaser.LedEffectCollection.OfType<ZoneFlashEffect>().First();
+                        dmxChaser.CurrentBoothEffect = dmxChaser.BoothEffectCollection.OfType<ZoneFlashEffect>().First();
                     }
                     if (GetSecondBeforeNextPOI(workingEvent, nextPoi) < 8)
                     {
@@ -69,6 +72,7 @@ namespace LightMixer.Model
                 else
                 {
                     dmxChaser.mBpmDetector.BeatRepeat = 1;
+                    dmxChaser.CurrentBoothEffect = dmxChaser.BoothEffectCollection.OfType<ZoneFlashEffect>().First();
                     dmxChaser.CurrentLedEffect = dmxChaser.LedEffectCollection.OfType<AllOffEffect>().First();
                     dmxChaser.CurrentMovingHeadEffect = dmxChaser.MovingHeadEffectCollection.OfType<MovingHeadAllOn>().First();
                 }
@@ -78,6 +82,7 @@ namespace LightMixer.Model
             {
                 dmxChaser.mBpmDetector.BeatRepeat = 1;
                 dmxChaser.CurrentLedEffect = dmxChaser.LedEffectCollection.OfType<ZoneRotateEffect>().First();
+                dmxChaser.CurrentBoothEffect = dmxChaser.BoothEffectCollection.OfType<ZoneRotateEffect>().First();
                 dmxChaser.CurrentMovingHeadEffect = dmxChaser.MovingHeadEffectCollection.OfType<MovingHeadFlashAll>().First();
             }
         }

@@ -87,7 +87,8 @@ namespace LightMixer.ViewModel
             }
             catch (Exception vexp)
             {
-                MessageBox.Show("Could not connect to Total Control");
+                Debug.WriteLine("Could not connect to Total Control");
+                //  MessageBox.Show("Could not connect to Total Control");
             }
         }
 
