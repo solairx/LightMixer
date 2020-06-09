@@ -1,78 +1,40 @@
-﻿using System;
+﻿using LightMixer.Model.Fixture;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Collections.ObjectModel;
 
-namespace LightMixer.Model.Fixture
+namespace LightMixer.Model
 {
     public class FixtureCollection
     {
-        private ObservableCollection<FixtureBase> _fixtureList = new ObservableCollection<FixtureBase>();
+        private EffectBase currentEffect;
 
-        public FixtureCollection()
-        {
+        public event CurrentEffectChangedEventHandler CurrentEffectChanged;
+        public delegate void CurrentEffectChangedEventHandler();
 
-        }
-
-     
-
-    
-
-        public ObservableCollection<FixtureBase> FixtureList
+        public List<EffectBase> EffectList { get; } = new List<EffectBase>();
+        public EffectBase CurrentEffect
         {
             get
             {
-                return _fixtureList;
+                if (currentEffect == null && EffectList.Any())
+                {
+                    return EffectList.First();
+                }
+                return currentEffect;
             }
             set
             {
-                _fixtureList = value;
-            }
-        }
-
-
-        public byte?[] render()
-        {
-            byte?[] array = new byte?[512];
-            
-            foreach (FixtureBase fixture in this.FixtureList)
-            {
-
-                byte?[] fixtureValue =  fixture.Render();
-
-                int x = 0;
-                for (x = 0; x < 512; x++)
+                if (!EffectList.Contains(value))
                 {
-                    if (fixtureValue[x].HasValue)
-                        array[x] = fixtureValue[x].Value;
+                    throw new System.Exception("Cannot set an effect not in the collection");
                 }
+                currentEffect = value;
+                CurrentEffectChanged?.Invoke();
             }
-            return array;
         }
 
-        public byte?[] render(byte?[] mergeFrom)
-        {
-            byte?[] array = new byte?[512];
-
-            foreach (FixtureBase fixture in this.FixtureList)
-            {
-
-                byte?[] fixtureValue = fixture.Render();
-
-                int x = 0;
-                for (x = 0; x < 512; x++)
-                {
-                    if (fixtureValue[x].HasValue)
-                        array[x] = fixtureValue[x].Value;
-                    else if (mergeFrom[x].HasValue)
-                        array[x] = mergeFrom[x].Value;
-                 
-                }
-            }
-            return array;
-        }
-
-
+        public List<FixtureGroup> FixtureGroups { get; set; } = new List<FixtureGroup>();
     }
 }
+
+

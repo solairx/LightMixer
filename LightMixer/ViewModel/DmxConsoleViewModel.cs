@@ -35,9 +35,9 @@ namespace LightMixer.ViewModel
         public DmxConsoleViewModel()
         {
             dispatcher = Dispatcher;
-            _chaser = ((LightMixer.App)LightMixer.App.Current).UnityContainer.Resolve<DmxChaser>();
-            _BpmDetector = ((LightMixer.App)LightMixer.App.Current).UnityContainer.Resolve<BeatDetector.BeatDetector>();
-            _sharedEffectModel = ((LightMixer.App)LightMixer.App.Current).UnityContainer.Resolve<SharedEffectModel>();
+            _chaser = BootStrap.UnityContainer.Resolve<DmxChaser>();
+            _BpmDetector = BootStrap.UnityContainer.Resolve<BeatDetector.BeatDetector>();
+            _sharedEffectModel = BootStrap.UnityContainer.Resolve<SharedEffectModel>();
 
             try
             {

@@ -20,7 +20,7 @@ namespace LightMixer
             set
             {
                 mDmxChannelNumber = value;
-                this.OnPropertyChanged(o => this.mDmxChannelNumber);
+                AsyncOnPropertyChange(o => this.mDmxChannelNumber);
             }
         }
 
@@ -34,8 +34,8 @@ namespace LightMixer
             set
             {
                 mDmxChannelValue = value;
-                this.OnPropertyChanged(o => this.DmxChannelValue);
-             //   ((LightMixer.App)LightMixer.App.Current).UnityContainer.Resolve<LightService.DmxServiceClient>().SetDmxChannel(mDmxChannelNumber,(byte)mDmxChannelValue );
+                AsyncOnPropertyChange(o => this.DmxChannelValue);
+             //   BootStrap.UnityContainer.Resolve<LightService.DmxServiceClient>().SetDmxChannel(mDmxChannelNumber,(byte)mDmxChannelValue );
             }
         }
 

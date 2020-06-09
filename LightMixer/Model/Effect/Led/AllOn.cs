@@ -9,22 +9,22 @@ namespace LightMixer.Model
 {
     public class AllOnEffect : EffectBase
     {
-        public AllOnEffect(BeatDetector.BeatDetector detector, Fixture.FixtureCollection currentValue, ObservableCollection<Fixture.FixtureGroup> vfixtureGroup, string vSchema)
-            : base(detector, currentValue,vfixtureGroup,vSchema) { }
+        public AllOnEffect(BeatDetector.BeatDetector detector, FixtureCollection currentValue, Func<double> intensityGetter, Func<double> intensityFlashGetter)
+            : base(detector, currentValue, intensityGetter, intensityFlashGetter) { }
 
-        public override void DmxFrameCall(DmxChaser.LedType ledInstance, IEnumerable<BeatDetector.VdjEvent> values)
+        public override void DmxFrameCall( IEnumerable<BeatDetector.VdjEvent> values)
         {
             isBeat = false;
-            var workingGroup = this.fixtureGroup.Where(o => o.Schema == Schema);
+            var workingGroup = CurrentValue.FixtureGroups;
             foreach (FixtureGroup group in workingGroup)
             {
                 foreach (FixtureBase fixture in group.FixtureInGroup)
                 {
                     if (fixture is RgbFixture)
                     {
-                        ((RgbFixture)fixture).RedValue = this.SetValue(this._sharedEffectModel.Red, ledInstance);
-                        ((RgbFixture)fixture).GreenValue = this.SetValue(this._sharedEffectModel.Green, ledInstance);
-                        ((RgbFixture)fixture).BlueValue = this.SetValue(this._sharedEffectModel.Blue, ledInstance);
+                        ((RgbFixture)fixture).RedValue = this.SetValue(this._sharedEffectModel.Red);
+                        ((RgbFixture)fixture).GreenValue = this.SetValue(this._sharedEffectModel.Green);
+                        ((RgbFixture)fixture).BlueValue = this.SetValue(this._sharedEffectModel.Blue);
                     }
                 }
             }

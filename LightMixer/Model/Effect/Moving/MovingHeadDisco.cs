@@ -9,14 +9,14 @@ namespace LightMixer.Model
 {
     public class MovingHeadDisco : EffectBase
     {
-        public MovingHeadDisco(BeatDetector.BeatDetector detector, Fixture.FixtureCollection currentValue, ObservableCollection<Fixture.FixtureGroup> vfixtureGroup)
-            : base(detector, currentValue,vfixtureGroup,"default") { }
-        
-        public override void DmxFrameCall(DmxChaser.LedType ledInstance, IEnumerable<BeatDetector.VdjEvent> values)
+        public MovingHeadDisco(BeatDetector.BeatDetector detector, FixtureCollection currentValue, Func<double> intensityGetter, Func<double> intensityFlashGetter)
+            : base(detector, currentValue, intensityGetter, intensityFlashGetter) { }
+
+        public override void DmxFrameCall(IEnumerable<BeatDetector.VdjEvent> values)
         {
             
             
-                foreach ( FixtureBase fixture in CurrentValue.FixtureList)
+                foreach ( FixtureBase fixture in CurrentValue.FixtureGroups.SelectMany(o => o.FixtureInGroup))
                 {
                     if (fixture is MovingHeadFixture)
                     {
@@ -26,9 +26,9 @@ namespace LightMixer.Model
                         ((MovingHeadFixture)fixture).ProgramMode = MovingHeadFixture.Program.Disable;
 
                         ((MovingHeadFixture)fixture).Speed = this.GetMaxedByte(this._sharedEffectModel.MaxSpeed * this.bpm);
-                        ((MovingHeadFixture)fixture).RedValue = this.SetValueMovingHead(this._sharedEffectModel.Red, ledInstance);
-                        ((MovingHeadFixture)fixture).GreenValue = this.SetValueMovingHead(this._sharedEffectModel.Green, ledInstance);
-                        ((MovingHeadFixture)fixture).BlueValue = this.SetValueMovingHead(this._sharedEffectModel.Blue, ledInstance);
+                        ((MovingHeadFixture)fixture).RedValue = this.SetValueMovingHead(this._sharedEffectModel.Red);
+                        ((MovingHeadFixture)fixture).GreenValue = this.SetValueMovingHead(this._sharedEffectModel.Green);
+                        ((MovingHeadFixture)fixture).BlueValue = this.SetValueMovingHead(this._sharedEffectModel.Blue);
 
                     
                     }

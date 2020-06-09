@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>LightMixerTests</RootNamespace>
     <AssemblyName>LightMixerTests</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -67,10 +67,6 @@
     <ProjectReference Include="..\LightMixer\LightMixer.csproj">
       <Project>{68C9AFB7-4D80-4B0E-8A2C-1151A3698B27}</Project>
       <Name>LightMixer</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\VisualControler\VisualControler.csproj">
-      <Project>{724F1316-3E36-414D-B87B-9D318C080CD7}</Project>
-      <Name>VisualControler</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

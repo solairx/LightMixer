@@ -1,0 +1,34 @@
+﻿@page "/scene/{id}"
+
+@using LightMixerBlazor.Data
+@inject ZoneService ForecastService
+@using Radzen.Blazor.Rendering
+@using Radzen.Blazor
+
+<h1>Scene @id</h1>
+
+<Zone id="pool" sceneId="@id" ></Zone>
+<Zone id="led" sceneId="@id"></Zone>
+
+@code {
+
+    [Parameter]
+    public string id { get; set; } 
+
+    string SelectedItem;
+
+    IEnumerable<string> zoneEffectList;
+
+    Dictionary<DateTime, string> events = new Dictionary<DateTime, string>();
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        zoneEffectList = await ForecastService.GetZone("outdoor","pool");
+    }
+
+    void Change(object value, string name)
+    {
+        StateHasChanged();
+    }
+}

@@ -8,10 +8,12 @@ using Microsoft.Practices.Unity;
 using VisualControler;
 using System.Collections.Generic;
 using Phidgets;
-using Phidgets.Events;
+using Microsoft.AspNetCore.Mvc.Formatters;
+//using System.Web.Http;
 
 namespace LightMixer.Model.Service
 {
+
     // REMARQUE : vous pouvez utiliser la commande Renommer du menu Refactoriser pour changer le nom de classe "RemoteLightService" à la fois dans le code et le fichier de configuration.
     public class RemoteLightService : IRemoteLightService
     {
@@ -19,51 +21,51 @@ namespace LightMixer.Model.Service
 
         public ObservableCollection<MovingHeadFixture.Program> MovingHeadProgram()
         {
-            return ((App)App.Current).UnityContainer.Resolve<SharedEffectModel>().MovingHeadProgram;
+            return BootStrap.UnityContainer.Resolve<SharedEffectModel>().MovingHeadProgram;
         }
 
         public ObservableCollection<MovingHeadFixture.Gobo> MovingHeadGobo()
         {
-            return ((App)App.Current).UnityContainer.Resolve<SharedEffectModel>().MovingHeadGobo;
+            return BootStrap.UnityContainer.Resolve<SharedEffectModel>().MovingHeadGobo;
         }
         public ObservableCollection<string> LedEffectCollection()
         {
-            return new ObservableCollection<string>(((App)App.Current).UnityContainer.Resolve<DmxChaser>().LedEffectCollection.Select(o => o.Name));
+            return new ObservableCollection<string>(BootStrap.UnityContainer.Resolve<DmxChaser>().LedEffectCollection.Select(o => o.Name));
         }
 
         public ObservableCollection<string> MovingHeadEffectCollection()
         {
-            return new ObservableCollection<string>(((App)App.Current).UnityContainer.Resolve<DmxChaser>().MovingHeadEffectCollection.Select(o => o.Name));
+            return new ObservableCollection<string>(BootStrap.UnityContainer.Resolve<DmxChaser>().MovingHeadEffectCollection.Select(o => o.Name));
         }
 
         public ObservableCollection<string> BoothEffectCollection()
         {
-            return new ObservableCollection<string>(((App)App.Current).UnityContainer.Resolve<DmxChaser>().BoothEffectCollection.Select(o => o.Name));
+            return new ObservableCollection<string>(BootStrap.UnityContainer.Resolve<DmxChaser>().BoothEffectCollection.Select(o => o.Name));
         }
 
         public ObservableCollection<ColorMode> LaserColorModeList()
         {
-            return ((App)App.Current).UnityContainer.Resolve<ServiceExchangeSingleton>().LaserColorModeList;
+            return BootStrap.UnityContainer.Resolve<ServiceExchangeSingleton>().LaserColorModeList;
         }
 
         public IEnumerable<string> LaserColorModeListString()
         {
-            return ((App)App.Current).UnityContainer.Resolve<ServiceExchangeSingleton>().LaserColorModeList.Select(o=>o.ToString());
+            return BootStrap.UnityContainer.Resolve<ServiceExchangeSingleton>().LaserColorModeList.Select(o=>o.ToString());
         }
 
         public IEnumerable<string> LaserEffectList()
         {
-            return new ObservableCollection<string>(((App)App.Current).UnityContainer.Resolve<ServiceExchangeSingleton>().LaserEffectList.Select(o => o.Name));
+            return new ObservableCollection<string>(BootStrap.UnityContainer.Resolve<ServiceExchangeSingleton>().LaserEffectList.Select(o => o.Name));
         }
 
         public void CurrentMovingHeadProgram(MovingHeadFixture.Program program)
         {
-            ((App)App.Current).UnityContainer.Resolve<SharedEffectModel>().CurrentMovingHeadProgram = program;
+            BootStrap.UnityContainer.Resolve<SharedEffectModel>().CurrentMovingHeadProgram = program;
         }
 
         public void CurrentMovingHeadGobo(MovingHeadFixture.Gobo gobo)
         {
-            ((App)App.Current).UnityContainer.Resolve<SharedEffectModel>().CurrentMovingHeadGobo = gobo;
+            BootStrap.UnityContainer.Resolve<SharedEffectModel>().CurrentMovingHeadGobo = gobo;
         }
 
 
@@ -71,18 +73,18 @@ namespace LightMixer.Model.Service
 
         public void CurrentLedEffect(string selectedEffect)
         {
-            var effect = ((App)App.Current).UnityContainer.Resolve<DmxChaser>()
+            var effect = BootStrap.UnityContainer.Resolve<DmxChaser>()
                 .LedEffectCollection.First(o => o.Name == selectedEffect);
-            ((App)App.Current).UnityContainer.Resolve<DmxChaser>().CurrentLedEffect = effect;
+            BootStrap.UnityContainer.Resolve<DmxChaser>().CurrentLedEffect = effect;
         }
 
         public void Intensity(double led, double flash, double head, double beatRepeat)
         {
 
 
-            var chaser = ((App)App.Current).UnityContainer.Resolve<DmxChaser>();
-            var shared = ((App)App.Current).UnityContainer.Resolve<SharedEffectModel>();
-            var beatDetector = ((App)App.Current).UnityContainer.Resolve<BeatDetector.BeatDetector>();
+            var chaser = BootStrap.UnityContainer.Resolve<DmxChaser>();
+            var shared = BootStrap.UnityContainer.Resolve<SharedEffectModel>();
+            var beatDetector = BootStrap.UnityContainer.Resolve<BeatDetector.BeatDetector>();
             shared.Dispatcher.Invoke(new Action(() =>
             {
 
@@ -98,9 +100,9 @@ namespace LightMixer.Model.Service
         {
 
 
-            var chaser = ((App)App.Current).UnityContainer.Resolve<DmxChaser>();
-            var shared = ((App)App.Current).UnityContainer.Resolve<SharedEffectModel>();
-            var beatDetector = ((App)App.Current).UnityContainer.Resolve<BeatDetector.BeatDetector>();
+            var chaser = BootStrap.UnityContainer.Resolve<DmxChaser>();
+            var shared = BootStrap.UnityContainer.Resolve<SharedEffectModel>();
+            var beatDetector = BootStrap.UnityContainer.Resolve<BeatDetector.BeatDetector>();
             shared.Dispatcher.Invoke(new Action(() =>
             {
 
@@ -114,21 +116,21 @@ namespace LightMixer.Model.Service
 
         public void CurrentBoothEffect(string selectedEffect)
         {
-            var effect = ((App)App.Current).UnityContainer.Resolve<DmxChaser>()
+            var effect = BootStrap.UnityContainer.Resolve<DmxChaser>()
                 .BoothEffectCollection.First(o => o.Name == selectedEffect);
-            ((App)App.Current).UnityContainer.Resolve<DmxChaser>().CurrentBoothEffect = effect;
+            BootStrap.UnityContainer.Resolve<DmxChaser>().CurrentBoothEffect = effect;
         }
 
         public void CurrentMovingHeadEffect(string selectedEffect)
         {
-            var effect = ((App)App.Current).UnityContainer.Resolve<DmxChaser>()
+            var effect = BootStrap.UnityContainer.Resolve<DmxChaser>()
                 .MovingHeadEffectCollection.First(o => o.Name == selectedEffect);
-            ((App)App.Current).UnityContainer.Resolve<DmxChaser>().CurrentMovingHeadEffect = effect;
+            BootStrap.UnityContainer.Resolve<DmxChaser>().CurrentMovingHeadEffect = effect;
         }
 
         public void UpdateLaserRest(bool AutoChangeEvent, bool AutoChangeEventLaser, int AutoMixDelay, bool Blue, bool Green, bool LaserPause, int LaserSpeedAdj, int LaserSpeedRatio, bool ManualBeat, bool ManualBeatOnly, bool OnBeat, bool OnBeatReverse, bool UseBeatTurnOff, string LaserCurrentEventID, string LaserColorMode)
         {
-            var shared = ((App)App.Current).UnityContainer.Resolve<SharedEffectModel>();
+            var shared = BootStrap.UnityContainer.Resolve<SharedEffectModel>();
 
             var laser = ServiceExchangeSingleton.Instance;
 
@@ -161,7 +163,7 @@ namespace LightMixer.Model.Service
 
         public void UpdateLaser(LaserDataContract contract)
         {
-            var shared = ((App)App.Current).UnityContainer.Resolve<SharedEffectModel>();
+            var shared = BootStrap.UnityContainer.Resolve<SharedEffectModel>();
 
             var laser = ServiceExchangeSingleton.Instance;
 
@@ -214,9 +216,9 @@ namespace LightMixer.Model.Service
         public DmxDataContract GetDmxStatus()
         {
 
-            var chaser = ((App)App.Current).UnityContainer.Resolve<DmxChaser>();
-            var shared = ((App)App.Current).UnityContainer.Resolve<SharedEffectModel>();
-            var beatDetector = ((App)App.Current).UnityContainer.Resolve<BeatDetector.BeatDetector>();
+            var chaser = BootStrap.UnityContainer.Resolve<DmxChaser>();
+            var shared = BootStrap.UnityContainer.Resolve<SharedEffectModel>();
+            var beatDetector = BootStrap.UnityContainer.Resolve<BeatDetector.BeatDetector>();
             var contract = new DmxDataContract
             {
                 CurrentMovingHeadGobo = shared.CurrentMovingHeadGobo,
@@ -244,8 +246,8 @@ namespace LightMixer.Model.Service
 
         public void UpdateMovingHead(string effect, string program, string gobo, int secondBetweenGoboChange, int secondBetweenProgramChange, double movingHeadMaxSpeed, bool autoChangeGobo, bool autoChangeProgram)
         {
-            var chaser = ((App)App.Current).UnityContainer.Resolve<DmxChaser>();
-            var shared = ((App)App.Current).UnityContainer.Resolve<SharedEffectModel>();
+            var chaser = BootStrap.UnityContainer.Resolve<DmxChaser>();
+            var shared = BootStrap.UnityContainer.Resolve<SharedEffectModel>();
             shared.Dispatcher.Invoke(new Action(() => {
 
                 shared.CurrentMovingHeadGobo = shared.MovingHeadGobo.FirstOrDefault(o => o.ToString() == gobo);
@@ -261,9 +263,9 @@ namespace LightMixer.Model.Service
         public void UpdateDmx(DmxDataContract contract)
         {
 
-            var chaser = ((App)App.Current).UnityContainer.Resolve<DmxChaser>();
-            var shared = ((App)App.Current).UnityContainer.Resolve<SharedEffectModel>();
-            var beatDetector = ((App)App.Current).UnityContainer.Resolve<BeatDetector.BeatDetector>();
+            var chaser = BootStrap.UnityContainer.Resolve<DmxChaser>();
+            var shared = BootStrap.UnityContainer.Resolve<SharedEffectModel>();
+            var beatDetector = BootStrap.UnityContainer.Resolve<BeatDetector.BeatDetector>();
             shared.Dispatcher.Invoke(new Action(() =>
             {
                 shared.CurrentMovingHeadGobo = contract.CurrentMovingHeadGobo;
@@ -299,12 +301,12 @@ namespace LightMixer.Model.Service
 
         public IEnumerable<string> MovingHeadProgramString()
         {
-            return ((App)App.Current).UnityContainer.Resolve<SharedEffectModel>().MovingHeadProgram.Select(value => value.ToString() );
+            return BootStrap.UnityContainer.Resolve<SharedEffectModel>().MovingHeadProgram.Select(value => value.ToString() );
         }
 
         public IEnumerable<string> MovingHeadGoboString()
         {
-            return ((App)App.Current).UnityContainer.Resolve<SharedEffectModel>().MovingHeadGobo.Select(value => value.ToString()); ;
+            return BootStrap.UnityContainer.Resolve<SharedEffectModel>().MovingHeadGobo.Select(value => value.ToString()); ;
         }
 
         public RemoteLightService()

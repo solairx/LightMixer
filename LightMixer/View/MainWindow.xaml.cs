@@ -83,6 +83,10 @@ namespace LightMixer.View
 
         private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            if (MessageBox.Show("Closing ?", "Are you sure", MessageBoxButton.YesNo) != MessageBoxResult.Yes)
+            {
+                e.Cancel = true;
+            }
             
         }
     }

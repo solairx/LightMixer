@@ -1,0 +1,48 @@
+﻿@page "/zone"
+
+@using LightMixerBlazor.Data
+@inject ZoneService ForecastService
+@using Radzen.Blazor.Rendering
+@using Radzen.Blazor
+
+<h2>Zone @id</h2>
+
+@if (zoneEffectList == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="row">
+        <div class="col-md-4">
+            <RadzenListBox @bind-Value="@SelectedItem" Data="@zoneEffectList" TextProperty="CompanyName" Style="margin-bottom: 20px;height:200px;" Change="@(args => Change(args, "ListBox"))" />
+        </div>
+    </div>
+}
+
+@code {
+
+    [Parameter]
+    public string sceneId { get; set; }
+
+    [Parameter]
+    public string id { get; set; }
+
+    string SelectedItem;
+
+    IEnumerable<string> zoneEffectList;
+
+    Dictionary<DateTime, string> events = new Dictionary<DateTime, string>();
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        zoneEffectList = await ForecastService.GetZone(sceneId, id);
+    }
+
+    async Task Change(object value, string name)
+    {
+        await ForecastService.UpdateZone(sceneId, id, SelectedItem);
+        StateHasChanged();
+    }
+}

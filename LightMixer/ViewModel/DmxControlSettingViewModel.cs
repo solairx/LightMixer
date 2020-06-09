@@ -23,7 +23,7 @@ namespace LightMixer.ViewModel
         {
             get
             {
-                return ((LightMixer.App)LightMixer.App.Current).UnityContainer.Resolve<DmxModel >();
+                return BootStrap.UnityContainer.Resolve<DmxModel >();
             }
         }
 
@@ -37,8 +37,8 @@ namespace LightMixer.ViewModel
             set
             {
                 mBreak = value;
-                this.OnPropertyChanged(o => this.Break);
-                ((LightMixer.App)LightMixer.App.Current).UnityContainer.Resolve<LightService.DmxServiceClient>().SetBreak(value);
+                AsyncOnPropertyChange(o => this.Break);
+                BootStrap.UnityContainer.Resolve<LightService.DmxServiceClient>().SetBreak(value);
             }
         }
 
@@ -51,8 +51,8 @@ namespace LightMixer.ViewModel
             set
             {
                 mMbb = value;
-                this.OnPropertyChanged(o => this.MBB); 
-                ((LightMixer.App)LightMixer.App.Current).UnityContainer.Resolve<LightService.DmxServiceClient>().SetMBB(value);
+                AsyncOnPropertyChange(o => this.MBB); 
+                BootStrap.UnityContainer.Resolve<LightService.DmxServiceClient>().SetMBB(value);
             }
         }
         public long Mab
@@ -64,9 +64,9 @@ namespace LightMixer.ViewModel
             set
             {
                 this.mMab = value;
-                this.OnPropertyChanged(o => this.Mab);
+                AsyncOnPropertyChange(o => this.Mab);
                 
-                ((LightMixer.App)LightMixer.App.Current).UnityContainer.Resolve<LightService.DmxServiceClient>().SetMab(value);
+                BootStrap.UnityContainer.Resolve<LightService.DmxServiceClient>().SetMab(value);
             }
         }
 

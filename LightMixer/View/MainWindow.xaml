@@ -8,6 +8,8 @@
 		mc:Ignorable="d" 
    		x:Class="LightMixer.View.MainWindow"
         Title="MainWindow" 
+    Closing="MainWindow_Closing"
+    
         Background="Black"
         Foreground="White"
         Name="myMainWindow"

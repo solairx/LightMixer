@@ -49,7 +49,7 @@ namespace UIFrameWork
         /// Invoked whenever the value of a property on this object has been updated.
         /// </summary>
         /// <param name="propertyName">Name of the property.</param>
-        private  void OnPropertyChanged(string propertyName)
+        private void OnPropertyChanged(string propertyName)
         {
             var handlers = this.PropertyChanged;
             if (handlers != null)
@@ -69,7 +69,7 @@ namespace UIFrameWork
 
         protected void DispatchError(System.Exception vExp, BaseViewModel sender)
         {
-       //     System.Windows.MessageBox.Show("Une Erreur est survenu dans la génération de cette fonction");
+            //     System.Windows.MessageBox.Show("Une Erreur est survenu dans la génération de cette fonction");
         }
 
         /// <summary>
@@ -80,14 +80,22 @@ namespace UIFrameWork
         {
             this.OnPropertyChanged(Reflect.Property(propertyExpression).Name);
         }
-                
 
-       public void OnPropertyChanged<TProperty>(Expression<Func<BaseViewModel, TProperty>> expression) 
+
+        public void OnPropertyChanged<TProperty>(Expression<Func<BaseViewModel, TProperty>> expression)
         {
             this.OnPropertyChanged(this.GetPropertyName(expression));
         }
 
-        private string GetPropertyName<BaseViewModel, TProperty>(  Expression<Func<BaseViewModel, TProperty>> expression)
+        public void AsyncOnPropertyChange<TProperty>(Expression<Func<BaseViewModel, TProperty>> expression)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                this.OnPropertyChanged(expression);
+            });
+        }
+
+        private string GetPropertyName<BaseViewModel, TProperty>(Expression<Func<BaseViewModel, TProperty>> expression)
         {
             var memberExpression = expression.Body as MemberExpression;
             if (memberExpression == null)
@@ -108,7 +116,7 @@ namespace UIFrameWork
             return propertyName;
         }
 
-       
+
 
         #endregion
     }

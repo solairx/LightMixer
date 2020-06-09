@@ -9,13 +9,13 @@ namespace LightMixer.Model
 {
     public class MovingHeadOffEffect : EffectBase
     {
-        public MovingHeadOffEffect(BeatDetector.BeatDetector detector, Fixture.FixtureCollection currentValue, ObservableCollection<Fixture.FixtureGroup> vfixtureGroup)
-            : base(detector, currentValue, vfixtureGroup, "default") { }
-        
-        public override void DmxFrameCall(DmxChaser.LedType ledInstance, IEnumerable<BeatDetector.VdjEvent> values)
+        public MovingHeadOffEffect(BeatDetector.BeatDetector detector, FixtureCollection currentValue, Func<double> intensityGetter, Func<double> intensityFlashGetter)
+            : base(detector, currentValue, intensityGetter, intensityFlashGetter) { }
+
+        public override void DmxFrameCall(IEnumerable<BeatDetector.VdjEvent> values)
         {
 
-                foreach (FixtureBase fixture in CurrentValue.FixtureList)
+                foreach (FixtureBase fixture in CurrentValue.FixtureGroups.SelectMany(o=>o.FixtureInGroup))
                 {
                     if (fixture is MovingHeadFixture)
                     {

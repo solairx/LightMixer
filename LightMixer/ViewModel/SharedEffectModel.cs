@@ -48,7 +48,7 @@ namespace LightMixer.Model
             set
             {
                 _maxBoothFlashIntesity = value;
-                this.OnPropertyChanged(() => this.MaxBoothFlashIntesity);
+                AsyncOnPropertyChange(o => MaxBoothFlashIntesity);
             }
 
         }
@@ -64,7 +64,7 @@ namespace LightMixer.Model
             set
             {
                 _maxBoothIntesity = value;
-                this.OnPropertyChanged(() => this.MaxBoothIntesity);
+                AsyncOnPropertyChange(o => this.MaxBoothIntesity);
             }
 
         }
@@ -80,7 +80,7 @@ namespace LightMixer.Model
             set
             {
                 _maxLightFlashIntesity = value;
-                this.OnPropertyChanged(() => this.MaxLightFlashIntesity);
+                AsyncOnPropertyChange(o => this.MaxLightFlashIntesity);
             }
 
         }
@@ -96,7 +96,7 @@ namespace LightMixer.Model
             set
             {
                 _maxLightIntesity = value;
-                this.OnPropertyChanged(() => this.MaxLightIntesity);
+                AsyncOnPropertyChange(o => this.MaxLightIntesity);
             }
 
         }
@@ -110,7 +110,7 @@ namespace LightMixer.Model
             set
             {
                 _autoChangeColorOnBeat = value;
-                this.OnPropertyChanged(() => this.AutoChangeColorOnBeat);
+                AsyncOnPropertyChange(o => this.AutoChangeColorOnBeat);
             }
 
         }
@@ -124,7 +124,7 @@ namespace LightMixer.Model
             set
             {
                 _maxSpeed = value;
-                this.OnPropertyChanged(() => this.MaxSpeed);
+                AsyncOnPropertyChange(o => this.MaxSpeed);
             }
 
         }
@@ -141,7 +141,7 @@ namespace LightMixer.Model
             set
             {
                 _autoChangeGobo = value;
-                this.OnPropertyChanged(() => this.AutoChangeGobo);
+                AsyncOnPropertyChange(o => this.AutoChangeGobo);
             }
 
         }
@@ -154,7 +154,7 @@ namespace LightMixer.Model
             set
             {
                 _autoChangeProgram = value;
-                this.OnPropertyChanged(() => this.AutoChangeProgram);
+                AsyncOnPropertyChange(o => this.AutoChangeProgram);
             }
 
         }
@@ -167,7 +167,7 @@ namespace LightMixer.Model
             set
             {
                 _secondBetweenGoboChange = value;
-                this.OnPropertyChanged(() => this.SecondBetweenGoboChange);
+                AsyncOnPropertyChange(o => this.SecondBetweenGoboChange);
             }
 
         }
@@ -180,7 +180,7 @@ namespace LightMixer.Model
             set
             {
                 _secondBetweenProgramChange = value;
-                this.OnPropertyChanged(() => this.SecondBetweenProgramChange);
+                AsyncOnPropertyChange(o => this.SecondBetweenProgramChange);
             }
 
         }
@@ -194,7 +194,7 @@ namespace LightMixer.Model
             set
             {
                 _maxLightIntesityMovingHead = value;
-                this.OnPropertyChanged(() => this.MaxLightIntesityMovingHead);
+                AsyncOnPropertyChange(o => this.MaxLightIntesityMovingHead);
             }
 
         }

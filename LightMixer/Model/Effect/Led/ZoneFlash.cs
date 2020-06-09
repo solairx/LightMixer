@@ -10,12 +10,12 @@ namespace LightMixer.Model
     public class ZoneFlashEffect : EffectBase
     {
         private int nextGroup = 0;
-        public ZoneFlashEffect(BeatDetector.BeatDetector detector, Fixture.FixtureCollection currentValue, ObservableCollection<Fixture.FixtureGroup> vfixtureGroup, string vSchema)
-            : base(detector, currentValue,vfixtureGroup,vSchema) { }
+        public ZoneFlashEffect(BeatDetector.BeatDetector detector,FixtureCollection currentValue, Func<double> intensityGetter, Func<double> intensityFlashGetter)
+            : base(detector, currentValue, intensityGetter, intensityFlashGetter) { }
 
-        public override void DmxFrameCall(DmxChaser.LedType ledInstance, IEnumerable<BeatDetector.VdjEvent> values)
+        public override void DmxFrameCall(IEnumerable<BeatDetector.VdjEvent> values)
         {
-            var currentGroups = this.fixtureGroup.Where(o => o.Schema == Schema);
+            var currentGroups = CurrentValue.FixtureGroups; 
             if (currentGroups.Count() == 0) return;
             if (currentGroups.Count() - 1 < nextGroup)
                 nextGroup = 0;
@@ -26,9 +26,9 @@ namespace LightMixer.Model
             {
                 foreach (FixtureBase fixtureToreset in groupall.FixtureInGroup)
                 {
-                    ((RgbFixture)fixtureToreset).RedValue = this.SetValueFlash(0, ledInstance);
-                    ((RgbFixture)fixtureToreset).GreenValue = this.SetValueFlash(0, ledInstance);
-                    ((RgbFixture)fixtureToreset).BlueValue = this.SetValueFlash(0, ledInstance);
+                    ((RgbFixture)fixtureToreset).RedValue = this.SetValueFlash(0);
+                    ((RgbFixture)fixtureToreset).GreenValue = this.SetValueFlash(0);
+                    ((RgbFixture)fixtureToreset).BlueValue = this.SetValueFlash(0);
                 }
             }
 
@@ -37,9 +37,9 @@ namespace LightMixer.Model
                 foreach (FixtureBase fixture in group.FixtureInGroup)
                 {
 
-                    ((RgbFixture)fixture).RedValue = this.SetValueFlash(this._sharedEffectModel.Red, ledInstance);
-                    ((RgbFixture)fixture).GreenValue = this.SetValueFlash(this._sharedEffectModel.Green, ledInstance);
-                    ((RgbFixture)fixture).BlueValue = this.SetValueFlash(this._sharedEffectModel.Blue, ledInstance);
+                    ((RgbFixture)fixture).RedValue = this.SetValueFlash(this._sharedEffectModel.Red);
+                    ((RgbFixture)fixture).GreenValue = this.SetValueFlash(this._sharedEffectModel.Green);
+                    ((RgbFixture)fixture).BlueValue = this.SetValueFlash(this._sharedEffectModel.Blue);
                 }
                 nextGroup++;
                 isBeat = false;

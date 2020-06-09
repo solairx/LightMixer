@@ -18,7 +18,7 @@ namespace LightMixer.ViewModel
             laser = new LaserDisplay.LaserControler(-1);
 
             laser.Start();
-            mBpmDetector = ((LightMixer.App)LightMixer.App.Current).UnityContainer.Resolve<BeatDetector.BeatDetector>();
+            mBpmDetector = BootStrap.UnityContainer.Resolve<BeatDetector.BeatDetector>();
             mBpmDetector.BeatEvent += new BeatDetector.BeatDetector.BeatHandler(mBpmDetector_BeatEvent);
             mBpmDetector.BpmEvent += new BeatDetector.BeatDetector.BpmHandler(mBpmDetector_BpmEvent);
             
@@ -43,7 +43,7 @@ namespace LightMixer.ViewModel
             set
             {
                 VisualControler.ServiceExchangeSingleton.Instance = value;
-                this.OnPropertyChanged(o => this.LaserConfig);
+                AsyncOnPropertyChange(o => this.LaserConfig);
             }
         }
 

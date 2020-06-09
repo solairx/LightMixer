@@ -22,7 +22,7 @@ namespace LightMixer.ViewModel
         {
             get
             {
-                return ((LightMixer.App)LightMixer.App.Current).UnityContainer.Resolve<DmxModel >();
+                return BootStrap.UnityContainer.Resolve<DmxModel >();
             }
         }
 
@@ -37,15 +37,15 @@ namespace LightMixer.ViewModel
             set
             {
                 mSelectedChannel = value;
-                ObservableCollection<DmxChannelStatus> ChannelList = ((LightMixer.App)LightMixer.App.Current).UnityContainer.Resolve<DmxModel>().DmxChannelStatus;
+                ObservableCollection<DmxChannelStatus> ChannelList = BootStrap.UnityContainer.Resolve<DmxModel>().DmxChannelStatus;
 
                  mSelectedValue = (byte)ChannelList.FirstOrDefault(
                         o => o.DmxChannelNumber == this.SelectedChannel
                         )
                     .DmxChannelValue;
-                this.OnPropertyChanged(o => this.SelectedChannel);
-                this.OnPropertyChanged(o => this.SelectedValue);
-                ((LightMixer.App)LightMixer.App.Current).UnityContainer.Resolve<LightService.DmxServiceClient>().SetDmxChannel(this.SelectedChannel, (byte)this.SelectedValue);
+                AsyncOnPropertyChange(o => this.SelectedChannel);
+                AsyncOnPropertyChange(o => this.SelectedValue);
+                BootStrap.UnityContainer.Resolve<LightService.DmxServiceClient>().SetDmxChannel(this.SelectedChannel, (byte)this.SelectedValue);
 
             }
         }
@@ -60,7 +60,7 @@ namespace LightMixer.ViewModel
             {
                 mSelectedValue = value;
                 //client.SetDmxChannel(SelectedChannel, mSelectedValue);
-                ((LightMixer.App)LightMixer.App.Current).UnityContainer.Resolve<DmxModel>().DmxChannelStatus
+                BootStrap.UnityContainer.Resolve<DmxModel>().DmxChannelStatus
                     .Where(
                         o => o.DmxChannelNumber == this.SelectedChannel
                         )

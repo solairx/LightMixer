@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 using Microsoft.Practices.Unity;
-using System.Threading;
 
 namespace LightMixer.Model
 {
@@ -14,50 +11,42 @@ namespace LightMixer.Model
         {
             get;
         }
-
-        public string Schema
-        {
-            get;
-            private set;
-        }
-
         public event DmxFrameHandler DmxFrameEvent;
         public delegate void DmxFrameHandler(ObservableCollection<DmxChannelStatus> currentValue, object caller);
-        private Thread runningThread;
-        protected Fixture.FixtureCollection CurrentValue;
+        protected FixtureCollection CurrentValue;
+        private readonly Func<double> intensityGetter;
+        private readonly Func<double> intensityFlashGetter;
         protected ObservableCollection<Fixture.FixtureGroup> fixtureGroup;
         public SharedEffectModel _sharedEffectModel;
         protected bool isBeat = false;
         protected double bpm = 60;
 
-        public byte SetValue(byte tentativeValue, DmxChaser.LedType ledInstance)
+        public byte SetValue(byte tentativeValue)
         {
-            return Convert.ToByte(tentativeValue * ((ledInstance == DmxChaser.LedType.HeadLed?_sharedEffectModel.MaxLightIntesity: _sharedEffectModel.MaxBoothIntesity) / 100d));
+            return Convert.ToByte(tentativeValue * ((intensityGetter.Invoke()) / 100d));
         }
 
-        public byte SetValueFlash(byte tentativeValue, DmxChaser.LedType ledInstance)
+        public byte SetValueFlash(byte tentativeValue)
         {
-            return Convert.ToByte(tentativeValue * ((ledInstance == DmxChaser.LedType.HeadLed?_sharedEffectModel.MaxLightFlashIntesity:_sharedEffectModel.MaxBoothFlashIntesity) / 100d));
+            return Convert.ToByte(tentativeValue * ((intensityFlashGetter.Invoke()) / 100d));
         }
 
-        public byte SetValueMovingHead(byte tentativeValue, DmxChaser.LedType ledInstance)
+        public byte SetValueMovingHead(byte tentativeValue)
         {
             return Convert.ToByte(tentativeValue * (_sharedEffectModel.MaxLightIntesityMovingHead / 100d));
         }
 
-        public EffectBase(BeatDetector.BeatDetector detector, Fixture.FixtureCollection currentValue, ObservableCollection< Fixture.FixtureGroup> vfixtureGroup, string vSchema)
+        public EffectBase(BeatDetector.BeatDetector detector, FixtureCollection currentValue, Func<double> intensityGetter, Func<double> intensityFlashGetter)
         {
-            Schema = vSchema;
-            fixtureGroup = vfixtureGroup;
-            _sharedEffectModel = ((LightMixer.App)LightMixer.App.Current).UnityContainer.Resolve<SharedEffectModel>();
+            
+            _sharedEffectModel = BootStrap.UnityContainer.Resolve<SharedEffectModel>();
             CurrentValue = currentValue;
+            this.intensityGetter = intensityGetter;
+            this.intensityFlashGetter = intensityFlashGetter;
             detector.BpmEvent += new BeatDetector.BeatDetector.BpmHandler(mBpmDetector_BpmEvent);
             detector.BeatEvent += new BeatDetector.BeatDetector.BeatHandler(mBpmDetector_BeatEvent);
-        //    runningThread = new Thread(new ThreadStart(Run));
-         //   runningThread.IsBackground = true;
-         //   runningThread.Start();
         }
-              
+
 
         public byte GetMaxedByte(int val)
         {
@@ -78,12 +67,12 @@ namespace LightMixer.Model
 
         }
 
-        public abstract void DmxFrameCall(DmxChaser.LedType boothLed, IEnumerable<BeatDetector.VdjEvent> values);
-    
+        public abstract void DmxFrameCall(IEnumerable<BeatDetector.VdjEvent> values);
+
 
         public void StartCalculation()
         {
-          //  if (runningThread.ThreadState == ThreadState.Suspended) 
+            //  if (runningThread.ThreadState == ThreadState.Suspended) 
             //    runningThread.Resume();
         }
         public void StopCalculation()
@@ -96,11 +85,10 @@ namespace LightMixer.Model
 
             try
             {
-                
+
                 isBeat = Beat;
             }
-            catch
-                (Exception )
+            catch (Exception)
             {
             }
         }

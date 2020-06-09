@@ -10,10 +10,10 @@ namespace LightMixer.Model
     {
 
         int skip = 0;
-        public RandomEffect(BeatDetector.BeatDetector detector, Fixture.FixtureCollection currentValue, ObservableCollection<Fixture.FixtureGroup> vfixtureGroup, string vSchema)
-            : base(detector, currentValue, vfixtureGroup, vSchema) { }
+        public RandomEffect(BeatDetector.BeatDetector detector, FixtureCollection currentValue, Func<double> intensityGetter, Func<double> intensityFlashGetter)
+            : base(detector, currentValue, intensityGetter, intensityFlashGetter) { }
 
-        public override void DmxFrameCall(DmxChaser.LedType ledInstance, IEnumerable<BeatDetector.VdjEvent> values)
+        public override void DmxFrameCall(IEnumerable<BeatDetector.VdjEvent> values)
         {
             if (skip > 0)
             {
@@ -22,7 +22,7 @@ namespace LightMixer.Model
             }
             skip = Convert.ToInt32( _sharedEffectModel.MaxSpeed);
             var rnd = new Random();
-            var workingGroup = this.fixtureGroup.Where(o => o.Schema == Schema);
+            var workingGroup = CurrentValue.FixtureGroups;
             foreach (FixtureGroup group in workingGroup)
             {
                 foreach (FixtureBase fixture in group.FixtureInGroup)
@@ -32,15 +32,15 @@ namespace LightMixer.Model
                         if (isBeat)
                         {
                             isBeat = false;
-                            ((RgbFixture)fixture).RedValue = this.SetValueFlash(255, ledInstance);
-                            ((RgbFixture)fixture).GreenValue = this.SetValueFlash(255, ledInstance);
-                            ((RgbFixture)fixture).BlueValue = this.SetValueFlash(255, ledInstance);
+                            ((RgbFixture)fixture).RedValue = this.SetValueFlash(255);
+                            ((RgbFixture)fixture).GreenValue = this.SetValueFlash(255);
+                            ((RgbFixture)fixture).BlueValue = this.SetValueFlash(255);
                         }
                         else
                         {
-                            ((RgbFixture)fixture).RedValue = this.SetValue((byte)(rnd.Next(255)/10), ledInstance);
-                            ((RgbFixture)fixture).GreenValue = this.SetValue((byte)(rnd.Next(255) / 10), ledInstance);
-                            ((RgbFixture)fixture).BlueValue = this.SetValue((byte)(rnd.Next(255) / 10), ledInstance);
+                            ((RgbFixture)fixture).RedValue = this.SetValue((byte)(rnd.Next(255)/10));
+                            ((RgbFixture)fixture).GreenValue = this.SetValue((byte)(rnd.Next(255) / 10));
+                            ((RgbFixture)fixture).BlueValue = this.SetValue((byte)(rnd.Next(255) / 10));
                         }
                     }
                 }
