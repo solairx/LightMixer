@@ -11,7 +11,7 @@ namespace BeatDetector
     public class VDJXmlParser
     {
         public Dictionary<string, VDJSong> VDJDatabase = new Dictionary<string, VDJSong>();
-        private string filename = @"D:\VirtualDJ\database.xml";
+        private string filename = @"\\Desktop-pjdgjgm\d\VirtualDJ\database.xml";
 
         public VDJXmlParser()
         {
@@ -99,12 +99,19 @@ namespace BeatDetector
 
         public void Reload()
         {
-            var textReader = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-            var newEntry = new Dictionary<string, VDJSong>();
-            Load(textReader, newEntry);
-            textReader.Close();
-            VDJDatabase = newEntry;
-            LastUpdated = DateTime.Now;
+            try
+            {
+                var textReader = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                var newEntry = new Dictionary<string, VDJSong>();
+                Load(textReader, newEntry);
+                textReader.Close();
+                VDJDatabase = newEntry;
+                LastUpdated = DateTime.Now;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("could not load " + filename,ex);
+            }
         }
         private DateTime LastUpdated = DateTime.Now;
 

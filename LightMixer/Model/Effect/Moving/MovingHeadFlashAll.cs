@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Collections.ObjectModel;
 using LightMixer.Model.Fixture;
 
 namespace LightMixer.Model
@@ -12,7 +10,7 @@ namespace LightMixer.Model
         public MovingHeadFlashAll(BeatDetector.BeatDetector detector, FixtureCollection currentValue, Func<double> intensityGetter, Func<double> intensityFlashGetter)
             : base(detector, currentValue, intensityGetter, intensityFlashGetter) { }
 
-        public override void DmxFrameCall(IEnumerable<BeatDetector.VdjEvent> values)
+        public override void RenderEffect(IEnumerable<BeatDetector.VdjEvent> values)
         {
 
             foreach (FixtureBase fixture in CurrentValue.FixtureGroups.SelectMany(o => o.FixtureInGroup))

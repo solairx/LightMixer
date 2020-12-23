@@ -5,7 +5,7 @@ using System.Text;
 
 namespace LightMixer.Model.Fixture
 {
-    public class MovingHeadFixture : FixtureBase
+    public class MovingHeadFixture : RgbFixtureBase 
     {
         public MovingHeadFixture(int dmxAddress)
             : base(dmxAddress)
@@ -71,6 +71,8 @@ namespace LightMixer.Model.Fixture
             set;
         }
 
+        public override int DmxLenght => 13;
+
         public override byte?[] Render()
         {
             var panByte = BitConverter.GetBytes(Pan);
@@ -85,7 +87,6 @@ namespace LightMixer.Model.Fixture
             arr[StartDmxAddress + 6] = RedValue;
             arr[StartDmxAddress + 7] = GreenValue;
             arr[StartDmxAddress + 8] = BlueValue;
-            //arr[StartDmxAddress + 9] = (byte)ColorMode;
             arr[StartDmxAddress + 10] = SpeedColor;
             arr[StartDmxAddress + 11] = (byte)ProgramMode;
             arr[StartDmxAddress + 12] = (byte)GoboPaturn;

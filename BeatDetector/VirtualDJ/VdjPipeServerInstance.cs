@@ -48,9 +48,9 @@ namespace BeatDetector
                 vdjEvent.Elapsed = keyValuePairs["elapsed"];
                 vdjEvent.BPM = keyValuePairs["bpm"];
                 vdjEvent.CrossFader = GetDoubleFromMessage(keyValuePairs, "crossfader");
-                vdjEvent.BeatNumber = GetDoubleFromMessage(keyValuePairs, "beatNum");
-                vdjEvent.BeatBar16 = GetDoubleFromMessage(keyValuePairs, "beatBar16");
-                vdjEvent.BeatBar = GetDoubleFromMessage(keyValuePairs, "beatBar");
+                //vdjEvent.BeatNumber = GetDoubleFromMessage(keyValuePairs, "beatNum");
+                //vdjEvent.BeatBar16 = GetDoubleFromMessage(keyValuePairs, "beatBar16");
+                //vdjEvent.BeatBar = GetDoubleFromMessage(keyValuePairs, "beatBar");
                 vdjEvent.BeatPos = GetDoubleFromMessage(keyValuePairs, "beatPos");
                 vdjEvent.Volume = GetDoubleFromMessage(keyValuePairs, "volume");
                 vdjEvent.Deck = GetIntFromMessage(keyValuePairs, "deck");
@@ -58,14 +58,13 @@ namespace BeatDetector
                 VDJSong vdjSong = null;
                 ingternalVdjDataBase.VDJDatabase.TryGetValue(fullFileName, out vdjSong);
                 vdjEvent.VDJSong = vdjSong;
-                if (VirtualDjInstanceEvent != null)
-                    VirtualDjInstanceEvent(vdjEvent);
+                VirtualDjInstanceEvent?.Invoke(vdjEvent);
             });
         }
 
         private double GetDoubleFromMessage(Dictionary<string, string> source, string key)
         {
-            string str = null;
+            string str;
             if (source.TryGetValue(key, out str))
             {
                 try
@@ -105,7 +104,14 @@ namespace BeatDetector
                 {
 
                     PipeSecurity ps = new PipeSecurity();
-                    ps.AddAccessRule(new PipeAccessRule(new SecurityIdentifier(WellKnownSidType.AuthenticatedUserSid, null), PipeAccessRights.ReadWrite, System.Security.AccessControl.AccessControlType.Allow));
+                    var sid = new SecurityIdentifier(WellKnownSidType.WorldSid, null);
+                    NTAccount account = (NTAccount)sid.Translate(typeof(NTAccount));
+                    ps.SetAccessRule(new PipeAccessRule(account, PipeAccessRights.ReadWrite, System.Security.AccessControl.AccessControlType.Allow));
+                    //NamedPipeServerStream server = new NamedPipeServerStream("TestPipe", PipeDirection.InOut, 1, PipeTransmissionMode.Byte, PipeOptions.None, 512, 512, ps)
+
+                    //PipeSecurity ps = new PipeSecurity();
+                    //ps.AddAccessRule(new PipeAccessRule(new SecurityIdentifier(WellKnownSidType.AuthenticatedUserSid, null), PipeAccessRights.ReadWrite, System.Security.AccessControl.AccessControlType.Allow));
+                    //vdjPipe = new NamedPipeServerStream("virtualDJ", PipeDirection.InOut, 1, PipeTransmissionMode.Byte, PipeOptions.None, 512, 512, ps) ;//
                     vdjPipe = new NamedPipeServerStream("virtualDJ", PipeDirection.InOut, 254);
 
                     vdjPipe.WaitForConnection();

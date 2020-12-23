@@ -19,7 +19,7 @@ namespace LightMixer
         public App()
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
-            new BootStrap();
+            new BootStrap(new UiDispatcher(Dispatcher));
         }
              
 

@@ -7,28 +7,20 @@ using LightMixer.Model.Fixture;
 
 namespace LightMixer.Model
 {
-    public class AllOnEffect : EffectBase
+    public class AllOnEffect : RgbEffectBase
     {
         public AllOnEffect(BeatDetector.BeatDetector detector, FixtureCollection currentValue, Func<double> intensityGetter, Func<double> intensityFlashGetter)
             : base(detector, currentValue, intensityGetter, intensityFlashGetter) { }
 
-        public override void DmxFrameCall( IEnumerable<BeatDetector.VdjEvent> values)
+        public override void RenderEffect( IEnumerable<BeatDetector.VdjEvent> values)
         {
             isBeat = false;
-            var workingGroup = CurrentValue.FixtureGroups;
-            foreach (FixtureGroup group in workingGroup)
+            foreach (var fixture in fixtureInGroup)
             {
-                foreach (FixtureBase fixture in group.FixtureInGroup)
-                {
-                    if (fixture is RgbFixture)
-                    {
-                        ((RgbFixture)fixture).RedValue = this.SetValue(this._sharedEffectModel.Red);
-                        ((RgbFixture)fixture).GreenValue = this.SetValue(this._sharedEffectModel.Green);
-                        ((RgbFixture)fixture).BlueValue = this.SetValue(this._sharedEffectModel.Blue);
-                    }
-                }
+                fixture.RedValue = this.SetValue(this._sharedEffectModel.Red);
+                fixture.GreenValue = this.SetValue(this._sharedEffectModel.Green);
+                fixture.BlueValue = this.SetValue(this._sharedEffectModel.Blue);
             }
-
 
             this.RaiseEvent();
         }

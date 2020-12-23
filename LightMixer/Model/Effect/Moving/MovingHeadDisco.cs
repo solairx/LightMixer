@@ -12,7 +12,7 @@ namespace LightMixer.Model
         public MovingHeadDisco(BeatDetector.BeatDetector detector, FixtureCollection currentValue, Func<double> intensityGetter, Func<double> intensityFlashGetter)
             : base(detector, currentValue, intensityGetter, intensityFlashGetter) { }
 
-        public override void DmxFrameCall(IEnumerable<BeatDetector.VdjEvent> values)
+        public override void RenderEffect(IEnumerable<BeatDetector.VdjEvent> values)
         {
             
             

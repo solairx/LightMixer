@@ -62,8 +62,11 @@ namespace LightMixer.Model
             get => trackName;
             set
             {
-                trackName = value;
-                this.AsyncOnPropertyChange(o => this.trackName);
+                if (trackName != value)
+                {
+                    trackName = value;
+                    this.AsyncOnPropertyChange(o => this.trackName);
+                }
             }
         }
 
@@ -74,8 +77,11 @@ namespace LightMixer.Model
         {
             get => autoChaser; set
             {
-                autoChaser = value;
-                this.AsyncOnPropertyChange(o => this.AutoChaser);
+                if (autoChaser != value)
+                {
+                    autoChaser = value;
+                    this.AsyncOnPropertyChange(o => this.AutoChaser);
+                }
             }
         }
 
@@ -83,8 +89,11 @@ namespace LightMixer.Model
         {
             get => useFlashTransition; set
             {
-                useFlashTransition = value;
-                this.AsyncOnPropertyChange(o => this.UseFlashTransition);
+                if (useFlashTransition != value)
+                {
+                    useFlashTransition = value;
+                    this.AsyncOnPropertyChange(o => this.UseFlashTransition);
+                }
             }
         }
 
@@ -112,7 +121,7 @@ namespace LightMixer.Model
             {
                 if (currentPoi != value)
                 {
-                    Dispatcher.Invoke(() =>
+                    BootStrap.Dispatcher.Invoke(() =>
                     {
                         currentPoi = value;
                         pois?.ForEach(o => o.IsCurrent = false);
@@ -186,19 +195,20 @@ namespace LightMixer.Model
             }
         }
 
-        public DmxChaser()
+        public DmxChaser(VirtualDjServer vdjServer)
         {
             mBpmDetector = BootStrap.UnityContainer.Resolve<BeatDetector.BeatDetector>();
             
             BindViewModelWithScene<RGBLedFixtureCollection>(SceneService.indoorSceneName, SceneService.basementZoneName, LedEffectCollection, nameof(CurrentLedEffect));
             BindViewModelWithScene<MovingHeadFixtureCollection>(SceneService.indoorSceneName, SceneService.basementZoneName, MovingHeadEffectCollection, nameof(CurrentMovingHeadEffect));
             BindViewModelWithScene<RGBLedFixtureCollection>(SceneService.outDoorSceneName, SceneService.poolZoneName, BoothEffectCollection, nameof(CurrentBoothEffect));
+            VdjServer = vdjServer;
         }
                
 
         void Save()
         {
-            this.BeatDetector.VirtualDjServer.vdjDataBase.Save();
+            VdjServer.vdjDataBase.Save();
         }
 
         public ICommand SaveCommand
@@ -250,7 +260,7 @@ namespace LightMixer.Model
      
         private void SetCurrentEffectAsync<T>(string scene, string zone, EffectBase newEffect) where T : FixtureCollection
         {
-            Dispatcher.Invoke((Action)(() =>
+            BootStrap.Dispatcher.Invoke((Action)(() =>
             {
                 sceneRenderedService.SetCurrentEffect<T>((string)scene, (string)zone, (EffectBase)newEffect);
             }));
@@ -288,10 +298,12 @@ namespace LightMixer.Model
             {
                 return new DelegateCommand(() =>
                 {
-                    this.BeatDetector.VirtualDjServer.vdjDataBase.Reload();
+                    VdjServer.vdjDataBase.Reload();
                 });
             }
         }
+
+        public VirtualDjServer VdjServer { get; }
 
         public void UpdateVDJUiElement(IEnumerable<VdjEvent> activeDeck)
         {
@@ -317,7 +329,6 @@ namespace LightMixer.Model
 
         public void Dispose()
         {
-            mBpmDetector.Stop();
         }
 
         #endregion

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using Microsoft.Practices.Unity;
 
 namespace LightMixer.Model
@@ -33,18 +34,17 @@ namespace LightMixer.Model
 
         public byte SetValueMovingHead(byte tentativeValue)
         {
-            return Convert.ToByte(tentativeValue * (_sharedEffectModel.MaxLightIntesityMovingHead / 100d));
+            return Convert.ToByte(tentativeValue * (intensityGetter.Invoke() / 100d));
         }
 
         public EffectBase(BeatDetector.BeatDetector detector, FixtureCollection currentValue, Func<double> intensityGetter, Func<double> intensityFlashGetter)
         {
-            
             _sharedEffectModel = BootStrap.UnityContainer.Resolve<SharedEffectModel>();
             CurrentValue = currentValue;
             this.intensityGetter = intensityGetter;
             this.intensityFlashGetter = intensityFlashGetter;
-            detector.BpmEvent += new BeatDetector.BeatDetector.BpmHandler(mBpmDetector_BpmEvent);
-            detector.BeatEvent += new BeatDetector.BeatDetector.BeatHandler(mBpmDetector_BeatEvent);
+          //  detector.BpmEvent += new BeatDetector.BeatDetector.BpmHandler(mBpmDetector_BpmEvent);
+           // detector.BeatEvent += new BeatDetector.BeatDetector.BeatHandler(mBpmDetector_BeatEvent);
         }
 
 
@@ -67,7 +67,40 @@ namespace LightMixer.Model
 
         }
 
-        public abstract void DmxFrameCall(IEnumerable<BeatDetector.VdjEvent> values);
+        private double _lastProcessedBeat = 0;
+
+        public void DmxFrameCall(IEnumerable<BeatDetector.VdjEvent> values)
+        {
+            var currentDeck = values?.FirstOrDefault();   
+            if (currentDeck !=null)
+            {
+                double beatOffSet = currentDeck.BeatPos + 0.0;
+                var beatPos = beatOffSet - Math.Truncate(beatOffSet )  ;
+                var ulpValue = Ulp(beatPos, 1d/BeatDetector.BeatDetector.Instance.BeatRepeat);
+                var currentBeatRounded = Math.Truncate(beatOffSet) + ulpValue ;
+                if (beatPos > ulpValue && beatPos <= (ulpValue + 0.180) && _lastProcessedBeat != currentBeatRounded)
+                {
+                    _lastProcessedBeat = currentBeatRounded;
+                    isBeat = true;
+                }
+                this.bpm = currentDeck.BpmAsDouble;
+
+            }
+            RenderEffect(values);
+        }
+
+        public static double Ulp(double source, double epsilon)
+        {
+            double candidate = 1;
+            while (source < candidate)
+            {
+                candidate -= epsilon;
+                if (candidate < 0)
+                    return 0;
+            }
+            return Math.Round(candidate, 3);
+        }
+        public abstract void RenderEffect(IEnumerable<BeatDetector.VdjEvent> values);
 
 
         public void StartCalculation()

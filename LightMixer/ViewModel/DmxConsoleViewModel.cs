@@ -69,21 +69,6 @@ namespace LightMixer.ViewModel
                     ret = Midi.MIDI_InStart(_midiInHandle);
                     ret = Midi.MIDI_OutReset(_midiInHandle);
                 }
-
-                /*MidiController = Process.Start(new ProcessStartInfo
-                {
-                    FileName = "MidiController.exe",
-                    UseShellExecute = false,
-                    CreateNoWindow = true,
-                    RedirectStandardInput = true,
-
-                });
-                MidiController.StandardInput.WriteLine(GetTotalControl()+1);
-                MidiController.StandardInput.WriteLine(CreateLedMessage(62, true).Message);
-                MidiController.StandardInput.WriteLine(CreateResetMessage().Message);*/
-
-
-
             }
             catch (Exception vexp)
             {
@@ -146,7 +131,7 @@ namespace LightMixer.ViewModel
                 var shortMsg = new MidiShortMessage(param1, param2);
                 //Debug.WriteLine("Msg={0} Param1={1} Param2={2}", msg, p1, p2);
                 Debug.WriteLine(shortMsg.Channel + " Note:" + shortMsg.Note + " " + shortMsg.Velocity);
-                dispatcher.Invoke(() =>
+                BootStrap.Dispatcher.Invoke(() =>
                 {
                     ProcessAllMessage(shortMsg);
 

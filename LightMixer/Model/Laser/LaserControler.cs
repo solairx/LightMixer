@@ -72,7 +72,7 @@ namespace LaserDisplay
 
         public void Start()
         {
-            GreenLaser.Start();
+           GreenLaser.Start();
         }
 
         public void Stop()

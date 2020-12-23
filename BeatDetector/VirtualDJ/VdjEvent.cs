@@ -13,6 +13,8 @@ namespace BeatDetector
         public string Elapsed { get; internal set; }
         public string BPM { get; internal set; }
 
+        private static VDJPoi DefaultPOI = new VDJPoi();
+
         public double BpmAsDouble
         {
             get
@@ -48,7 +50,7 @@ namespace BeatDetector
                 {
                     return currentPoi;
                 }
-                return new VDJPoi();
+                return DefaultPOI;
             }
         }
 
@@ -64,7 +66,7 @@ namespace BeatDetector
                 {
                     return currentPoi;
                 }
-                return new VDJPoi();
+                return DefaultPOI;
             }
         }
 

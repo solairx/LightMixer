@@ -7,12 +7,14 @@ using System.Linq;
 using System.ServiceProcess;
 using System.Text;
 using DmxLib;
+using LightMixer;
 
 namespace DmxLightingService
 {
     public partial class DmxLightingService : ServiceBase
     {
-        private DmxController  controller;
+        private BootStrap bootstrap;
+
         public DmxLightingService()
         {
             InitializeComponent();
@@ -22,14 +24,12 @@ namespace DmxLightingService
 
         protected override void OnStart(string[] args)
         {
-            System.Threading.Thread.Sleep(10000);
-            controller = new DmxController();
-            controller.Start();
+            bootstrap = new BootStrap(new ServiceDispatcher());
+            // var bootstrap = new BootStrap();
         }
 
         protected override void OnStop()
         {
-            controller.Stop();
         }
 
 

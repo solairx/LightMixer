@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LightMixer;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceProcess;
@@ -13,12 +14,14 @@ namespace DmxLightingService
         /// </summary>
         static void Main()
         {
+            
             ServiceBase[] ServicesToRun;
             ServicesToRun = new ServiceBase[] 
 			{ 
 				new DmxLightingService() 
 			};
             ServiceBase.Run(ServicesToRun);
+            
         }
     }
 }

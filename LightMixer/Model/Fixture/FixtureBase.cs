@@ -5,10 +5,9 @@ using System.Text;
 
 namespace LightMixer.Model.Fixture
 {
-    public  abstract class FixtureBase
-    {
-        
 
+    public  abstract class FixtureBase 
+    {
         public FixtureBase(int dmxAddress)
         {
             this.StartDmxAddress = dmxAddress;
@@ -19,6 +18,8 @@ namespace LightMixer.Model.Fixture
             get;
             set;
         }
+        
+        public abstract int DmxLenght { get; }
 
         public abstract byte?[] Render();
     }

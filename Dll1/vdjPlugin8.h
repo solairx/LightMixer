@@ -161,7 +161,6 @@ public:
 	HRESULT GetStringInfo(const char *command, char *result, int size) {return cb->GetStringInfo(command,result,size);}
 
 
-
 	IVdjCallbacks8 *cb;
 };
 

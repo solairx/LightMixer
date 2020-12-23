@@ -7,9 +7,41 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Hosting;
+using System.Diagnostics;
+using BeatDetector;
+using System.Windows.Threading;
 
 namespace LightMixer
 {
+    public class UiDispatcher : IDispatcher
+    {
+        private Dispatcher innerDispatcher;
+        public UiDispatcher(Dispatcher dispatcher)
+        {
+            innerDispatcher = dispatcher;
+        }
+        public void Invoke(Action action)
+        {
+            innerDispatcher.Invoke(action);
+        }
+    }
+
+    public class ServiceDispatcher : IDispatcher
+    {
+        public ServiceDispatcher()
+        {
+        }
+        public void Invoke(Action action)
+        {
+            action.Invoke();
+        }
+    }
+
+    public interface IDispatcher
+    {
+        void Invoke(Action action);
+
+    }
     public class BootStrap
     {
         public static IUnityContainer UnityContainer
@@ -18,22 +50,33 @@ namespace LightMixer
             set;
         }
 
-        public BootStrap()
+        public static IDispatcher Dispatcher;
+
+        public BootStrap(IDispatcher dispatcher)
         {
-            new PhidGetService();
+            Dispatcher = dispatcher;
             UnityContainer = new UnityContainer();
+            UnityContainer.RegisterInstance<IDispatcher>(dispatcher);
+            UnityContainer.RegisterInstance<SharedEffectModel>( new SharedEffectModel());
+            var virtualDjServer = new VirtualDjServer();
+            var dmxWrapper = new VComWrapper();
+            dmxWrapper.initPro("com3");
+            dmxWrapper.sendGetWidgetParametersRequest((ushort)0);
+            UnityContainer.RegisterInstance(dmxWrapper);
+            
             var beatDetector = new BeatDetector.BeatDetector();
             var sceneService = new SceneService(beatDetector);
+            UnityContainer.RegisterInstance(new PhidGetService());
+                      
+            
             SharedEffectModel.BeatDetector = beatDetector;
             BootStrap.UnityContainer.RegisterInstance<BeatDetector.BeatDetector>(beatDetector);
             BootStrap.UnityContainer.RegisterInstance<SceneService>(sceneService);
-
-            SharedEffectModel mn = new SharedEffectModel();
-            UnityContainer.RegisterInstance<SharedEffectModel>(mn);
+                       
             UnityContainer.RegisterInstance<LightService.DmxServiceClient>(new LightService.DmxServiceClient());
             DmxModel model = new DmxModel();
-            var dmxChaser = new DmxChaser();
-            var sceneRenderedService = new SceneRenderedService(sceneService, beatDetector, dmxChaser);
+            var dmxChaser = new DmxChaser(virtualDjServer);
+            var sceneRenderedService = new SceneRenderedService(sceneService, dmxChaser, dmxWrapper, virtualDjServer);
             UnityContainer.RegisterInstance<DmxChaser>(dmxChaser);
             BootStrap.UnityContainer.RegisterInstance<SceneRenderedService>(sceneRenderedService);
             UnityContainer.RegisterInstance<DmxModel>(model);
@@ -45,6 +88,7 @@ namespace LightMixer
             }
             catch (Exception vexp)
             {
+                Debug.WriteLine(vexp.ToString());
                 MessageBox.Show("Can't open webapi service for Listen, " + vexp.Message);
             }
         }

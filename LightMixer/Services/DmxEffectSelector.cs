@@ -51,7 +51,7 @@ namespace LightMixer.Model
                     }
                     if (GetSecondBeforeNextPOI(workingEvent, nextPoi) < 8)
                     {
-                        dmxChaser.mBpmDetector.BeatRepeat = 1.5;
+                        dmxChaser.mBpmDetector.BeatRepeat = 2;
                     }
 
                     if (GetSecondBeforeNextPOI(workingEvent, nextPoi) < 6)

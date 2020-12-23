@@ -36,7 +36,7 @@ namespace LightMixer.Model
         public SharedEffectModel()
         {
             this.UiDispatcher = Dispatcher.CurrentDispatcher;
-
+            
         }
 
         public double MaxBoothFlashIntesity
@@ -129,9 +129,6 @@ namespace LightMixer.Model
 
         }
 
-        
-
-
         public bool AutoChangeGobo
         {
             get
@@ -200,6 +197,7 @@ namespace LightMixer.Model
         }
 
         private Color TargetColor = Colors.AliceBlue;
+        private SceneService sceneService;
 
         public void RotateColor()
         {
@@ -447,9 +445,7 @@ namespace LightMixer.Model
                 list.Add(MovingHeadFixture.Gobo.Star);
                 list.Add(MovingHeadFixture.Gobo.TriangleSpiral);
                 list.Add(MovingHeadFixture.Gobo.TriangleSpiral2);
-                
-
-                
+                              
                 return list;
             }
         }

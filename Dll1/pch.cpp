@@ -1,6 +1,9 @@
 #include "pch.h"
 #include <string>
-
+#include <thread> 
+#include <sstream>
+#include <iostream>
+#include <fstream> // add this
 
 //-----------------------------------------------------------------------------
 HRESULT VDJ_API CMyPlugin8::OnLoad()
@@ -18,8 +21,8 @@ HRESULT VDJ_API CMyPlugin8::OnLoad()
 
 	OnParameter(ID_SLIDER_1);
 
-
-
+	//Sleep(5000);
+	//this->OnStart();
 	return S_OK;
 }
 //-----------------------------------------------------------------------------
@@ -29,7 +32,7 @@ HRESULT VDJ_API CMyPlugin8::OnGetPluginInfo(TVdjPluginInfo8* infos)
 	infos->Author = "Atomix Productions";
 	infos->Description = "My first VirtualDJ 8 plugin";
 	infos->Version = "1.0";
-	infos->Flags = 0x00;
+	infos->Flags = VDJFLAG_PROCESSFIRST;
 	infos->Bitmap = NULL;
 	return S_OK;
 }
@@ -74,61 +77,101 @@ HRESULT VDJ_API CMyPlugin8::OnParameter(int id)
 	return S_OK;
 }
 HANDLE pipe;
+int test;
 
 HRESULT VDJ_API CMyPlugin8::OnProcessSamples(float* buffer, int nb)
 {
-	std::string result = "";
-	result = AddToString("fileName", GetStringFromVDJ("get loaded_song \"Filename\""), result);
-	result = AddToString("filePath", GetStringFromVDJ("get loaded_song \"Filepath\""), result);
-	result = AddToString("beatNum", GetStringFromVDJ("get_beat_num"), result);
-
-	result = AddToString("beatBar16", GetStringFromVDJ("get Beat_bar 16"), result);
-	result = AddToString("beatBar", GetStringFromVDJ("get Beat_bar"), result);
-	result = AddToString("beatPos", GetStringFromVDJ("get_beatpos"), result);
-	result = AddToString("bpm", GetStringFromVDJ("get_bpm"), result);
-	result = AddToString("position", GetStringFromVDJ("get_position"), result);
-
-	result = AddToString("volume", GetStringFromVDJ("get_volume"), result);
-	result = AddToString("deck", GetStringFromVDJ("get deck"), result);
-	result = AddToString("crossfader", GetStringFromVDJ("crossfader"), result);
-	result = AddToString("elapsed", GetStringFromVDJ("get_time elapsed 1000"), result);
-	result = result.append("\r\n");
-
-
-
-	if (result.length() > 0)
-	{
-
-		DWORD numWritten;
-		if (pipe !=0 && pipe != NULL && !WriteFile(pipe, result.c_str(), result.length(), &numWritten, NULL))
-		{
-			this->OnStart();
-		};
-
-	}
 	return S_OK;
 }
 
-std::string CMyPlugin8::AddToString(const char* vdjCommand, std::string result, std::string source)
-{
-	source.append(vdjCommand);
-	source.append("=");
-	source.append(result);
-	source.append(",");
-	return source;
-}
 
-HRESULT VDJ_API CMyPlugin8::OnStart()
+
+bool thrdStart = false;
+void CMyPlugin8::task1()
 {
-	pipe = CreateFile(TEXT("\\\\.\\pipe\\virtualDJ"), GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, 0, NULL);
-	bool connected = ConnectNamedPipe(pipe, NULL);
-	if (!connected)
+	//pipe = CreateFile(TEXT("\\\\.\\pipe\\virtualDJ"), GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, 0, NULL);
+//	bool connected = ConnectNamedPipe(pipe, NULL);
+//	if (!connected)
 	{
 		//DisconnectNamedPipe(pipe);
 	//	pipe = NULL;
 	}
+	while (thrdStart)
+	{
+	//	std::stringstream ss;
+
+		DWORD numWritten;
+		 
+		std::string crossfader = GetStringFromVDJ("crossfader");
+		std::ofstream out{ TEXT("\\\\.\\pipe\\virtualDJ"), std::wofstream::trunc };
+		
+		out << "fileName=" <<  GetStringFromVDJ("deck  1 get loaded_song \"Filename\"") << ",";
+		out << "filePath=" << GetStringFromVDJ("deck  1 get loaded_song \"Filepath\" ") << ",";
+		//result = AddToString("beatNum", GetStringFromVDJ("deck  1 get_beat_num"), result);
+		//result = AddToString("beatBar16", GetStringFromVDJ("deck  1 get Beat_bar 16"), result);
+		//result = AddToString("beatBar", GetStringFromVDJ("deck  1 get Beat_bar"), result);
+		out << "beatPos=" << GetStringFromVDJ("deck  1 get_beatpos") << ",";
+		out << "bpm=" << GetStringFromVDJ("deck  1 get_bpm") << ",";
+		out << "position=" << GetStringFromVDJ("deck  1 get_position") << ",";
+		out << "volume=" << GetStringFromVDJ("deck  1 get_volume") << ",";
+		out << "deck=1,";
+		out << "crossfader=" << crossfader << ",";
+		out << "elapsed=" << GetStringFromVDJ("deck  1 get_time elapsed 1000") << ",";
+		out << "\r\n";
+		
+		
+		//if (pipe != 0 && pipe != NULL && !WriteFile(pipe, ss.binary, ss.str().length(), &numWritten, NULL))
+		{
+			//this->OnStart();
+		};
+		out << "fileName=" << GetStringFromVDJ("deck  2 get loaded_song \"Filename\"") << ",";
+		out << "filePath=" << GetStringFromVDJ("deck  2 get loaded_song \"Filepath\" ") << ",";
+		//result = AddToString("beatNum", GetStringFromVDJ("deck  1 get_beat_num"), result);
+		//result = AddToString("beatBar16", GetStringFromVDJ("deck  1 get Beat_bar 16"), result);
+		//result = AddToString("beatBar", GetStringFromVDJ("deck  1 get Beat_bar"), result);
+		out << "beatPos=" << GetStringFromVDJ("deck  2 get_beatpos") << ",";
+		out << "bpm=" << GetStringFromVDJ("deck  2 get_bpm") << ",";
+		out << "position=" << GetStringFromVDJ("deck  2 get_position") << ",";
+		out << "volume=" << GetStringFromVDJ("deck  2 get_volume") << ",";
+		out << "deck=2,";
+		out << "crossfader=" << crossfader << ",";
+		out << "elapsed=" << GetStringFromVDJ("deck  2 get_time elapsed 1000") << ",";
+		out << "\r\n";
+		//if (pipe != 0 && pipe != NULL && !WriteFile(pipe, ss.str().c_str(), ss.str().length(), &numWritten, NULL))
+		{
+			//this->OnStart();
+		};
+
+		
+		Sleep(30);
+	}
+}
+std::thread thrd;
+
+HRESULT VDJ_API CMyPlugin8::OnStart()
+{
+	if (!thrdStart)
+	{
+		thrd = std::thread(&CMyPlugin8::task1, this);
+	}
+	thrdStart = true;
 	return 0;
 }
+
+
+
+std::string CMyPlugin8::GetStringFromVDJ(const char* vdjCommand)
+{
+	std::string fileName = "";
+	char temp_filepath[512];
+    GetStringInfo(vdjCommand, temp_filepath, 512);
+	
+	fileName.append(temp_filepath);
+	fileName.erase(fileName.find_last_not_of(" \n\r\t") + 1);
+	
+	return fileName;
+}
+
 
 HRESULT VDJ_API CMyPlugin8::OnStop()
 {
@@ -137,19 +180,17 @@ HRESULT VDJ_API CMyPlugin8::OnStop()
 		DisconnectNamedPipe(pipe);
 		pipe = NULL;
 	}
+	if (thrdStart)
+	{
+		thrdStart = false;
+		thrd.join();
+	}
+	
+	
 	return 0;
 }
 
-std::string CMyPlugin8::GetStringFromVDJ(const char* vdjCommand)
-{
-	HRESULT hr;
-	std::string fileName = "";
-	char temp_filepath[512];
-	hr = GetStringInfo(vdjCommand, temp_filepath, 512);
-	fileName.append(temp_filepath);
-	fileName.erase(fileName.find_last_not_of(" \n\r\t") + 1);
-	return fileName;
-}
+
 
 //---------------------------------------------------------------------------
 HRESULT VDJ_API CMyPlugin8::OnGetParameterString(int id, char* outParam, int outParamSize)

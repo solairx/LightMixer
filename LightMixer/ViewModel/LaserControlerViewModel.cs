@@ -19,8 +19,8 @@ namespace LightMixer.ViewModel
 
             laser.Start();
             mBpmDetector = BootStrap.UnityContainer.Resolve<BeatDetector.BeatDetector>();
-            mBpmDetector.BeatEvent += new BeatDetector.BeatDetector.BeatHandler(mBpmDetector_BeatEvent);
-            mBpmDetector.BpmEvent += new BeatDetector.BeatDetector.BpmHandler(mBpmDetector_BpmEvent);
+           // mBpmDetector.BeatEvent += new BeatDetector.BeatDetector.BeatHandler(mBpmDetector_BeatEvent);
+           // mBpmDetector.BpmEvent += new BeatDetector.BeatDetector.BpmHandler(mBpmDetector_BpmEvent);
             
         }
 

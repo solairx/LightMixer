@@ -4,6 +4,7 @@ using Microsoft.Practices.Unity;
 using LightMixer.Model;
 using Phidgets;
 using Phidgets.Events;
+using System.Diagnostics;
 
 namespace LightMixer
 {
@@ -24,7 +25,7 @@ namespace LightMixer
             }
             catch (Exception vepx)
             {
-                //   MessageBox.Show("Unable to connecto to the PhidGet, that might be expected");
+                Debug.WriteLine(vepx.ToString());
             }
         }
 
@@ -34,11 +35,8 @@ namespace LightMixer
             {
                 var chaser = BootStrap.UnityContainer.Resolve<DmxChaser>();
                 var shared = BootStrap.UnityContainer.Resolve<SharedEffectModel>();
-                var beatDetector = BootStrap.UnityContainer.Resolve<BeatDetector.BeatDetector>();
-                shared.Dispatcher.Invoke(new Action(() =>
+                BootStrap.Dispatcher.Invoke(new Action(() =>
                 {
-
-
                     shared.AutoChangeColorOnBeat = false;
 
                     if (e.Value)

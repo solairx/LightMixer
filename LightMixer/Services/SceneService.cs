@@ -75,8 +75,6 @@ public class SceneService
         FixtureGroup boothGroup6 = new FixtureGroup();
         boothGroup6.FixtureInGroup.Add(bootDjLed6);
 
-
-
         Scene indoorScene = new Scene { Name = indoorSceneName };
         Scene outdoorScene = new Scene { Name = outDoorSceneName };
         var basementZone = new Zone { Name = basementZoneName };

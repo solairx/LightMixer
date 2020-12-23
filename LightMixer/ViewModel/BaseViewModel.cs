@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Linq.Expressions;
 using System.Windows;
+using LightMixer;
 using Microsoft.Practices.Prism.Events;
 using UIFrameWork.Utils;
 
@@ -89,7 +90,7 @@ namespace UIFrameWork
 
         public void AsyncOnPropertyChange<TProperty>(Expression<Func<BaseViewModel, TProperty>> expression)
         {
-            Dispatcher.Invoke(() =>
+            BootStrap.Dispatcher.Invoke(() =>
             {
                 this.OnPropertyChanged(expression);
             });
@@ -97,7 +98,7 @@ namespace UIFrameWork
 
         public void AsyncOnPropertyChange(string name)
         {
-            Dispatcher.Invoke(() =>
+            BootStrap.Dispatcher.Invoke(() =>
             {
                 this.OnPropertyChanged(name);
             });

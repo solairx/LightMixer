@@ -5,30 +5,14 @@ using System.Text;
 
 namespace LightMixer.Model.Fixture
 {
-    public class RgbFixture : FixtureBase
+    public class RgbFixture : RgbFixtureBase
     {
         public RgbFixture(int dmxAddress) : base(dmxAddress) 
         {
 
         }
 
-        public byte RedValue
-        {
-            get;
-            set;
-        }
-
-        public byte GreenValue
-        {
-            get;
-            set;
-        }
         
-        public byte BlueValue
-        {
-            get;
-            set;
-        }
 
         public override byte?[] Render()
         {
@@ -38,6 +22,8 @@ namespace LightMixer.Model.Fixture
             arr[StartDmxAddress +2] = BlueValue;
             return arr;
         }
+
+        public override int DmxLenght => 4;
 
     }
 }

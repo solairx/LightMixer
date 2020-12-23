@@ -25,11 +25,18 @@ namespace DmxLib
 
         public void Start()
         {
-            kit = new InterfaceKit();
+            try
+            {
+                kit = new InterfaceKit();
 
-            kit.open("127.0.0.1", 5001);
-            kit.waitForAttachment();
-            kit.InputChange += new InputChangeEventHandler(kit_InputChange);
+                kit.open("127.0.0.1", 5001);
+                kit.waitForAttachment();
+                kit.InputChange += new InputChangeEventHandler(kit_InputChange);
+            }
+            catch (Exception exp)
+            {
+
+            }
             dmx = new VComWrapper();
             dmx.initPro("com3");
             dmx.sendGetWidgetParametersRequest((ushort)0);

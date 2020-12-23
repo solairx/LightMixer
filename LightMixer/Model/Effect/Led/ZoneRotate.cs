@@ -13,7 +13,7 @@ namespace LightMixer.Model
         public ZoneRotateEffect(BeatDetector.BeatDetector detector, FixtureCollection currentValue, Func<double> intensityGetter, Func<double> intensityFlashGetter)
             : base(detector, currentValue, intensityGetter, intensityFlashGetter) { }
 
-        public override void DmxFrameCall(IEnumerable<BeatDetector.VdjEvent> values)
+        public override void RenderEffect(IEnumerable<BeatDetector.VdjEvent> values)
         {
             var currentGroups = CurrentValue.FixtureGroups;
             if (currentGroups.Count() == 0) return;

@@ -64,6 +64,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BeatDetector\BeatDetector.csproj">
+      <Project>{0B5CAD10-7334-468A-A6AE-D47CC1DD5B12}</Project>
+      <Name>BeatDetector</Name>
+    </ProjectReference>
     <ProjectReference Include="..\LightMixer\LightMixer.csproj">
       <Project>{68C9AFB7-4D80-4B0E-8A2C-1151A3698B27}</Project>
       <Name>LightMixer</Name>

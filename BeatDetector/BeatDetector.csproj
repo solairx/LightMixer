@@ -87,8 +87,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseViewModel.cs" />
+    <Compile Include="WaveInBeatDetector.cs" />
     <Compile Include="BeatDetector.cs" />
-    <Compile Include="Detector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VirtualDJ\SortableObservableCollection.cs" />
     <Compile Include="VirtualDJ\VdjEvent.cs" />

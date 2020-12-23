@@ -381,7 +381,14 @@
     </ApplicationDefinition>
     <Compile Include="BootStrap.cs" />
     <Compile Include="dj.Designer.cs" />
+    <Compile Include="DMX\DMXLevelArgs.cs" />
+    <Compile Include="DMX\DMXMessage.cs" />
+    <Compile Include="DMX\DMXProMsgLabel.cs" />
+    <Compile Include="DMX\FlashReplyArgs.cs" />
+    <Compile Include="Model\Effect\RgbEffectBase.cs" />
+    <Compile Include="Model\Fixture\RgbFixtureBase.cs" />
     <Compile Include="PhidGetService.cs" />
+    <Compile Include="DMX\SerialNumberArgs.cs" />
     <Compile Include="Services\ActiveDeckSelector.cs" />
     <Compile Include="Services\DmxEffectSelector.cs" />
     <Compile Include="Model\Effect\Led\BreathingEffect.cs" />
@@ -395,6 +402,7 @@
     <Compile Include="Model\Service\IRemoteLightService.cs" />
     <Compile Include="Model\Effect\Led\AllOffEffect.cs" />
     <Compile Include="Model\DmxChannelStatus.cs" />
+    <Compile Include="DMX\VComWrapper.cs" />
     <Compile Include="ViewModel\DmxChaser.cs" />
     <Compile Include="ViewModel\DmxModel.cs" />
     <Compile Include="Model\Effect\Led\AllOn.cs" />
@@ -461,6 +469,7 @@
     <Compile Include="Model\Laser\WaveLib\WaveOut.cs" />
     <Compile Include="Model\Laser\WaveLib\WaveStream.cs" />
     <Compile Include="Services\OpenDmx.cs" />
+    <Compile Include="DMX\WidgetParameterArgs.cs" />
     <Page Include="View\DmxConsoleView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

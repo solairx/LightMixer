@@ -85,7 +85,7 @@ namespace LightMixer.Model.Service
             var chaser = BootStrap.UnityContainer.Resolve<DmxChaser>();
             var shared = BootStrap.UnityContainer.Resolve<SharedEffectModel>();
             var beatDetector = BootStrap.UnityContainer.Resolve<BeatDetector.BeatDetector>();
-            shared.Dispatcher.Invoke(new Action(() =>
+            BootStrap.Dispatcher.Invoke(new Action(() =>
             {
 
                 shared.MaxLightFlashIntesity = flash;
@@ -103,7 +103,7 @@ namespace LightMixer.Model.Service
             var chaser = BootStrap.UnityContainer.Resolve<DmxChaser>();
             var shared = BootStrap.UnityContainer.Resolve<SharedEffectModel>();
             var beatDetector = BootStrap.UnityContainer.Resolve<BeatDetector.BeatDetector>();
-            shared.Dispatcher.Invoke(new Action(() =>
+            BootStrap.Dispatcher.Invoke(new Action(() =>
             {
 
                 shared.Red = Convert.ToByte(red);
@@ -134,7 +134,7 @@ namespace LightMixer.Model.Service
 
             var laser = ServiceExchangeSingleton.Instance;
 
-            shared.Dispatcher.Invoke(new Action(() =>
+            BootStrap.Dispatcher.Invoke(new Action(() =>
             {
                 laser.AutoChangeEvent = AutoChangeEvent;
                 laser.AutoChangeEventLaser = AutoChangeEventLaser;
@@ -167,7 +167,7 @@ namespace LightMixer.Model.Service
 
             var laser = ServiceExchangeSingleton.Instance;
 
-            shared.Dispatcher.Invoke(new Action(() =>
+            BootStrap.Dispatcher.Invoke(new Action(() =>
             {
                 laser.AutoChangeEvent = contract.AutoChangeEvent;
                 laser.AutoChangeEventLaser = contract.AutoChangeEventLaser;
@@ -248,7 +248,7 @@ namespace LightMixer.Model.Service
         {
             var chaser = BootStrap.UnityContainer.Resolve<DmxChaser>();
             var shared = BootStrap.UnityContainer.Resolve<SharedEffectModel>();
-            shared.Dispatcher.Invoke(new Action(() => {
+            BootStrap.Dispatcher.Invoke(new Action(() => {
 
                 shared.CurrentMovingHeadGobo = shared.MovingHeadGobo.FirstOrDefault(o => o.ToString() == gobo);
                 shared.CurrentMovingHeadProgram = shared.MovingHeadProgram.FirstOrDefault(o => o.ToString() == program);
@@ -266,7 +266,7 @@ namespace LightMixer.Model.Service
             var chaser = BootStrap.UnityContainer.Resolve<DmxChaser>();
             var shared = BootStrap.UnityContainer.Resolve<SharedEffectModel>();
             var beatDetector = BootStrap.UnityContainer.Resolve<BeatDetector.BeatDetector>();
-            shared.Dispatcher.Invoke(new Action(() =>
+            BootStrap.Dispatcher.Invoke(new Action(() =>
             {
                 shared.CurrentMovingHeadGobo = contract.CurrentMovingHeadGobo;
                 shared.CurrentMovingHeadProgram = contract.CurrentMovingHeadProgram;

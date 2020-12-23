@@ -1,27 +1,25 @@
-﻿using System;
+﻿using radio42.Multimedia.Midi;
+using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.ComponentModel;
 using System.Text;
-using Un4seen.Bass;
-using Un4seen.Bass.AddOn.Fx;
-using Un4seen.Bass.Misc;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.Windows.Media;
 
 namespace BeatDetector
 {
-    public class WaveInBeatDetector
+    public class BeatDetector : INotifyPropertyChanged
     {
-        private int mStream = 0;
-        private RECORDPROC _myRecProc;
-        
-        private DateTime lastBeatRunned;
+        public static BeatDetector Instance;
 
-        public event BeatHandler BeatEvent;
-        public delegate void BeatHandler(bool Beat, object caller);
 
-        public event BpmHandler BpmEvent;
-        public delegate void BpmHandler(double Beat, object caller);
-
+        public event PropertyChangedEventHandler PropertyChanged;
         private double _beatRepeat = 1;
+        private Brush _beatBackground;
+        private Brush _blackColor = new SolidColorBrush(Color.FromRgb(0, 0, 0));
+        private Brush _redColor = new SolidColorBrush(Color.FromRgb(255, 0, 0));
+
 
         public double BeatRepeat
         {
@@ -32,74 +30,46 @@ namespace BeatDetector
             set
             {
                 _beatRepeat = value;
+                if (this.PropertyChanged != null)
+                {
+                    this.PropertyChanged(this, new PropertyChangedEventArgs(nameof(BeatRepeat)));
+                }
+                if (value > 1.05 || value < 0.95)
+                {
+                    BeatBackground = _redColor;
+                }
+                else
+                {
+                    BeatBackground = _blackColor;
+                }
             }
         }
 
-        BPMCounter counter = new BPMCounter(10, 44100);
-        public double bpm;
-        public bool beat = false;
-        public double mbeatpos;
-        public float mpercent;
-        public WaveInBeatDetector()
+        public Brush BeatBackground
         {
-
-            if (Bass.BASS_RecordInit(-1))
+            get
             {
-                _myRecProc = new RECORDPROC(MyRecording);
-                counter.BPMHistorySize = 10;
-                counter.MaxBPM = 200;
-                counter.MinBPM = 40;
-                int mStream = Bass.BASS_RecordStart(44100, 2, BASSFlag.BASS_RECORD_PAUSE, 10, _myRecProc, IntPtr.Zero);
-                Bass.BASS_ChannelPlay(mStream, false);
+                return _beatBackground;
             }
-            else
+            set
             {
-                throw new Exception("Cannot start recording");
+                _beatBackground = value;
+                if (this.PropertyChanged != null)
+                {
+                    this.PropertyChanged(this, new PropertyChangedEventArgs(nameof(BeatBackground)));
+                }
+
             }
-
-
         }
 
 
-        private bool MyRecording(int handle, IntPtr buffer, int length, IntPtr user)
+        public BeatDetector()
         {
-            
-            double currentBpm = 60;
-            bool newBeat = counter.ProcessAudio(handle, false);
-
-            if (counter.BPM < 180 && counter.BPM > 60)
-            {
-                currentBpm = counter.BPM;
-            }
-
-            if (newBeat != beat && BeatEvent != null)
-            {
-                if (BeatEvent !=null)
-                BeatEvent(beat, this);
-                lastBeatRunned = DateTime.Now;
-            }
-            else if (lastBeatRunned.AddSeconds(1 / (currentBpm * BeatRepeat / 60)).Ticks < DateTime.Now.Ticks)
-            {
-                if (BeatEvent != null)
-                BeatEvent(true, this);
-                lastBeatRunned = DateTime.Now;
-            }
-
-
-            if (this.bpm != currentBpm && BeatEvent != null)
-                BpmEvent(currentBpm, this);
-
-            this.beat = newBeat;
-            this.bpm = counter.BPM;
-            return true;
+            Instance = this;
+            _beatBackground = _blackColor;
         }
 
-        public void Stop()
-        {
-            // free the stream
-            Bass.BASS_StreamFree(mStream);
-            // free BASS
-            Bass.BASS_Free();
-        }
+               
     }
+
 }

@@ -8,22 +8,25 @@ using System.Collections.Generic;
 using System.Linq;
 using static LightMixer.Model.DmxChaser;
 using Microsoft.Practices.ObjectBuilder2;
+using System.Diagnostics;
 
 namespace LightMixer.Model
 {
     public class SceneRenderedService
     {
-        private readonly SceneService sceneService;
-        private readonly BeatDetector.BeatDetector beatDetector;
+        public readonly SceneService sceneService;
         private readonly DmxChaser legacyChaser;
+        private readonly VComWrapper dmxWrapper;
+        private readonly VirtualDjServer vdjServer;
         private bool isRunning = true;
-        private DateTime LastUpdateOnUI = DateTime.Now;
         private Thread runningThread;
         private DmxEffectSelector DmxEffectSelector = new DmxEffectSelector();
         private ConcurrentDictionary<int, VdjEvent> LastVdjEvent = new ConcurrentDictionary<int, VdjEvent>();
         private ActiveDeckSelector ActiveDeckSelector;
+        private int FrameRate = 25; //25 ms
+        private int UpdateUiRate = 4; // update every 4*25 ms (100ms )
 
-        public SceneRenderedService(SceneService sceneService, BeatDetector.BeatDetector beatDetector, DmxChaser legacyChaser)
+        public SceneRenderedService(SceneService sceneService, DmxChaser legacyChaser, VComWrapper dmxWrapper, VirtualDjServer vdjServer)
         {
             ActiveDeckSelector = new ActiveDeckSelector();
             LastVdjEvent[1] = new VdjEvent();
@@ -31,13 +34,14 @@ namespace LightMixer.Model
             LastVdjEvent[3] = new VdjEvent();
             LastVdjEvent[4] = new VdjEvent();
             this.sceneService = sceneService;
-            this.beatDetector = beatDetector;
             this.legacyChaser = legacyChaser;
+            this.dmxWrapper = dmxWrapper;
+            this.vdjServer = vdjServer;
             runningThread = new Thread(new ThreadStart(Run));
-            runningThread.IsBackground = true;
+        //    runningThread.IsBackground = true;
             runningThread.Start();
-            if (beatDetector.VirtualDjServer != null)
-                beatDetector.VirtualDjServer.VirtualDjServerEvent += VirtualDjServer_VirtualDjServerEvent;
+            if (vdjServer != null)
+                vdjServer.VirtualDjServerEvent += VirtualDjServer_VirtualDjServerEvent;
         }
 
         private void Run()
@@ -47,13 +51,14 @@ namespace LightMixer.Model
                 try
                 {
                     var activeDeck = ActiveDeckSelector.Select(LastVdjEvent.Values);
-                    if (DateTime.Now.Subtract(LastUpdateOnUI).TotalMilliseconds > 100)
+                    UpdateUiRate++;
+                    if (UpdateUiRate > 4)
                     {
+                        UpdateUiRate = 0;
                         legacyChaser.UpdateVDJUiElement(activeDeck);
-                        LastUpdateOnUI = DateTime.Now;
                         if (legacyChaser.POIs?.Any() == false)
                         {
-                            beatDetector.VirtualDjServer.vdjDataBase.CheckForRefresh();
+                            vdjServer.vdjDataBase.CheckForRefresh();
                         }
                     }
 
@@ -75,12 +80,21 @@ namespace LightMixer.Model
                         {
                             legacyChaser.LedEffectCollection[0]._sharedEffectModel.RotateColor();
                         }
-                    BootStrap.UnityContainer.Resolve<LightService.DmxServiceClient>().UpdateAllDmxValue(ConvertByteArray(ledArray));
+
+                    for (int position = 0; position < ledArray.Length; position++)
+                    {
+                        if (dmxWrapper.Buffer[position] != ledArray[position])
+                        {
+                            dmxWrapper.Buffer = ConvertByteArray(ledArray);
+                            break;
+                        }
+                    }
                 }
                 catch (Exception vexp)
                 {
+                    Debug.WriteLine(vexp.ToString());
                 }
-                Thread.Sleep(25);
+                Thread.Sleep(FrameRate);
             }
         }
 
@@ -94,7 +108,7 @@ namespace LightMixer.Model
                 byte?[] fixtureValue = fixture.Render();
 
                 int x = 0;
-                for (x = 0; x < 512; x++)
+                for (x = fixture.StartDmxAddress; x < fixture.StartDmxAddress + fixture.DmxLenght; x++)
                 {
                     if (fixtureValue[x].HasValue)
                         array[x] = fixtureValue[x].Value;
@@ -122,13 +136,17 @@ namespace LightMixer.Model
 
         public EffectBase GetCurrentEffect<T>(string scene, string zone) where T : FixtureCollection
         {
-            return sceneService.Scenes
-                .First(o => o.Name == scene)
-                .Zones.Where(z => z.Name == zone)
-                .First().FixtureTypes.OfType<T>()
+            return GetCurrentFixture<T>(scene, zone)
                 .First().CurrentEffect;
         }
 
+        public IEnumerable<FixtureCollection> GetCurrentFixture<T>(string scene, string zone) where T : FixtureCollection
+        {
+            return sceneService.Scenes
+                            .First(o => o.Name == scene)
+                            .Zones.Where(z => z.Name == zone)
+                            .First().FixtureTypes.OfType<T>();
+        }
 
         public void SetCurrentEffect<T>(string scene, string zone, EffectBase newEffect) where T : FixtureCollection
         {
