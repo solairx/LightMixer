@@ -34,7 +34,7 @@ namespace LightMixer.Model
 
         private static void PoiIsValidSelectEffect(DmxChaser dmxChaser, VdjEvent workingEvent, VDJPoi currentPoi, VDJPoi nextPoi)
         {
-            if (currentPoi.IsBreak)
+            if (currentPoi.IsBreak )
             {
                 if (dmxChaser.UseFlashTransition && nextPoi != null && GetSecondBeforeNextPOI(workingEvent, nextPoi) < 10)
                 {
@@ -49,24 +49,28 @@ namespace LightMixer.Model
                         dmxChaser.CurrentLedEffect = dmxChaser.LedEffectCollection.OfType<ZoneFlashEffect>().First();
                         dmxChaser.CurrentBoothEffect = dmxChaser.BoothEffectCollection.OfType<ZoneFlashEffect>().First();
                     }
-                    if (GetSecondBeforeNextPOI(workingEvent, nextPoi) < 8)
+                    if (GetSecondBeforeNextPOI(workingEvent, nextPoi) < 3)
                     {
                         dmxChaser.mBpmDetector.BeatRepeat = 2;
                     }
 
-                    if (GetSecondBeforeNextPOI(workingEvent, nextPoi) < 6)
+                    else if (GetSecondBeforeNextPOI(workingEvent, nextPoi) < 5)
                     {
                         dmxChaser.mBpmDetector.BeatRepeat = 3;
                     }
 
-                    if (GetSecondBeforeNextPOI(workingEvent, nextPoi) < 5)
+                    else if (GetSecondBeforeNextPOI(workingEvent, nextPoi) < 6)
                     {
                         dmxChaser.mBpmDetector.BeatRepeat = 5;
                     }
 
-                    if (GetSecondBeforeNextPOI(workingEvent, nextPoi) < 3)
+                    else if (GetSecondBeforeNextPOI(workingEvent, nextPoi) < 10)
                     {
                         dmxChaser.mBpmDetector.BeatRepeat = 10;
+                    }
+                    else
+                    {
+                        dmxChaser.mBpmDetector.BeatRepeat = 1;
                     }
                 }
                 else
