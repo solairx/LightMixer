@@ -28,10 +28,10 @@ HRESULT VDJ_API CMyPlugin8::OnLoad()
 //-----------------------------------------------------------------------------
 HRESULT VDJ_API CMyPlugin8::OnGetPluginInfo(TVdjPluginInfo8* infos)
 {
-	infos->PluginName = "MyPlugin8";
-	infos->Author = "Atomix Productions";
-	infos->Description = "My first VirtualDJ 8 plugin";
-	infos->Version = "1.0";
+	infos->PluginName = "SolairxLight";
+	infos->Author = "SolairX Productions";
+	infos->Description = "Light Automation";
+	infos->Version = "1.1";
 	infos->Flags = VDJFLAG_PROCESSFIRST;
 	infos->Bitmap = NULL;
 	return S_OK;
@@ -83,7 +83,6 @@ HRESULT VDJ_API CMyPlugin8::OnProcessSamples(float* buffer, int nb)
 {
 	return S_OK;
 }
-
 
 
 bool thrdStart = false;
@@ -143,7 +142,7 @@ void CMyPlugin8::task1()
 		};
 
 		
-		Sleep(30);
+		Sleep(100);
 	}
 }
 std::thread thrd;

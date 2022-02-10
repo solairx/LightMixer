@@ -37,25 +37,57 @@ public class SceneService
         RgbFixture bootDjLed5 = new RgbFixture(36);
         RgbFixture bootDjLed6 = new RgbFixture(39);
 
+        /* var haRgb1 = new HASSWRGWFixture("light.rgbss1", false);
+         var haRgb2 = new HASSWRGWFixture("light.rgbss2", false);
+         var haRgb3 = new HASSWRGWFixture("light.rgbss3", false);
+         var haRgb4 = new HASSWRGWFixture("light.rgbss4", false);
+         var haRgb5 = new HASSWRGWFixture("light.rgbss5", false);*/
+         var haRgb1 = new TasmotaRGWFixture("192.168.1.46", false);
+         var haRgb2 = new TasmotaRGWFixture("192.168.1.31", false);
+         var haRgb3 = new TasmotaRGWFixture("192.168.1.6", false);
+         var haRgb4 = new TasmotaRGWFixture("192.168.1.3", false);
+         var haRgb5 = new TasmotaRGWFixture("192.168.1.37", false);
+        var haRgb6 = new TasmotaRGWFixture("192.168.1.11", false);
+        var haRgb7 = new TasmotaRGWFixture("192.168.1.51", false);
+        var haRgbDM = new ShellyDimmerFixture("light.dimmer_plafond_ss", true);
+        WledServer djBoothWled = new WledServer("192.168.1.9");
+        var wledBooth1 = new WledFixture(djBoothWled, djBoothWled.State.seg[0]);
+        var wledBooth2 = new WledFixture(djBoothWled, djBoothWled.State.seg[1]);
+        var wledBooth3 = new WledFixture(djBoothWled, djBoothWled.State.seg[2]);
+        var wledBooth4 = new WledFixture(djBoothWled, djBoothWled.State.seg[3]);
+
         FixtureGroup movingHeadGroup = new FixtureGroup();
         movingHeadGroup.FixtureInGroup.Add(new MovingHeadFixture(399));
-        movingHeadGroup.FixtureInGroup.Add(new MovingHeadFixture(299)); /// remmeber that we have a 0 here , it start at 1 on the ctrl
+        movingHeadGroup.FixtureInGroup.Add(new MovingHeadFixture(299)); /// remember that we have a 0 here , it start at 1 on the ctrl
 
         FixtureGroup group1 = new FixtureGroup();
         group1.FixtureInGroup.Add(fixtureLed1);
         group1.FixtureInGroup.Add(fixtureLed2);
+        group1.FixtureInGroup.Add(haRgb1);
+        group1.FixtureInGroup.Add(haRgb2);
+        group1.FixtureInGroup.Add(wledBooth1);
 
         FixtureGroup group2 = new FixtureGroup();
         group2.FixtureInGroup.Add(fixtureLed3);
+        group2.FixtureInGroup.Add(haRgb3);
+        group2.FixtureInGroup.Add(haRgb6);
         group2.FixtureInGroup.Add(fixtureLed4);
+        group2.FixtureInGroup.Add(wledBooth2);
 
         FixtureGroup group3 = new FixtureGroup();
         group3.FixtureInGroup.Add(fixtureLed5);
+        group3.FixtureInGroup.Add(haRgb4);
+        group3.FixtureInGroup.Add(haRgb7);
         group3.FixtureInGroup.Add(fixtureLed6);
+        group3.FixtureInGroup.Add(wledBooth3);
 
         FixtureGroup group4 = new FixtureGroup();
         group4.FixtureInGroup.Add(fixtureLed7);
+        group4.FixtureInGroup.Add(haRgb5);
         group4.FixtureInGroup.Add(fixtureLed8);
+        group4.FixtureInGroup.Add(haRgbDM);
+        group4.FixtureInGroup.Add(wledBooth4);
+
 
         FixtureGroup boothGroup1 = new FixtureGroup();
         boothGroup1.FixtureInGroup.Add(bootDjLed1);
@@ -94,7 +126,7 @@ public class SceneService
         FixtureCollection poolRgbLed = new RGBLedFixtureCollection();
         poolZone.FixtureTypes.Add(poolRgbLed);
         poolRgbLed.FixtureGroups.AddRange(new[] { boothGroup1, boothGroup2, boothGroup3, boothGroup4, boothGroup5, boothGroup6 });
-        rgbLedDownLight.EffectList.Add(new AllOffEffect(beatDetector, rgbLedDownLight,()=> sharedEffect.MaxLightIntesity, () => sharedEffect.MaxLightFlashIntesity));
+        rgbLedDownLight.EffectList.Add(new AllOffEffect(beatDetector, rgbLedDownLight, () => sharedEffect.MaxLightIntesity, () => sharedEffect.MaxLightFlashIntesity));
         rgbLedDownLight.EffectList.Add(new AllOnEffect(beatDetector, rgbLedDownLight, () => sharedEffect.MaxLightIntesity, () => sharedEffect.MaxLightFlashIntesity));
         rgbLedDownLight.EffectList.Add(new RandomEffect(beatDetector, rgbLedDownLight, () => sharedEffect.MaxLightIntesity, () => sharedEffect.MaxLightFlashIntesity));
         rgbLedDownLight.EffectList.Add(new BreathingEffect(beatDetector, rgbLedDownLight, () => sharedEffect.MaxLightIntesity, () => sharedEffect.MaxLightFlashIntesity));

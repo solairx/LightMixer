@@ -27,6 +27,7 @@ namespace LightMixer.Model
                     ((RgbFixture)fixtureToreset).RedValue = this.SetValueFlash(0);
                     ((RgbFixture)fixtureToreset).GreenValue = this.SetValueFlash(0);
                     ((RgbFixture)fixtureToreset).BlueValue = this.SetValueFlash(0);
+                    ((RgbFixture)fixtureToreset).WhiteValue = 0;
                 }
             }
             
@@ -35,6 +36,7 @@ namespace LightMixer.Model
                     ((RgbFixture)fixture).RedValue = this.SetValue(this._sharedEffectModel.Red);
                     ((RgbFixture)fixture).GreenValue = this.SetValue(this._sharedEffectModel.Green);
                     ((RgbFixture)fixture).BlueValue = this.SetValue(this._sharedEffectModel.Blue);
+                ((RgbFixture)fixture).WhiteValue = 0;
             }
             if (isBeat)
                 nextGroup++;

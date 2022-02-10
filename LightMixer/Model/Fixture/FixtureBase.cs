@@ -8,10 +8,19 @@ namespace LightMixer.Model.Fixture
 
     public  abstract class FixtureBase 
     {
+        
+
+        protected FixtureBase() { }
+
         public FixtureBase(int dmxAddress)
         {
             this.StartDmxAddress = dmxAddress;
         }
+
+        public virtual bool IsRenderOnDmx  => true ;
+        public virtual bool SupportAggresiveUpdate => true;
+
+        public virtual WledServer HttpMulticastRenderer => null;
 
         public int StartDmxAddress
         {

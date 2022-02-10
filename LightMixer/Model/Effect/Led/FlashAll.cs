@@ -9,28 +9,32 @@ namespace LightMixer.Model
 {
     public class FlashAllEffect : EffectBase
     {
+        public override WledEffect CurrentWledEffect => WledEffect.FX_MODE_STATIC;
+
         public FlashAllEffect(BeatDetector.BeatDetector detector, FixtureCollection currentValue, Func<double> intensityGetter, Func<double> intensityFlashGetter)
             : base(detector, currentValue, intensityGetter, intensityFlashGetter) { }
 
         public override void RenderEffect(IEnumerable<BeatDetector.VdjEvent> values)
         {
             var workingGroup = CurrentValue.FixtureGroups;
-            if (isBeat)
+            if (isBeat || isSimulatedBeat)
             {
                 isBeat = false;
-
+                
                 foreach (FixtureGroup group in workingGroup)
                 {
                     foreach (FixtureBase fixture in group.FixtureInGroup)
                     {
-                        if (fixture is RgbFixture)
+                        if (fixture is RgbFixture && (!isSimulatedBeat || fixture.SupportAggresiveUpdate))
                         {
                             ((RgbFixture)fixture).RedValue = this.SetValueFlash(this._sharedEffectModel.Red);
                             ((RgbFixture)fixture).GreenValue = this.SetValueFlash(this._sharedEffectModel.Green);
                             ((RgbFixture)fixture).BlueValue = this.SetValueFlash(this._sharedEffectModel.Blue);
+                            ((RgbFixture)fixture).WhiteValue = 255;
                         }
                     }
                 }
+                isSimulatedBeat = false;
 
             }
             else
@@ -44,6 +48,7 @@ namespace LightMixer.Model
                             ((RgbFixture)fixture).RedValue = 0;
                             ((RgbFixture)fixture).GreenValue = 0;
                             ((RgbFixture)fixture).BlueValue = 0;
+                            ((RgbFixture)fixture).WhiteValue = 0;
                         }
                     }
                 }

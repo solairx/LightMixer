@@ -9,6 +9,7 @@ using System.Linq;
 using static LightMixer.Model.DmxChaser;
 using Microsoft.Practices.ObjectBuilder2;
 using System.Diagnostics;
+using LightMixer.View;
 
 namespace LightMixer.Model
 {
@@ -25,6 +26,9 @@ namespace LightMixer.Model
         private ActiveDeckSelector ActiveDeckSelector;
         private int FrameRate = 25; //25 ms
         private int UpdateUiRate = 4; // update every 4*25 ms (100ms )
+        private int UpdateColorRate = 8; // update every 4*25 ms (100ms )
+        private int UpdateWebDeviceRate = 2; // update every 4*25 ms (100ms )
+        private OS2lEvent LastOs2lEvent = new OS2lEvent { };
 
         public SceneRenderedService(SceneService sceneService, DmxChaser legacyChaser, VComWrapper dmxWrapper, VirtualDjServer vdjServer)
         {
@@ -41,13 +45,19 @@ namespace LightMixer.Model
         //    runningThread.IsBackground = true;
             runningThread.Start();
             if (vdjServer != null)
+            {
                 vdjServer.VirtualDjServerEvent += VirtualDjServer_VirtualDjServerEvent;
+                vdjServer.OS2lServerEvent += VdjServer_OS2lServerEvent;
+            }
         }
+
+        
 
         private void Run()
         {
-            while (isRunning)
+            while (!MainWindow.IsDead)
             {
+                var sw = new Stopwatch();
                 try
                 {
                     var activeDeck = ActiveDeckSelector.Select(LastVdjEvent.Values);
@@ -74,18 +84,30 @@ namespace LightMixer.Model
                         .SelectMany(o => o.FixtureTypes)
                         .SelectMany(o => o.FixtureGroups)
                         .SelectMany(o => o.FixtureInGroup);
-                    byte?[] ledArray = render(allfixture);
+                    byte?[] dmxFrameArray = RenderDMXFrame(allfixture);
                     if (legacyChaser.LedEffectCollection.Count != 0)
-                        if (legacyChaser.LedEffectCollection[0]._sharedEffectModel.AutoChangeColorOnBeat)
+                    {
+                        if (legacyChaser.LedEffectCollection[0]._sharedEffectModel.AutoChangeColorOnBeat && UpdateColorRate == 0)
                         {
                             legacyChaser.LedEffectCollection[0]._sharedEffectModel.RotateColor();
+                            legacyChaser.LedEffectCollection[0]._sharedEffectModel.RotateColor();
+                            legacyChaser.LedEffectCollection[0]._sharedEffectModel.RotateColor();
+                            legacyChaser.LedEffectCollection[0]._sharedEffectModel.RotateColor();
+                            legacyChaser.LedEffectCollection[0]._sharedEffectModel.RotateColor();
+                            legacyChaser.LedEffectCollection[0]._sharedEffectModel.RotateColor();
+                            legacyChaser.LedEffectCollection[0]._sharedEffectModel.RotateColor();
+                            legacyChaser.LedEffectCollection[0]._sharedEffectModel.RotateColor();
                         }
+                        UpdateColorRate++;
+                        if (UpdateColorRate > 8)
+                            UpdateColorRate = 0;
+                    }
 
-                    for (int position = 0; position < ledArray.Length; position++)
+                    for (int position = 0; position < dmxFrameArray.Length; position++)
                     {
-                        if (dmxWrapper.Buffer[position] != ledArray[position])
+                        if (dmxWrapper.Buffer[position] != dmxFrameArray[position])
                         {
-                            dmxWrapper.Buffer = ConvertByteArray(ledArray);
+                            dmxWrapper.Buffer = ConvertByteArray(dmxFrameArray);
                             break;
                         }
                     }
@@ -94,15 +116,16 @@ namespace LightMixer.Model
                 {
                     Debug.WriteLine(vexp.ToString());
                 }
+          //      Debug.WriteLine("FRAME TIME : " + sw.ElapsedMilliseconds);
                 Thread.Sleep(FrameRate);
             }
         }
 
-        private byte?[] render(IEnumerable<FixtureBase> fixtures)
+        private byte?[] RenderDMXFrame(IEnumerable<FixtureBase> fixtures)
         {
             byte?[] array = new byte?[512];
 
-            foreach (FixtureBase fixture in fixtures)
+            foreach (FixtureBase fixture in fixtures.Where(f=>f.IsRenderOnDmx))
             {
 
                 byte?[] fixtureValue = fixture.Render();
@@ -114,11 +137,34 @@ namespace LightMixer.Model
                         array[x] = fixtureValue[x].Value;
                 }
             }
+            foreach (FixtureBase fixture in fixtures.Where(f => !f.IsRenderOnDmx))
+            {
+                byte?[] fixtureValue = fixture.Render();
+            }
+
+            foreach (var renderer in fixtures.Where(f => f.HttpMulticastRenderer !=null)
+                .Select(f=>f.HttpMulticastRenderer)
+                .Distinct())
+            {
+                renderer.Render();
+            }
             return array;
         }
 
+        
+
+        private void VdjServer_OS2lServerEvent(OS2lEvent os2lEvent)
+        {
+            LastOs2lEvent = os2lEvent;
+            LastVdjEvent[1].BeatPos = LastOs2lEvent.BeatPos;
+            LastVdjEvent[2].BeatPos = LastOs2lEvent.BeatPos;
+        }
         private void VirtualDjServer_VirtualDjServerEvent(VdjEvent vdjEvent)
         {
+            if (LastOs2lEvent.BeatPos != 0)
+            {
+                vdjEvent.BeatPos = LastOs2lEvent.BeatPos;
+            }
             LastVdjEvent[vdjEvent.Deck] = vdjEvent;
         }
 

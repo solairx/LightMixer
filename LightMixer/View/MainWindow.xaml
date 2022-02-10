@@ -15,8 +15,8 @@
         Name="myMainWindow"
     MinHeight="550"
     MinWidth="700"
-		WindowStyle="SingleBorderWindow">
-    
+		WindowStyle="SingleBorderWindow" Height="752.5" Width="796.5">
+
     <Window.Resources>
         <ViewModel:MainWindowViewModel x:Key="MainWindowViewModelDataSource" d:IsDataSource="True"/>
     </Window.Resources>
@@ -24,6 +24,10 @@
         <Binding Mode="OneWay" Source="{StaticResource MainWindowViewModelDataSource}"/>
     </Window.DataContext>
     <Grid Name="MainGrid" SizeChanged="MainGrid_SizeChanged">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="659*"/>
+            <ColumnDefinition Width="101*"/>
+        </Grid.ColumnDefinitions>
 
         <Grid.LayoutTransform>
             <ScaleTransform x:Name="ApplicationScaleTransform"
@@ -32,9 +36,9 @@
                         ScaleX="{Binding ElementName=myMainWindow, Path=ScaleValue}"
                         ScaleY="{Binding ElementName=myMainWindow, Path=ScaleValue}" />
         </Grid.LayoutTransform>
-        
-        <TabControl TabStripPlacement="Left"  >
-            
+
+        <TabControl TabStripPlacement="Left" Grid.ColumnSpan="2"  >
+
             <TabControl.Resources>
                 <Style TargetType="{x:Type TabItem}">
                     <Setter Property="Padding" Value="4" />
@@ -92,7 +96,7 @@
             </TabItem>
             <TabItem Header="Dmx &#xd;&#xa;Console" Margin="0" Foreground="White">
                 <View:DmxConsoleView>
-             
+
 
                 </View:DmxConsoleView>
             </TabItem>

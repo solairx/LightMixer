@@ -10,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using System.Diagnostics;
 using BeatDetector;
 using System.Windows.Threading;
+using LightMixer.View;
 
 namespace LightMixer
 {
@@ -57,8 +58,9 @@ namespace LightMixer
             Dispatcher = dispatcher;
             UnityContainer = new UnityContainer();
             UnityContainer.RegisterInstance<IDispatcher>(dispatcher);
-            UnityContainer.RegisterInstance<SharedEffectModel>( new SharedEffectModel());
-            var virtualDjServer = new VirtualDjServer();
+            var virtualDjServer = new VirtualDjServer(()=>MainWindow.IsDead);
+            UnityContainer.RegisterInstance<SharedEffectModel>( new SharedEffectModel(virtualDjServer));
+            
             var dmxWrapper = new VComWrapper();
             dmxWrapper.initPro("com3");
             dmxWrapper.sendGetWidgetParametersRequest((ushort)0);

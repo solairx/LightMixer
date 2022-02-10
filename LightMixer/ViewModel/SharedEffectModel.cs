@@ -8,6 +8,7 @@ using LightMixer.Model.Fixture;
 using System.Windows.Media;
 using UIFrameWork;
 using BeatDetector;
+using System.Threading.Tasks;
 
 namespace LightMixer.Model
 {
@@ -33,10 +34,19 @@ namespace LightMixer.Model
         private MovingHeadFixture.Gobo _currentMovingHeadGobo = MovingHeadFixture.Gobo.Open;
         private MovingHeadFixture.Program _currentMovingHeadProgram = MovingHeadFixture.Program.Auto1;
 
-        public SharedEffectModel()
+        public SharedEffectModel(VirtualDjServer virtualDjServer)
         {
             this.UiDispatcher = Dispatcher.CurrentDispatcher;
-            
+            VirtualDjServer = virtualDjServer;
+            if (virtualDjServer != null)
+            {
+                virtualDjServer.OS2lServerEvent += VirtualDjServer_OS2lServerEvent;
+            }
+        }
+
+        private void VirtualDjServer_OS2lServerEvent(OS2lEvent os2lEvent)
+        {
+            IsBeat = true;
         }
 
         public double MaxBoothFlashIntesity
@@ -69,7 +79,7 @@ namespace LightMixer.Model
 
         }
 
-        
+
 
         public double MaxLightFlashIntesity
         {
@@ -182,6 +192,26 @@ namespace LightMixer.Model
 
         }
 
+        public bool IsBeat
+        {
+            get
+            {
+                return this._isBeat;
+            }
+
+            set
+            {
+                _isBeat = value;
+                AsyncOnPropertyChange(o => this.IsBeat);
+                Task.Run(() =>
+                {
+                    System.Threading.Thread.Sleep(100);
+                    _isBeat = false;
+                    AsyncOnPropertyChange(o => this.IsBeat);
+                });
+            }
+        }
+
         public double MaxLightIntesityMovingHead
         {
             get
@@ -198,6 +228,7 @@ namespace LightMixer.Model
 
         private Color TargetColor = Colors.AliceBlue;
         private SceneService sceneService;
+        private bool _isBeat;
 
         public void RotateColor()
         {
@@ -228,7 +259,7 @@ namespace LightMixer.Model
 
         public Color TransitionColorTo(Color current, Color target)
         {
-            var beat = Convert.ToByte(BeatDetector?.BeatRepeat ?? 3 * 10) ;
+            var beat = Convert.ToByte(BeatDetector?.BeatRepeat ?? 3 * 10);
             byte modifer = beat;
             var newColor = new Color();
             newColor.R = GetSpecterColorByte(current.R, target.R, modifer);
@@ -273,7 +304,7 @@ namespace LightMixer.Model
                 a.B == b.B);
         }
 
-        public byte Red 
+        public byte Red
         {
             get
             {
@@ -429,7 +460,7 @@ namespace LightMixer.Model
             }
         }
 
-        
+
         public ObservableCollection<MovingHeadFixture.Gobo> MovingHeadGobo
         {
             get
@@ -445,11 +476,11 @@ namespace LightMixer.Model
                 list.Add(MovingHeadFixture.Gobo.Star);
                 list.Add(MovingHeadFixture.Gobo.TriangleSpiral);
                 list.Add(MovingHeadFixture.Gobo.TriangleSpiral2);
-                              
+
                 return list;
             }
         }
 
-
+        public VirtualDjServer VirtualDjServer { get; }
     }
 }

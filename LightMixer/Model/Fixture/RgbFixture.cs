@@ -1,18 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
 namespace LightMixer.Model.Fixture
 {
+
     public class RgbFixture : RgbFixtureBase
     {
         public RgbFixture(int dmxAddress) : base(dmxAddress) 
         {
 
         }
+        public RgbFixture()
+        {
 
-        
+        }
+
 
         public override byte?[] Render()
         {

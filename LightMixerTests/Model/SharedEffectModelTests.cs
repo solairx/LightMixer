@@ -10,7 +10,7 @@ namespace LightMixer.Model.Tests
         public void GetSpecterColorByteGoingDownTest()
         {
 
-            var target = new SharedEffectModel();
+            var target = new SharedEffectModel(null);
             Assert.AreEqual(50, target.GetSpecterColorByte(60, 40, 10));
 
             Assert.AreEqual(40, target.GetSpecterColorByte(50, 40, 10));
@@ -25,7 +25,7 @@ namespace LightMixer.Model.Tests
         public void GetSpecterColorByteGoingUpTest()
         {
 
-            var target = new SharedEffectModel();
+            var target = new SharedEffectModel(null);
             Assert.AreEqual(70, target.GetSpecterColorByte(60, 100, 10));
 
             Assert.AreEqual(70, target.GetSpecterColorByte(60, 70, 10));

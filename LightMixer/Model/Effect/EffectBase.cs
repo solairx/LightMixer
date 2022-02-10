@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
+using LightMixer.Model.Fixture;
 using Microsoft.Practices.Unity;
 
 namespace LightMixer.Model
@@ -20,6 +22,9 @@ namespace LightMixer.Model
         protected ObservableCollection<Fixture.FixtureGroup> fixtureGroup;
         public SharedEffectModel _sharedEffectModel;
         protected bool isBeat = false;
+        protected bool isSimulatedBeat = false;
+        public virtual WledEffect CurrentWledEffect => WledEffect.FX_MODE_CHASE_COLOR;
+
         protected double bpm = 60;
 
         public byte SetValue(byte tentativeValue)
@@ -68,20 +73,49 @@ namespace LightMixer.Model
         }
 
         private double _lastProcessedBeat = 0;
+        private double lastBeatPos = 0;
+        private Stopwatch lastBeatPosRunTime = new Stopwatch();
 
         public void DmxFrameCall(IEnumerable<BeatDetector.VdjEvent> values)
         {
-            var currentDeck = values?.FirstOrDefault();   
+            var currentDeck = values?.FirstOrDefault(); 
             if (currentDeck !=null)
             {
+                /*  if (_lastProcessedBeat != currentDeck.BeatPos)
+                  {
+                      lastBeatPosRunTime = new Stopwatch();
+                      lastBeatPos = currentDeck.BeatPos;
+                  }*/
+
+                int beatFactor = Convert.ToInt32(BeatDetector.BeatDetector.Instance.BeatRepeat);
+
                 double beatOffSet = currentDeck.BeatPos + 0.0;
-                var beatPos = beatOffSet - Math.Truncate(beatOffSet )  ;
+                var beatPos = beatOffSet - Math.Truncate(beatOffSet );
+                
                 var ulpValue = Ulp(beatPos, 1d/BeatDetector.BeatDetector.Instance.BeatRepeat);
                 var currentBeatRounded = Math.Truncate(beatOffSet) + ulpValue ;
-                if (beatPos > ulpValue && beatPos <= (ulpValue + 0.180) && _lastProcessedBeat != currentBeatRounded)
+                if ( _lastProcessedBeat != currentBeatRounded)
                 {
                     _lastProcessedBeat = currentBeatRounded;
-                    isBeat = true;
+                    if (isBeat != true)
+                    {
+                        lastBeatPosRunTime = new Stopwatch();
+                        lastBeatPosRunTime.Start();
+                        isBeat = true;
+                        Debug.WriteLine(DateTime.Now.Millisecond + "BEAT");
+                    }
+                }
+                else if (beatFactor >1)
+                {
+                    double beatPerSec = currentDeck.BpmAsDouble / 60;
+                    var timeBeforeNextBeat = (1000 / beatPerSec) / beatFactor;
+                    if (lastBeatPosRunTime.ElapsedMilliseconds > timeBeforeNextBeat)
+                    {
+                        lastBeatPosRunTime = new Stopwatch();
+                        lastBeatPosRunTime.Start();
+                        isSimulatedBeat = true;
+                        Debug.WriteLine(DateTime.Now.Millisecond + "Simulated BEAT");
+                    }
                 }
                 this.bpm = currentDeck.BpmAsDouble;
 

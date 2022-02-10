@@ -11,11 +11,12 @@ namespace BeatDetector
     public class VDJXmlParser
     {
         public Dictionary<string, VDJSong> VDJDatabase = new Dictionary<string, VDJSong>();
-        private string filename = @"\\Desktop-pjdgjgm\d\VirtualDJ\database.xml";
+ //       private string filename = @"\\Desktop-pjdgjgm\d\VirtualDJ\database.xml";
+        private string filename = @"D:\VirtualDJ\database.xml";
 
         public VDJXmlParser()
         {
-            Reload();
+            // Reload();
         }
 
         private XDocument Load(FileStream textReader, Dictionary<string, VDJSong> dictionary)
@@ -101,8 +102,13 @@ namespace BeatDetector
         {
             try
             {
-                var textReader = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                if (!File.Exists(filename))
+                {
+                    MessageBox.Show("Unable to open VirtualDJ Database, file does not exist on " + filename);
+                    return;
+                }
                 var newEntry = new Dictionary<string, VDJSong>();
+                var textReader = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
                 Load(textReader, newEntry);
                 textReader.Close();
                 VDJDatabase = newEntry;
@@ -110,7 +116,8 @@ namespace BeatDetector
             }
             catch (Exception ex)
             {
-                throw new Exception("could not load " + filename,ex);
+                
+                MessageBox.Show("Unable to open VirtualDJ Database");
             }
         }
         private DateTime LastUpdated = DateTime.Now;

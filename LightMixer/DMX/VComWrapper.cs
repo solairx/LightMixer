@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace LightMixer
 {
@@ -16,6 +17,8 @@ namespace LightMixer
         public event EventHandler<DMXLevelArgs> DMXLevelsRecieved;
         public const int CHANNEL_COUNT = 512;  // can be any length up to 512. The shorter the faster.
         private byte[] buffer = new byte[CHANNEL_COUNT];
+
+        private bool PortOpen = false;
 
         public byte[] Buffer
         {
@@ -106,10 +109,12 @@ namespace LightMixer
             {
                 m_port.PortName = portName;
                 m_port.Open();
+                PortOpen = true;
                 return true;
             }
-            catch //(Exception ex)
+            catch (Exception ex)
             {
+                Debug.WriteLine(ex.ToString());
                 //throw new Exception(string.Format("Failed to open USB DMX Pro on comm port: {0} - Check Settings, Device",m_port.PortName),ex);
                 return false;
             }
@@ -250,6 +255,7 @@ namespace LightMixer
         /// <param name="configSize">the size of the user defined Data</param>
         public void sendGetWidgetParametersRequest(UInt16 configSize)
         {
+            if (!PortOpen) return;
             if (configSize > 508) throw new Exception("Config Size must be <= 508 bytes");
             byte[] size = new byte[2];
             size[0] = (byte)(configSize & 0xff);

@@ -1,6 +1,13 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Concurrent;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -10,16 +17,110 @@ namespace BeatDetector
     {
         private ConcurrentDictionary<Guid, VdjPipeServerInstance> InstanceList = new ConcurrentDictionary<Guid, VdjPipeServerInstance>();
         public VDJXmlParser vdjDataBase;
+        private readonly Func<bool> isDeadGetter;
 
         public event VirtualDjServerEventHandler VirtualDjServerEvent;
         public delegate void VirtualDjServerEventHandler(VdjEvent vdjEvent);
 
-        public VirtualDjServer()
+        public event OS2lServerHandler OS2lServerEvent;
+        public delegate void OS2lServerHandler(OS2lEvent os2lEvent);
+
+        public static Func<bool> IsDead = ()=>false;
+
+        public VirtualDjServer(Func<bool> IsDeadGetter)
         {
+            isDeadGetter = IsDeadGetter;
+            IsDead = IsDeadGetter;
             vdjDataBase = new VDJXmlParser();
             StartNewInstance();
             StartMonitor();
+            StartOS2l();
+        }
 
+        private void StartOS2l()
+        {
+            RegisterServiceToBonjour();
+            Task.Run(()=> StartOS2lListener());
+        }
+
+        private void StartOS2lListener()
+        {
+            TcpListener server = null;
+            try
+            {
+                Int32 port = 4444;
+                server = new TcpListener(port);
+                server.Start();
+                Byte[] bytes = new Byte[256];
+                String data = null;
+
+                // Enter the listening loop.
+                while (!isDeadGetter())
+                {
+                    TcpClient client = server.AcceptTcpClient();
+
+                    data = null;
+
+                    NetworkStream stream = client.GetStream();
+
+                    int i;
+
+                    while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
+                    {
+                        // sample :  {"evt":"beat","change":false,"pos":226,"bpm":134,"strength":0.7}
+                        data = System.Text.Encoding.ASCII.GetString(bytes, 0, i);
+                        Console.WriteLine("Received: {0}", data);
+                        data = data.ToLower();
+                        ParseOS2lMsg(data);
+                        data.Replace("{", "");
+                    }
+                    client.Close();
+                }
+            }
+            catch (SocketException e)
+            {
+                Debug.WriteLine("SocketException: {0}", e);
+            }
+            finally
+            {
+                server.Stop();
+            }
+        }
+
+        private void ParseOS2lMsg(string data)
+        {
+            try
+            {
+                data = data.ToLower();
+
+                var jsonstr = (JObject)JsonConvert.DeserializeObject(data);
+
+                var newEvent = new OS2lEvent();
+                foreach (var d in jsonstr.Children())
+                {
+                    var key = d.Path;
+                    var value = ((JValue)((JProperty)d).Value).Value;
+                    if (key == "pos")
+                    {
+                        newEvent.BeatPos = (Int64)value;
+                    }
+                }
+                OS2lServerEvent?.Invoke(newEvent);
+
+            }
+            catch (Exception v)
+            {
+
+            }
+        }
+
+        private void RegisterServiceToBonjour()
+        {
+            var svc = new ArkaneSystems.Arkane.Zeroconf.RegisterService();
+            svc.Name = "os2l";
+            svc.RegType = "_os2l._tcp.";
+            svc.Port = 4444;
+            svc.Register();
         }
 
         private void StartNewInstance()
@@ -36,7 +137,7 @@ namespace BeatDetector
             {
                 try
                 {
-                    while (true)
+                    while (true && !this.isDeadGetter())
                     {
                         try
                         {

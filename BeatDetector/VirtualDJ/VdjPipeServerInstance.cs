@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
 using System.Linq;
@@ -39,6 +40,7 @@ namespace BeatDetector
             Task.Factory.StartNew(() =>
             {
                 messageLine = messageLine.Substring(0, messageLine.Length - 1);
+                Debug.WriteLine(messageLine);
                 Dictionary<string, string> keyValuePairs = messageLine.Split(',')
                   .Select(value => value.Split('='))
                   .ToDictionary(pair => pair[0], pair => pair[1]);
@@ -51,6 +53,7 @@ namespace BeatDetector
                 //vdjEvent.BeatNumber = GetDoubleFromMessage(keyValuePairs, "beatNum");
                 //vdjEvent.BeatBar16 = GetDoubleFromMessage(keyValuePairs, "beatBar16");
                 //vdjEvent.BeatBar = GetDoubleFromMessage(keyValuePairs, "beatBar");
+                vdjEvent.BeatGrid = GetDoubleFromMessage(keyValuePairs, "beatGrid");
                 vdjEvent.BeatPos = GetDoubleFromMessage(keyValuePairs, "beatPos");
                 vdjEvent.Volume = GetDoubleFromMessage(keyValuePairs, "volume");
                 vdjEvent.Deck = GetIntFromMessage(keyValuePairs, "deck");
@@ -119,14 +122,14 @@ namespace BeatDetector
                     byte[] buffer = new byte[5120];
 
                     var streamReader = new StreamReader(vdjPipe);
-                    while (vdjPipe.IsConnected)
+                    while (vdjPipe.IsConnected && !VirtualDjServer.IsDead.Invoke())
                     {
                         LastUpdate = DateTime.Now;
                         var upcommingCommand = streamReader.ReadLine();
                         LastUpdate = null;
                         if (!string.IsNullOrWhiteSpace(upcommingCommand))
                             ProcessVdjEvent(upcommingCommand);
-                        Console.WriteLine(upcommingCommand);
+                    //    Console.WriteLine(upcommingCommand);
                     }
                     IsWaitingForConnection = false;
                     vdjPipe.Close();

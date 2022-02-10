@@ -28,7 +28,22 @@
         </DataTemplate>
     </UserControl.Resources>
 
-    <Grid Margin="0,0,0,-83">
+    <Grid Margin="0,0,0,-83" Background="Black">
+        <Border Margin="465,24,87,580" Height="16" Width="16"  >
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Setter Property="Background" Value="Gray"></Setter>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding SharedEffectModel.IsBeat}" Value="True">
+                            <Setter Property="Background" Value="Red"></Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding SharedEffectModel.IsBeat}" Value="false">
+                            <Setter Property="Background" Value="Gray"></Setter>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+        </Border>
 
         <ListBox HorizontalAlignment="Left" Margin="8,24,0,0" Width="134" ItemsSource="{Binding Chaser.LedEffectCollection}" SelectedItem="{Binding Chaser.CurrentLedEffect}" DisplayMemberPath="Name" Height="164" VerticalAlignment="Top"/>
         <Slider Margin="103,223,0,0" Maximum="100" Minimum="5" Value="{Binding SharedEffectModel.MaxLightIntesity}" TickFrequency="5" SmallChange="5" LargeChange="25" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="181"/>

@@ -20,6 +20,7 @@ namespace LightMixer.Model
                 fixture.RedValue = this.SetValue(this._sharedEffectModel.Red);
                 fixture.GreenValue = this.SetValue(this._sharedEffectModel.Green);
                 fixture.BlueValue = this.SetValue(this._sharedEffectModel.Blue);
+                fixture.WhiteValue = 0;
             }
 
             this.RaiseEvent();

@@ -19,6 +19,7 @@ namespace LightMixer.Model
                 fixture.RedValue = 0;
                 fixture.GreenValue = 0;
                 fixture.BlueValue = 0;
+                fixture.WhiteValue = 0;
             }
             this.RaiseEvent();
         }

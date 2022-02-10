@@ -35,12 +35,14 @@ namespace LightMixer.Model
                             ((RgbFixture)fixture).RedValue = this.SetValueFlash(255);
                             ((RgbFixture)fixture).GreenValue = this.SetValueFlash(255);
                             ((RgbFixture)fixture).BlueValue = this.SetValueFlash(255);
+                            ((RgbFixture)fixture).WhiteValue = 0;
                         }
                         else
                         {
                             ((RgbFixture)fixture).RedValue = this.SetValue((byte)(rnd.Next(255)/10));
                             ((RgbFixture)fixture).GreenValue = this.SetValue((byte)(rnd.Next(255) / 10));
                             ((RgbFixture)fixture).BlueValue = this.SetValue((byte)(rnd.Next(255) / 10));
+                            ((RgbFixture)fixture).WhiteValue = 0;
                         }
                     }
                 }

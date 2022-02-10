@@ -68,12 +68,21 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Arkane.Zeroconf, Version=1.2.20.0, Culture=neutral, PublicKeyToken=b8b190e47a4882b0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Arkane.Zeroconf.1.2.20\lib\netstandard2.0\Arkane.Zeroconf.dll</HintPath>
+    </Reference>
     <Reference Include="AvalonDock">
       <HintPath>.\AvalonDock.dll</HintPath>
     </Reference>
     <Reference Include="Bass.Net, Version=2.4.11.1, Culture=neutral, PublicKeyToken=b7566c273e6ef480, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\BeatDetector\Bass.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="HADotNet.Core, Version=1.5.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\HADotNet.Core.1.5.1\lib\netstandard2.0\HADotNet.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="HADotNet.Entities, Version=0.1.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\HADotNet.Entities.0.1.2\lib\netstandard2.0\HADotNet.Entities.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNetCore, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNetCore.2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.dll</HintPath>
@@ -279,14 +288,17 @@
     <Reference Include="Microsoft.VisualStudio.CodeCoverage.Shim, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeCoverage.16.6.1\lib\net45\Microsoft.VisualStudio.CodeCoverage.Shim.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Phidget21.NET, Version=2.1.8.208, Culture=neutral, PublicKeyToken=c2b1f2a3594bce52, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Program Files\Phidgets\Phidget21.NET.dll</HintPath>
     </Reference>
     <Reference Include="PresentationFramework.Aero2" />
+    <Reference Include="RestSharp, Version=106.11.7.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.106.11.7\lib\net452\RestSharp.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
@@ -352,6 +364,7 @@
     <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
     </Reference>
+    <Reference Include="System.Web" />
     <Reference Include="System.Web.Http, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.7\lib\net45\System.Web.Http.dll</HintPath>
     </Reference>
@@ -387,6 +400,11 @@
     <Compile Include="DMX\FlashReplyArgs.cs" />
     <Compile Include="Model\Effect\RgbEffectBase.cs" />
     <Compile Include="Model\Fixture\RgbFixtureBase.cs" />
+    <Compile Include="Model\Fixture\HASSWRGWFixture.cs" />
+    <Compile Include="Model\Fixture\ShellyDimmerFixture.cs" />
+    <Compile Include="Model\Fixture\TasmotaRGWFixture.cs" />
+    <Compile Include="Model\Fixture\WledEffect.cs" />
+    <Compile Include="Model\Fixture\WledFixture.cs" />
     <Compile Include="PhidGetService.cs" />
     <Compile Include="DMX\SerialNumberArgs.cs" />
     <Compile Include="Services\ActiveDeckSelector.cs" />

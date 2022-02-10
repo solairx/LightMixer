@@ -19,6 +19,7 @@ namespace LightMixer.View
     /// </summary>
     public partial class MainWindow : Window
     {
+
         public static readonly DependencyProperty ScaleValueProperty = DependencyProperty.Register("ScaleValue", typeof(double), typeof(MainWindow), new UIPropertyMetadata(1.0, new PropertyChangedCallback(OnScaleValueChanged), new CoerceValueCallback(OnCoerceScaleValue)));
 
         private static object OnCoerceScaleValue(DependencyObject o, object value)
@@ -83,11 +84,17 @@ namespace LightMixer.View
 
         private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (MessageBox.Show("Closing ?", "Are you sure", MessageBoxButton.YesNo) != MessageBoxResult.Yes)
+            if (!IsDead && MessageBox.Show("Closing ?", "Are you sure", MessageBoxButton.YesNo) != MessageBoxResult.Yes)
             {
                 e.Cancel = true;
             }
+            else
+            {
+                IsDead = true;
+            }
             
         }
+
+        public static bool IsDead = false;
     }
 }

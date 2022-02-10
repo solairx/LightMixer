@@ -5,6 +5,7 @@ using LightMixer.Model;
 using Phidgets;
 using Phidgets.Events;
 using System.Diagnostics;
+using System.Windows;
 
 namespace LightMixer
 {
@@ -26,6 +27,8 @@ namespace LightMixer
             catch (Exception vepx)
             {
                 Debug.WriteLine(vepx.ToString());
+                
+              //  MessageBox.Show("Unable to open PHIDGET");
             }
         }
 

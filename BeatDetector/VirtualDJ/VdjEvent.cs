@@ -3,6 +3,11 @@ using System.Linq;
 
 namespace BeatDetector
 {
+    public class OS2lEvent
+    {
+        public double BeatPos { get; set; }
+    }
+
     public class VdjEvent
     {
         public VDJSong VDJSong { get; set; }
@@ -84,7 +89,8 @@ namespace BeatDetector
         public double BeatNumber { get; internal set; }
         public double BeatBar16 { get; internal set; }
         public double BeatBar { get; internal set; }
-        public double BeatPos { get; internal set; }
+        public double BeatPos { get; set; }
+        public double BeatGrid { get; internal set; }
         public double Volume { get; internal set; }
         public int Deck { get; internal set; }
 

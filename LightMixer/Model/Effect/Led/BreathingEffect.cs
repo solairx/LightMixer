@@ -44,6 +44,7 @@ namespace LightMixer.Model
                         ((RgbFixture)fixture).RedValue = this.SetValue((byte)(this._sharedEffectModel.Red * next / 100d));
                         ((RgbFixture)fixture).GreenValue = this.SetValue((byte)(this._sharedEffectModel.Green * next / 100d));
                         ((RgbFixture)fixture).BlueValue = this.SetValue((byte)(this._sharedEffectModel.Blue * next / 100d));
+                        ((RgbFixture)fixture).WhiteValue = 0;
                     }
                 }
             }
