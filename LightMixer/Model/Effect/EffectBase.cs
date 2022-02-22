@@ -120,6 +120,11 @@ namespace LightMixer.Model
                 this.bpm = currentDeck.BpmAsDouble;
 
             }
+            foreach (FixtureBase fixture in CurrentValue.FixtureGroups.SelectMany(o => o.FixtureInGroup))
+            {
+                fixture.currentEffect = this;
+            }
+
             RenderEffect(values);
         }
 

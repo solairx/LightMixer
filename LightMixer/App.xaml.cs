@@ -18,6 +18,13 @@ namespace LightMixer
 
         public App()
         {
+            if (System.Diagnostics.Process.GetProcessesByName("LightMixer").Length >1)
+            {
+                MessageBox.Show("Already Running");
+                this.Shutdown();
+                return;
+            }
+            
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
             new BootStrap(new UiDispatcher(Dispatcher));
         }

@@ -18,6 +18,7 @@ namespace LightMixer.Model
                     fixture.RedValue = 0;
                     fixture.GreenValue = 0;
                     fixture.BlueValue = 0;
+                    (fixture as MovingHeadFixture).ProgramMode = MovingHeadFixture.Program.Disable;
                 }
             }
 

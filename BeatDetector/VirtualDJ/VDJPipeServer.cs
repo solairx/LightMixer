@@ -10,6 +10,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace BeatDetector
 {
@@ -50,7 +51,15 @@ namespace BeatDetector
             {
                 Int32 port = 4444;
                 server = new TcpListener(port);
-                server.Start();
+                try
+                {
+
+                    server.Start();
+                }
+                catch (SocketException ex)
+                {
+                    MessageBox.Show("Can't start listener on port 4444 for os2l");
+                }
                 Byte[] bytes = new Byte[256];
                 String data = null;
 

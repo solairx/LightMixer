@@ -21,6 +21,7 @@ public class SceneService
 
     private void Build()
     {
+        var fourHead = new RgbwMovingHeadFixture(349);
         RgbFixture fixtureLed3 = new RgbFixture(0);
         RgbFixture fixtureLed4 = new RgbFixture(3);
         RgbFixture fixtureLed5 = new RgbFixture(6);
@@ -59,6 +60,7 @@ public class SceneService
         FixtureGroup movingHeadGroup = new FixtureGroup();
         movingHeadGroup.FixtureInGroup.Add(new MovingHeadFixture(399));
         movingHeadGroup.FixtureInGroup.Add(new MovingHeadFixture(299)); /// remember that we have a 0 here , it start at 1 on the ctrl
+        movingHeadGroup.FixtureInGroup.Add(fourHead);
 
         FixtureGroup group1 = new FixtureGroup();
         group1.FixtureInGroup.Add(fixtureLed1);
@@ -87,7 +89,7 @@ public class SceneService
         group4.FixtureInGroup.Add(fixtureLed8);
         group4.FixtureInGroup.Add(haRgbDM);
         group4.FixtureInGroup.Add(wledBooth4);
-
+        
 
         FixtureGroup boothGroup1 = new FixtureGroup();
         boothGroup1.FixtureInGroup.Add(bootDjLed1);

@@ -8,8 +8,8 @@ namespace LightMixer.Model.Fixture
 
     public  abstract class FixtureBase 
     {
-        
 
+        public EffectBase currentEffect;
         protected FixtureBase() { }
 
         public FixtureBase(int dmxAddress)

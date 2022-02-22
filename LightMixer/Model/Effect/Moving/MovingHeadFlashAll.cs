@@ -22,7 +22,7 @@ namespace LightMixer.Model
                     ((MovingHeadFixture)fixture).Pan = 32000;
                     ((MovingHeadFixture)fixture).ProgramMode = _sharedEffectModel.CurrentMovingHeadProgram;
                     ((MovingHeadFixture)fixture).Speed = this.GetMaxedByte(this._sharedEffectModel.MaxSpeed * this.bpm);
-                    if (isBeat)
+                    if (isBeat || isSimulatedBeat)
                     {
 
 
@@ -40,13 +40,14 @@ namespace LightMixer.Model
                 }
             }
 
-            if (isBeat)
+            if (isBeat || isSimulatedBeat)
             {
                 isBeat = false;
+                isSimulatedBeat = false;
             }
 
 
-
+            
 
             this.RaiseEvent();
         }

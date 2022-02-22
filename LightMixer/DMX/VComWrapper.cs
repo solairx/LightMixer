@@ -2,6 +2,7 @@
 using System.Text;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Windows;
 
 namespace LightMixer
 {
@@ -111,6 +112,11 @@ namespace LightMixer
                 m_port.Open();
                 PortOpen = true;
                 return true;
+            }
+            catch (UnauthorizedAccessException ex2)
+            {
+                MessageBox.Show("Can't open com port to send DMX Data");
+                return false;
             }
             catch (Exception ex)
             {
