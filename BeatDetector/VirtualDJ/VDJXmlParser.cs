@@ -16,7 +16,7 @@ namespace BeatDetector
 
         public VDJXmlParser()
         {
-            // Reload();
+             Reload();
         }
 
         private XDocument Load(FileStream textReader, Dictionary<string, VDJSong> dictionary)

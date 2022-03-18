@@ -43,6 +43,14 @@ namespace BeatDetector
             }
         }
 
+        public bool IsPoiPlausible
+        {
+            get
+            {
+                return this.VDJSong?.Pois?.Count >= 3 || GetCurrentPoi.ID == 0 ;
+            }
+        }
+
         public VDJPoi GetCurrentPoi
         {
             get

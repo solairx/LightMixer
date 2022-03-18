@@ -3,13 +3,14 @@ using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace LightMixer.Model.Fixture
 {
     public class WledServer
     {
-        private HttpClient _httpClient = new HttpClient();
+        private HttpClient _httpClient = HttpClientFactory.Create();
         private readonly string ip;
         private string lastQuery = "";
         public WledJson State { get; }
@@ -40,6 +41,7 @@ namespace LightMixer.Model.Fixture
         }
         public WledServer(string ip)
         {
+            _httpClient.Timeout = TimeSpan.FromSeconds(10);
             State = new WledJson
             {
                 on = true,
@@ -67,9 +69,9 @@ namespace LightMixer.Model.Fixture
                         id = 1,
                         fx = 1,
                         on = true,
-                        bri= 100,
                         sx = 128,
                         ix = 128,
+                        bri= 255,
                         col = new int[][]
                         {
                             new int[] { 100, 100, 100, 0},
@@ -81,9 +83,9 @@ namespace LightMixer.Model.Fixture
                         id = 2,
                         fx = 1,
                         on = true,
-                        bri= 100,
                         sx = 128,
                         ix = 128,
+                        bri= 255,
                         col = new int[][]
                         {
                             new int[] { 100, 100, 100, 0},
@@ -95,9 +97,9 @@ namespace LightMixer.Model.Fixture
                         id = 3,
                         on = true,
                         fx = 1,
-                        bri= 100,
                         sx = 128,
                         ix = 128,
+                        bri= 255,
                         col = new int[][]
                         {
                             new int[] { 100, 100, 100, 0},
@@ -110,17 +112,26 @@ namespace LightMixer.Model.Fixture
             this.ip = ip;
         }
 
+        public CancellationTokenSource cts = new CancellationTokenSource();
+
         public void Render()
         {
             var jsonstr = JsonConvert.SerializeObject(State, Formatting.Indented);
-            if (jsonstr != lastQuery)
+            if (jsonstr != lastQuery  )
             {
+                cts.Cancel();
+                cts = new CancellationTokenSource();
                 lastQuery = jsonstr;
-                Task.Run(()=> _httpClient.PostAsync("http://" + ip + "/json/state", new StringContent(jsonstr, System.Text.Encoding.UTF8, "application/json")).Result);
+                Task.Run(() => GetResult(jsonstr));
             }
 
         }
 
+        private HttpResponseMessage GetResult(string jsonstr)
+        {
+            var res =  _httpClient.PostAsync("http://" + ip + "/json/state", new StringContent(jsonstr, System.Text.Encoding.UTF8, "application/json"),cts.Token).Result;
+            return res;
+        }
     }
     public class WledFixture : RgbFixture
     {
@@ -133,7 +144,8 @@ namespace LightMixer.Model.Fixture
 
         public WledFixture(WledServer wledServer, WledServer.Seg seg)
         {
-            client = new HttpClient();
+            client = HttpClientFactory.Create(); 
+            client.Timeout = TimeSpan.FromSeconds(10);
             this.wledServer = wledServer;
             this.seg = seg;
         }

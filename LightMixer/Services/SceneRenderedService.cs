@@ -10,6 +10,7 @@ using static LightMixer.Model.DmxChaser;
 using Microsoft.Practices.ObjectBuilder2;
 using System.Diagnostics;
 using LightMixer.View;
+using static LightMixer.Model.Fixture.MovingHeadFixture;
 
 namespace LightMixer.Model
 {
@@ -21,7 +22,7 @@ namespace LightMixer.Model
         private readonly VirtualDjServer vdjServer;
         private bool isRunning = true;
         private Thread runningThread;
-        private DmxEffectSelector DmxEffectSelector = new DmxEffectSelector();
+        private DmxEffectSelector DmxEffectSelector ;
         private ConcurrentDictionary<int, VdjEvent> LastVdjEvent = new ConcurrentDictionary<int, VdjEvent>();
         private ActiveDeckSelector ActiveDeckSelector;
         private int FrameRate = 25; //25 ms
@@ -32,6 +33,7 @@ namespace LightMixer.Model
 
         public SceneRenderedService(SceneService sceneService, DmxChaser legacyChaser, VComWrapper dmxWrapper, VirtualDjServer vdjServer)
         {
+            DmxEffectSelector = new DmxEffectSelector(this);
             ActiveDeckSelector = new ActiveDeckSelector();
             LastVdjEvent[1] = new VdjEvent();
             LastVdjEvent[2] = new VdjEvent();
@@ -87,8 +89,9 @@ namespace LightMixer.Model
                     byte?[] dmxFrameArray = RenderDMXFrame(allfixture);
                     if (legacyChaser.LedEffectCollection.Count != 0)
                     {
-                        if (legacyChaser.LedEffectCollection[0]._sharedEffectModel.AutoChangeColorOnBeat && UpdateColorRate == 0)
+                        /*if (legacyChaser.LedEffectCollection[0]._sharedEffectModel.AutoChangeColorOnBeat && UpdateColorRate == 0)
                         {
+                            // because we want to rotate more color :D
                             legacyChaser.LedEffectCollection[0]._sharedEffectModel.RotateColor();
                             legacyChaser.LedEffectCollection[0]._sharedEffectModel.RotateColor();
                             legacyChaser.LedEffectCollection[0]._sharedEffectModel.RotateColor();
@@ -100,7 +103,11 @@ namespace LightMixer.Model
                         }
                         UpdateColorRate++;
                         if (UpdateColorRate > 8)
-                            UpdateColorRate = 0;
+                            UpdateColorRate = 0;*/
+                        if (legacyChaser.LedEffectCollection[0]._sharedEffectModel.AutoChangeColorOnBeat)
+                        {
+                            legacyChaser.LedEffectCollection[0]._sharedEffectModel.RotateColor();
+                        }
                     }
 
                     for (int position = 0; position < dmxFrameArray.Length; position++)
@@ -196,11 +203,29 @@ namespace LightMixer.Model
 
         public void SetCurrentEffect<T>(string scene, string zone, EffectBase newEffect) where T : FixtureCollection
         {
+            var selectedZone =
             sceneService.Scenes
             .First(o => o.Name == scene)
-            .Zones.Where(z => z.Name == zone)
-            .Single().FixtureTypes.OfType<T>()
+            .Zones.Where(z => z.Name == zone);
+
+
+            selectedZone.Single().FixtureTypes.OfType<T>()
             .First().CurrentEffect = newEffect;
+        }
+
+        public void SetMovingHeadProgramEffect(string scene, string zone, Program newProgram) 
+        {
+            var selectedZone =
+            sceneService.Scenes
+            .First(o => o.Name == scene)
+            .Zones.Where(z => z.Name == zone);
+            
+            selectedZone.Single().FixtureTypes.OfType<MovingHeadFixtureCollection>()
+            .First()
+            .FixtureGroups
+            .SelectMany(o=>o.FixtureInGroup)
+            .OfType<MovingHeadFixture>()
+            .ForEach(mh=>mh.ProgramMode = newProgram);
         }
     }
 }

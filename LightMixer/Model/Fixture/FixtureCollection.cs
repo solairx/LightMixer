@@ -24,11 +24,14 @@ namespace LightMixer.Model
             }
             set
             {
+                var candidate = value;
                 if (!EffectList.Contains(value))
                 {
-                    throw new System.Exception("Cannot set an effect not in the collection");
+                    candidate = EffectList.FirstOrDefault(o => o?.Name == value?.Name);
+                    if (candidate == null || candidate.Name == null)
+                        throw new System.Exception("Cannot set an effect not in the collection");
                 }
-                currentEffect = value;
+                currentEffect = candidate;
                 CurrentEffectChanged?.Invoke();
             }
         }

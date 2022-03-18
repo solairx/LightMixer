@@ -14,4 +14,12 @@ namespace LightMixer.Model.Fixture
 
         public ObservableCollection<FixtureBase> FixtureInGroup { get; set; } = new ObservableCollection<FixtureBase>();
     }
+
+    public enum GroupZone
+    {
+        DjBooth,
+        Bar,
+        DanceFloor
+
+    }
 }

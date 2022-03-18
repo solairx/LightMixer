@@ -95,54 +95,39 @@ void CMyPlugin8::task1()
 		//DisconnectNamedPipe(pipe);
 	//	pipe = NULL;
 	}
+	
 	while (thrdStart)
 	{
 	//	std::stringstream ss;
 
 		DWORD numWritten;
-		 
+		std::ofstream deck1{ TEXT("\\\\.\\pipe\\virtualDJ"), std::wofstream::trunc };
 		std::string crossfader = GetStringFromVDJ("crossfader");
-		std::ofstream out{ TEXT("\\\\.\\pipe\\virtualDJ"), std::wofstream::trunc };
+				
+		deck1 << "fileName=" <<  GetStringFromVDJ("deck  1 get loaded_song \"Filename\"") << ",";
+		deck1 << "filePath=" << GetStringFromVDJ("deck  1 get loaded_song \"Filepath\" ") << ",";
+		deck1 << "beatPos=" << GetStringFromVDJ("deck  1 get_beatpos") << ",";
+		deck1 << "bpm=" << GetStringFromVDJ("deck  1 get_bpm") << ",";
+		deck1 << "position=" << GetStringFromVDJ("deck  1 get_position") << ",";
+		deck1 << "volume=" << GetStringFromVDJ("deck  1 get_volume") << ",";
+		deck1 << "deck=1,";
+		deck1 << "crossfader=" << crossfader << ",";
+		deck1 << "elapsed=" << GetStringFromVDJ("deck  1 get_time elapsed 1000") << ",";
+		deck1 << "\r\n";
+		Sleep(500);
+		std::ofstream deck2{ TEXT("\\\\.\\pipe\\virtualDJ"), std::wofstream::trunc };
+		deck2 << "fileName=" << GetStringFromVDJ("deck  2 get loaded_song \"Filename\"") << ",";
+		deck2 << "filePath=" << GetStringFromVDJ("deck  2 get loaded_song \"Filepath\" ") << ",";
+		deck2 << "beatPos=" << GetStringFromVDJ("deck  2 get_beatpos") << ",";
+		deck2 << "bpm=" << GetStringFromVDJ("deck  2 get_bpm") << ",";
+		deck2 << "position=" << GetStringFromVDJ("deck  2 get_position") << ",";
+		deck2 << "volume=" << GetStringFromVDJ("deck  2 get_volume") << ",";
+		deck2 << "deck=2,";
+		deck2 << "crossfader=" << crossfader << ",";
+		deck2 << "elapsed=" << GetStringFromVDJ("deck  2 get_time elapsed 1000") << ",";
+		deck2 << "\r\n";
 		
-		out << "fileName=" <<  GetStringFromVDJ("deck  1 get loaded_song \"Filename\"") << ",";
-		out << "filePath=" << GetStringFromVDJ("deck  1 get loaded_song \"Filepath\" ") << ",";
-		//result = AddToString("beatNum", GetStringFromVDJ("deck  1 get_beat_num"), result);
-		//result = AddToString("beatBar16", GetStringFromVDJ("deck  1 get Beat_bar 16"), result);
-		//result = AddToString("beatBar", GetStringFromVDJ("deck  1 get Beat_bar"), result);
-		out << "beatPos=" << GetStringFromVDJ("deck  1 get_beatpos") << ",";
-		out << "bpm=" << GetStringFromVDJ("deck  1 get_bpm") << ",";
-		out << "position=" << GetStringFromVDJ("deck  1 get_position") << ",";
-		out << "volume=" << GetStringFromVDJ("deck  1 get_volume") << ",";
-		out << "deck=1,";
-		out << "crossfader=" << crossfader << ",";
-		out << "elapsed=" << GetStringFromVDJ("deck  1 get_time elapsed 1000") << ",";
-		out << "\r\n";
-		
-		
-		//if (pipe != 0 && pipe != NULL && !WriteFile(pipe, ss.binary, ss.str().length(), &numWritten, NULL))
-		{
-			//this->OnStart();
-		};
-		out << "fileName=" << GetStringFromVDJ("deck  2 get loaded_song \"Filename\"") << ",";
-		out << "filePath=" << GetStringFromVDJ("deck  2 get loaded_song \"Filepath\" ") << ",";
-		//result = AddToString("beatNum", GetStringFromVDJ("deck  1 get_beat_num"), result);
-		//result = AddToString("beatBar16", GetStringFromVDJ("deck  1 get Beat_bar 16"), result);
-		//result = AddToString("beatBar", GetStringFromVDJ("deck  1 get Beat_bar"), result);
-		out << "beatPos=" << GetStringFromVDJ("deck  2 get_beatpos") << ",";
-		out << "bpm=" << GetStringFromVDJ("deck  2 get_bpm") << ",";
-		out << "position=" << GetStringFromVDJ("deck  2 get_position") << ",";
-		out << "volume=" << GetStringFromVDJ("deck  2 get_volume") << ",";
-		out << "deck=2,";
-		out << "crossfader=" << crossfader << ",";
-		out << "elapsed=" << GetStringFromVDJ("deck  2 get_time elapsed 1000") << ",";
-		out << "\r\n";
-		//if (pipe != 0 && pipe != NULL && !WriteFile(pipe, ss.str().c_str(), ss.str().length(), &numWritten, NULL))
-		{
-			//this->OnStart();
-		};
-
-		
-		Sleep(100);
+		Sleep(500);
 	}
 }
 std::thread thrd;

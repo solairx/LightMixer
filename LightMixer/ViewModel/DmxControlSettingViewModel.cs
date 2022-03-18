@@ -5,6 +5,8 @@ using System.Text;
 using System.Collections.ObjectModel;
 using Microsoft.Practices.Unity;
 using UIFrameWork;
+using Microsoft.Practices.Prism.Commands;
+using LightMixer.Model.Fixture;
 
 namespace LightMixer.ViewModel
 {
@@ -13,6 +15,10 @@ namespace LightMixer.ViewModel
         private long mBreak = 27600;
         private long mMbb = 0;
         private long mMab = 200;
+        private string panDesign;
+        private string tiltDesign;
+        private string shutterDesign;
+        private string sizeDesign;
 
         public DmxControlSettingViewModel()
         {
@@ -65,12 +71,89 @@ namespace LightMixer.ViewModel
             {
                 this.mMab = value;
                 AsyncOnPropertyChange(o => this.Mab);
-                
                 BootStrap.UnityContainer.Resolve<LightService.DmxServiceClient>().SetMab(value);
             }
         }
 
-   
+        public string PanDesign
+        {
+            get
+            {
+                return panDesign;
+            }
+            set
+            {
+                this.panDesign = value;
+                AsyncOnPropertyChange(o => this.PanDesign);
+            }
+        }
 
+        public string TiltDesign
+        {
+            get
+            {
+                return tiltDesign;
+            }
+            set
+            {
+                this.tiltDesign = value;
+                AsyncOnPropertyChange(o => this.TiltDesign);
+            }
+        }
+
+        public string ShutterDesign
+        {
+            get
+            {
+                return shutterDesign;
+            }
+            set
+            {
+                this.shutterDesign = value;
+                AsyncOnPropertyChange(o => this.ShutterDesign);
+            }
+        }
+
+        public string SizeDesign
+        {
+            get
+            {
+                return sizeDesign;
+            }
+            set
+            {
+                this.sizeDesign = value;
+                AsyncOnPropertyChange(o => this.SizeDesign);
+            }
+        }
+
+        public DelegateCommand TestDesign => new DelegateCommand(ExecuteTextDesign, CanExecuteTestDesign);
+
+        private  bool CanExecuteTestDesign()
+        {
+            return true;
+        }
+
+        private  void ExecuteTextDesign()
+        {
+            MovingHeadProgramTest.PanListDesignShared = StringToIntList(PanDesign).ToArray();
+            MovingHeadProgramTest.TiltListDesignShared = StringToIntList(tiltDesign).ToArray();
+            MovingHeadProgramTest.MaxDimmerDesignShared = StringToIntList(ShutterDesign).ToArray();
+            MovingHeadProgramTest.InitialSizeShared = StringToIntList(SizeDesign).FirstOrDefault();
+            MovingHeadProgramTest.Reset();
+        }
+
+        public static IEnumerable<ushort> StringToIntList(string str)
+        {
+            if (String.IsNullOrEmpty(str))
+                yield break;
+
+            foreach (var s in str.Split(','))
+            {
+                ushort num;
+                if (ushort.TryParse(s, out num))
+                    yield return num;
+            }
+        }
     }
 }

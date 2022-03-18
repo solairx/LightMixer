@@ -84,6 +84,9 @@
     <Reference Include="HADotNet.Entities, Version=0.1.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\HADotNet.Entities.0.1.2\lib\netstandard2.0\HADotNet.Entities.dll</HintPath>
     </Reference>
+    <Reference Include="MathNet.Numerics, Version=4.15.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MathNet.Numerics.4.15.0\lib\net461\MathNet.Numerics.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.AspNetCore, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNetCore.2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.dll</HintPath>
     </Reference>
@@ -399,8 +402,22 @@
     <Compile Include="DMX\DMXProMsgLabel.cs" />
     <Compile Include="DMX\FlashReplyArgs.cs" />
     <Compile Include="Model\Effect\RgbEffectBase.cs" />
+    <Compile Include="Model\Fixture\MovingHead\HeadProgram\IMovingHeadProgram.cs" />
+    <Compile Include="Model\Fixture\MovingHead\HeadProgram\MovingHeadProgram.cs" />
+    <Compile Include="Model\Fixture\MovingHead\HeadProgram\MovingHeadProgramBalancing1.cs" />
+    <Compile Include="Model\Fixture\MovingHead\HeadProgram\MovingHeadProgramCircle.cs" />
+    <Compile Include="Model\Fixture\MovingHead\HeadProgram\MovingHeadProgramDisable.cs" />
+    <Compile Include="Model\Fixture\MovingHead\HeadProgram\MovingHeadProgramDiscoBall.cs" />
+    <Compile Include="Model\Fixture\MovingHead\HeadProgram\MovingHeadProgramDj.cs" />
+    <Compile Include="Model\Fixture\MovingHead\HeadProgram\MovingHeadProgramPOV.cs" />
+    <Compile Include="Model\Fixture\MovingHead\HeadProgram\MovingHeadProgramPOVOnOff.cs" />
+    <Compile Include="Model\Fixture\MovingHead\HeadProgram\MovingHeadProgramTest.cs" />
+    <Compile Include="Model\Fixture\MovingHead\HeadProgram\PointOfInterest.cs" />
+    <Compile Include="Model\Fixture\MovingHead\HeadProgram\PointOfInterestLocation.cs" />
     <Compile Include="Model\Fixture\RgbFixtureBase.cs" />
     <Compile Include="Model\Fixture\HASSWRGWFixture.cs" />
+    <Compile Include="Model\Fixture\MovingHead\RgbwMovingHeadBetaFixture.cs" />
+    <Compile Include="Model\Fixture\MovingHead\RgbwMovingHeadFixture.cs" />
     <Compile Include="Model\Fixture\ShellyDimmerFixture.cs" />
     <Compile Include="Model\Fixture\TasmotaRGWFixture.cs" />
     <Compile Include="Model\Fixture\WledEffect.cs" />
@@ -412,7 +429,7 @@
     <Compile Include="Model\Effect\Led\BreathingEffect.cs" />
     <Compile Include="Model\Effect\Led\RandomEffect.cs" />
     <Compile Include="Model\Fixture\FixtureCollection.cs" />
-    <Compile Include="Model\Fixture\MovingHeadFixtureCollection.cs" />
+    <Compile Include="Model\Fixture\MovingHead\MovingHeadFixtureCollection.cs" />
     <Compile Include="Model\Fixture\RGBLedFixtureCollection.cs" />
     <Compile Include="Model\Scene.cs" />
     <Compile Include="Services\SceneRenderedService.cs" />
@@ -432,7 +449,7 @@
     <Compile Include="Model\Effect\Moving\MovingHeadOffEffect.cs" />
     <Compile Include="Model\Effect\EffectBase.cs" />
     <Compile Include="Model\Fixture\FixtureGroup.cs" />
-    <Compile Include="Model\Fixture\MovingHeadFixture.cs" />
+    <Compile Include="Model\Fixture\MovingHead\MovingHeadFixture.cs" />
     <Compile Include="Model\Fixture\FixtureBase.cs" />
     <Compile Include="Model\Fixture\RgbFixture.cs" />
     <Compile Include="Model\Effect\Led\FlashAll.cs" />
@@ -602,6 +619,7 @@
     </Content>
     <Content Include="Phidget21.NET.dll" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

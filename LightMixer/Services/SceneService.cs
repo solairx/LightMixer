@@ -9,6 +9,7 @@ public class SceneService
     public const string indoorSceneName = "indoor";
     public const string outDoorSceneName = "outdoor";
     public const string basementZoneName = "basement";
+    public const string djboothZoneName = "djbooth";
     public const string poolZoneName = "pool";
     private readonly BeatDetector.BeatDetector beatDetector;
     public List<Scene> Scenes { get; set; } = new List<Scene>();
@@ -21,7 +22,7 @@ public class SceneService
 
     private void Build()
     {
-        var fourHead = new RgbwMovingHeadFixture(349);
+
         RgbFixture fixtureLed3 = new RgbFixture(0);
         RgbFixture fixtureLed4 = new RgbFixture(3);
         RgbFixture fixtureLed5 = new RgbFixture(6);
@@ -43,11 +44,11 @@ public class SceneService
          var haRgb3 = new HASSWRGWFixture("light.rgbss3", false);
          var haRgb4 = new HASSWRGWFixture("light.rgbss4", false);
          var haRgb5 = new HASSWRGWFixture("light.rgbss5", false);*/
-         var haRgb1 = new TasmotaRGWFixture("192.168.1.46", false);
-         var haRgb2 = new TasmotaRGWFixture("192.168.1.31", false);
-         var haRgb3 = new TasmotaRGWFixture("192.168.1.6", false);
-         var haRgb4 = new TasmotaRGWFixture("192.168.1.3", false);
-         var haRgb5 = new TasmotaRGWFixture("192.168.1.37", false);
+        var haRgb1 = new TasmotaRGWFixture("192.168.1.46", false);
+        var haRgb2 = new TasmotaRGWFixture("192.168.1.31", false);
+        var haRgb3 = new TasmotaRGWFixture("192.168.1.6", false);
+        var haRgb4 = new TasmotaRGWFixture("192.168.1.3", false);
+        var haRgb5 = new TasmotaRGWFixture("192.168.1.37", false);
         var haRgb6 = new TasmotaRGWFixture("192.168.1.11", false);
         var haRgb7 = new TasmotaRGWFixture("192.168.1.51", false);
         var haRgbDM = new ShellyDimmerFixture("light.dimmer_plafond_ss", true);
@@ -57,10 +58,27 @@ public class SceneService
         var wledBooth3 = new WledFixture(djBoothWled, djBoothWled.State.seg[2]);
         var wledBooth4 = new WledFixture(djBoothWled, djBoothWled.State.seg[3]);
 
-        FixtureGroup movingHeadGroup = new FixtureGroup();
-        movingHeadGroup.FixtureInGroup.Add(new MovingHeadFixture(399));
-        movingHeadGroup.FixtureInGroup.Add(new MovingHeadFixture(299)); /// remember that we have a 0 here , it start at 1 on the ctrl
-        movingHeadGroup.FixtureInGroup.Add(fourHead);
+        FixtureGroup movingHeadGroupFloor = new FixtureGroup();
+        var djBoothfourPov = new List<PointOfInterest>
+        {
+            new PointOfInterest{  Location = PointOfInterestLocation.DJ, Tilt = 25000, Pan = 2000},
+            new PointOfInterest{  Location = PointOfInterestLocation.DiscoBall, Tilt = 3000, Tilt2=2000, Pan = 500, Pan2 = 6000},
+            new PointOfInterest{  Location = PointOfInterestLocation.Circle, Tilt = 0, Tilt2=65535, Pan = 65535, Pan2 = 1}
+        };
+        var fourHead = new RgbwMovingHeadBetaFixture(349, djBoothfourPov);
+        movingHeadGroupFloor.FixtureInGroup.Add(fourHead);
+
+        FixtureGroup movingHeadGroupBooth = new FixtureGroup () ;
+        var djBoothPov = new List<PointOfInterest>
+        {
+            new PointOfInterest{  Location = PointOfInterestLocation.DJ, Tilt = 25000, Pan = 2000},
+            new PointOfInterest{  Location = PointOfInterestLocation.DiscoBall, Tilt = 3000, Tilt2=2000, Pan = 500, Pan2 = 6000},
+            new PointOfInterest{  Location = PointOfInterestLocation.Circle, Tilt = 0, Tilt2=65535, Pan = 65535, Pan2 = 1}
+        };
+        var movingHeadMasterDJ = new MovingHeadFixture(399, djBoothPov);
+        movingHeadGroupBooth.FixtureInGroup.Add(movingHeadMasterDJ);
+        movingHeadGroupBooth.FixtureInGroup.Add(new MovingHeadFixture(299, djBoothPov, movingHeadMasterDJ)); /// remember that we have a 0 here , it start at 1 on the ctrl
+
 
         FixtureGroup group1 = new FixtureGroup();
         group1.FixtureInGroup.Add(fixtureLed1);
@@ -89,7 +107,7 @@ public class SceneService
         group4.FixtureInGroup.Add(fixtureLed8);
         group4.FixtureInGroup.Add(haRgbDM);
         group4.FixtureInGroup.Add(wledBooth4);
-        
+
 
         FixtureGroup boothGroup1 = new FixtureGroup();
         boothGroup1.FixtureInGroup.Add(bootDjLed1);
@@ -111,19 +129,25 @@ public class SceneService
 
         Scene indoorScene = new Scene { Name = indoorSceneName };
         Scene outdoorScene = new Scene { Name = outDoorSceneName };
-        var basementZone = new Zone { Name = basementZoneName };
+        var danceFloorZone = new Zone { Name = basementZoneName };
+        var djBoothZone = new Zone { Name = djboothZoneName };
         var poolZone = new Zone { Name = poolZoneName };
         this.Scenes.Add(indoorScene);
         this.Scenes.Add(outdoorScene);
-        indoorScene.Zones.Add(basementZone);
+        indoorScene.Zones.Add(danceFloorZone);
+        indoorScene.Zones.Add(djBoothZone);
         outdoorScene.Zones.Add(poolZone);
         FixtureCollection rgbLedDownLight = new RGBLedFixtureCollection();
-        FixtureCollection movingHead = new MovingHeadFixtureCollection();
-        basementZone.FixtureTypes.Add(rgbLedDownLight);
-        basementZone.FixtureTypes.Add(movingHead);
+        FixtureCollection movingHeadDanceFloor = new MovingHeadFixtureCollection();
+        FixtureCollection movingHeadDJ = new MovingHeadFixtureCollection();
+        danceFloorZone.FixtureTypes.Add(rgbLedDownLight);
+        danceFloorZone.FixtureTypes.Add(movingHeadDanceFloor);
+        djBoothZone.FixtureTypes.Add(movingHeadDJ);
         rgbLedDownLight.FixtureGroups.AddRange(new[] { group1, group2, group3, group4 });
 
-        movingHead.FixtureGroups.Add(movingHeadGroup);
+        movingHeadDanceFloor.FixtureGroups.Add(movingHeadGroupFloor);
+        movingHeadDJ.FixtureGroups.Add(movingHeadGroupBooth);
+
         var sharedEffect = BootStrap.UnityContainer.Resolve<SharedEffectModel>();
         FixtureCollection poolRgbLed = new RGBLedFixtureCollection();
         poolZone.FixtureTypes.Add(poolRgbLed);
@@ -146,9 +170,15 @@ public class SceneService
         poolRgbLed.EffectList.Add(new ZoneRotateEffect(beatDetector, poolRgbLed, () => sharedEffect.MaxBoothIntesity, () => sharedEffect.MaxBoothFlashIntesity));
         poolRgbLed.EffectList.Add(new StaticColorFlashEffect(beatDetector, poolRgbLed, () => sharedEffect.MaxBoothIntesity, () => sharedEffect.MaxBoothFlashIntesity));
 
-        movingHead.EffectList.Add(new MovingHeadOffEffect(beatDetector, movingHead, () => sharedEffect.MaxLightIntesityMovingHead, () => sharedEffect.MaxLightIntesityMovingHead));
-        movingHead.EffectList.Add(new MovingHeadFlashAll(beatDetector, movingHead, () => sharedEffect.MaxLightIntesityMovingHead, () => sharedEffect.MaxLightIntesityMovingHead));
-        movingHead.EffectList.Add(new MovingHeadAllOn(beatDetector, movingHead, () => sharedEffect.MaxLightIntesityMovingHead, () => sharedEffect.MaxLightIntesityMovingHead));
+        movingHeadDanceFloor.EffectList.Add(new MovingHeadOffEffect(beatDetector, movingHeadDanceFloor, () => sharedEffect.MaxLightIntesityMovingHead, () => sharedEffect.MaxLightIntesityMovingHead));
+        movingHeadDanceFloor.EffectList.Add(new MovingHeadFlashAll(beatDetector, movingHeadDanceFloor, () => sharedEffect.MaxLightIntesityMovingHead, () => sharedEffect.MaxLightIntesityMovingHead));
+        movingHeadDanceFloor.EffectList.Add(new MovingHeadAllOn(beatDetector, movingHeadDanceFloor, () => sharedEffect.MaxLightIntesityMovingHead, () => sharedEffect.MaxLightIntesityMovingHead));
+
+        movingHeadDJ.EffectList.Add(new MovingHeadOffEffect(beatDetector, movingHeadDJ, () => sharedEffect.MaxLightIntesityMovingHead, () => sharedEffect.MaxLightIntesityMovingHead));
+        movingHeadDJ.EffectList.Add(new MovingHeadFlashAll(beatDetector, movingHeadDJ, () => sharedEffect.MaxLightIntesityMovingHead, () => sharedEffect.MaxLightIntesityMovingHead));
+        movingHeadDJ.EffectList.Add(new MovingHeadAllOn(beatDetector, movingHeadDJ, () => sharedEffect.MaxLightIntesityMovingHead, () => sharedEffect.MaxLightIntesityMovingHead));
+
+        
     }
 }
 

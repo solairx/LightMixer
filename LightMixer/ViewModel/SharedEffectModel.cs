@@ -16,13 +16,13 @@ namespace LightMixer.Model
     {
         public Dispatcher UiDispatcher { get; set; }
         private double _maxLightIntesityMovingHead = 100;
-        private double _maxLightIntesity = 100;
-        private double _maxLightFlashIntesity = 100;
+        private double _maxLightIntesity = 90;
+        private double _maxLightFlashIntesity = 90;
         private double _maxBoothIntesity = 100;
         private double _maxBoothFlashIntesity = 100;
         private double _maxSpeed = 1;
         private bool _autoChangeGobo = false;
-        private bool _autoChangeProgram = true;
+        private bool _autoChangeProgram = false;
         private bool _autoChangeColorOnBeat = true;
         private int _secondBetweenGoboChange = 10;
         private int _secondBetweenProgramChange = 10;
@@ -32,7 +32,7 @@ namespace LightMixer.Model
         private byte _green = 255;
         private byte _blue = 255;
         private MovingHeadFixture.Gobo _currentMovingHeadGobo = MovingHeadFixture.Gobo.Open;
-        private MovingHeadFixture.Program _currentMovingHeadProgram = MovingHeadFixture.Program.Auto1;
+        private MovingHeadFixture.Program _currentMovingHeadProgram = MovingHeadFixture.Program.Circle;
 
         public SharedEffectModel(VirtualDjServer virtualDjServer)
         {
@@ -391,6 +391,8 @@ namespace LightMixer.Model
                 this._currentMovingHeadGobo = MovingHeadFixture.Gobo.Floyer;
         }
 
+        public DateTime IsCurrentMovingHeadProgramDirty = DateTime.Now;
+
         public MovingHeadFixture.Program CurrentMovingHeadProgram
         {
             get
@@ -407,14 +409,20 @@ namespace LightMixer.Model
             }
             set
             {
-                _currentMovingHeadProgram = value;
-                this.OnPropertyChanged(() => this.CurrentMovingHeadProgram);
+                if (_currentMovingHeadProgram != value)
+                {
+                    IsCurrentMovingHeadProgramDirty = DateTime.Now;
+                    _currentMovingHeadProgram = value;
+                    this.OnPropertyChanged(() => this.CurrentMovingHeadProgram);
+                }
             }
         }
 
         private void ChangeProgram()
         {
-            if (this._currentMovingHeadProgram == MovingHeadFixture.Program.Auto1)
+            if (this._currentMovingHeadProgram == MovingHeadFixture.Program.Circle)
+                this._currentMovingHeadProgram = MovingHeadFixture.Program.Auto1;
+            else if (this._currentMovingHeadProgram == MovingHeadFixture.Program.Auto1)
                 this._currentMovingHeadProgram = MovingHeadFixture.Program.Auto2;
             else if (this._currentMovingHeadProgram == MovingHeadFixture.Program.Auto2)
                 this._currentMovingHeadProgram = MovingHeadFixture.Program.Auto3;
@@ -431,7 +439,7 @@ namespace LightMixer.Model
             else if (this._currentMovingHeadProgram == MovingHeadFixture.Program.Auto8)
                 this._currentMovingHeadProgram = MovingHeadFixture.Program.Auto1;
             else
-                this._currentMovingHeadProgram = MovingHeadFixture.Program.Auto1;
+                this._currentMovingHeadProgram = MovingHeadFixture.Program.Circle;
         }
 
         public ObservableCollection<MovingHeadFixture.Program> MovingHeadProgram
@@ -439,6 +447,11 @@ namespace LightMixer.Model
             get
             {
                 ObservableCollection<MovingHeadFixture.Program> list = new ObservableCollection<MovingHeadFixture.Program>();
+                list.Add(MovingHeadFixture.Program.CodeDisable);
+                list.Add(MovingHeadFixture.Program.Circle);
+                list.Add(MovingHeadFixture.Program.Balancing1);
+                list.Add(MovingHeadFixture.Program.DiscoBall);
+                list.Add(MovingHeadFixture.Program.DJ);
                 list.Add(MovingHeadFixture.Program.Auto1);
                 list.Add(MovingHeadFixture.Program.Auto2);
                 list.Add(MovingHeadFixture.Program.Auto3);
@@ -456,6 +469,7 @@ namespace LightMixer.Model
                 list.Add(MovingHeadFixture.Program.SoundAuto6);
                 list.Add(MovingHeadFixture.Program.SoundAuto7);
                 list.Add(MovingHeadFixture.Program.SoundAuto8);
+                list.Add(MovingHeadFixture.Program.Test);
                 return list;
             }
         }

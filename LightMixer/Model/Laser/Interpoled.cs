@@ -175,6 +175,31 @@ namespace LaserDisplay
 
             return arrres;
         }
+
+        public ushort[] Resample(ushort[] input)
+        {
+            uint[][,] arr = new uint[1][,];
+            int x = 0;
+            int y1 = 0;
+            arr[0] = new uint[1, input.Length];
+            foreach (ushort s in input)
+            {
+                arr[0][0, x] = FituInt(s ); ;
+                x++;
+            }
+
+            uint[][,] res = Resample(arr);
+            x = 0;
+            ushort[] arrres = new ushort[res[0].GetLength(1)];
+            for (y1 = 0; y1 < res[0].GetLength(1); y1++)
+            {
+                arrres[y1] = FitUShort((int)res[0][0, y1]);
+            }
+
+
+
+            return arrres;
+        }
         private uint FituInt(int x)
         {
             if (x < uint.MinValue) return uint.MinValue;
@@ -185,6 +210,13 @@ namespace LaserDisplay
             if (r > short.MaxValue) return short.MaxValue;
             else
                 return Convert.ToInt16(r);
+        }
+
+        private ushort FitUShort(int r)
+        {
+            if (r > ushort.MaxValue) return ushort.MaxValue;
+            else
+                return Convert.ToUInt16(r);
         }
 
         /// <summary>

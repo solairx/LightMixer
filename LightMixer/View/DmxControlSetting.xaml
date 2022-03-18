@@ -6,17 +6,37 @@
              xmlns:LightMixer_ViewModel="clr-namespace:LightMixer.ViewModel" x:Class="LightMixer.View.DmxControlSetting" 
              mc:Ignorable="d" 
              d:DesignHeight="350" d:DesignWidth="553">
-	<UserControl.Resources>
+    <UserControl.Resources>
         <LightMixer_ViewModel:DmxControlSettingViewModel x:Key="DmxControlSettingViewModelDataSource" d:IsDataSource="True"/>
-	</UserControl.Resources>
-	<UserControl.DataContext>
+    </UserControl.Resources>
+    <UserControl.DataContext>
         <Binding Mode="OneWay" Source="{StaticResource DmxControlSettingViewModelDataSource}"/>
-	</UserControl.DataContext>
+    </UserControl.DataContext>
     <Grid>
-    	<TextBlock HorizontalAlignment="Left" Height="25" Margin="24,37,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="129"><Run Language="en-ca" Text="Break"/></TextBlock>
-    	<TextBlock HorizontalAlignment="Left" Height="29" Margin="24,66,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="123"><Run Language="en-ca" Text="MAB"/></TextBlock>
-    	<TextBlock HorizontalAlignment="Left" Height="29" Margin="24,99,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="134"><Run Language="en-ca" Text="MBB"/></TextBlock>
-    	<TextBox Height="25" Margin="174,37,262,0" TextWrapping="Wrap" VerticalAlignment="Top" Text="{Binding Break, Mode=TwoWay}"/>
-    	<TextBox Height="29" Margin="174,66,262,0" TextWrapping="Wrap" Text="{Binding Mab, Mode=TwoWay}" VerticalAlignment="Top"/>
-    	<TextBox Height="29" Margin="174,99,262,0" TextWrapping="Wrap" Text="{Binding MBB, Mode=TwoWay}" VerticalAlignment="Top"/></Grid>
+        <TextBlock HorizontalAlignment="Left" Height="25" Margin="24,37,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="129"><Run Language="en-ca" Text="Break"/></TextBlock>
+        <TextBlock HorizontalAlignment="Left" Height="29" Margin="24,66,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="123"><Run Language="en-ca" Text="MAB"/></TextBlock>
+        <TextBlock HorizontalAlignment="Left" Height="29" Margin="24,99,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="134"><Run Language="en-ca" Text="MBB"/></TextBlock>
+        <TextBox Height="25" Margin="174,37,262,0" TextWrapping="Wrap" VerticalAlignment="Top" Text="{Binding Break, Mode=TwoWay}"/>
+        <TextBox Height="29" Margin="174,66,262,0" TextWrapping="Wrap" Text="{Binding Mab, Mode=TwoWay}" VerticalAlignment="Top"/>
+        <TextBox Height="29" Margin="174,99,262,0" TextWrapping="Wrap" Text="{Binding MBB, Mode=TwoWay}" VerticalAlignment="Top" />
+
+        <TextBox Height="21" Background="White" Margin="176,139,87,0" TextWrapping="Wrap" Text="{Binding PanDesign, Mode=TwoWay}" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5"/>
+        <TextBox Height="22" Background="White" Margin="176,164,0,0" TextWrapping="Wrap" Text="{Binding TiltDesign, Mode=TwoWay}" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" Width="290"/>
+        <TextBox Height="22"  Background="White" Margin="176,191,0,0" TextWrapping="Wrap" Text="{Binding ShutterDesign, Mode=TwoWay}" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" Width="290"/>
+        <TextBox Height="22"  Background="White" Margin="176,222,0,0" TextWrapping="Wrap" Text="{Binding SizeDesign, Mode=TwoWay}" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" Width="290"/>
+        <Button Height="22" Margin="176,261,87,67" Command="{Binding TestDesign}">Test Design</Button>
+
+
+
+
+        <TextBox Height="29" Margin="174,99,262,0" TextWrapping="Wrap" Text="{Binding MBB, Mode=TwoWay}" VerticalAlignment="Top"/>
+
+        <TextBox Height="29" Margin="174,99,262,0" TextWrapping="Wrap" Text="{Binding MBB, Mode=TwoWay}" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Height="29" Margin="42,139,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="134"><Run Language="en-ca" Text="Pan"/></TextBlock>
+        <TextBlock HorizontalAlignment="Left" Height="29" Margin="42,162,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="134"><Run Language="en-ca" Text="Tilt"/></TextBlock>
+        <TextBlock HorizontalAlignment="Left" Height="29" Margin="42,193,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="134"><Run Language="en-ca" Text="Shutter"/></TextBlock>
+
+
+    </Grid>
+
 </UserControl>

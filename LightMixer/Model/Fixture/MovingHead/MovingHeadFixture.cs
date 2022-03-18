@@ -7,11 +7,22 @@ namespace LightMixer.Model.Fixture
 {
     public class MovingHeadFixture : RgbFixtureBase 
     {
-        public MovingHeadFixture(int dmxAddress)
+        private List<IMovingHeadProgram> internalProgram = new List<IMovingHeadProgram>();
+        
+
+        public MovingHeadFixture(int dmxAddress,  List<PointOfInterest> pointOfInterests, MovingHeadFixture isSlaveOf = null)
             : base(dmxAddress)
         {
-
+            internalProgram.Add(new MovingHeadProgramCircle(isSlaveOf !=null, pointOfInterests));
+            internalProgram.Add(new MovingHeadProgramTest(isSlaveOf != null, pointOfInterests));
+            internalProgram.Add(new MovingHeadProgramDj(isSlaveOf != null, pointOfInterests));
+            internalProgram.Add(new MovingHeadProgramDisable(isSlaveOf != null, pointOfInterests));
+            internalProgram.Add(new MovingHeadProgramDiscoBall(isSlaveOf != null, pointOfInterests));
+            internalProgram.Add(new MovingHeadProgramBalancing1(isSlaveOf != null, pointOfInterests));
+            IsSlaveOf = isSlaveOf;
         }
+
+        public MovingHeadFixture IsSlaveOf { get; }
 
         public ushort Pan
         {
@@ -56,8 +67,17 @@ namespace LightMixer.Model.Fixture
 
         public override int DmxLenght => 13;
 
+        public double Dimmer { get; set; }
+        
+
         public override byte?[] Render()
         {
+            var codeProgram = RenderProgram();
+            if (codeProgram == null)
+            {
+                Dimmer = 1;
+            }
+
             var panByte = BitConverter.GetBytes(Pan);
             var tiltByte = BitConverter.GetBytes(Tilt);
             byte?[] arr = new byte?[512];
@@ -65,19 +85,27 @@ namespace LightMixer.Model.Fixture
             arr[StartDmxAddress + 1] = panByte[0]; //y
             arr[StartDmxAddress + 2] = tiltByte[1];
             arr[StartDmxAddress + 3] = tiltByte[0];
-            arr[StartDmxAddress + 4] = Speed;// speed
+            arr[StartDmxAddress + 4] = 0;//Speed;// speed
             arr[StartDmxAddress + 5] = 255;  //shutter
-            arr[StartDmxAddress + 6] = RedValue;
-            arr[StartDmxAddress + 7] = GreenValue;
-            arr[StartDmxAddress + 8] = BlueValue;
+            arr[StartDmxAddress + 6] = Convert.ToByte(RedValue * Dimmer);
+            arr[StartDmxAddress + 7] = Convert.ToByte(GreenValue * Dimmer);
+            arr[StartDmxAddress + 8] = Convert.ToByte(BlueValue * Dimmer);
             arr[StartDmxAddress + 10] = SpeedColor;
-            arr[StartDmxAddress + 11] = (byte)ProgramMode;
+            arr[StartDmxAddress + 11] = codeProgram != null ? (byte)0 : (byte)ProgramMode;
             arr[StartDmxAddress + 12] = (byte)GoboPaturn;
-
-
             return arr;
         }
 
+        protected IMovingHeadProgram RenderProgram()
+        {
+            var codeProgram = this.internalProgram.FirstOrDefault(prg => prg.LegacyProgram == this.ProgramMode);
+            if (codeProgram != null)
+            {
+                codeProgram.RenderOn(this);
+            }
+
+            return codeProgram;
+        }
 
         public enum ColorMacro : byte
         {
@@ -117,7 +145,13 @@ namespace LightMixer.Model.Fixture
 
         public enum Program : byte
         {
+            
             Disable = 0,
+            CodeDisable = 1,
+            DJ = 2,
+            Balancing1 = 3,
+            Circle = 13,
+            DiscoBall = 14,
             Auto1 = 15,
             Auto2 = 27,
             Auto3 = 42,
@@ -133,6 +167,7 @@ namespace LightMixer.Model.Fixture
             SoundAuto5 = 195,
             SoundAuto6 = 211,
             SoundAuto7 = 226,
+            Test = 254,
             SoundAuto8 = 255,
         }
 

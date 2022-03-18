@@ -2,6 +2,7 @@
 using System;
 using System.Diagnostics;
 using System.Net.Http;
+using System.Threading;
 
 namespace LightMixer.Model.Fixture
 {
@@ -14,13 +15,15 @@ namespace LightMixer.Model.Fixture
         private readonly ServiceClient sv;
         HttpClient client;
         Stopwatch minDelay;
+        public CancellationTokenSource cts = new CancellationTokenSource();
 
         public ShellyDimmerFixture(string entitieName, bool isWhiteOnly)
         {
-            client = new HttpClient();
             
-           // ClientFactory.Initialize("http://192.168.1.12:8123/", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiI4NTA2MGVmMzFhOGQ0Mjg0OWMxZWE0YmZmNjc2MWVlNyIsImlhdCI6MTYzOTUxODMzNCwiZXhwIjoxOTU0ODc4MzM0fQ.Oiy-yVGFQzbsaPS9k6bTOzAUu87UmI9lhUmbpuis0Tk");
-           // sv = ClientFactory.GetClient<ServiceClient>();
+            client = HttpClientFactory.Create(); 
+            client.Timeout = TimeSpan.FromSeconds(10);
+            // ClientFactory.Initialize("http://192.168.1.12:8123/", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiI4NTA2MGVmMzFhOGQ0Mjg0OWMxZWE0YmZmNjc2MWVlNyIsImlhdCI6MTYzOTUxODMzNCwiZXhwIjoxOTU0ODc4MzM0fQ.Oiy-yVGFQzbsaPS9k6bTOzAUu87UmI9lhUmbpuis0Tk");
+            // sv = ClientFactory.GetClient<ServiceClient>();
             haEntity = entitieName;
             isWhiteOnly = isWhiteOnly;
             minDelay = new Stopwatch();
@@ -64,14 +67,18 @@ namespace LightMixer.Model.Fixture
 
                 if (EnergyLevelIsLow && minDelay.ElapsedMilliseconds >100 && isOnInternalState)
                 {
+                    cts.Cancel();
+                    cts = new CancellationTokenSource();
                     isOnInternalState = false;
-                    client.GetAsync("http://192.168.1.17/light/0?turn=off");
+                    client.GetAsync("http://192.168.1.17/light/0?turn=off", cts.Token);
                         //.Wait();
                 }
                 else if (!EnergyLevelIsLow && !isOnInternalState)
                 {
+                    cts.Cancel();
+                    cts = new CancellationTokenSource();
                     isOnInternalState = true;
-                    client.GetAsync("http://192.168.1.17/light/0?turn=on"); 
+                    client.GetAsync("http://192.168.1.17/light/0?turn=on", cts.Token); 
                        // .Wait();
                     minDelay = new Stopwatch();
                     minDelay.Start();

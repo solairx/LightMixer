@@ -23,7 +23,7 @@ namespace LightMixer.Model
                     ((MovingHeadFixture)fixture).ColorMode = MovingHeadFixture.ColorMacro.Auto;
                     ((MovingHeadFixture)fixture).GoboPaturn = _sharedEffectModel.CurrentMovingHeadGobo;
                     ((MovingHeadFixture)fixture).Pan = 500;
-                    ((MovingHeadFixture)fixture).ProgramMode = MovingHeadFixture.Program.Disable;
+                    ((MovingHeadFixture)fixture).ProgramMode = MovingHeadFixture.Program.CodeDisable;
 
                     ((MovingHeadFixture)fixture).Speed = this.GetMaxedByte(this._sharedEffectModel.MaxSpeed * this.bpm);
                     ((MovingHeadFixture)fixture).RedValue = this.SetValueMovingHead(this._sharedEffectModel.Red);

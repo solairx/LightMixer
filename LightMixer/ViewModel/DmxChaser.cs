@@ -9,7 +9,6 @@ using System.Linq;
 using Microsoft.Practices.ObjectBuilder2;
 using System.Windows.Input;
 using Microsoft.Practices.Prism.Commands;
-using Microsoft.AspNetCore.Hosting.Internal;
 using Microsoft.Practices.Prism;
 
 namespace LightMixer.Model
@@ -153,6 +152,8 @@ namespace LightMixer.Model
             set
             {
                 SetCurrentEffectAsync<MovingHeadFixtureCollection>(SceneService.indoorSceneName, SceneService.basementZoneName, value);
+
+                SetCurrentEffectAsync<MovingHeadFixtureCollection>(SceneService.indoorSceneName, SceneService.djboothZoneName, value);
             }
         }
 

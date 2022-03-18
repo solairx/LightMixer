@@ -3,6 +3,7 @@ using HADotNet.Core.Clients;
 using System;
 using System.Diagnostics;
 using System.Net.Http;
+using System.Threading;
 
 namespace LightMixer.Model.Fixture
 {
@@ -19,7 +20,8 @@ namespace LightMixer.Model.Fixture
 
         public TasmotaRGWFixture(string ip, bool isWhiteOnly)
         {
-            client = new HttpClient();
+            client = HttpClientFactory.Create(); 
+            client.Timeout = TimeSpan.FromSeconds(10);
             sv = ClientFactory.GetClient<ServiceClient>();
             this.ip = ip;
         }
@@ -28,11 +30,27 @@ namespace LightMixer.Model.Fixture
 
         public override bool IsRenderOnDmx => false;
 
+        public int? LastColorEnergy = null;
+
+        public bool HasGreatLightEnergyDifference ()
+        {
+            if (LastColorEnergy == null)
+            {
+                return true;
+            }
+            if (Math.Abs(LastColorEnergy.Value - (this.RedValue + this.GreenValue + this.BlueValue)) >50)
+            {
+                return true;
+            }
+            return false;
+        }
+
         public override byte?[] Render()
         {
             this.SetOn();
             return null;
         }
+        public CancellationTokenSource cts = new CancellationTokenSource();
 
         public void SetOn()
         {
@@ -52,10 +70,13 @@ namespace LightMixer.Model.Fixture
                 Stopwatch sw = new Stopwatch();
                 sw.Start();
                 var newQuery = "http://" + ip + "/cm?cmnd=Color%20" + ToHex(RedValue) + ToHex(GreenValue) + ToHex(BlueValue) + "0000&Dimmer%2088";
-                if (lastQuery != newQuery)
+                if (lastQuery != newQuery && HasGreatLightEnergyDifference())
                 {
+                    cts.Cancel();
+                    cts = new CancellationTokenSource();
+                    LastColorEnergy = RedValue + GreenValue + BlueValue;
                     lastQuery = newQuery;
-                    client.GetAsync(newQuery);
+                    client.GetAsync(newQuery, cts.Token);
                 }
             }
             catch (Exception v)
