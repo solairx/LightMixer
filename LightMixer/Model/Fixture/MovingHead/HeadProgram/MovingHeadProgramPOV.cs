@@ -4,7 +4,7 @@ namespace LightMixer.Model.Fixture
 {
     public class MovingHeadProgramPOV : MovingHeadProgram
     {
-        public MovingHeadProgramPOV(bool isSlave, PointOfInterest pov) : base(isSlave)
+        public MovingHeadProgramPOV(FixtureBase owner, PointOfInterest pov) : base(owner)
         {
             InitialSize = 255;
             PanListDesign = PanListDesignSlave = new ushort[] { pov.Pan, pov.Pan2, pov.Pan };

@@ -117,7 +117,7 @@ namespace LightMixer.Model.Fixture
         public void Render()
         {
             var jsonstr = JsonConvert.SerializeObject(State, Formatting.Indented);
-            if (jsonstr != lastQuery  )
+            if (jsonstr != lastQuery)
             {
                 cts.Cancel();
                 cts = new CancellationTokenSource();
@@ -129,7 +129,7 @@ namespace LightMixer.Model.Fixture
 
         private HttpResponseMessage GetResult(string jsonstr)
         {
-            var res =  _httpClient.PostAsync("http://" + ip + "/json/state", new StringContent(jsonstr, System.Text.Encoding.UTF8, "application/json"),cts.Token).Result;
+            var res = _httpClient.PostAsync("http://" + ip + "/json/state", new StringContent(jsonstr, System.Text.Encoding.UTF8, "application/json"), cts.Token).Result;
             return res;
         }
     }
@@ -144,7 +144,7 @@ namespace LightMixer.Model.Fixture
 
         public WledFixture(WledServer wledServer, WledServer.Seg seg)
         {
-            client = HttpClientFactory.Create(); 
+            client = HttpClientFactory.Create();
             client.Timeout = TimeSpan.FromSeconds(10);
             this.wledServer = wledServer;
             this.seg = seg;
@@ -167,23 +167,20 @@ namespace LightMixer.Model.Fixture
             isDitry = false;
             try
             {
-                var colorNegative = Color.FromArgb(Color.FromArgb(RedValue,GreenValue,BlueValue).ToArgb() ^ 0xffffff);
-                var colorTert = Color.FromArgb(Color.FromArgb(RedValue, GreenValue, BlueValue).ToArgb()   ^ 0x777777);
                 seg.on = this.RedValue + this.GreenValue + this.BlueValue > 0;
-                //seg.fx = (int)WledEffect.FX_MODE_STATIC;
                 seg.fx = (int)WledEffect.FX_MODE_CHASE_COLOR;
                 seg.col[0][0] = this.RedValue;
                 seg.col[0][1] = this.GreenValue;
                 seg.col[0][2] = this.BlueValue;
                 seg.col[0][3] = this.WhiteValue;
 
-                seg.col[1][0] = colorNegative.R;
-                seg.col[1][1] = colorNegative.G;
-                seg.col[1][2] = colorNegative.B;
+                seg.col[1][0] = this.Red2Value;
+                seg.col[1][1] = this.Green2Value;
+                seg.col[1][2] = this.Blue2Value;
 
-                seg.col[2][0] = colorTert.R;
-                seg.col[2][1] = colorTert.G;
-                seg.col[2][2] = colorTert.B;
+                seg.col[2][0] = this.Red3Value;
+                seg.col[2][1] = this.Green3Value;
+                seg.col[2][2] = this.Blue3Value;
 
             }
             catch (Exception v)

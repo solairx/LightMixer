@@ -5,7 +5,7 @@ namespace LightMixer.Model.Fixture
 {
     public class MovingHeadProgramDisable : MovingHeadProgram
     {
-        public MovingHeadProgramDisable(bool isSlave, List<PointOfInterest> pointOfInterests) : base(isSlave)
+        public MovingHeadProgramDisable(FixtureBase owner, List<PointOfInterest> pointOfInterests) : base(owner)
         {
 
             PanListDesign = PanListDesignSlave = new ushort[] { 0, 0 };

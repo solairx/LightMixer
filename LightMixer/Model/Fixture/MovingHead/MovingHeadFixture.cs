@@ -13,15 +13,21 @@ namespace LightMixer.Model.Fixture
         public MovingHeadFixture(int dmxAddress,  List<PointOfInterest> pointOfInterests, MovingHeadFixture isSlaveOf = null)
             : base(dmxAddress)
         {
-            internalProgram.Add(new MovingHeadProgramCircle(isSlaveOf !=null, pointOfInterests));
-            internalProgram.Add(new MovingHeadProgramTest(isSlaveOf != null, pointOfInterests));
-            internalProgram.Add(new MovingHeadProgramDj(isSlaveOf != null, pointOfInterests));
-            internalProgram.Add(new MovingHeadProgramDisable(isSlaveOf != null, pointOfInterests));
-            internalProgram.Add(new MovingHeadProgramDiscoBall(isSlaveOf != null, pointOfInterests));
-            internalProgram.Add(new MovingHeadProgramBalancing1(isSlaveOf != null, pointOfInterests));
+            PointOfInterests = pointOfInterests;
             IsSlaveOf = isSlaveOf;
         }
 
+        public override void Init()
+        {
+            internalProgram.Add(new MovingHeadProgramCircle(this, PointOfInterests));
+            internalProgram.Add(new MovingHeadProgramTest(this, PointOfInterests));
+            internalProgram.Add(new MovingHeadProgramDj(this, PointOfInterests));
+            internalProgram.Add(new MovingHeadProgramDisable(this, PointOfInterests));
+            internalProgram.Add(new MovingHeadProgramDiscoBall(this, PointOfInterests));
+            internalProgram.Add(new MovingHeadProgramBalancing1(this, PointOfInterests));
+        }
+
+        public List<PointOfInterest> PointOfInterests { get; }
         public MovingHeadFixture IsSlaveOf { get; }
 
         public ushort Pan

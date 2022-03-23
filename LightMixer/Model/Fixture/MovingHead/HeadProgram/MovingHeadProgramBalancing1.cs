@@ -5,7 +5,7 @@ namespace LightMixer.Model.Fixture
 {
     public class MovingHeadProgramBalancing1 : MovingHeadProgram
     {
-        public MovingHeadProgramBalancing1(bool isSlave, List<PointOfInterest> pointOfInterests) : base(isSlave)
+        public MovingHeadProgramBalancing1(FixtureBase owner, List<PointOfInterest> pointOfInterests) : base(owner)
         {
 
             PanListDesign = PanListDesignSlave = new ushort[] { 54000, 24000, 54000 };

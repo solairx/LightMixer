@@ -38,12 +38,7 @@ public class SceneService
         RgbFixture bootDjLed4 = new RgbFixture(33);
         RgbFixture bootDjLed5 = new RgbFixture(36);
         RgbFixture bootDjLed6 = new RgbFixture(39);
-
-        /* var haRgb1 = new HASSWRGWFixture("light.rgbss1", false);
-         var haRgb2 = new HASSWRGWFixture("light.rgbss2", false);
-         var haRgb3 = new HASSWRGWFixture("light.rgbss3", false);
-         var haRgb4 = new HASSWRGWFixture("light.rgbss4", false);
-         var haRgb5 = new HASSWRGWFixture("light.rgbss5", false);*/
+                
         var haRgb1 = new TasmotaRGWFixture("192.168.1.46", false);
         var haRgb2 = new TasmotaRGWFixture("192.168.1.31", false);
         var haRgb3 = new TasmotaRGWFixture("192.168.1.6", false);
@@ -65,8 +60,14 @@ public class SceneService
             new PointOfInterest{  Location = PointOfInterestLocation.DiscoBall, Tilt = 3000, Tilt2=2000, Pan = 500, Pan2 = 6000},
             new PointOfInterest{  Location = PointOfInterestLocation.Circle, Tilt = 0, Tilt2=65535, Pan = 65535, Pan2 = 1}
         };
-        var fourHead = new RgbwMovingHeadBetaFixture(349, djBoothfourPov);
-        movingHeadGroupFloor.FixtureInGroup.Add(fourHead);
+        var fourHead1 = new RgbwMovingHeadMasterFixture(349, djBoothfourPov);
+        var fourHead2 = new RgbwMovingHeadSlaveFixture(360, djBoothfourPov);
+        var fourHead3 = new RgbwMovingHeadSlaveFixture(369, djBoothfourPov);
+        var fourHead4 = new RgbwMovingHeadSlaveFixture(378, djBoothfourPov);
+        movingHeadGroupFloor.FixtureInGroup.Add(fourHead1);
+        movingHeadGroupFloor.FixtureInGroup.Add(fourHead2);
+        movingHeadGroupFloor.FixtureInGroup.Add(fourHead3);
+        movingHeadGroupFloor.FixtureInGroup.Add(fourHead4);
 
         FixtureGroup movingHeadGroupBooth = new FixtureGroup () ;
         var djBoothPov = new List<PointOfInterest>

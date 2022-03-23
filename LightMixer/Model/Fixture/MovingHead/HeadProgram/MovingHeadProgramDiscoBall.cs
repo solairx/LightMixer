@@ -6,7 +6,7 @@ namespace LightMixer.Model.Fixture
 {
     public class MovingHeadProgramDiscoBall : MovingHeadProgramPOV
     {
-        public MovingHeadProgramDiscoBall(bool isSlave, List<PointOfInterest> pointOfInterests) : base(isSlave, pointOfInterests.First(o => o.Location == PointOfInterestLocation.DiscoBall))
+        public MovingHeadProgramDiscoBall(FixtureBase owner, List<PointOfInterest> pointOfInterests) : base(owner, pointOfInterests.First(o => o.Location == PointOfInterestLocation.DiscoBall))
         {
         }
 

@@ -11,9 +11,10 @@ namespace LightMixer.Model.Fixture
         public abstract Program LegacyProgram { get; }
         public bool IsSlave { get; }
 
-        public MovingHeadProgram(bool isSlave)
+        public MovingHeadProgram(FixtureBase owner)
         {
-            IsSlave = isSlave;
+            Owner = owner;
+            IsSlave = !owner.IsMaster;
             InitialSize = 1;
         }
 
@@ -30,12 +31,12 @@ namespace LightMixer.Model.Fixture
         protected virtual ushort[] MaxDimmerDesignSlave { get; set; }
 
         protected virtual int InitialSize { get; set; }
+        public FixtureBase Owner { get; }
 
         protected void Setup()
         {
             SetSize(InitialSize);
         }
-
 
         protected void SetSize(int size)
         {

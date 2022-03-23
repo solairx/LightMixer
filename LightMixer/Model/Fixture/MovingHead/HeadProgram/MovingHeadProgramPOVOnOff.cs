@@ -4,7 +4,7 @@ namespace LightMixer.Model.Fixture
 {
     public class MovingHeadProgramPOVOnOff : MovingHeadProgram
     {
-        public MovingHeadProgramPOVOnOff(bool isSlave, PointOfInterest pov) : base(isSlave)
+        public MovingHeadProgramPOVOnOff(FixtureBase owner, PointOfInterest pov) : base(owner)
         {
             InitialSize = 255;
             PanListDesign = new ushort[] { pov.Pan2, pov.Pan, pov.Pan2 };
@@ -14,7 +14,7 @@ namespace LightMixer.Model.Fixture
             PanListDesignSlave = new ushort[] { pov.Pan2, pov.Pan, pov.Pan2 };
             TiltListDesignSlave = new ushort[] { pov.Tilt2, pov.Tilt, pov.Tilt2 };
             MaxDimmerDesignSlave = new ushort[] { 100, 0 };
-            if (isSlave)
+            if (owner?.IsMaster == false)
             {
                 position = 128;
             }

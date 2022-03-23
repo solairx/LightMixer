@@ -26,7 +26,7 @@ namespace LightMixer.Model.Fixture
         protected override int InitialSize { get => InitialSizeShared; set => base.InitialSize = value; }
 
 
-        public MovingHeadProgramTest(bool isSlave, List<PointOfInterest> pointOfInterests) : base(isSlave)
+        public MovingHeadProgramTest(FixtureBase owner, List<PointOfInterest> pointOfInterests) : base(owner)
         {
             PanListDesign = PanListDesignSlave = new ushort[] { 0, 0 };
             TiltListDesign = TiltListDesignSlave = new ushort[] { 0, 0 };

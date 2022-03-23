@@ -6,7 +6,7 @@ namespace LightMixer.Model.Fixture
 {
     public class MovingHeadProgramCircle : MovingHeadProgramPOVOnOff
     {
-        public MovingHeadProgramCircle(bool isSlave, List<PointOfInterest> pointOfInterests) : base(isSlave, pointOfInterests.First(o => o.Location == PointOfInterestLocation.Circle))
+        public MovingHeadProgramCircle(FixtureBase owner, List<PointOfInterest> pointOfInterests) : base(owner, pointOfInterests.First(o => o.Location == PointOfInterestLocation.Circle))
         {
         }
         public override Program LegacyProgram => Program.Circle;

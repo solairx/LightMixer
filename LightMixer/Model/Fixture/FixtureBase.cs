@@ -8,6 +8,26 @@ namespace LightMixer.Model.Fixture
 
     public  abstract class FixtureBase 
     {
+        public virtual void Init() { }
+
+        private bool isInit = false;
+
+        public bool IsMaster
+        {
+            get
+            {
+                return OwnerGroup?.MasterFixture == this;
+            }
+        }
+
+
+        public void InternalInit()
+        {
+            if (!isInit)
+                Init();
+        }
+
+        public FixtureGroup OwnerGroup { get; set; }
 
         public EffectBase currentEffect;
         protected FixtureBase() { }
