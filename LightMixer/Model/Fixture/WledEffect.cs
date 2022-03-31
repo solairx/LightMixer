@@ -1,5 +1,154 @@
-﻿namespace LightMixer.Model.Fixture
+﻿using System.Collections.Generic;
+using static LightMixer.Model.Fixture.WledServer;
+
+namespace LightMixer.Model.Fixture
 {
+
+    public enum WledEffectCategory
+    {
+        NA = 0,
+        Low = 1,
+        Med = 5,
+        High = 10,
+    }
+    public class WLedEffectI
+    {
+        public int ID { get; set; }
+        public string Name { get; set; }
+
+        public WledEffectCategory Category { get; set; }
+
+        public virtual void Apply(Seg segment)
+        {
+            segment.fx = ID;
+        }
+
+    }
+
+    public class WledEffect2
+    {
+
+        public static List<WLedEffectI> EffectList = new List<WLedEffectI> {
+            new WLedEffectI{Name = "FX_MODE_STATIC",ID = 0 , Category = WledEffectCategory.NA },
+           new WLedEffectI{Name = "FX_MODE_BLINK",ID = 1 , Category = WledEffectCategory.NA },
+           new WLedEffectI{Name = "FX_MODE_BREATH",ID = 2},
+           new WLedEffectI{Name = "FX_MODE_COLOR_WIPE",ID = 3},
+           new WLedEffectI{Name = "FX_MODE_COLOR_WIPE_RANDOM",ID = 4},
+           new WLedEffectI{Name = "FX_MODE_RANDOM_COLOR",ID = 5},
+           new WLedEffectI{Name = "FX_MODE_COLOR_SWEEP",ID = 6},
+           new WLedEffectI{Name = "FX_MODE_DYNAMIC",ID = 7},
+           new WLedEffectI{Name = "FX_MODE_RAINBOW",ID = 8},
+           new WLedEffectI{Name = "FX_MODE_RAINBOW_CYCLE",ID = 9},
+           new WLedEffectI{Name = "FX_MODE_SCAN",ID = 10},
+           new WLedEffectI{Name = "FX_MODE_DUAL_SCAN",ID = 11},
+           new WLedEffectI{Name = "FX_MODE_FADE",ID = 12},
+           new WLedEffectI{Name = "FX_MODE_THEATER_CHASE",ID = 13},
+           new WLedEffectI{Name = "FX_MODE_THEATER_CHASE_RAINBOW",ID = 14},
+           new WLedEffectI{Name = "FX_MODE_RUNNING_LIGHTS",ID = 15},
+           new WLedEffectI{Name = "FX_MODE_SAW",ID = 16},
+           new WLedEffectI{Name = "FX_MODE_TWINKLE",ID = 17},
+           new WLedEffectI{Name = "FX_MODE_DISSOLVE",ID = 18},
+           new WLedEffectI{Name = "FX_MODE_DISSOLVE_RANDOM",ID = 19},
+           new WLedEffectI{Name = "FX_MODE_SPARKLE",ID = 20},
+           new WLedEffectI{Name = "FX_MODE_FLASH_SPARKLE",ID = 21},
+           new WLedEffectI{Name = "FX_MODE_HYPER_SPARKLE",ID = 22},
+           new WLedEffectI{Name = "FX_MODE_STROBE",ID = 23},
+           new WLedEffectI{Name = "FX_MODE_STROBE_RAINBOW",ID = 24},
+           new WLedEffectI{Name = "FX_MODE_MULTI_STROBE",ID = 25},
+           new WLedEffectI{Name = "FX_MODE_BLINK_RAINBOW",ID = 26, Category = WledEffectCategory.High },
+           new WLedEffectI{Name = "FX_MODE_ANDROID",ID = 27, Category = WledEffectCategory.High },
+           new WLedEffectI{Name = "FX_MODE_CHASE_COLOR",ID = 28},
+           new WLedEffectI{Name = "FX_MODE_CHASE_RANDOM",ID = 29},
+           new WLedEffectI{Name = "FX_MODE_CHASE_RAINBOW",ID = 30, Category = WledEffectCategory.High },
+           new WLedEffectI{Name = "FX_MODE_CHASE_FLASH",ID = 31},
+           new WLedEffectI{Name = "FX_MODE_CHASE_FLASH_RANDOM",ID = 32},
+           new WLedEffectI{Name = "FX_MODE_CHASE_RAINBOW_WHITE",ID = 33},
+           new WLedEffectI{Name = "FX_MODE_COLORFUL",ID = 34},
+           new WLedEffectI{Name = "FX_MODE_TRAFFIC_LIGHT",ID = 35},
+           new WLedEffectI{Name = "FX_MODE_COLOR_SWEEP_RANDOM",ID = 36},
+           new WLedEffectI{Name = "FX_MODE_RUNNING_COLOR",ID = 37},
+           new WLedEffectI{Name = "FX_MODE_AURORA",ID = 38, Category = WledEffectCategory.Med },
+           new WLedEffectI{Name = "FX_MODE_RUNNING_RANDOM",ID = 39},
+           new WLedEffectI{Name = "FX_MODE_LARSON_SCANNER",ID = 40},
+           new WLedEffectI{Name = "FX_MODE_COMET",ID = 41},
+           new WLedEffectI{Name = "FX_MODE_FIREWORKS",ID = 42, Category = WledEffectCategory.Med },
+           new WLedEffectI{Name = "FX_MODE_RAIN",ID = 43},
+           new WLedEffectI{Name = "FX_MODE_TETRIX",ID = 44}, //was Merry Christmas prior to 0.12.0 (use "Chase 2" with Red/Green)
+           new WLedEffectI{Name = "FX_MODE_FIRE_FLICKER",ID = 45},
+           new WLedEffectI{Name = "FX_MODE_GRADIENT",ID = 46},
+           new WLedEffectI{Name = "FX_MODE_LOADING",ID = 47},
+           new WLedEffectI{Name = "FX_MODE_POLICE",ID = 48}, // candidate for removal (after below three)
+           new WLedEffectI{Name = "FX_MODE_FAIRY",ID = 49}, //was Police All prior to 0.13.0-b6 (use "Two Dots" with Red/Blue and full intensity)
+           new WLedEffectI{Name = "FX_MODE_TWO_DOTS",ID = 50},
+           new WLedEffectI{Name = "FX_MODE_FAIRYTWINKLE",ID = 51}, //was Two Areas prior to 0.13.0-b6 (use "Two Dots" with full intensity)
+           new WLedEffectI{Name = "FX_MODE_RUNNING_DUAL",ID = 52},
+           new WLedEffectI{Name = "FX_MODE_HALLOWEEN",ID = 53}, // candidate for removal
+           new WLedEffectI{Name = "FX_MODE_TRICOLOR_CHASE",ID = 54, Category = WledEffectCategory.High },
+           new WLedEffectI{Name = "FX_MODE_TRICOLOR_WIPE",ID = 55},
+           new WLedEffectI{Name = "FX_MODE_TRICOLOR_FADE",ID = 56},
+           new WLedEffectI{Name = "FX_MODE_LIGHTNING",ID = 57},
+           new WLedEffectI{Name = "FX_MODE_ICU",ID = 58},
+           new WLedEffectI{Name = "FX_MODE_MULTI_COMET",ID = 59},
+           new WLedEffectI{Name = "FX_MODE_DUAL_LARSON_SCANNER",ID = 60},
+           new WLedEffectI{Name = "FX_MODE_RANDOM_CHASE",ID = 61},
+           new WLedEffectI{Name = "FX_MODE_OSCILLATE",ID = 62},
+           new WLedEffectI{Name = "FX_MODE_PRIDE_2015",ID = 63},
+           new WLedEffectI{Name = "FX_MODE_JUGGLE",ID = 64},
+           new WLedEffectI{Name = "FX_MODE_PALETTE",ID = 65},
+           new WLedEffectI{Name = "FX_MODE_FIRE_2012",ID = 66, Category = WledEffectCategory.Low},
+           new WLedEffectI{Name = "FX_MODE_COLORWAVES",ID = 67},
+           new WLedEffectI{Name = "FX_MODE_BPM",ID = 68, Category = WledEffectCategory.Med },
+           new WLedEffectI{Name = "FX_MODE_FILLNOISE8",ID = 69},
+           new WLedEffectI{Name = "FX_MODE_NOISE16_1",ID = 70},
+           new WLedEffectI{Name = "FX_MODE_NOISE16_2",ID = 71},
+           new WLedEffectI{Name = "FX_MODE_NOISE16_3",ID = 72},
+           new WLedEffectI{Name = "FX_MODE_NOISE16_4",ID = 73},
+           new WLedEffectI{Name = "FX_MODE_COLORTWINKLE",ID = 74 , Category = WledEffectCategory.Low },
+           new WLedEffectI{Name = "FX_MODE_LAKE",ID = 75},
+           new WLedEffectI{Name = "FX_MODE_METEOR",ID = 76},
+           new WLedEffectI{Name = "FX_MODE_METEOR_SMOOTH",ID = 77},
+           new WLedEffectI{Name = "FX_MODE_RAILWAY",ID = 78},
+           new WLedEffectI{Name = "FX_MODE_RIPPLE",ID = 79},
+           new WLedEffectI{Name = "FX_MODE_TWINKLEFOX",ID = 80},
+           new WLedEffectI{Name = "FX_MODE_TWINKLECAT",ID = 81},
+           new WLedEffectI{Name = "FX_MODE_HALLOWEEN_EYES",ID = 82},
+           new WLedEffectI{Name = "FX_MODE_STATIC_PATTERN",ID = 83},
+           new WLedEffectI{Name = "FX_MODE_TRI_STATIC_PATTERN",ID = 84},
+           new WLedEffectI{Name = "FX_MODE_SPOTS",ID = 85},
+           new WLedEffectI{Name = "FX_MODE_SPOTS_FADE",ID = 86},
+           new WLedEffectI{Name = "FX_MODE_GLITTER",ID = 87},
+           new WLedEffectI{Name = "FX_MODE_CANDLE",ID = 88},
+           new WLedEffectI{Name = "FX_MODE_STARBURST",ID = 89},
+           new WLedEffectI{Name = "FX_MODE_EXPLODING_FIREWORKS",ID = 90, Category = WledEffectCategory.Med },
+           new WLedEffectI{Name = "FX_MODE_BOUNCINGBALLS",ID = 91, Category = WledEffectCategory.Low },
+           new WLedEffectI{Name = "FX_MODE_SINELON",ID = 92},
+           new WLedEffectI{Name = "FX_MODE_SINELON_DUAL",ID = 93},
+           new WLedEffectI{Name = "FX_MODE_SINELON_RAINBOW",ID = 94},
+           new WLedEffectI{Name = "FX_MODE_POPCORN",ID = 95},
+           new WLedEffectI{Name = "FX_MODE_DRIP",ID = 96},
+           new WLedEffectI{Name = "FX_MODE_PLASMA",ID = 97},
+           new WLedEffectI{Name = "FX_MODE_PERCENT",ID = 98},
+           new WLedEffectI{Name = "FX_MODE_RIPPLE_RAINBOW",ID = 99},
+           new WLedEffectI{Name = "FX_MODE_HEARTBEAT",ID = 100},
+           new WLedEffectI{Name = "FX_MODE_PACIFICA",ID = 101},
+           new WLedEffectI{Name = "FX_MODE_CANDLE_MULTI",ID = 102},
+           new WLedEffectI{Name = "FX_MODE_SOLID_GLITTER",ID = 103},
+           new WLedEffectI{Name = "FX_MODE_SUNRISE",ID = 104},
+           new WLedEffectI{Name = "FX_MODE_PHASED",ID = 105},
+           new WLedEffectI{Name = "FX_MODE_TWINKLEUP",ID = 106},
+           new WLedEffectI{Name = "FX_MODE_NOISEPAL",ID = 107},
+           new WLedEffectI{Name = "FX_MODE_SINEWAVE",ID = 108},
+           new WLedEffectI{Name = "FX_MODE_PHASEDNOISE",ID = 109},
+           new WLedEffectI{Name = "FX_MODE_FLOW",ID = 110},
+           new WLedEffectI{Name = "FX_MODE_CHUNCHUN",ID = 111,  Category = WledEffectCategory.Med },
+           new WLedEffectI{Name = "FX_MODE_DANCING_SHADOWS",ID = 112, Category = WledEffectCategory.Low },
+           new WLedEffectI{Name = "FX_MODE_WASHING_MACHINE",ID = 113},
+           new WLedEffectI{Name = "FX_MODE_CANDY_CANE",ID = 114}, // candidate for removal
+           new WLedEffectI{Name = "FX_MODE_BLENDS",ID = 115, Category = WledEffectCategory.Med },
+           new WLedEffectI{Name = "FX_MODE_TV_SIMULATOR",ID = 116},
+           new WLedEffectI{Name = "FX_MODE_DYNAMIC_SMOOTH",ID = 117},
+        };
+    }
     public enum WledEffect
     {
         FX_MODE_STATIC = 0,

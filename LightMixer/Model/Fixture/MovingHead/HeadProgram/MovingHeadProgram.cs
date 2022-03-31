@@ -7,14 +7,27 @@ namespace LightMixer.Model.Fixture
     public abstract class MovingHeadProgram : IMovingHeadProgram
     {
         private ResamplingService Resampler = new ResamplingService();
-        protected int position = 0;
+        public int position { get; set; }
+
+        public double PositionRatio
+        {
+            get
+            {
+                if (position == 0 || Resampler.Size == 0)
+                {
+                    return 0;
+                }
+                return Resampler.Size / position;
+            }
+        }
+
         public abstract Program LegacyProgram { get; }
         public bool IsSlave { get; }
 
         public MovingHeadProgram(FixtureBase owner)
         {
             Owner = owner;
-            IsSlave = !owner.IsMaster;
+            IsSlave = false;//!owner.IsMaster;
             InitialSize = 1;
         }
 
@@ -25,7 +38,7 @@ namespace LightMixer.Model.Fixture
         protected virtual ushort[] PanListDesign { get; set; }
         protected virtual ushort[] TiltListDesign { get; set; }
         protected virtual ushort[] MaxDimmerDesign { get; set; }
-                   
+
         protected virtual ushort[] PanListDesignSlave { get; set; }
         protected virtual ushort[] TiltListDesignSlave { get; set; }
         protected virtual ushort[] MaxDimmerDesignSlave { get; set; }
@@ -38,37 +51,57 @@ namespace LightMixer.Model.Fixture
             SetSize(InitialSize);
         }
 
-        protected void SetSize(int size)
+        public void ResetTo(double masterPositionRatio, double groupPosition)
         {
-            var localPan = IsSlave? PanListDesignSlave : PanListDesign;
+            SetSize(Resampler.Size, masterPositionRatio, groupPosition);
+        }
+
+        protected void SetSize(int newSize)
+        {
+            double groupPosition = 0;
+
+            double masterPositionRatio = position / ((Resampler.Size == 0)? InitialSize: Resampler.Size);
+            double effectiveRatio = masterPositionRatio + groupPosition;
+            SetSize(newSize, masterPositionRatio, masterPositionRatio + groupPosition);
+        }
+        protected void SetSize(int newSize,double masterPositionRatio, double groupPosition)
+        {
+            double effectiveRatio = masterPositionRatio + groupPosition;
+            if (effectiveRatio > 1 )
+            {
+                effectiveRatio = effectiveRatio - 1;
+            }
+
+            var localPan = IsSlave ? PanListDesignSlave : PanListDesign;
             var localTilt = IsSlave ? TiltListDesignSlave : TiltListDesign;
             var dimmer = IsSlave ? MaxDimmerDesignSlave : MaxDimmerDesign;
 
-            /*var localPan =   PanListDesign;
-            var localTilt =  TiltListDesign;
-            var dimmer = IsSlave ? MaxDimmerDesignSlave : MaxDimmerDesign;*/
-            
 
-            if (localPan.Length > size)
+
+            if (localPan.Length > newSize)
             {
-                size = localPan.Length;
+                newSize = localPan.Length;
             }
             //reposition
-            if (Resampler.Size != 0 && size != 0 && position != 0)
+            if (Resampler.Size != 0 && newSize != 0 && position != 0)
             {
-                position = Convert.ToInt32((Convert.ToDouble(size) / Resampler.Size) * position);
+                position = Convert.ToInt32(effectiveRatio * position);
 
             }
-            Resampler.Size = size;
+            Resampler.Size = newSize;
             Resampler.Filter = ResamplingFilters.Box;
-            PanList = new ushort[size];
-            TiltList = new ushort[size];
+            PanList = new ushort[newSize];
+            TiltList = new ushort[newSize];
             MaxDimmer = Resampler.Resample(dimmer);
             LinearInterpolation(PanList, localPan);
             LinearInterpolation(TiltList, localTilt);
         }
 
         public void RenderOn(MovingHeadFixture fixture)
+        {
+            RenderOn(fixture, position / Resampler.Size, 0);
+        }
+        public void RenderOn(MovingHeadFixture fixture, double masterPositionRatio, double groupPosition)
         {
             if (fixture.Speed != 0)
             {
@@ -85,7 +118,7 @@ namespace LightMixer.Model.Fixture
 
                 if (Math.Abs(this.Resampler.Size - expectedSize) > 2)
                 {
-                    SetSize(Convert.ToInt32(expectedSize));
+                    SetSize(Convert.ToInt32(expectedSize), masterPositionRatio, groupPosition);
                 }
             }
             if (position >= PanList.Length)
@@ -108,7 +141,7 @@ namespace LightMixer.Model.Fixture
 
         }
 
-        
+
 
         protected void LinearInterpolation(ushort[] destination, ushort[] source)
         {

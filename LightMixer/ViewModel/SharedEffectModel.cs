@@ -16,8 +16,8 @@ namespace LightMixer.Model
     {
         public Dispatcher UiDispatcher { get; set; }
         private double _maxLightIntesityMovingHead = 100;
-        private double _maxLightIntesity = 90;
-        private double _maxLightFlashIntesity = 90;
+        private double _maxLightIntesity = 80;
+        private double _maxLightFlashIntesity = 80;
         private double _maxBoothIntesity = 100;
         private double _maxBoothFlashIntesity = 100;
         private double _maxSpeed = 1;

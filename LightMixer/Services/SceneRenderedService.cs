@@ -227,6 +227,36 @@ namespace LightMixer.Model
             .OfType<MovingHeadFixture>()
             .ForEach(mh=>mh.ProgramMode = newProgram);
         }
+
+        public void SetMovingHeadAlternateColor(string scene, string zone, bool newProgram)
+        {
+            var selectedZone =
+            sceneService.Scenes
+            .First(o => o.Name == scene)
+            .Zones.Where(z => z.Name == zone);
+
+            selectedZone.Single().FixtureTypes.OfType<MovingHeadFixtureCollection>()
+            .First()
+            .FixtureGroups
+            .SelectMany(o => o.FixtureInGroup)
+            .OfType<MovingHeadFixture>()
+            .ForEach(mh => mh.EnableAlternateColor = newProgram);
+        }
+
+        public void SetMovingHeadDelayedPosition(string scene, string zone, bool newProgram)
+        {
+            var selectedZone =
+            sceneService.Scenes
+            .First(o => o.Name == scene)
+            .Zones.Where(z => z.Name == zone);
+
+            selectedZone.Single().FixtureTypes.OfType<MovingHeadFixtureCollection>()
+            .First()
+            .FixtureGroups
+            .SelectMany(o => o.FixtureInGroup)
+            .OfType<MovingHeadFixture>()
+            .ForEach(mh => mh.EnableDelayedPosition = newProgram);
+        }
     }
 }
 

@@ -70,15 +70,16 @@ namespace LightMixer.Model.Fixture
                     cts.Cancel();
                     cts = new CancellationTokenSource();
                     isOnInternalState = false;
-                    client.GetAsync("http://192.168.1.17/light/0?turn=off", cts.Token);
-                        //.Wait();
+                    //        client.GetAsync("http://192.168.1.17/light/0?turn=off", cts.Token);
+                    client.GetAsync("http://192.168.1.252/light/0?turn=off", cts.Token);
+                    //.Wait();
                 }
                 else if (!EnergyLevelIsLow && !isOnInternalState)
                 {
                     cts.Cancel();
                     cts = new CancellationTokenSource();
                     isOnInternalState = true;
-                    client.GetAsync("http://192.168.1.17/light/0?turn=on", cts.Token); 
+                    client.GetAsync("http://192.168.1.252/light/0?turn=on", cts.Token); 
                        // .Wait();
                     minDelay = new Stopwatch();
                     minDelay.Start();

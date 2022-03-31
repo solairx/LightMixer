@@ -2,6 +2,7 @@
 using System;
 using System.Diagnostics;
 using System.Drawing;
+using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -156,6 +157,9 @@ namespace LightMixer.Model.Fixture
 
         public override bool IsRenderOnDmx => false;
 
+        private static WLedEffectI CurrentEffect;
+        private static DateTime lastWledEffectChanged = DateTime.Now;
+
         public override byte?[] Render()
         {
             this.SetOn();
@@ -168,7 +172,31 @@ namespace LightMixer.Model.Fixture
             try
             {
                 seg.on = this.RedValue + this.GreenValue + this.BlueValue > 0;
-                seg.fx = (int)WledEffect.FX_MODE_CHASE_COLOR;
+
+                if (CurrentEffect == null || DateTime.Now.Subtract(lastWledEffectChanged).TotalSeconds > 5)
+                {
+                    var allHighEffect = WledEffect2.EffectList
+                        .Where(o => o.Category == WledEffectCategory.High);
+
+                    if (!seg.on)
+                    {
+                        CurrentEffect = allHighEffect
+                            .SkipWhile(o => o != CurrentEffect)
+                            .Skip(1)
+                            .FirstOrDefault();
+                    }
+
+                    if (CurrentEffect == null)
+                    {
+                        CurrentEffect = allHighEffect.First();
+                    }
+
+
+                    lastWledEffectChanged = DateTime.Now;
+                }
+
+                
+
                 seg.col[0][0] = this.RedValue;
                 seg.col[0][1] = this.GreenValue;
                 seg.col[0][2] = this.BlueValue;
@@ -181,7 +209,7 @@ namespace LightMixer.Model.Fixture
                 seg.col[2][0] = this.Red3Value;
                 seg.col[2][1] = this.Green3Value;
                 seg.col[2][2] = this.Blue3Value;
-
+                CurrentEffect?.Apply(seg);
             }
             catch (Exception v)
             {

@@ -5,16 +5,37 @@ using System.Text;
 
 namespace LightMixer.Model.Fixture
 {
-    public class MovingHeadFixture : RgbFixtureBase 
+    public class MovingHeadFixture : RgbFixtureBase
     {
-        private List<IMovingHeadProgram> internalProgram = new List<IMovingHeadProgram>();
-        
+        public RgbwMovingHeadMasterFixture Master { get; set; }
+        public bool EnableAlternateColor { get; set; }
+        public bool EnableDelayedPosition { get => enableDelayedPosition;
+            set
+            {
+                if (enableDelayedPosition != value)
+                {
+                    if (value && Master != null)
+                    {
+                        ResetProgram(Master.EffectPositionRatio, GroupPosition);
+                    }
+                    else
+                    {
+                        RenderProgram(1, 0);
+                    }
+                    enableDelayedPosition = value;
+                }
+            }
+        }
 
-        public MovingHeadFixture(int dmxAddress,  List<PointOfInterest> pointOfInterests, MovingHeadFixture isSlaveOf = null)
+        public double GroupPosition { get; set; }
+
+        private List<IMovingHeadProgram> internalProgram = new List<IMovingHeadProgram>();
+
+
+        public MovingHeadFixture(int dmxAddress, List<PointOfInterest> pointOfInterests)
             : base(dmxAddress)
         {
             PointOfInterests = pointOfInterests;
-            IsSlaveOf = isSlaveOf;
         }
 
         public override void Init()
@@ -28,7 +49,6 @@ namespace LightMixer.Model.Fixture
         }
 
         public List<PointOfInterest> PointOfInterests { get; }
-        public MovingHeadFixture IsSlaveOf { get; }
 
         public ushort Pan
         {
@@ -48,7 +68,7 @@ namespace LightMixer.Model.Fixture
             set;
         }
 
-       
+
         public byte SpeedColor
         {
             get;
@@ -74,13 +94,17 @@ namespace LightMixer.Model.Fixture
         public override int DmxLenght => 13;
 
         public double Dimmer { get; set; }
-        
+
+        public double EffectPositionRatio = 0;
+        private bool enableDelayedPosition;
 
         public override byte?[] Render()
         {
             var codeProgram = RenderProgram();
+            EffectPositionRatio = codeProgram.PositionRatio;
             if (codeProgram == null)
             {
+
                 Dimmer = 1;
             }
 
@@ -102,15 +126,29 @@ namespace LightMixer.Model.Fixture
             return arr;
         }
 
-        protected IMovingHeadProgram RenderProgram()
+        protected IMovingHeadProgram RenderProgram(double masterPositionRatio, double groupPosition)
         {
             var codeProgram = this.internalProgram.FirstOrDefault(prg => prg.LegacyProgram == this.ProgramMode);
             if (codeProgram != null)
             {
-                codeProgram.RenderOn(this);
+                codeProgram.RenderOn(this, masterPositionRatio, groupPosition);
             }
 
             return codeProgram;
+        }
+
+        protected void ResetProgram(double masterPositionRatio, double groupPosition)
+        {
+            var codeProgram = this.internalProgram.FirstOrDefault(prg => prg.LegacyProgram == this.ProgramMode);
+            if (codeProgram != null)
+            {
+                codeProgram.ResetTo(masterPositionRatio, groupPosition);
+            }
+        }
+
+        protected IMovingHeadProgram RenderProgram()
+        {
+            return RenderProgram(1, 0);
         }
 
         public enum ColorMacro : byte
@@ -151,7 +189,7 @@ namespace LightMixer.Model.Fixture
 
         public enum Program : byte
         {
-            
+
             Disable = 0,
             CodeDisable = 1,
             DJ = 2,
