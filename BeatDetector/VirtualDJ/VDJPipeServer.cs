@@ -113,6 +113,15 @@ namespace BeatDetector
                     {
                         newEvent.BeatPos = (Int64)value;
                     }
+
+                    if (key == "bpm")
+                    {
+                        newEvent.Bpm = (double)value;
+                    }
+                }
+                if (newEvent.Bpm != 0 &&  newEvent.BeatPos !=0)
+                {
+                    newEvent.Elapsed = newEvent.BeatPos * (60 / newEvent.Bpm);
                 }
                 OS2lServerEvent?.Invoke(newEvent);
 

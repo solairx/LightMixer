@@ -38,14 +38,15 @@ public class SceneService
         RgbFixture bootDjLed5 = new RgbFixture(36);
         RgbFixture bootDjLed6 = new RgbFixture(39);
 
-        var haRgb1 = new TasmotaRGWFixture("192.168.1.46", false);
-        var haRgb2 = new TasmotaRGWFixture("192.168.1.31", false);
-        var haRgb3 = new TasmotaRGWFixture("192.168.1.6", false);
-        var haRgb4 = new TasmotaRGWFixture("192.168.1.3", false);
-        var haRgb5 = new TasmotaRGWFixture("192.168.1.37", false);
-        var haRgb6 = new TasmotaRGWFixture("192.168.1.11", false);
-        var haRgb7 = new TasmotaRGWFixture("192.168.1.51", false);
-        var haRgbDM = new ShellyDimmerFixture("light.dimmer_plafond_ss", true);
+
+        var haRgb1 = new TasmotaRGWFixture("192.168.1.46");
+        var haRgb2 = new TasmotaRGWFixture("192.168.1.31");
+        var haRgb3 = new TasmotaRGWFixture("192.168.1.6");
+        var haRgb4 = new TasmotaRGWFixture("192.168.1.3");
+        var haRgb5 = new TasmotaRGWFixture("192.168.1.37");
+        var haRgb6 = new TasmotaRGWFixture("192.168.1.11");
+        var haRgb7 = new TasmotaRGWFixture("192.168.1.51");
+        var haRgbDM = new ShellyDimmerFixture("light.dimmer_plafond_ss");
 
         WledServer djBoothWled = new WledServer("192.168.1.9");
         var wledBooth1 = new WledFixture(djBoothWled, djBoothWled.State.seg[0]);

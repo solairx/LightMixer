@@ -40,7 +40,7 @@ namespace BeatDetector
             Task.Factory.StartNew(() =>
             {
                 messageLine = messageLine.Substring(0, messageLine.Length - 1);
-                Debug.WriteLine(messageLine);
+//                Debug.WriteLine(messageLine);
                 Dictionary<string, string> keyValuePairs = messageLine.Split(',')
                   .Select(value => value.Split('='))
                   .ToDictionary(pair => pair[0], pair => pair[1]);

@@ -6,6 +6,8 @@ namespace BeatDetector
     public class OS2lEvent
     {
         public double BeatPos { get; set; }
+        public double Bpm { get; set; }
+        public double Elapsed { get; set; }
     }
 
     public class VdjEvent

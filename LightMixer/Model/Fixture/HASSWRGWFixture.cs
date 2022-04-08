@@ -51,7 +51,7 @@ namespace LightMixer.Model.Fixture
                     //        ", \"rgbw_color\": [0, 255, 0, 0]}";
                     var resultingState = sv.CallService("light", "turn_off", new { entity_id = haEntity });
                   //  resultingState.Wait();
-                    Debug.WriteLine("Off " + sw.ElapsedMilliseconds + " " + haEntity );
+                  //  Debug.WriteLine("Off " + sw.ElapsedMilliseconds + " " + haEntity );
                 }
                 else if (this.RedValue + this.GreenValue + this.BlueValue < 700  && isWhiteOnly)
                 {

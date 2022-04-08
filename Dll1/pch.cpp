@@ -114,7 +114,7 @@ void CMyPlugin8::task1()
 		deck1 << "crossfader=" << crossfader << ",";
 		deck1 << "elapsed=" << GetStringFromVDJ("deck  1 get_time elapsed 1000") << ",";
 		deck1 << "\r\n";
-		Sleep(500);
+		Sleep(100);
 		std::ofstream deck2{ TEXT("\\\\.\\pipe\\virtualDJ"), std::wofstream::trunc };
 		deck2 << "fileName=" << GetStringFromVDJ("deck  2 get loaded_song \"Filename\"") << ",";
 		deck2 << "filePath=" << GetStringFromVDJ("deck  2 get loaded_song \"Filepath\" ") << ",";
@@ -127,7 +127,7 @@ void CMyPlugin8::task1()
 		deck2 << "elapsed=" << GetStringFromVDJ("deck  2 get_time elapsed 1000") << ",";
 		deck2 << "\r\n";
 		
-		Sleep(500);
+		Sleep(100);
 	}
 }
 std::thread thrd;

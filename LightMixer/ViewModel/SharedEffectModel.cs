@@ -16,8 +16,8 @@ namespace LightMixer.Model
     {
         public Dispatcher UiDispatcher { get; set; }
         private double _maxLightIntesityMovingHead = 100;
-        private double _maxLightIntesity = 80;
-        private double _maxLightFlashIntesity = 80;
+        private double _maxLightIntesity = 75;
+        private double _maxLightFlashIntesity = 75;
         private double _maxBoothIntesity = 100;
         private double _maxBoothFlashIntesity = 100;
         private double _maxSpeed = 1;
@@ -226,7 +226,7 @@ namespace LightMixer.Model
 
         }
 
-        private Color TargetColor = Colors.AliceBlue;
+        private Color TargetColor = Colors.Red;
         private SceneService sceneService;
         private bool _isBeat;
 
@@ -236,21 +236,29 @@ namespace LightMixer.Model
             Color newColor = TransitionColorTo(currentColor, TargetColor);
 
 
-            if (CompareColor(currentColor, Colors.AliceBlue))
+            /* if (CompareColor(currentColor, Colors.AliceBlue))
+                 TargetColor = Colors.Red;
+
+             else if (CompareColor(currentColor, Colors.Red))
+                 TargetColor = Colors.Yellow;
+             else if (CompareColor(currentColor, Colors.Yellow))
+                 TargetColor = Colors.Blue;
+             else if (CompareColor(currentColor, Colors.Blue))
+                 TargetColor = Colors.Beige;
+             else if (CompareColor(currentColor, Colors.Beige))
+                 TargetColor = Colors.MistyRose;
+             else if (CompareColor(currentColor, Colors.MistyRose))
+                 TargetColor = Colors.Purple;
+             else if (CompareColor(currentColor, Colors.Purple))
+                 TargetColor = Colors.AliceBlue;*/
+
+            if (CompareColor(currentColor, Colors.Blue))
                 TargetColor = Colors.Red;
 
             else if (CompareColor(currentColor, Colors.Red))
-                TargetColor = Colors.Yellow;
-            else if (CompareColor(currentColor, Colors.Yellow))
+                TargetColor = Colors.Green;
+            else if (CompareColor(currentColor, Colors.Green))
                 TargetColor = Colors.Blue;
-            else if (CompareColor(currentColor, Colors.Blue))
-                TargetColor = Colors.Beige;
-            else if (CompareColor(currentColor, Colors.Beige))
-                TargetColor = Colors.MistyRose;
-            else if (CompareColor(currentColor, Colors.MistyRose))
-                TargetColor = Colors.Purple;
-            else if (CompareColor(currentColor, Colors.Purple))
-                TargetColor = Colors.AliceBlue;
 
             this.Red = newColor.R;
             this.Green = newColor.G;

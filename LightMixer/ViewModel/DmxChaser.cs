@@ -16,11 +16,11 @@ namespace LightMixer.Model
     public class DmxChaser : BaseViewModel, IDisposable
     {
         public BeatDetector.BeatDetector mBpmDetector;
-        private SceneService sceneService 
-        { 
-            get { return BootStrap.UnityContainer.Resolve<SceneService>(); } 
+        private SceneService sceneService
+        {
+            get { return BootStrap.UnityContainer.Resolve<SceneService>(); }
         }
-        private SceneRenderedService sceneRenderedService { get { return BootStrap.UnityContainer.Resolve<SceneRenderedService>(); } } 
+        private SceneRenderedService sceneRenderedService { get { return BootStrap.UnityContainer.Resolve<SceneRenderedService>(); } }
         public ObservableCollection<FixtureGroup> fixtureGroupCollection = new ObservableCollection<FixtureGroup>();
         private ObservableCollection<EffectBase> _ledEffectCollection = new ObservableCollection<EffectBase>();
         private ObservableCollection<EffectBase> _boothEffectCollection = new ObservableCollection<EffectBase>();
@@ -33,6 +33,8 @@ namespace LightMixer.Model
         private bool useFlashTransition = true;
         private SortableObservableCollection<VDJPoi> pois;
         private VDJPoi selectedPOI;
+        private bool useDarkMode;
+        private bool useLightMode;
 
         public VDJPoi SelectedPOI
         {
@@ -52,7 +54,7 @@ namespace LightMixer.Model
             }
             set
             {
-                SetCurrentEffectAsync<RGBLedFixtureCollection>(SceneService.outDoorSceneName, SceneService.poolZoneName,value);
+                SetCurrentEffectAsync<RGBLedFixtureCollection>(SceneService.outDoorSceneName, SceneService.poolZoneName, value);
             }
         }
 
@@ -86,12 +88,40 @@ namespace LightMixer.Model
 
         public bool UseFlashTransition
         {
-            get => useFlashTransition; set
+            get => useFlashTransition; 
+            set
             {
                 if (useFlashTransition != value)
                 {
                     useFlashTransition = value;
                     this.AsyncOnPropertyChange(o => this.UseFlashTransition);
+                }
+            }
+        }
+
+        public bool UseDarkMode
+        {
+            get => useDarkMode;
+            set
+            {
+                ShellyDimmerFixture.UseDarkMode = value;
+                if (useDarkMode != value)
+                {
+                    useDarkMode = value;
+                    this.AsyncOnPropertyChange(o => this.UseDarkMode);
+                }
+            }
+        }
+
+        public bool UseLightMode
+        {
+            get => useLightMode;
+            set
+            {
+                if (useLightMode != value)
+                {
+                    useLightMode = value;
+                    this.AsyncOnPropertyChange(o => this.UseLightMode);
                 }
             }
         }
@@ -199,13 +229,13 @@ namespace LightMixer.Model
         public DmxChaser(VirtualDjServer vdjServer)
         {
             mBpmDetector = BootStrap.UnityContainer.Resolve<BeatDetector.BeatDetector>();
-            
+
             BindViewModelWithScene<RGBLedFixtureCollection>(SceneService.indoorSceneName, SceneService.basementZoneName, LedEffectCollection, nameof(CurrentLedEffect));
             BindViewModelWithScene<MovingHeadFixtureCollection>(SceneService.indoorSceneName, SceneService.basementZoneName, MovingHeadEffectCollection, nameof(CurrentMovingHeadEffect));
             BindViewModelWithScene<RGBLedFixtureCollection>(SceneService.outDoorSceneName, SceneService.poolZoneName, BoothEffectCollection, nameof(CurrentBoothEffect));
             VdjServer = vdjServer;
         }
-               
+
 
         void Save()
         {
@@ -258,7 +288,7 @@ namespace LightMixer.Model
             }
         }
 
-     
+
         private void SetCurrentEffectAsync<T>(string scene, string zone, EffectBase newEffect) where T : FixtureCollection
         {
             BootStrap.Dispatcher.Invoke((Action)(() =>

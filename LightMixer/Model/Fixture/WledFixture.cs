@@ -160,6 +160,8 @@ namespace LightMixer.Model.Fixture
         private static WLedEffectI CurrentEffect;
         private static DateTime lastWledEffectChanged = DateTime.Now;
 
+        public WledEffectCategory WledEffectCategory { get; set; } = WledEffectCategory.High;
+
         public override byte?[] Render()
         {
             this.SetOn();
@@ -176,7 +178,7 @@ namespace LightMixer.Model.Fixture
                 if (CurrentEffect == null || DateTime.Now.Subtract(lastWledEffectChanged).TotalSeconds > 5)
                 {
                     var allHighEffect = WledEffect2.EffectList
-                        .Where(o => o.Category == WledEffectCategory.High);
+                        .Where(o => o.Category == WledEffectCategory);
 
                     if (!seg.on)
                     {

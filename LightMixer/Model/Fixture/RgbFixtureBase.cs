@@ -10,6 +10,11 @@ namespace LightMixer.Model.Fixture
         private byte greenValue;
         private byte whiteValue;
 
+        public virtual bool SupportRGB
+        {
+            get { return true; }
+        }
+
         public byte RedValue
         {
             get => redValue;

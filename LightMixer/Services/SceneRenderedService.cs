@@ -228,6 +228,21 @@ namespace LightMixer.Model
             .ForEach(mh=>mh.ProgramMode = newProgram);
         }
 
+        public void SetWledFixtureFocus(string scene, string zone, WledEffectCategory newProgram)
+        {
+            var selectedZone =
+            sceneService.Scenes
+            .First(o => o.Name == scene)
+            .Zones.Where(z => z.Name == zone);
+
+            selectedZone.Single().FixtureTypes.OfType<RGBLedFixtureCollection>()
+            .First()
+            .FixtureGroups
+            .SelectMany(o => o.FixtureInGroup)
+            .OfType<WledFixture>()
+            .ForEach(mh => mh.WledEffectCategory = newProgram);
+        }
+
         public void SetMovingHeadAlternateColor(string scene, string zone, bool newProgram)
         {
             var selectedZone =
