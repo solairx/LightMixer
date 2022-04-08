@@ -67,7 +67,7 @@ namespace LightMixer.Model.Fixture
             {
                 double dimmerValue = WhiteValue * 100 / 255;
 
-                if (WhiteValue == 0  || UseDarkMode)
+                if (WhiteValue == 0  || UseDarkMode || this.currentEffect is AllOffEffect)
                 {
                     newQuery = "http://192.168.1.252/light/0?turn=off&brightness=100";
                 }

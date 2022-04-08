@@ -10,6 +10,7 @@ namespace LightMixer.Model.Fixture
         Low = 1,
         Med = 5,
         High = 10,
+        off = 255,
     }
     public class WLedEffectI
     {

@@ -50,9 +50,14 @@ namespace LightMixer.Model
         {
             if (currentPoi.IsBreak)
             {
+
                 if (dmxChaser.UseFlashTransition && nextPoi != null && GetSecondBeforeNextPOI(workingEvent, nextPoi) < 10)
                 {
                     BeforeBeatKickIn(dmxChaser, workingEvent, nextPoi);
+                }
+                else if (nextPoi != null && GetSecondBeforeNextPOI(workingEvent, nextPoi) < 20)
+                {
+                    Before20SecBeatKickIn(dmxChaser, workingEvent, nextPoi);
                 }
                 else
                 {
@@ -76,51 +81,113 @@ namespace LightMixer.Model
 
         private void Intro(DmxChaser dmxChaser)
         {
+            this.SceneRenderedService.SetMovingHeadAlternateColor(SceneService.indoorSceneName, SceneService.basementZoneName, false);
+            this.SceneRenderedService.SetMovingHeadDelayedPosition(SceneService.indoorSceneName, SceneService.basementZoneName, false);
+            this.SceneRenderedService.SetMovingHeadAlternateColor(SceneService.indoorSceneName, SceneService.djboothZoneName, false);
+            this.SceneRenderedService.SetMovingHeadDelayedPosition(SceneService.indoorSceneName, SceneService.djboothZoneName, false);
+
+            Model.MaxSpeed = 1;
+            dmxChaser.mBpmDetector.BeatRepeat = 1;
             SceneRenderedService.SetWledFixtureFocus(SceneService.indoorSceneName, SceneService.basementZoneName, WledEffectCategory.Med);
             dmxChaser.mBpmDetector.BeatRepeat = 1;
             dmxChaser.CurrentLedEffect = dmxChaser.LedEffectCollection.OfType<ZoneRotateEffect>().First();
             dmxChaser.CurrentBoothEffect = dmxChaser.BoothEffectCollection.OfType<ZoneRotateEffect>().First();
             dmxChaser.CurrentMovingHeadEffect = dmxChaser.MovingHeadEffectCollection.OfType<MovingHeadFlashAll>().First();
+            this.SceneRenderedService.SetCurrentEffect<RGBLedFixtureCollection>(SceneService.indoorSceneName, SceneService.basementZoneName, dmxChaser.LedEffectCollection.OfType<ZoneRotateEffect>().First());
         }
 
         private void Beat(DmxChaser dmxChaser)
         {
+            this.SceneRenderedService.SetMovingHeadAlternateColor(SceneService.indoorSceneName, SceneService.basementZoneName, false);
+            this.SceneRenderedService.SetMovingHeadDelayedPosition(SceneService.indoorSceneName, SceneService.basementZoneName, false);
+            this.SceneRenderedService.SetMovingHeadAlternateColor(SceneService.indoorSceneName, SceneService.djboothZoneName, false);
+            this.SceneRenderedService.SetMovingHeadDelayedPosition(SceneService.indoorSceneName, SceneService.djboothZoneName, false);
+
+            dmxChaser.mBpmDetector.BeatRepeat = 1;
             Model.MaxSpeed = 0.75;
             dmxChaser.CurrentLedEffect = dmxChaser.LedEffectCollection.OfType<ZoneRotateEffect>().First();
             dmxChaser.CurrentBoothEffect = dmxChaser.BoothEffectCollection.OfType<ZoneRotateEffect>().First();
             this.SceneRenderedService.SetCurrentEffect<MovingHeadFixtureCollection>(SceneService.indoorSceneName, SceneService.basementZoneName, dmxChaser.MovingHeadEffectCollection.OfType<MovingHeadAllOn>().First());
             this.SceneRenderedService.SetCurrentEffect<MovingHeadFixtureCollection>(SceneService.indoorSceneName, SceneService.djboothZoneName, dmxChaser.MovingHeadEffectCollection.OfType<MovingHeadFlashAll>().First());
+            this.SceneRenderedService.SetWledFixtureFocus(SceneService.indoorSceneName, SceneService.basementZoneName, WledEffectCategory.High);
 
             this.SceneRenderedService.SetMovingHeadProgramEffect(SceneService.indoorSceneName, SceneService.basementZoneName, Fixture.MovingHeadFixture.Program.Balancing1);
             this.SceneRenderedService.SetMovingHeadProgramEffect(SceneService.indoorSceneName, SceneService.djboothZoneName, Fixture.MovingHeadFixture.Program.Balancing1);
+            this.SceneRenderedService.SetCurrentEffect<RGBLedFixtureCollection>(SceneService.indoorSceneName, SceneService.basementZoneName, dmxChaser.LedEffectCollection.OfType<ZoneRotateEffect>().First());
         }
 
         private void BeatJustKickIn(DmxChaser dmxChaser)
         {
+            this.SceneRenderedService.SetMovingHeadAlternateColor(SceneService.indoorSceneName, SceneService.basementZoneName, false);
+            this.SceneRenderedService.SetMovingHeadDelayedPosition(SceneService.indoorSceneName, SceneService.basementZoneName, false);
+            this.SceneRenderedService.SetMovingHeadAlternateColor(SceneService.indoorSceneName, SceneService.djboothZoneName, false);
+            this.SceneRenderedService.SetMovingHeadDelayedPosition(SceneService.indoorSceneName, SceneService.djboothZoneName, false);
+
+            dmxChaser.mBpmDetector.BeatRepeat = 1;
             Model.MaxSpeed = 0.25;
             dmxChaser.CurrentLedEffect = dmxChaser.LedEffectCollection.OfType<ZoneRotateEffect>().First();
             dmxChaser.CurrentBoothEffect = dmxChaser.BoothEffectCollection.OfType<ZoneRotateEffect>().First();
             this.SceneRenderedService.SetCurrentEffect<MovingHeadFixtureCollection>(SceneService.indoorSceneName, SceneService.basementZoneName, dmxChaser.MovingHeadEffectCollection.OfType<MovingHeadAllOn>().First());
             this.SceneRenderedService.SetCurrentEffect<MovingHeadFixtureCollection>(SceneService.indoorSceneName, SceneService.djboothZoneName, dmxChaser.MovingHeadEffectCollection.OfType<MovingHeadFlashAll>().First());
-            //this.SceneRenderedService.SetMovingHeadProgramEffect(SceneService.indoorSceneName, SceneService.basementZoneName, Fixture.MovingHeadFixture.Program.DiscoBall);
-            //this.SceneRenderedService.SetMovingHeadProgramEffect(SceneService.indoorSceneName, SceneService.djboothZoneName, Fixture.MovingHeadFixture.Program.Circle);
             this.SceneRenderedService.SetWledFixtureFocus(SceneService.indoorSceneName, SceneService.basementZoneName, WledEffectCategory.Low);
             this.SceneRenderedService.SetMovingHeadProgramEffect(SceneService.indoorSceneName, SceneService.basementZoneName, Fixture.MovingHeadFixture.Program.Balancing1);
             this.SceneRenderedService.SetMovingHeadProgramEffect(SceneService.indoorSceneName, SceneService.djboothZoneName, Fixture.MovingHeadFixture.Program.Balancing1);
+            this.SceneRenderedService.SetCurrentEffect<RGBLedFixtureCollection>(SceneService.indoorSceneName, SceneService.basementZoneName, dmxChaser.LedEffectCollection.OfType<ZoneRotateEffect>().First());
         }
 
         private void Chorus(DmxChaser dmxChaser)
         {
+            this.SceneRenderedService.SetMovingHeadAlternateColor(SceneService.indoorSceneName, SceneService.basementZoneName, false);
+            this.SceneRenderedService.SetMovingHeadDelayedPosition(SceneService.indoorSceneName, SceneService.basementZoneName, false);
+            this.SceneRenderedService.SetMovingHeadAlternateColor(SceneService.indoorSceneName, SceneService.djboothZoneName, false);
+            this.SceneRenderedService.SetMovingHeadDelayedPosition(SceneService.indoorSceneName, SceneService.djboothZoneName, false);
+
+            this.SceneRenderedService.SetWledFixtureFocus(SceneService.indoorSceneName, SceneService.basementZoneName, WledEffectCategory.off);
+            Model.MaxSpeed = 1;
+            dmxChaser.mBpmDetector.BeatRepeat = 1;
             dmxChaser.CurrentBoothEffect = dmxChaser.BoothEffectCollection.OfType<ZoneFlashEffect>().First();
             dmxChaser.CurrentLedEffect = dmxChaser.LedEffectCollection.OfType<AllOffEffect>().First();
             dmxChaser.CurrentMovingHeadEffect = dmxChaser.MovingHeadEffectCollection.OfType<MovingHeadAllOn>().First();
             this.SceneRenderedService.SetMovingHeadProgramEffect(SceneService.indoorSceneName, SceneService.basementZoneName, Fixture.MovingHeadFixture.Program.Balancing1);
             this.SceneRenderedService.SetMovingHeadProgramEffect(SceneService.indoorSceneName, SceneService.djboothZoneName, Fixture.MovingHeadFixture.Program.Circle);
+            this.SceneRenderedService.SetMovingHeadAlternateColor(SceneService.indoorSceneName, SceneService.basementZoneName, true);
+            //this.SceneRenderedService.SetMovingHeadDelayedPosition(SceneService.indoorSceneName, SceneService.basementZoneName, true);
+            this.SceneRenderedService.SetCurrentEffect<RGBLedFixtureCollection>(SceneService.indoorSceneName, SceneService.basementZoneName, dmxChaser.LedEffectCollection.OfType<AllOffEffect>().First());
+
+
+        }
+
+        private void Before20SecBeatKickIn(DmxChaser dmxChaser, VdjEvent workingEvent, VDJPoi nextPoi)
+        {
+            this.SceneRenderedService.SetMovingHeadAlternateColor(SceneService.indoorSceneName, SceneService.basementZoneName, false);
+            this.SceneRenderedService.SetMovingHeadDelayedPosition(SceneService.indoorSceneName, SceneService.basementZoneName, false);
+            this.SceneRenderedService.SetMovingHeadAlternateColor(SceneService.indoorSceneName, SceneService.djboothZoneName, false);
+            this.SceneRenderedService.SetMovingHeadDelayedPosition(SceneService.indoorSceneName, SceneService.djboothZoneName, false);
+
+            this.SceneRenderedService.SetWledFixtureFocus(SceneService.indoorSceneName, SceneService.basementZoneName, WledEffectCategory.Low);
+            
+            Model.MaxSpeed = 1;
+            dmxChaser.mBpmDetector.BeatRepeat = 1;
+            dmxChaser.CurrentBoothEffect = dmxChaser.BoothEffectCollection.OfType<ZoneFlashEffect>().First();
+            dmxChaser.CurrentLedEffect = dmxChaser.LedEffectCollection.OfType<AllOffEffect>().First();
+            dmxChaser.CurrentMovingHeadEffect = dmxChaser.MovingHeadEffectCollection.OfType<MovingHeadAllOn>().First();
+            this.SceneRenderedService.SetWledEffect(SceneService.indoorSceneName, SceneService.basementZoneName, dmxChaser.LedEffectCollection.OfType<AllOnEffect>().First());
+            this.SceneRenderedService.SetMovingHeadProgramEffect(SceneService.indoorSceneName, SceneService.basementZoneName, Fixture.MovingHeadFixture.Program.Balancing1);
+            this.SceneRenderedService.SetMovingHeadProgramEffect(SceneService.indoorSceneName, SceneService.djboothZoneName, Fixture.MovingHeadFixture.Program.Circle);
+            this.SceneRenderedService.SetMovingHeadAlternateColor(SceneService.indoorSceneName, SceneService.basementZoneName, true);
+            this.SceneRenderedService.SetMovingHeadDelayedPosition(SceneService.indoorSceneName, SceneService.basementZoneName, true);
 
         }
 
         private void BeforeBeatKickIn(DmxChaser dmxChaser, VdjEvent workingEvent, VDJPoi nextPoi)
         {
+            this.SceneRenderedService.SetMovingHeadAlternateColor(SceneService.indoorSceneName, SceneService.basementZoneName, false);
+            this.SceneRenderedService.SetMovingHeadDelayedPosition(SceneService.indoorSceneName, SceneService.basementZoneName, false);
+            this.SceneRenderedService.SetMovingHeadAlternateColor(SceneService.indoorSceneName, SceneService.djboothZoneName, false);
+            this.SceneRenderedService.SetMovingHeadDelayedPosition(SceneService.indoorSceneName, SceneService.djboothZoneName, false);
+
+            Model.MaxSpeed = 1;
+            this.SceneRenderedService.SetWledFixtureFocus(SceneService.indoorSceneName, SceneService.basementZoneName, WledEffectCategory.High);
             this.SceneRenderedService.SetMovingHeadProgramEffect(SceneService.indoorSceneName, SceneService.basementZoneName, Fixture.MovingHeadFixture.Program.DiscoBall);
             this.SceneRenderedService.SetMovingHeadProgramEffect(SceneService.indoorSceneName, SceneService.djboothZoneName, Fixture.MovingHeadFixture.Program.DJ);
             dmxChaser.CurrentMovingHeadEffect = dmxChaser.MovingHeadEffectCollection.OfType<MovingHeadFlashAll>().First();
@@ -128,46 +195,43 @@ namespace LightMixer.Model
             {
                 dmxChaser.CurrentLedEffect = dmxChaser.LedEffectCollection.OfType<FlashAllEffect>().First();
                 dmxChaser.CurrentBoothEffect = dmxChaser.BoothEffectCollection.OfType<FlashAllEffect>().First();
+                this.SceneRenderedService.SetCurrentEffect<RGBLedFixtureCollection>(SceneService.indoorSceneName, SceneService.basementZoneName, dmxChaser.LedEffectCollection.OfType<FlashAllEffect>().First());
             }
             else
             {
                 dmxChaser.CurrentLedEffect = dmxChaser.LedEffectCollection.OfType<ZoneFlashEffect>().First();
                 dmxChaser.CurrentBoothEffect = dmxChaser.BoothEffectCollection.OfType<ZoneFlashEffect>().First();
+                this.SceneRenderedService.SetCurrentEffect<RGBLedFixtureCollection>(SceneService.indoorSceneName, SceneService.basementZoneName, dmxChaser.LedEffectCollection.OfType<ZoneFlashEffect>().First());
             }
             if (GetSecondBeforeNextPOI(workingEvent, nextPoi) < 3)
             {
-                dmxChaser.mBpmDetector.BeatRepeat = 2;
+                dmxChaser.mBpmDetector.BeatRepeat = 10;
             }
 
             else if (GetSecondBeforeNextPOI(workingEvent, nextPoi) < 5)
             {
-                dmxChaser.mBpmDetector.BeatRepeat = 3;
+                dmxChaser.mBpmDetector.BeatRepeat = 4;
             }
 
             else if (GetSecondBeforeNextPOI(workingEvent, nextPoi) < 6)
             {
-                dmxChaser.mBpmDetector.BeatRepeat = 5;
+                dmxChaser.mBpmDetector.BeatRepeat = 2;
             }
 
             else if (GetSecondBeforeNextPOI(workingEvent, nextPoi) < 10)
             {
-                dmxChaser.mBpmDetector.BeatRepeat = 10;
+                dmxChaser.mBpmDetector.BeatRepeat = 2;
             }
             else
             {
                 dmxChaser.mBpmDetector.BeatRepeat = 1;
             }
+            
         }
 
         private void Reset(DmxChaser dmxChaser)
         {
-            dmxChaser.mBpmDetector.BeatRepeat = 1;
-            Model.MaxSpeed = 1;
-            this.SceneRenderedService.SetWledFixtureFocus(SceneService.indoorSceneName, SceneService.basementZoneName, WledEffectCategory.High);
-            this.SceneRenderedService.SetMovingHeadAlternateColor(SceneService.indoorSceneName, SceneService.basementZoneName, false);
-            this.SceneRenderedService.SetMovingHeadDelayedPosition(SceneService.indoorSceneName, SceneService.basementZoneName, false);
-            this.SceneRenderedService.SetMovingHeadAlternateColor(SceneService.indoorSceneName, SceneService.djboothZoneName, false);
-            this.SceneRenderedService.SetMovingHeadDelayedPosition(SceneService.indoorSceneName, SceneService.djboothZoneName, false);
+            
         }
 
 

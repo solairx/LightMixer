@@ -39,29 +39,36 @@ namespace BeatDetector
         {
             Task.Factory.StartNew(() =>
             {
-                messageLine = messageLine.Substring(0, messageLine.Length - 1);
-//                Debug.WriteLine(messageLine);
-                Dictionary<string, string> keyValuePairs = messageLine.Split(',')
-                  .Select(value => value.Split('='))
-                  .ToDictionary(pair => pair[0], pair => pair[1]);
-                var vdjEvent = new VdjEvent();
-                vdjEvent.FilePath = keyValuePairs["filePath"];
-                vdjEvent.FileName = keyValuePairs["fileName"];
-                vdjEvent.Elapsed = keyValuePairs["elapsed"];
-                vdjEvent.BPM = keyValuePairs["bpm"];
-                vdjEvent.CrossFader = GetDoubleFromMessage(keyValuePairs, "crossfader");
-                //vdjEvent.BeatNumber = GetDoubleFromMessage(keyValuePairs, "beatNum");
-                //vdjEvent.BeatBar16 = GetDoubleFromMessage(keyValuePairs, "beatBar16");
-                //vdjEvent.BeatBar = GetDoubleFromMessage(keyValuePairs, "beatBar");
-                vdjEvent.BeatGrid = GetDoubleFromMessage(keyValuePairs, "beatGrid");
-                vdjEvent.BeatPos = GetDoubleFromMessage(keyValuePairs, "beatPos");
-                vdjEvent.Volume = GetDoubleFromMessage(keyValuePairs, "volume");
-                vdjEvent.Deck = GetIntFromMessage(keyValuePairs, "deck");
-                var fullFileName = vdjEvent.FilePath + vdjEvent.FileName;
-                VDJSong vdjSong = null;
-                ingternalVdjDataBase.VDJDatabase.TryGetValue(fullFileName, out vdjSong);
-                vdjEvent.VDJSong = vdjSong;
-                VirtualDjInstanceEvent?.Invoke(vdjEvent);
+                try
+                {
+                    messageLine = messageLine.Substring(0, messageLine.Length - 1);
+                    //                Debug.WriteLine(messageLine);
+                    Dictionary<string, string> keyValuePairs = messageLine.Split('*')
+                      .Select(value => value.Split(':'))
+                      .ToDictionary(pair => pair[0], pair => pair[1]);
+                    var vdjEvent = new VdjEvent();
+                    vdjEvent.FilePath = keyValuePairs["filePath"];
+                    vdjEvent.FileName = keyValuePairs["fileName"];
+                    vdjEvent.Elapsed = keyValuePairs["elapsed"];
+                    vdjEvent.BPM = keyValuePairs["bpm"];
+                    vdjEvent.CrossFader = GetDoubleFromMessage(keyValuePairs, "crossfader");
+                    //vdjEvent.BeatNumber = GetDoubleFromMessage(keyValuePairs, "beatNum");
+                    //vdjEvent.BeatBar16 = GetDoubleFromMessage(keyValuePairs, "beatBar16");
+                    //vdjEvent.BeatBar = GetDoubleFromMessage(keyValuePairs, "beatBar");
+                    vdjEvent.BeatGrid = GetDoubleFromMessage(keyValuePairs, "beatGrid");
+                    vdjEvent.BeatPos = GetDoubleFromMessage(keyValuePairs, "beatPos");
+                    vdjEvent.Volume = GetDoubleFromMessage(keyValuePairs, "volume");
+                    vdjEvent.Deck = GetIntFromMessage(keyValuePairs, "deck");
+                    var fullFileName = vdjEvent.FilePath + vdjEvent.FileName;
+                    VDJSong vdjSong = null;
+                    ingternalVdjDataBase.VDJDatabase.TryGetValue(fullFileName, out vdjSong);
+                    vdjEvent.VDJSong = vdjSong;
+                    VirtualDjInstanceEvent?.Invoke(vdjEvent);
+                }
+                catch (Exception vexp)
+                {
+                    Debug.WriteLine("Message received from Virtual DJ is invalid " + messageLine);
+                }
             });
         }
 
@@ -129,7 +136,7 @@ namespace BeatDetector
                         LastUpdate = null;
                         if (!string.IsNullOrWhiteSpace(upcommingCommand))
                             ProcessVdjEvent(upcommingCommand);
-                    //    Console.WriteLine(upcommingCommand);
+                        Console.WriteLine(upcommingCommand);
                     }
                     IsWaitingForConnection = false;
                     vdjPipe.Close();

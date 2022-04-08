@@ -114,9 +114,13 @@ namespace BeatDetector
                         newEvent.BeatPos = (Int64)value;
                     }
 
-                    if (key == "bpm")
+                    if (key == "bpm" && value is double)
                     {
-                        newEvent.Bpm = (double)value;
+                       newEvent.Bpm = (double)value;
+                    }
+                    else if (key == "bpm" && value is int)
+                    {
+                        newEvent.Bpm = (int)value;
                     }
                 }
                 if (newEvent.Bpm != 0 &&  newEvent.BeatPos !=0)

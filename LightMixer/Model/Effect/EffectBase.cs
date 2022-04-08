@@ -122,7 +122,10 @@ namespace LightMixer.Model
             }
             foreach (FixtureBase fixture in CurrentValue.FixtureGroups.SelectMany(o => o.FixtureInGroup))
             {
-                fixture.currentEffect = this;
+                if (fixture as WledFixture == null)
+                {
+                    fixture.currentEffect = this;
+                }
             }
 
             RenderEffect(values);

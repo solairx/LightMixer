@@ -173,16 +173,22 @@ namespace LightMixer.Model.Fixture
             isDitry = false;
             try
             {
-                seg.on = this.RedValue + this.GreenValue + this.BlueValue > 0;
+                
 
-                if (CurrentEffect == null || DateTime.Now.Subtract(lastWledEffectChanged).TotalSeconds > 5)
+                seg.on = this.RedValue + this.GreenValue + this.BlueValue > 0;
+                if (WledEffectCategory == WledEffectCategory.off)
                 {
-                    var allHighEffect = WledEffect2.EffectList
+                    seg.on = false;
+                }
+
+                if (CurrentEffect == null || DateTime.Now.Subtract(lastWledEffectChanged).TotalSeconds > 5 || CurrentEffect.Category != WledEffectCategory) 
+                {
+                    var allAvailableEffect = WledEffect2.EffectList
                         .Where(o => o.Category == WledEffectCategory);
 
-                    if (!seg.on)
+                    if (!seg.on || CurrentEffect?.Category != WledEffectCategory)
                     {
-                        CurrentEffect = allHighEffect
+                        CurrentEffect = allAvailableEffect
                             .SkipWhile(o => o != CurrentEffect)
                             .Skip(1)
                             .FirstOrDefault();
@@ -190,7 +196,7 @@ namespace LightMixer.Model.Fixture
 
                     if (CurrentEffect == null)
                     {
-                        CurrentEffect = allHighEffect.First();
+                        CurrentEffect = allAvailableEffect.First();
                     }
 
 

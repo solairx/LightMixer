@@ -213,6 +213,7 @@ namespace LightMixer.Model
             .First().CurrentEffect = newEffect;
         }
 
+
         public void SetMovingHeadProgramEffect(string scene, string zone, Program newProgram) 
         {
             var selectedZone =
@@ -241,6 +242,23 @@ namespace LightMixer.Model
             .SelectMany(o => o.FixtureInGroup)
             .OfType<WledFixture>()
             .ForEach(mh => mh.WledEffectCategory = newProgram);
+        }
+
+        public void SetWledEffect(string scene, string zone, EffectBase newProgram)
+        {
+            var selectedZone =
+            sceneService.Scenes
+            .First(o => o.Name == scene)
+            .Zones.Where(z => z.Name == zone);
+
+            selectedZone.Single().FixtureTypes.OfType<RGBLedFixtureCollection>()
+            .First()
+            .FixtureGroups
+            .SelectMany(o => o.FixtureInGroup)
+            .OfType<WledFixture>()
+            .ForEach(mh => mh.currentEffect = newProgram);
+
+            newProgram.RenderEffect(null);
         }
 
         public void SetMovingHeadAlternateColor(string scene, string zone, bool newProgram)

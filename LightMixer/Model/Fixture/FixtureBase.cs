@@ -6,11 +6,12 @@ using System.Text;
 namespace LightMixer.Model.Fixture
 {
 
-    public  abstract class FixtureBase 
+    public abstract class FixtureBase
     {
         public virtual void Init() { }
 
         private bool isInit = false;
+        private EffectBase currentEffect1;
 
         public bool IsMaster
         {
@@ -29,7 +30,7 @@ namespace LightMixer.Model.Fixture
 
         public FixtureGroup OwnerGroup { get; set; }
 
-        public EffectBase currentEffect;
+        public EffectBase currentEffect { get => currentEffect1; set => currentEffect1 = value; }
         protected FixtureBase() { }
 
         public FixtureBase(int dmxAddress)
@@ -37,7 +38,7 @@ namespace LightMixer.Model.Fixture
             this.StartDmxAddress = dmxAddress;
         }
 
-        public virtual bool IsRenderOnDmx  => true ;
+        public virtual bool IsRenderOnDmx => true;
         public virtual bool SupportAggresiveUpdate => true;
 
         public virtual WledServer HttpMulticastRenderer => null;
@@ -47,7 +48,7 @@ namespace LightMixer.Model.Fixture
             get;
             set;
         }
-        
+
         public abstract int DmxLenght { get; }
 
         public abstract byte?[] Render();
