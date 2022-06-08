@@ -48,8 +48,6 @@ namespace LightMixer.Model
             CurrentValue = currentValue;
             this.intensityGetter = intensityGetter;
             this.intensityFlashGetter = intensityFlashGetter;
-          //  detector.BpmEvent += new BeatDetector.BeatDetector.BpmHandler(mBpmDetector_BpmEvent);
-           // detector.BeatEvent += new BeatDetector.BeatDetector.BeatHandler(mBpmDetector_BeatEvent);
         }
 
 
@@ -78,8 +76,8 @@ namespace LightMixer.Model
 
         public void DmxFrameCall(IEnumerable<BeatDetector.VdjEvent> values)
         {
-            var currentDeck = values?.FirstOrDefault(); 
-            if (currentDeck !=null)
+            var currentDeck = values?.FirstOrDefault();
+            if (currentDeck != null)
             {
                 /*  if (_lastProcessedBeat != currentDeck.BeatPos)
                   {
@@ -90,11 +88,11 @@ namespace LightMixer.Model
                 int beatFactor = Convert.ToInt32(BeatDetector.BeatDetector.Instance.BeatRepeat);
 
                 double beatOffSet = currentDeck.BeatPos + 0.0;
-                var beatPos = beatOffSet - Math.Truncate(beatOffSet );
-                
-                var ulpValue = Ulp(beatPos, 1d/BeatDetector.BeatDetector.Instance.BeatRepeat);
-                var currentBeatRounded = Math.Truncate(beatOffSet) + ulpValue ;
-                if ( _lastProcessedBeat != currentBeatRounded)
+                var beatPos = beatOffSet - Math.Truncate(beatOffSet);
+
+                var ulpValue = Ulp(beatPos, 1d / BeatDetector.BeatDetector.Instance.BeatRepeat);
+                var currentBeatRounded = Math.Truncate(beatOffSet) + ulpValue;
+                if (_lastProcessedBeat != currentBeatRounded)
                 {
                     _lastProcessedBeat = currentBeatRounded;
                     if (isBeat != true)
@@ -105,7 +103,7 @@ namespace LightMixer.Model
                         Debug.WriteLine(DateTime.Now.Millisecond + "BEAT");
                     }
                 }
-                else if (beatFactor >1)
+                else if (beatFactor > 1)
                 {
                     double beatPerSec = currentDeck.BpmAsDouble / 60;
                     var timeBeforeNextBeat = (1000 / beatPerSec) / beatFactor;
@@ -122,10 +120,7 @@ namespace LightMixer.Model
             }
             foreach (FixtureBase fixture in CurrentValue.FixtureGroups.SelectMany(o => o.FixtureInGroup))
             {
-                if (fixture as WledFixture == null)
-                {
-                    fixture.currentEffect = this;
-                }
+             //   fixture.currentEffect = this;
             }
 
             RenderEffect(values);

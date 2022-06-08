@@ -102,33 +102,39 @@ public class SceneService
         movingHeadGroupBooth.FixtureInGroup.Add(new MovingHeadFixture(299, djBoothPov)); /// remember that we have a 0 here , it start at 1 on the ctrl
 
 
+        FixtureGroup groupBooth1 = new FixtureGroup();
+        groupBooth1.FixtureInGroup.Add(wledBooth1);
+        FixtureGroup groupBooth2 = new FixtureGroup();
+        groupBooth2.FixtureInGroup.Add(wledBooth2);
+        FixtureGroup groupBooth3 = new FixtureGroup();
+        groupBooth3.FixtureInGroup.Add(wledBooth3);
+        FixtureGroup groupBooth4 = new FixtureGroup();
+        groupBooth4.FixtureInGroup.Add(wledBooth4);
+
         FixtureGroup group1 = new FixtureGroup();
         group1.FixtureInGroup.Add(fixtureLed1);
         group1.FixtureInGroup.Add(fixtureLed2);
         group1.FixtureInGroup.Add(haRgb1);
         group1.FixtureInGroup.Add(haRgb2);
-        group1.FixtureInGroup.Add(wledBooth1);
+        
 
         FixtureGroup group2 = new FixtureGroup();
         group2.FixtureInGroup.Add(fixtureLed3);
         group2.FixtureInGroup.Add(haRgb3);
         group2.FixtureInGroup.Add(haRgb6);
         group2.FixtureInGroup.Add(fixtureLed4);
-        group2.FixtureInGroup.Add(wledBooth2);
 
         FixtureGroup group3 = new FixtureGroup();
         group3.FixtureInGroup.Add(fixtureLed5);
         group3.FixtureInGroup.Add(haRgb4);
         group3.FixtureInGroup.Add(haRgb7);
         group3.FixtureInGroup.Add(fixtureLed6);
-        group3.FixtureInGroup.Add(wledBooth3);
 
         FixtureGroup group4 = new FixtureGroup();
         group4.FixtureInGroup.Add(fixtureLed7);
         group4.FixtureInGroup.Add(haRgb5);
         group4.FixtureInGroup.Add(fixtureLed8);
         group4.FixtureInGroup.Add(haRgbDM);
-        group4.FixtureInGroup.Add(wledBooth4);
 
 
         FixtureGroup boothGroup1 = new FixtureGroup();
@@ -160,12 +166,16 @@ public class SceneService
         indoorScene.Zones.Add(djBoothZone);
         outdoorScene.Zones.Add(poolZone);
         FixtureCollection rgbLedDownLight = new RGBLedFixtureCollection();
+        FixtureCollection boothDownLight = new RGBLedFixtureCollection();
         FixtureCollection movingHeadDanceFloor = new MovingHeadFixtureCollection();
         FixtureCollection movingHeadDJ = new MovingHeadFixtureCollection();
+        djBoothZone.FixtureTypes.Add(boothDownLight);
         danceFloorZone.FixtureTypes.Add(rgbLedDownLight);
         danceFloorZone.FixtureTypes.Add(movingHeadDanceFloor);
         djBoothZone.FixtureTypes.Add(movingHeadDJ);
         rgbLedDownLight.FixtureGroups.AddRange(new[] { group1, group2, group3, group4 });
+
+        boothDownLight.FixtureGroups.AddRange(new[] { groupBooth1, groupBooth2, groupBooth3, groupBooth4 });
 
         movingHeadDanceFloor.FixtureGroups.Add(movingHeadGroupFloor);
         movingHeadDJ.FixtureGroups.Add(movingHeadGroupBooth);
@@ -174,6 +184,16 @@ public class SceneService
         FixtureCollection poolRgbLed = new RGBLedFixtureCollection();
         poolZone.FixtureTypes.Add(poolRgbLed);
         poolRgbLed.FixtureGroups.AddRange(new[] { boothGroup1, boothGroup2, boothGroup3, boothGroup4, boothGroup5, boothGroup6 });
+
+        boothDownLight.EffectList.Add(new AllOffEffect(beatDetector, boothDownLight, () => sharedEffect.MaxLightIntesity, () => sharedEffect.MaxLightFlashIntesity));
+        boothDownLight.EffectList.Add(new AllOnEffect(beatDetector, boothDownLight, () => sharedEffect.MaxLightIntesity, () => sharedEffect.MaxLightFlashIntesity));
+        boothDownLight.EffectList.Add(new RandomEffect(beatDetector, boothDownLight, () => sharedEffect.MaxLightIntesity, () => sharedEffect.MaxLightFlashIntesity));
+        boothDownLight.EffectList.Add(new BreathingEffect(beatDetector, boothDownLight, () => sharedEffect.MaxLightIntesity, () => sharedEffect.MaxLightFlashIntesity));
+        boothDownLight.EffectList.Add(new FlashAllEffect(beatDetector, boothDownLight, () => sharedEffect.MaxLightIntesity, () => sharedEffect.MaxLightFlashIntesity));
+        boothDownLight.EffectList.Add(new ZoneFlashEffect(beatDetector, boothDownLight, () => sharedEffect.MaxLightIntesity, () => sharedEffect.MaxLightFlashIntesity));
+        boothDownLight.EffectList.Add(new ZoneRotateEffect(beatDetector, boothDownLight, () => sharedEffect.MaxLightIntesity, () => sharedEffect.MaxLightFlashIntesity));
+        boothDownLight.EffectList.Add(new StaticColorFlashEffect(beatDetector, boothDownLight, () => sharedEffect.MaxLightIntesity, () => sharedEffect.MaxLightFlashIntesity));
+
         rgbLedDownLight.EffectList.Add(new AllOffEffect(beatDetector, rgbLedDownLight, () => sharedEffect.MaxLightIntesity, () => sharedEffect.MaxLightFlashIntesity));
         rgbLedDownLight.EffectList.Add(new AllOnEffect(beatDetector, rgbLedDownLight, () => sharedEffect.MaxLightIntesity, () => sharedEffect.MaxLightFlashIntesity));
         rgbLedDownLight.EffectList.Add(new RandomEffect(beatDetector, rgbLedDownLight, () => sharedEffect.MaxLightIntesity, () => sharedEffect.MaxLightFlashIntesity));

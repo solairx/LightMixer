@@ -54,7 +54,7 @@ namespace LightMixer.Model
             }
             set
             {
-                SetCurrentEffectAsync<RGBLedFixtureCollection>(SceneService.outDoorSceneName, SceneService.poolZoneName, value);
+                SetCurrentEffectAsync<RGBLedFixtureCollection>(SceneService.indoorSceneName, SceneService.djboothZoneName, value);
             }
         }
 
@@ -232,7 +232,7 @@ namespace LightMixer.Model
 
             BindViewModelWithScene<RGBLedFixtureCollection>(SceneService.indoorSceneName, SceneService.basementZoneName, LedEffectCollection, nameof(CurrentLedEffect));
             BindViewModelWithScene<MovingHeadFixtureCollection>(SceneService.indoorSceneName, SceneService.basementZoneName, MovingHeadEffectCollection, nameof(CurrentMovingHeadEffect));
-            BindViewModelWithScene<RGBLedFixtureCollection>(SceneService.outDoorSceneName, SceneService.poolZoneName, BoothEffectCollection, nameof(CurrentBoothEffect));
+            BindViewModelWithScene<RGBLedFixtureCollection>(SceneService.indoorSceneName, SceneService.djboothZoneName, BoothEffectCollection, nameof(CurrentBoothEffect));
             VdjServer = vdjServer;
         }
 

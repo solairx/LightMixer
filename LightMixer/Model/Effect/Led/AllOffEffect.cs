@@ -16,8 +16,6 @@ namespace LightMixer.Model
         {
             foreach (var fixture in fixtureInGroup)
             {
-                if (fixture is WledFixture && fixture.currentEffect != this)
-                    break;
                 fixture.RedValue = 0;
                 fixture.GreenValue = 0;
                 fixture.BlueValue = 0;

@@ -89,21 +89,6 @@ namespace LightMixer.Model
                     byte?[] dmxFrameArray = RenderDMXFrame(allfixture);
                     if (legacyChaser.LedEffectCollection.Count != 0)
                     {
-                        /*if (legacyChaser.LedEffectCollection[0]._sharedEffectModel.AutoChangeColorOnBeat && UpdateColorRate == 0)
-                        {
-                            // because we want to rotate more color :D
-                            legacyChaser.LedEffectCollection[0]._sharedEffectModel.RotateColor();
-                            legacyChaser.LedEffectCollection[0]._sharedEffectModel.RotateColor();
-                            legacyChaser.LedEffectCollection[0]._sharedEffectModel.RotateColor();
-                            legacyChaser.LedEffectCollection[0]._sharedEffectModel.RotateColor();
-                            legacyChaser.LedEffectCollection[0]._sharedEffectModel.RotateColor();
-                            legacyChaser.LedEffectCollection[0]._sharedEffectModel.RotateColor();
-                            legacyChaser.LedEffectCollection[0]._sharedEffectModel.RotateColor();
-                            legacyChaser.LedEffectCollection[0]._sharedEffectModel.RotateColor();
-                        }
-                        UpdateColorRate++;
-                        if (UpdateColorRate > 8)
-                            UpdateColorRate = 0;*/
                         if (legacyChaser.LedEffectCollection[0]._sharedEffectModel.AutoChangeColorOnBeat)
                         {
                             legacyChaser.LedEffectCollection[0]._sharedEffectModel.RotateColor();
@@ -257,8 +242,6 @@ namespace LightMixer.Model
             .SelectMany(o => o.FixtureInGroup)
             .OfType<WledFixture>()
             .ForEach(mh => mh.currentEffect = newProgram);
-
-            newProgram.RenderEffect(null);
         }
 
         public void SetMovingHeadAlternateColor(string scene, string zone, bool newProgram)

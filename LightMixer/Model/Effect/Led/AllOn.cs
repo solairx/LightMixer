@@ -17,8 +17,6 @@ namespace LightMixer.Model
             isBeat = false;
             foreach (var fixture in fixtureInGroup)
             {
-                if (fixture is WledFixture && fixture.currentEffect != this)
-                    break;
                 fixture.RedValue = this.SetValue(this._sharedEffectModel.Red);
                 fixture.GreenValue = this.SetValue(this._sharedEffectModel.Green);
                 fixture.BlueValue = this.SetValue(this._sharedEffectModel.Blue);
