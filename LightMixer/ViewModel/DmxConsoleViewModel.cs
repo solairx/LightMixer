@@ -1,20 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Collections.ObjectModel;
-using Microsoft.Practices.Unity;
-using LightMixer.Model;
-using UIFrameWork;
+﻿using LightMixer.Model;
 using Microsoft.Practices.Prism.Commands;
-using System.Windows.Input;
+using Microsoft.Practices.Unity;
 using radio42.Multimedia.Midi;
-using System.Windows;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
-using System.Windows.Threading;
-using System.Collections;
-using MidiController;
 using System.Threading;
+using System.Windows.Input;
+using System.Windows.Threading;
+using UIFrameWork;
 
 namespace LightMixer.ViewModel
 {
@@ -41,7 +35,7 @@ namespace LightMixer.ViewModel
 
             try
             {
-                
+
                 try
                 {
 
@@ -57,7 +51,7 @@ namespace LightMixer.ViewModel
                         Thread.Sleep(2000);
                     }
                 }
-                catch (Exception vepx)
+                catch (Exception)
                 {
 
                 }
@@ -70,7 +64,7 @@ namespace LightMixer.ViewModel
                     ret = Midi.MIDI_OutReset(_midiInHandle);
                 }
             }
-            catch (Exception vexp)
+            catch (Exception)
             {
                 Debug.WriteLine("Could not connect to Total Control");
                 //  MessageBox.Show("Could not connect to Total Control");
@@ -81,7 +75,7 @@ namespace LightMixer.ViewModel
         {
             return new MidiShortMessage
             {
-                StatusType = on ?MIDIStatus.NoteOn :  MIDIStatus.NoteOff,
+                StatusType = on ? MIDIStatus.NoteOn : MIDIStatus.NoteOff,
                 Velocity = (byte)(on ? 127 : 0),
                 ControllerType = MIDIControllerType.User30Fine,
                 ControllerValue = 100,
@@ -100,11 +94,11 @@ namespace LightMixer.ViewModel
                 Velocity = 0,
                 ControllerValue = 100,
                 ControllerType = MIDIControllerType.AllNotesOff,
-                
+
                 MessageType = MIDIMessageType.Channel,
-//                Controller = note,
-  //              Note = note,
-    //            Channel = note,
+                //                Controller = note,
+                //              Note = note,
+                //            Channel = note,
             };
         }
 
@@ -175,8 +169,8 @@ namespace LightMixer.ViewModel
             {
                 p();
             }
-                        
-       //     MidiController.StandardInput.WriteLine(CreateLedMessage(62, false).Message);
+
+            //     MidiController.StandardInput.WriteLine(CreateLedMessage(62, false).Message);
         }
 
         private Dictionary<string, int> Skipper = new Dictionary<string, int>();

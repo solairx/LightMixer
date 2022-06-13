@@ -1,16 +1,16 @@
-﻿using System;
-using System.Windows;
-using LightMixer.Model.Service;
-using Microsoft.Practices.Unity;
+﻿using BeatDetector;
 using LightMixer.Model;
-using Microsoft.AspNetCore.Hosting;
+using LightMixer.Model.Service;
+using LightMixer.View;
 using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Practices.Unity;
+using System;
 using System.Diagnostics;
-using BeatDetector;
+using System.Windows;
 using System.Windows.Threading;
-using LightMixer.View;
 
 namespace LightMixer
 {
@@ -58,23 +58,23 @@ namespace LightMixer
             Dispatcher = dispatcher;
             UnityContainer = new UnityContainer();
             UnityContainer.RegisterInstance<IDispatcher>(dispatcher);
-            var virtualDjServer = new VirtualDjServer(()=>MainWindow.IsDead);
-            UnityContainer.RegisterInstance<SharedEffectModel>( new SharedEffectModel(virtualDjServer));
-            
+            var virtualDjServer = new VirtualDjServer(() => MainWindow.IsDead);
+            UnityContainer.RegisterInstance<SharedEffectModel>(new SharedEffectModel(virtualDjServer));
+
             var dmxWrapper = new VComWrapper();
             dmxWrapper.initPro("com3");
             dmxWrapper.sendGetWidgetParametersRequest((ushort)0);
             UnityContainer.RegisterInstance(dmxWrapper);
-            
+
             var beatDetector = new BeatDetector.BeatDetector();
             var sceneService = new SceneService(beatDetector);
             UnityContainer.RegisterInstance(new PhidGetService());
-                      
-            
+
+
             SharedEffectModel.BeatDetector = beatDetector;
             BootStrap.UnityContainer.RegisterInstance<BeatDetector.BeatDetector>(beatDetector);
             BootStrap.UnityContainer.RegisterInstance<SceneService>(sceneService);
-                       
+
             UnityContainer.RegisterInstance<LightService.DmxServiceClient>(new LightService.DmxServiceClient());
             DmxModel model = new DmxModel();
             var dmxChaser = new DmxChaser(virtualDjServer);

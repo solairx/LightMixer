@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Un4seen.Bass;
-using Un4seen.Bass.AddOn.Fx;
 using Un4seen.Bass.Misc;
 
 namespace BeatDetector
@@ -12,7 +8,7 @@ namespace BeatDetector
     {
         private int mStream = 0;
         private RECORDPROC _myRecProc;
-        
+
         private DateTime lastBeatRunned;
 
         public event BeatHandler BeatEvent;
@@ -63,7 +59,7 @@ namespace BeatDetector
 
         private bool MyRecording(int handle, IntPtr buffer, int length, IntPtr user)
         {
-            
+
             double currentBpm = 60;
             bool newBeat = counter.ProcessAudio(handle, false);
 
@@ -74,14 +70,14 @@ namespace BeatDetector
 
             if (newBeat != beat && BeatEvent != null)
             {
-                if (BeatEvent !=null)
-                BeatEvent(beat, this);
+                if (BeatEvent != null)
+                    BeatEvent(beat, this);
                 lastBeatRunned = DateTime.Now;
             }
             else if (lastBeatRunned.AddSeconds(1 / (currentBpm * BeatRepeat / 60)).Ticks < DateTime.Now.Ticks)
             {
                 if (BeatEvent != null)
-                BeatEvent(true, this);
+                    BeatEvent(true, this);
                 lastBeatRunned = DateTime.Now;
             }
 

@@ -1,10 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Drawing;
-using System.Threading;
-using VisualControler.Visual.Laser;
 using VisualControler;
+using VisualControler.Visual.Laser;
 
 namespace LaserDisplay
 {
@@ -20,10 +17,10 @@ namespace LaserDisplay
         private dj djSetting = new dj();
         private double yPos = 0;
         private double _Bpm = 70;
-        private long  waveSync = 0;
+        private long waveSync = 0;
         bool Direction = false;
         private bool DrawReverse = false;
-        
+
         public AudienceScanningR()
         {
         }
@@ -54,7 +51,7 @@ namespace LaserDisplay
         }
         public void Transform()
         {
-            
+
         }
         public void Beat()
         {
@@ -63,10 +60,10 @@ namespace LaserDisplay
 
         public short[] DrawOnLaser(int HorizontalPosition, int VerticalPosition, int TurnOnPosition, int BufferSize, ResamplingService Sampler, bool Paused, double bpm, bool IsBeat)
         {
-            
-       /*     if (bpm == 0) bpm = 130;
-            if (bpm >200 ) bpm = 200;
-            if (bpm <75 ) bpm = 75;*/
+
+            /*     if (bpm == 0) bpm = 130;
+                 if (bpm >200 ) bpm = 200;
+                 if (bpm <75 ) bpm = 75;*/
             try
             {
                 if (IsBeat & VisualControler.ServiceExchangeSingleton.Instance.OnBeat)
@@ -113,12 +110,12 @@ namespace LaserDisplay
                 DrawReverse = !DrawReverse;
                 return Buffer;
             }
-            catch (Exception d)
+            catch (Exception)
             {
                 return ReturnNull(BufferSize, HorizontalPosition, VerticalPosition, TurnOnPosition);
             }
 
-            
+
 
         }
 
@@ -136,25 +133,25 @@ namespace LaserDisplay
         #endregion
         public short ShortFromDouble(double d)
         {
-          //  try
-          //  {
-                if (d >= 32767) return 32767;
-                else if (d <= -32767) return -32767;
-                else return Convert.ToInt16(d);
-          /*  }
-            catch (Exception de)
-            {
-                yPos = 0;
-                try
-                {
-                    System.Windows.Forms.MessageBox.Show("Message :" + de.ToString() + "-" + d.ToString() + "-");
-                }
-                catch (Exception ee)
-                {
-                    System.Windows.Forms.MessageBox.Show("Unagel to display "+ee.ToString());
-                }
-                return 0;
-            }*/
+            //  try
+            //  {
+            if (d >= 32767) return 32767;
+            else if (d <= -32767) return -32767;
+            else return Convert.ToInt16(d);
+            /*  }
+              catch (Exception de)
+              {
+                  yPos = 0;
+                  try
+                  {
+                      System.Windows.Forms.MessageBox.Show("Message :" + de.ToString() + "-" + d.ToString() + "-");
+                  }
+                  catch (Exception ee)
+                  {
+                      System.Windows.Forms.MessageBox.Show("Unagel to display "+ee.ToString());
+                  }
+                  return 0;
+              }*/
         }
     }
 }

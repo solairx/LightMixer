@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using BeatDetector;
+﻿using BeatDetector;
 using LightMixer.Model.Fixture;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace LightMixer.Model
 {
@@ -18,10 +18,10 @@ namespace LightMixer.Model
         public void Select(DmxChaser dmxChaser, IEnumerable<VdjEvent> lastEvent)
         {
             Model = dmxChaser.LedEffectCollection[0]._sharedEffectModel;
-                        
+
             if (!dmxChaser.AutoChaser)
                 return;
-            
+
             var workingEvent = lastEvent.FirstOrDefault();
 
             var currentPoi = workingEvent?.GetCurrentPoi;
@@ -29,7 +29,7 @@ namespace LightMixer.Model
             var nextPoi = workingEvent?.GetNextPoi;
 
             Reset(dmxChaser);
-            if (workingEvent?.IsPoiPlausible == true && currentPoi.ID == 0 )
+            if (workingEvent?.IsPoiPlausible == true && currentPoi.ID == 0)
             {
                 Intro(dmxChaser);
             }
@@ -45,7 +45,7 @@ namespace LightMixer.Model
 
         }
 
-        
+
         private void PoiIsValidSelectEffect(DmxChaser dmxChaser, VdjEvent workingEvent, VDJPoi currentPoi, VDJPoi nextPoi)
         {
             if (currentPoi.IsBreak)
@@ -90,9 +90,9 @@ namespace LightMixer.Model
             dmxChaser.mBpmDetector.BeatRepeat = 1;
             SceneRenderedService.SetWledFixtureFocus(SceneService.indoorSceneName, SceneService.djboothZoneName, WledEffectCategory.Med);
             dmxChaser.mBpmDetector.BeatRepeat = 1;
-            
+
             this.SceneRenderedService.SetCurrentEffect<RGBLedFixtureCollection>(SceneService.indoorSceneName, SceneService.basementZoneName, dmxChaser.LedEffectCollection.OfType<ZoneRotateEffect>().First());
-            
+
             this.SceneRenderedService.SetCurrentEffect<RGBLedFixtureCollection>(SceneService.indoorSceneName, SceneService.djboothZoneName, dmxChaser.LedEffectCollection.OfType<ZoneRotateEffect>().First());
 
             this.SceneRenderedService.SetCurrentEffect<MovingHeadFixtureCollection>(SceneService.indoorSceneName, SceneService.basementZoneName, dmxChaser.MovingHeadEffectCollection.OfType<MovingHeadFlashAll>().First());
@@ -109,7 +109,7 @@ namespace LightMixer.Model
 
             dmxChaser.mBpmDetector.BeatRepeat = 1;
             Model.MaxSpeed = 0.75;
-            
+
             this.SceneRenderedService.SetCurrentEffect<RGBLedFixtureCollection>(SceneService.indoorSceneName, SceneService.basementZoneName, dmxChaser.LedEffectCollection.OfType<ZoneRotateEffect>().First());
             this.SceneRenderedService.SetCurrentEffect<RGBLedFixtureCollection>(SceneService.indoorSceneName, SceneService.djboothZoneName, dmxChaser.LedEffectCollection.OfType<ZoneRotateEffect>().First());
             this.SceneRenderedService.SetCurrentEffect<MovingHeadFixtureCollection>(SceneService.indoorSceneName, SceneService.basementZoneName, dmxChaser.MovingHeadEffectCollection.OfType<MovingHeadAllOn>().First());
@@ -130,7 +130,7 @@ namespace LightMixer.Model
 
             dmxChaser.mBpmDetector.BeatRepeat = 1;
             Model.MaxSpeed = 0.25;
-            
+
             this.SceneRenderedService.SetCurrentEffect<RGBLedFixtureCollection>(SceneService.indoorSceneName, SceneService.basementZoneName, dmxChaser.LedEffectCollection.OfType<ZoneRotateEffect>().First());
             this.SceneRenderedService.SetCurrentEffect<RGBLedFixtureCollection>(SceneService.indoorSceneName, SceneService.djboothZoneName, dmxChaser.LedEffectCollection.OfType<ZoneRotateEffect>().First());
             this.SceneRenderedService.SetCurrentEffect<MovingHeadFixtureCollection>(SceneService.indoorSceneName, SceneService.basementZoneName, dmxChaser.MovingHeadEffectCollection.OfType<MovingHeadAllOn>().First());
@@ -174,10 +174,10 @@ namespace LightMixer.Model
             this.SceneRenderedService.SetMovingHeadDelayedPosition(SceneService.indoorSceneName, SceneService.djboothZoneName, false);
 
             this.SceneRenderedService.SetWledFixtureFocus(SceneService.indoorSceneName, SceneService.djboothZoneName, WledEffectCategory.Low);
-            
+
             Model.MaxSpeed = 1;
             dmxChaser.mBpmDetector.BeatRepeat = 1;
-            
+
             this.SceneRenderedService.SetCurrentEffect<MovingHeadFixtureCollection>(SceneService.indoorSceneName, SceneService.basementZoneName, dmxChaser.MovingHeadEffectCollection.OfType<MovingHeadAllOn>().First());
             this.SceneRenderedService.SetCurrentEffect<MovingHeadFixtureCollection>(SceneService.indoorSceneName, SceneService.djboothZoneName, dmxChaser.MovingHeadEffectCollection.OfType<MovingHeadAllOn>().First());
             this.SceneRenderedService.SetCurrentEffect<RGBLedFixtureCollection>(SceneService.indoorSceneName, SceneService.basementZoneName, dmxChaser.LedEffectCollection.OfType<AllOffEffect>().First());
@@ -209,7 +209,7 @@ namespace LightMixer.Model
             }
             else
             {
-                
+
                 this.SceneRenderedService.SetCurrentEffect<RGBLedFixtureCollection>(SceneService.indoorSceneName, SceneService.basementZoneName, dmxChaser.LedEffectCollection.OfType<ZoneFlashEffect>().First());
                 this.SceneRenderedService.SetCurrentEffect<RGBLedFixtureCollection>(SceneService.indoorSceneName, SceneService.djboothZoneName, dmxChaser.LedEffectCollection.OfType<ZoneFlashEffect>().First());
             }
@@ -236,12 +236,12 @@ namespace LightMixer.Model
             {
                 dmxChaser.mBpmDetector.BeatRepeat = 1;
             }
-            
+
         }
 
         private void Reset(DmxChaser dmxChaser)
         {
-            
+
         }
 
 
@@ -252,7 +252,7 @@ namespace LightMixer.Model
 
         private static double GetSecondInCurrentPoi(VdjEvent workingEvent)
         {
-            return (workingEvent.Position - workingEvent.GetCurrentPoi.Position ) / workingEvent.BpmAsDouble / 1000;
+            return (workingEvent.Position - workingEvent.GetCurrentPoi.Position) / workingEvent.BpmAsDouble / 1000;
         }
 
     }

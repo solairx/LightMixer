@@ -1,9 +1,6 @@
-﻿using System;
+﻿using LightMixer.Model.Fixture;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Collections.ObjectModel;
-using LightMixer.Model.Fixture;
 
 namespace LightMixer.Model
 {
@@ -11,12 +8,11 @@ namespace LightMixer.Model
     {
         public override WledEffect CurrentWledEffect => WledEffect.FX_MODE_STATIC;
         private int nextGroup = 0;
-        public ZoneFlashEffect(BeatDetector.BeatDetector detector,FixtureCollection currentValue, Func<double> intensityGetter, Func<double> intensityFlashGetter)
-            : base(detector, currentValue, intensityGetter, intensityFlashGetter) { }
+
 
         public override void RenderEffect(IEnumerable<BeatDetector.VdjEvent> values)
         {
-            var currentGroups = CurrentValue.FixtureGroups; 
+            var currentGroups = Owner.FixtureGroups;
             if (currentGroups.Count() == 0) return;
             if (currentGroups.Count() - 1 < nextGroup)
                 nextGroup = 0;
@@ -48,8 +44,8 @@ namespace LightMixer.Model
                 isBeat = false;
             }
 
-            
-            
+
+
 
             this.RaiseEvent();
         }
@@ -60,7 +56,7 @@ namespace LightMixer.Model
             {
                 return "Zone Flash Effect";
             }
-           
+
         }
     }
 }

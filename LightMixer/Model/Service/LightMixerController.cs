@@ -1,8 +1,8 @@
-﻿using System.Collections.ObjectModel;
-using System.Linq;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Practices.Unity;
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc;
+using System.Collections.ObjectModel;
+using System.Linq;
 //using System.Web.Http;
 
 namespace LightMixer.Model.Service
@@ -26,12 +26,12 @@ namespace LightMixer.Model.Service
         }
 
         [HttpGet("{scene}/{zone}/effectList")]
-        public IEnumerable<string> GetZoneFixtureEffectList( string scene, string zone)
+        public IEnumerable<string> GetZoneFixtureEffectList(string scene, string zone)
         {
-            
-            return new ObservableCollection<string>(BootStrap.UnityContainer.Resolve<SceneRenderedService>().GetCurrentFixture<RGBLedFixtureCollection>(scene,zone)
+
+            return new ObservableCollection<string>(BootStrap.UnityContainer.Resolve<SceneRenderedService>().GetCurrentFixture<RGBLedFixtureCollection>(scene, zone)
                 .SelectMany(o => o.EffectList)
-                .Select(o=>o.Name)
+                .Select(o => o.Name)
                 .ToArray());
         }
 
@@ -41,7 +41,7 @@ namespace LightMixer.Model.Service
             var effectSelected = BootStrap.UnityContainer.Resolve<SceneRenderedService>().GetCurrentFixture<RGBLedFixtureCollection>(scene, zone)
                 .SelectMany(o => o.EffectList)
                 .FirstOrDefault(o => o.Name == effect);
-            if (effectSelected !=null)
+            if (effectSelected != null)
             {
                 BootStrap.UnityContainer.Resolve<SceneRenderedService>().SetCurrentEffect<RGBLedFixtureCollection>(scene, zone, effectSelected);
             }

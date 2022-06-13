@@ -1,5 +1,4 @@
-﻿using Microsoft.Practices.Unity;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace LightMixer.Model.Fixture
@@ -134,6 +133,6 @@ namespace LightMixer.Model.Fixture
 
         public override int DmxLenght => 9;
 
-        
+
     }
 }

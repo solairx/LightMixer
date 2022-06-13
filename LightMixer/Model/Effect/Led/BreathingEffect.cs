@@ -1,8 +1,5 @@
-﻿using System.Linq;
-using System.Collections.ObjectModel;
-using LightMixer.Model.Fixture;
+﻿using LightMixer.Model.Fixture;
 using System.Collections.Generic;
-using System;
 
 namespace LightMixer.Model
 {
@@ -10,8 +7,7 @@ namespace LightMixer.Model
     {
         double next = 1;
         bool direction = true;
-        public BreathingEffect(BeatDetector.BeatDetector detector, FixtureCollection currentValue, Func<double> intensityGetter, Func<double> intensityFlashGetter)
-            : base(detector, currentValue, intensityGetter, intensityFlashGetter) { }
+
 
         public override void RenderEffect(IEnumerable<BeatDetector.VdjEvent> values)
         {
@@ -33,14 +29,14 @@ namespace LightMixer.Model
                 direction = true;
             }
 
-            var workingGroup = CurrentValue.FixtureGroups;
+            var workingGroup = Owner.FixtureGroups;
             foreach (FixtureGroup group in workingGroup)
             {
                 foreach (FixtureBase fixture in group.FixtureInGroup)
                 {
                     if (fixture is RgbFixture)
                     {
-                        
+
                         ((RgbFixture)fixture).RedValue = this.SetValue((byte)(this._sharedEffectModel.Red * next / 100d));
                         ((RgbFixture)fixture).GreenValue = this.SetValue((byte)(this._sharedEffectModel.Green * next / 100d));
                         ((RgbFixture)fixture).BlueValue = this.SetValue((byte)(this._sharedEffectModel.Blue * next / 100d));
@@ -49,7 +45,7 @@ namespace LightMixer.Model
                 }
             }
 
-            
+
             this.RaiseEvent();
         }
 

@@ -184,7 +184,7 @@ namespace LaserDisplay
             arr[0] = new uint[1, input.Length];
             foreach (ushort s in input)
             {
-                arr[0][0, x] = FituInt(s ); ;
+                arr[0][0, x] = FituInt(s); ;
                 x++;
             }
 
@@ -226,7 +226,7 @@ namespace LaserDisplay
         /// <param name="nWidth">Width of the output array.</param>
         /// <param name="nHeight">Height of the output array.</param>
         /// <returns>Output array.</returns>
-        public uint[][,] Resample(uint[][,] input )
+        public uint[][,] Resample(uint[][,] input)
         {
             int nWidth = 1;
             int nHeight = this.Size;
@@ -469,7 +469,7 @@ namespace LaserDisplay
                 }
             }
 
-        End: ;
+        End:;
 
             work = null;
 

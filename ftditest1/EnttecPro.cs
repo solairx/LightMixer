@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace DmxLib
@@ -92,7 +91,7 @@ namespace DmxLib
         public event EventHandler<FlashReplyArgs> FlashReplyRecieved;
         public event EventHandler<DMXLevelArgs> DMXLevelsRecieved;
         public const int CHANNEL_COUNT = 512;  // can be any length up to 512. The shorter the faster.
-        private byte[] buffer = new byte [CHANNEL_COUNT ];
+        private byte[] buffer = new byte[CHANNEL_COUNT];
 
         public byte[] Buffer
         {
@@ -109,9 +108,9 @@ namespace DmxLib
 
         public void SetDmxValue(int channel, byte value)
         {
-            
-            
-            
+
+
+
             if ((channel > CHANNEL_COUNT)
                 ||
                 (channel < 0))
@@ -267,7 +266,7 @@ namespace DmxLib
         public void sendMsg(DMXProMsgLabel label, byte[] data)
         {
             if (!m_port.IsOpen) return;
-            
+
             List<byte> temp = new List<byte>();
             temp.Add(msgStart);
             temp.Add((byte)label);

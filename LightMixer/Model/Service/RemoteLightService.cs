@@ -1,14 +1,13 @@
-﻿using System;
+﻿using LaserDisplay;
+using LightMixer.Model.Fixture;
+using Microsoft.Practices.Unity;
+using Phidgets;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.Serialization;
-using LaserDisplay;
-using LightMixer.Model.Fixture;
-using Microsoft.Practices.Unity;
 using VisualControler;
-using System.Collections.Generic;
-using Phidgets;
-using Microsoft.AspNetCore.Mvc.Formatters;
 //using System.Web.Http;
 
 namespace LightMixer.Model.Service
@@ -50,7 +49,7 @@ namespace LightMixer.Model.Service
 
         public IEnumerable<string> LaserColorModeListString()
         {
-            return BootStrap.UnityContainer.Resolve<ServiceExchangeSingleton>().LaserColorModeList.Select(o=>o.ToString());
+            return BootStrap.UnityContainer.Resolve<ServiceExchangeSingleton>().LaserColorModeList.Select(o => o.ToString());
         }
 
         public IEnumerable<string> LaserEffectList()
@@ -156,7 +155,7 @@ namespace LightMixer.Model.Service
                     laser.LedCurrentEventID = newLaserEffect;
                 }
                 var colorMode = ColorMode.Hard;
-                Enum.TryParse(LaserColorMode,out colorMode);
+                Enum.TryParse(LaserColorMode, out colorMode);
                 laser.LaserColorMode = colorMode;
             }));
         }
@@ -248,7 +247,8 @@ namespace LightMixer.Model.Service
         {
             var chaser = BootStrap.UnityContainer.Resolve<DmxChaser>();
             var shared = BootStrap.UnityContainer.Resolve<SharedEffectModel>();
-            BootStrap.Dispatcher.Invoke(new Action(() => {
+            BootStrap.Dispatcher.Invoke(new Action(() =>
+            {
 
                 shared.CurrentMovingHeadGobo = shared.MovingHeadGobo.FirstOrDefault(o => o.ToString() == gobo);
                 shared.CurrentMovingHeadProgram = shared.MovingHeadProgram.FirstOrDefault(o => o.ToString() == program);
@@ -280,9 +280,9 @@ namespace LightMixer.Model.Service
                 shared.AutoChangeGobo = contract.AutoChangeGobo;
                 shared.AutoChangeProgram = contract.AutoChangeProgram;
 
-                
+
                 beatDetector.BeatRepeat = contract.BeatRepeat;
-                
+
                 shared.MaxLightFlashIntesity = contract.MaxLightFlashIntesity;
                 shared.MaxLightIntesity = contract.MaxLightIntesity;
                 shared.MaxLightIntesityMovingHead = contract.MaxLightIntesityMovingHead;
@@ -301,7 +301,7 @@ namespace LightMixer.Model.Service
 
         public IEnumerable<string> MovingHeadProgramString()
         {
-            return BootStrap.UnityContainer.Resolve<SharedEffectModel>().MovingHeadProgram.Select(value => value.ToString() );
+            return BootStrap.UnityContainer.Resolve<SharedEffectModel>().MovingHeadProgram.Select(value => value.ToString());
         }
 
         public IEnumerable<string> MovingHeadGoboString()
@@ -311,10 +311,10 @@ namespace LightMixer.Model.Service
 
         public RemoteLightService()
         {
-            
+
         }
 
-       
+
     }
 
     [DataContract]

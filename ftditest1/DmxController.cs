@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using OpenDmx;
+﻿using Phidgets;
 using Phidgets.Events;
-using Phidgets;
+using System;
 using System.ServiceModel;
 
 namespace DmxLib
@@ -33,7 +29,7 @@ namespace DmxLib
                 kit.waitForAttachment();
                 kit.InputChange += new InputChangeEventHandler(kit_InputChange);
             }
-            catch (Exception exp)
+            catch (Exception)
             {
 
             }
@@ -76,7 +72,7 @@ namespace DmxLib
                     }
 
                     lightIntensity += 32;
-                    
+
                     if (lightIntensity > 255)
                     {
                         lightIntensity = 255;

@@ -1,15 +1,13 @@
-﻿using System;
-using System.Threading;
-using Microsoft.Practices.Unity;
+﻿using BeatDetector;
 using LightMixer.Model.Fixture;
-using System.Collections.Concurrent;
-using BeatDetector;
-using System.Collections.Generic;
-using System.Linq;
-using static LightMixer.Model.DmxChaser;
-using Microsoft.Practices.ObjectBuilder2;
-using System.Diagnostics;
 using LightMixer.View;
+using Microsoft.Practices.ObjectBuilder2;
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Threading;
 using static LightMixer.Model.Fixture.MovingHeadFixture;
 
 namespace LightMixer.Model
@@ -22,7 +20,7 @@ namespace LightMixer.Model
         private readonly VirtualDjServer vdjServer;
         private bool isRunning = true;
         private Thread runningThread;
-        private DmxEffectSelector DmxEffectSelector ;
+        private DmxEffectSelector DmxEffectSelector;
         private ConcurrentDictionary<int, VdjEvent> LastVdjEvent = new ConcurrentDictionary<int, VdjEvent>();
         private ActiveDeckSelector ActiveDeckSelector;
         private int FrameRate = 25; //25 ms
@@ -44,7 +42,7 @@ namespace LightMixer.Model
             this.dmxWrapper = dmxWrapper;
             this.vdjServer = vdjServer;
             runningThread = new Thread(new ThreadStart(Run));
-        //    runningThread.IsBackground = true;
+            //    runningThread.IsBackground = true;
             runningThread.Start();
             if (vdjServer != null)
             {
@@ -53,7 +51,7 @@ namespace LightMixer.Model
             }
         }
 
-        
+
 
         private void Run()
         {
@@ -108,7 +106,7 @@ namespace LightMixer.Model
                 {
                     Debug.WriteLine(vexp.ToString());
                 }
-          //      Debug.WriteLine("FRAME TIME : " + sw.ElapsedMilliseconds);
+                //      Debug.WriteLine("FRAME TIME : " + sw.ElapsedMilliseconds);
                 Thread.Sleep(FrameRate);
             }
         }
@@ -117,7 +115,7 @@ namespace LightMixer.Model
         {
             byte?[] array = new byte?[512];
 
-            foreach (FixtureBase fixture in fixtures.Where(f=>f.IsRenderOnDmx))
+            foreach (FixtureBase fixture in fixtures.Where(f => f.IsRenderOnDmx))
             {
 
                 byte?[] fixtureValue = fixture.Render();
@@ -134,8 +132,8 @@ namespace LightMixer.Model
                 byte?[] fixtureValue = fixture.Render();
             }
 
-            foreach (var renderer in fixtures.Where(f => f.HttpMulticastRenderer !=null)
-                .Select(f=>f.HttpMulticastRenderer)
+            foreach (var renderer in fixtures.Where(f => f.HttpMulticastRenderer != null)
+                .Select(f => f.HttpMulticastRenderer)
                 .Distinct())
             {
                 renderer.Render();
@@ -143,7 +141,7 @@ namespace LightMixer.Model
             return array;
         }
 
-        
+
 
         private void VdjServer_OS2lServerEvent(OS2lEvent os2lEvent)
         {
@@ -199,19 +197,19 @@ namespace LightMixer.Model
         }
 
 
-        public void SetMovingHeadProgramEffect(string scene, string zone, Program newProgram) 
+        public void SetMovingHeadProgramEffect(string scene, string zone, Program newProgram)
         {
             var selectedZone =
             sceneService.Scenes
             .First(o => o.Name == scene)
             .Zones.Where(z => z.Name == zone);
-            
+
             selectedZone.Single().FixtureTypes.OfType<MovingHeadFixtureCollection>()
             .First()
             .FixtureGroups
-            .SelectMany(o=>o.FixtureInGroup)
+            .SelectMany(o => o.FixtureInGroup)
             .OfType<MovingHeadFixture>()
-            .ForEach(mh=>mh.ProgramMode = newProgram);
+            .ForEach(mh => mh.ProgramMode = newProgram);
         }
 
         public void SetWledFixtureFocus(string scene, string zone, WledEffectCategory newProgram)

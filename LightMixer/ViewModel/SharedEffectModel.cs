@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Collections.ObjectModel;
-using System.Windows.Threading;
+﻿using BeatDetector;
 using LightMixer.Model.Fixture;
-using System.Windows.Media;
-using UIFrameWork;
-using BeatDetector;
+using System;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using System.Windows.Media;
+using System.Windows.Threading;
+using UIFrameWork;
 
 namespace LightMixer.Model
 {

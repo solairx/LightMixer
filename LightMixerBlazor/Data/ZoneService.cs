@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Components;
-using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -17,7 +16,7 @@ namespace LightMixerBlazor.Data
 
         public Task<IEnumerable<string>> GetZone(string sceneName, string zoneName)
         {
-            return httpClient.GetJsonAsync<IEnumerable<string>>("LightMixer/"+ sceneName +"/" + zoneName + "/effectList");
+            return httpClient.GetJsonAsync<IEnumerable<string>>("LightMixer/" + sceneName + "/" + zoneName + "/effectList");
         }
 
         public Task<string> GetZoneConfig(string sceneName)

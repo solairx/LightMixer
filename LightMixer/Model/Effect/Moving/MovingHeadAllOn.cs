@@ -1,22 +1,19 @@
-﻿using System;
+﻿using LightMixer.Model.Fixture;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Collections.ObjectModel;
-using LightMixer.Model.Fixture;
 
 namespace LightMixer.Model
 {
     public class MovingHeadAllOn : EffectBase
     {
-        public MovingHeadAllOn(BeatDetector.BeatDetector detector, FixtureCollection currentValue, Func<double> intensityGetter, Func<double> intensityFlashGetter)
-            : base(detector, currentValue, intensityGetter, intensityFlashGetter) { }
+
 
         public override void RenderEffect(IEnumerable<BeatDetector.VdjEvent> values)
         {
-           
 
-            foreach (FixtureBase fixture in CurrentValue.FixtureGroups.SelectMany(o => o.FixtureInGroup))
+
+            foreach (FixtureBase fixture in Owner.FixtureGroups.SelectMany(o => o.FixtureInGroup))
             {
                 if (fixture is MovingHeadFixture)
                 {
@@ -24,7 +21,7 @@ namespace LightMixer.Model
                     ((MovingHeadFixture)fixture).GoboPaturn = _sharedEffectModel.CurrentMovingHeadGobo;
                     //((MovingHeadFixture)fixture).Pan = 0;
                     //((MovingHeadFixture)fixture).Tilt = Convert.ToUInt16(this._sharedEffectModel.MaxSpeed);
-                    if (DateTime.Now.Subtract(_sharedEffectModel.IsCurrentMovingHeadProgramDirty).TotalMilliseconds <250)
+                    if (DateTime.Now.Subtract(_sharedEffectModel.IsCurrentMovingHeadProgramDirty).TotalMilliseconds < 250)
                     {
                         ((MovingHeadFixture)fixture).ProgramMode = _sharedEffectModel.CurrentMovingHeadProgram;
                     }

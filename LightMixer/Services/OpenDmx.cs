@@ -126,8 +126,8 @@ namespace OpenDmx
             FT_Close(handle);
 
         }
-        
-        private  int writeSafe(uint handle, byte[] data, int length)
+
+        private int writeSafe(uint handle, byte[] data, int length)
         {
             IntPtr ptr = Marshal.AllocHGlobal((int)length);
             Marshal.Copy(data, 0, ptr, (int)length);

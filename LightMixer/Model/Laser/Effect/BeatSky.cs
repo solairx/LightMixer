@@ -1,8 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Drawing;
-using System.Threading;
 using VisualControler.Visual.Laser;
 namespace LaserDisplay
 {
@@ -15,11 +12,11 @@ namespace LaserDisplay
         private int max_x_pos;
         private int size;
         private LaserSetting laserSetting = new LaserSetting();
-        
+
         private bool DrawReverse = false;
         public BeatSky()
         {
-     
+
         }
         public void ReadSetting()
         {
@@ -38,11 +35,11 @@ namespace LaserDisplay
 
         public void StopDrawing()
         {
-         
+
         }
         private void run()
         {
-      
+
         }
         public void Transform()
         {
@@ -73,22 +70,22 @@ namespace LaserDisplay
                     }
                     else
                     {
-                        
 
-                        
 
-                            if (abs)
-                            {
-                                Buffer[i + VerticalPosition] = ShortFromDouble(Math.Cos(((double)waveSync++) / size) * max_x_pos);
-                                Buffer[i + HorizontalPosition] = 0;
-                            }
-                            else
-                            {
-                                Buffer[i + HorizontalPosition] = ShortFromDouble(Math.Cos(((double)waveSync++) / size) * max_x_pos);
-                                Buffer[i + VerticalPosition] = 0;
-                            }
 
-                        
+
+                        if (abs)
+                        {
+                            Buffer[i + VerticalPosition] = ShortFromDouble(Math.Cos(((double)waveSync++) / size) * max_x_pos);
+                            Buffer[i + HorizontalPosition] = 0;
+                        }
+                        else
+                        {
+                            Buffer[i + HorizontalPosition] = ShortFromDouble(Math.Cos(((double)waveSync++) / size) * max_x_pos);
+                            Buffer[i + VerticalPosition] = 0;
+                        }
+
+
 
                     }
 
@@ -98,7 +95,7 @@ namespace LaserDisplay
 
                 return Buffer;
             }
-            catch (Exception d)
+            catch (Exception)
             {
                 return ReturnNull(BufferSize, HorizontalPosition, VerticalPosition, TurnOnPosition);
             }

@@ -60,14 +60,14 @@ namespace LightMixer.Model.Fixture
         {
             double groupPosition = 0;
 
-            double masterPositionRatio = position / ((Resampler.Size == 0)? InitialSize: Resampler.Size);
+            double masterPositionRatio = position / ((Resampler.Size == 0) ? InitialSize : Resampler.Size);
             double effectiveRatio = masterPositionRatio + groupPosition;
             SetSize(newSize, masterPositionRatio, masterPositionRatio + groupPosition);
         }
-        protected void SetSize(int newSize,double masterPositionRatio, double groupPosition)
+        protected void SetSize(int newSize, double masterPositionRatio, double groupPosition)
         {
             double effectiveRatio = masterPositionRatio + groupPosition;
-            if (effectiveRatio > 1 )
+            if (effectiveRatio > 1)
             {
                 effectiveRatio = effectiveRatio - 1;
             }

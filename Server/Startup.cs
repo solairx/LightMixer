@@ -1,12 +1,10 @@
-using System.Linq;
+using BlazorSignalRApp.Server.Hubs;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.ResponseCompression;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using BlazorSignalRApp.Server.Hubs;
+using System.Linq;
 
 namespace BlazorSignalRApp.Server
 {

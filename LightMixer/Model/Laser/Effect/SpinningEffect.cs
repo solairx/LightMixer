@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Drawing;
-using System.Threading;
-using VisualControler.Visual.Laser;
 using VisualControler;
+using VisualControler.Visual.Laser;
 
 namespace LaserDisplay
 {
@@ -28,7 +25,7 @@ namespace LaserDisplay
 
         public SpinningEffect()
         {
-            
+
         }
 
         public void ReadSetting()
@@ -49,17 +46,17 @@ namespace LaserDisplay
 
         public void Draw(Graphics g, Pen p)
         {
-           
+
 
         }
 
         public void StopDrawing()
         {
-            
+
         }
         private void run()
         {
-            
+
         }
         public void Transform()
         {
@@ -142,11 +139,11 @@ namespace LaserDisplay
 
                 return Buffer;
             }
-            catch (Exception d)
+            catch (Exception)
             {
                 return ReturnNull(BufferSize, HorizontalPosition, VerticalPosition, TurnOnPosition);
             }
-            
+
         }
 
         private short[] ReturnNull(int BufferSize, int HorizontalPosition, int VerticalPosition, int TurnOnPosition)

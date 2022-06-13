@@ -1,16 +1,14 @@
-﻿using System;
+﻿using LightMixer.Model.Fixture;
+using Microsoft.Practices.Prism.Commands;
+using Microsoft.Practices.Unity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Collections.ObjectModel;
-using Microsoft.Practices.Unity;
 using UIFrameWork;
-using Microsoft.Practices.Prism.Commands;
-using LightMixer.Model.Fixture;
 
 namespace LightMixer.ViewModel
 {
-    public class DmxControlSettingViewModel : BaseViewModel  
+    public class DmxControlSettingViewModel : BaseViewModel
     {
         private long mBreak = 27600;
         private long mMbb = 0;
@@ -29,7 +27,7 @@ namespace LightMixer.ViewModel
         {
             get
             {
-                return BootStrap.UnityContainer.Resolve<DmxModel >();
+                return BootStrap.UnityContainer.Resolve<DmxModel>();
             }
         }
 
@@ -57,7 +55,7 @@ namespace LightMixer.ViewModel
             set
             {
                 mMbb = value;
-                AsyncOnPropertyChange(o => this.MBB); 
+                AsyncOnPropertyChange(o => this.MBB);
                 BootStrap.UnityContainer.Resolve<LightService.DmxServiceClient>().SetMBB(value);
             }
         }
@@ -129,12 +127,12 @@ namespace LightMixer.ViewModel
 
         public DelegateCommand TestDesign => new DelegateCommand(ExecuteTextDesign, CanExecuteTestDesign);
 
-        private  bool CanExecuteTestDesign()
+        private bool CanExecuteTestDesign()
         {
             return true;
         }
 
-        private  void ExecuteTextDesign()
+        private void ExecuteTextDesign()
         {
             MovingHeadProgramTest.PanListDesignShared = StringToIntList(PanDesign).ToArray();
             MovingHeadProgramTest.TiltListDesignShared = StringToIntList(tiltDesign).ToArray();

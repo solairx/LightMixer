@@ -1,13 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Linq;
+﻿using LightMixer;
 using System.ServiceProcess;
-using System.Text;
-using DmxLib;
-using LightMixer;
 
 namespace DmxLightingService
 {
@@ -19,7 +11,7 @@ namespace DmxLightingService
         {
             InitializeComponent();
             this.ServiceName = "Dmx Lighting Servive";
-            
+
         }
 
         protected override void OnStart(string[] args)

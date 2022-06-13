@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using Microsoft.Practices.Unity;
+﻿using BeatDetector;
 using LightMixer.Model.Fixture;
-using UIFrameWork;
-using BeatDetector;
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.Practices.ObjectBuilder2;
-using System.Windows.Input;
-using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism;
+using Microsoft.Practices.Prism.Commands;
+using Microsoft.Practices.Unity;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows.Input;
+using UIFrameWork;
 
 namespace LightMixer.Model
 {
@@ -88,7 +88,7 @@ namespace LightMixer.Model
 
         public bool UseFlashTransition
         {
-            get => useFlashTransition; 
+            get => useFlashTransition;
             set
             {
                 if (useFlashTransition != value)

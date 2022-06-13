@@ -1,9 +1,7 @@
-﻿using HADotNet.Core.Clients;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace LightMixer.Model.Fixture
 {
@@ -32,9 +30,9 @@ namespace LightMixer.Model.Fixture
 
         public override int DmxLenght => 1;
 
-        public static  bool UseDarkMode
+        public static bool UseDarkMode
         {
-            get;set;
+            get; set;
         }
 
         private bool isOnInternalState = true;
@@ -67,11 +65,11 @@ namespace LightMixer.Model.Fixture
             {
                 double dimmerValue = WhiteValue * 100 / 255;
 
-                if (WhiteValue == 0  || UseDarkMode || this.currentEffect is AllOffEffect)
+                if (WhiteValue == 0 || UseDarkMode || this.currentEffect is AllOffEffect)
                 {
                     newQuery = "http://192.168.1.252/light/0?turn=off&brightness=100";
                 }
-                else 
+                else
                 {
                     isOnInternalState = true;
                     newQuery = "http://192.168.1.252/light/0?turn=on&brightness=" + dimmerValue;
@@ -112,7 +110,7 @@ namespace LightMixer.Model.Fixture
                 }*/
 
             }
-            catch (Exception v)
+            catch (Exception)
             {
             }
 

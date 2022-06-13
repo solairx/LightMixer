@@ -47,7 +47,7 @@ namespace OpenDmx
         private uint handle;
         private bool done = false;
         private FT_STATUS status;
-        
+
         private const byte BITS_8 = 8;
         private const byte STOP_BITS_2 = 2;
         private const byte PARITY_NONE = 0;
@@ -55,14 +55,14 @@ namespace OpenDmx
         private const byte PURGE_RX = 1;
         private const byte PURGE_TX = 2;
         public const int CHANNEL_COUNT = 513;  // can be any length up to 512. The shorter the faster.
-        private  bool mswitchOn = false;
+        private bool mswitchOn = false;
         private DateTime mLastUpdated = DateTime.MinValue;
         private TimeSpan mInactivityUpdateInterval = new TimeSpan(0, 0, 5);
-        private byte mMaxValue = 32;        
+        private byte mMaxValue = 32;
         //private TimeSpan mBreakLenght = new TimeSpan(22728 );
         // a 50000 on a des pause qui sont trop longue
         // a 22728 on a des frame corrompu, trop vite
-        
+
 
         private DmxLib.Dmx mDMXSetting;
 
@@ -74,7 +74,7 @@ namespace OpenDmx
             }
         }
 
-        public bool SwitchOn 
+        public bool SwitchOn
         {
             get
             {
@@ -88,7 +88,7 @@ namespace OpenDmx
             }
         }
 
-       
+
 
 
 
@@ -112,7 +112,7 @@ namespace OpenDmx
 
         public OpenDMX()
         {
-            
+
             buffer = new byte[CHANNEL_COUNT];
             SwitchOn = true;
         }
@@ -139,9 +139,9 @@ namespace OpenDmx
                 ||
                 (channel < 0))
                 throw new InvalidOperationException("Channel number must be between 0 and " + CHANNEL_COUNT);
-            
+
             buffer[channel] = value;
-            
+
 
         }
 
@@ -149,7 +149,7 @@ namespace OpenDmx
         {
             initOpenDMX();
             FT_ResetDevice(handle);
-            System.Threading.Thread.Sleep(new TimeSpan( mDMXSetting.MBB));
+            System.Threading.Thread.Sleep(new TimeSpan(mDMXSetting.MBB));
             FT_SetBreakOn(handle);
             while (!done)
             {
@@ -157,24 +157,24 @@ namespace OpenDmx
                 {
                     SwitchAllOn();
                 }
-                
-                if (!AllOff || DateTime.UtcNow  > mLastUpdated + mInactivityUpdateInterval   )
+
+                if (!AllOff || DateTime.UtcNow > mLastUpdated + mInactivityUpdateInterval)
                 {
-                    
+
                     FT_SetBreakOff(handle);
 
-                    System.Threading.Thread.Sleep(new TimeSpan( mDMXSetting.MAB));
+                    System.Threading.Thread.Sleep(new TimeSpan(mDMXSetting.MAB));
 
                     writeUnsafe(handle, buffer, buffer.Length);
-                    System.Threading.Thread.Sleep(new TimeSpan( mDMXSetting.MBB));
+                    System.Threading.Thread.Sleep(new TimeSpan(mDMXSetting.MBB));
                     FT_SetBreakOn(handle);
 
                     mLastUpdated = DateTime.UtcNow;
                 }
-                System.Threading.Thread.Sleep(new TimeSpan( mDMXSetting.BreakLenght));
-                
-                
-                
+                System.Threading.Thread.Sleep(new TimeSpan(mDMXSetting.BreakLenght));
+
+
+
             }
             FT_Close(handle);
 
@@ -194,7 +194,7 @@ namespace OpenDmx
             }
         }
 
-        private  uint writeUnsafe(uint handle, byte[] data, int length)
+        private uint writeUnsafe(uint handle, byte[] data, int length)
         {
             IntPtr ptr = IntPtr.Zero;
             uint bytesWritten = 0;
@@ -210,17 +210,17 @@ namespace OpenDmx
             }
             finally
             {
-                if (ptr != IntPtr.Zero) 
+                if (ptr != IntPtr.Zero)
                     Marshal.FreeHGlobal(ptr);
             }
             return bytesWritten;
-            
+
         }
         private void initOpenDMX()
         {
             status = FT_ResetDevice(handle);
-           status = FT_SetDivisor(handle, 12); // set baud rate
-         //   status = FT_SetBaudRate(handle, 250000); // set baud rate
+            status = FT_SetDivisor(handle, 12); // set baud rate
+                                                //   status = FT_SetBaudRate(handle, 250000); // set baud rate
 
             status = FT_SetDataCharacteristics(handle, BITS_8, STOP_BITS_2, PARITY_NONE);
             status = FT_SetFlowControl(handle, (char)FLOW_NONE, 0, 0);

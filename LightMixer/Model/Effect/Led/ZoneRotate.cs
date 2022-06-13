@@ -1,21 +1,17 @@
-﻿using System;
+﻿using LightMixer.Model.Fixture;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Collections.ObjectModel;
-using LightMixer.Model.Fixture;
 
 namespace LightMixer.Model
 {
     public class ZoneRotateEffect : EffectBase
     {
         private int nextGroup = 0;
-        public ZoneRotateEffect(BeatDetector.BeatDetector detector, FixtureCollection currentValue, Func<double> intensityGetter, Func<double> intensityFlashGetter)
-            : base(detector, currentValue, intensityGetter, intensityFlashGetter) { }
+
 
         public override void RenderEffect(IEnumerable<BeatDetector.VdjEvent> values)
         {
-            var currentGroups = CurrentValue.FixtureGroups;
+            var currentGroups = Owner.FixtureGroups;
             if (currentGroups.Count() == 0) return;
             if (currentGroups.Count() - 1 < nextGroup)
                 nextGroup = 0;
@@ -35,7 +31,7 @@ namespace LightMixer.Model
                     {
                         fixtureToreset.WhiteValue = this.SetValueFlash(0);
                     }
-                    
+
                 }
             }
 

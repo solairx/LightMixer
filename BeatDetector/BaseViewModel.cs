@@ -7,10 +7,10 @@ namespace BeatDetector
     /// <summary>
     /// Base class for DependencyObject view model.Proxy.
     /// </summary>
-    public abstract class ViewModelBase :  INotifyPropertyChanged
+    public abstract class ViewModelBase : INotifyPropertyChanged
     {
-        
-        
+
+
         /// <summary>
         /// Occurs when a property value changes.
         /// </summary>
@@ -47,7 +47,7 @@ namespace BeatDetector
             //     System.Windows.MessageBox.Show("Une Erreur est survenu dans la génération de cette fonction");
         }
 
-        
+
 
 
         public void OnPropertyChanged<TProperty>(Expression<Func<ViewModelBase, TProperty>> expression)

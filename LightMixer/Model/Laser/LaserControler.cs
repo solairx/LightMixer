@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using VisualControler;
 
 namespace LaserDisplay
@@ -37,7 +36,7 @@ namespace LaserDisplay
             this.Init();
             VisualControler.ServiceExchangeSingleton.Instance.LaserPause = true;
 
-         
+
         }
 
         public void Init()
@@ -50,29 +49,29 @@ namespace LaserDisplay
 
         public void Reset()
         {
-            
-               
-                    try
-                    {
-                        Stop();
-                        GreenLaser = null;
-                        this.Init();
-                        ReadSetting();
-                        Start();
 
 
-                    }
-                    catch (Exception ex)
-                    {
-                      //  System.Windows.Forms.MessageBox.Show(ex.ToString());
-                    }
-              
-            
+            try
+            {
+                Stop();
+                GreenLaser = null;
+                this.Init();
+                ReadSetting();
+                Start();
+
+
+            }
+            catch (Exception)
+            {
+                //  System.Windows.Forms.MessageBox.Show(ex.ToString());
+            }
+
+
         }
 
         public void Start()
         {
-           GreenLaser.Start();
+            GreenLaser.Start();
         }
 
         public void Stop()
@@ -102,7 +101,7 @@ namespace LaserDisplay
             if (GreenLaser != null)
             {
                 GreenLaser._OnBeat = IsBeat;
-                
+
             }
 
         }
@@ -111,15 +110,15 @@ namespace LaserDisplay
         {
             if (GreenLaser != null)
             {
-                
+
                 GreenLaser.BPM = BPM;
             }
 
         }
 
-       
-       
-            
+
+
+
 
     }
 }

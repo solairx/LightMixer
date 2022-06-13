@@ -95,8 +95,9 @@ namespace BeatDetector
 
         }
 
-        public bool IsNull 
-        { get
+        public bool IsNull
+        {
+            get
             {
                 return Position == 1;
             }

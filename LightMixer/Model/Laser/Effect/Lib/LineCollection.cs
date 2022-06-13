@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Drawing;
 
 namespace LaserDisplay
@@ -98,8 +97,8 @@ namespace LaserDisplay
         public short[] GetAllXCoordonate(bool DrawReverse)
         {
             Line p = this._InnerList[0];
-            
-         //   bool first = true;
+
+            //   bool first = true;
             short[] list = new short[_InnerList.Count];
             lock (this._InnerList)
             {
@@ -109,18 +108,18 @@ namespace LaserDisplay
 
                     for (x = 0; x < _InnerList.Count; x++)
                     {
-                        
+
                         list[x] = ConvertIntToShort(_InnerList[x].x_int);
-                     //   System.Windows.Forms.MessageBox.Show(_InnerList[x].y_int.ToString() + "r, " + list[x].ToString());
-                       
+                        //   System.Windows.Forms.MessageBox.Show(_InnerList[x].y_int.ToString() + "r, " + list[x].ToString());
+
                     }
                 }
                 else
                 {
-                    for (x = _InnerList.Count-1; x != 0; x--)
+                    for (x = _InnerList.Count - 1; x != 0; x--)
                     {
                         list[x] = ConvertIntToShort(_InnerList[x].x_int);
-                      //  System.Windows.Forms.MessageBox.Show(_InnerList[x].y_int.ToString() + "f, " + list[x].ToString());
+                        //  System.Windows.Forms.MessageBox.Show(_InnerList[x].y_int.ToString() + "f, " + list[x].ToString());
                     }
                 }
             }
@@ -129,8 +128,6 @@ namespace LaserDisplay
         public short[] GetAllYCoordonate(bool DrawReverse)
         {
             Line p = this._InnerList[0];
-
-            bool first = true;
             short[] list = new short[_InnerList.Count];
             lock (this._InnerList)
             {
@@ -146,7 +143,7 @@ namespace LaserDisplay
                 }
                 else
                 {
-                    for (x = _InnerList.Count-1; x != 0; x--)
+                    for (x = _InnerList.Count - 1; x != 0; x--)
                     {
                         list[x] = ConvertIntToShort(_InnerList[x].y_int);
                     }
@@ -158,8 +155,6 @@ namespace LaserDisplay
         public short[] GetAllTransparent(bool DrawReverse)
         {
             Line p = this._InnerList[0];
-
-            bool first = true;
             short[] list = new short[_InnerList.Count];
             lock (this._InnerList)
             {
@@ -175,7 +170,7 @@ namespace LaserDisplay
                 }
                 else
                 {
-                    for (x = _InnerList.Count-1; x != 0; x--)
+                    for (x = _InnerList.Count - 1; x != 0; x--)
                     {
                         if (_InnerList[x].Transparent) list[x] = 32767;
                         else list[x] = -32767;

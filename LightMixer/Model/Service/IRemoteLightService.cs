@@ -1,10 +1,9 @@
-﻿using System.Collections.ObjectModel;
-using System.ServiceModel;
-using LaserDisplay;
+﻿using LaserDisplay;
 using LightMixer.Model.Fixture;
-using System;
-using System.ServiceModel.Web;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ServiceModel;
+using System.ServiceModel.Web;
 
 namespace LightMixer.Model.Service
 {
@@ -48,7 +47,7 @@ namespace LightMixer.Model.Service
         [OperationContract]
         [WebGet(ResponseFormat = WebMessageFormat.Json)]
         IEnumerable<string> LaserEffectList();
-  
+
         [OperationContract]
         void UpdateLaser(LaserDataContract contract);
 
@@ -59,7 +58,7 @@ namespace LightMixer.Model.Service
 
         [OperationContract]
         [WebInvoke(RequestFormat = WebMessageFormat.Json, Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Bare, UriTemplate = "UpdateLaserRest?AutoChangeEvent={AutoChangeEvent}&AutoChangeEventLaser={AutoChangeEventLaser}&AutoMixDelay={AutoMixDelay}&Blue={Blue}&Green={Green}&LaserPause={LaserPause}&LaserSpeedAdj={LaserSpeedAdj}&LaserSpeedRatio={LaserSpeedRatio}&ManualBeat={ManualBeat}&ManualBeatOnly={ManualBeatOnly}&OnBeat={OnBeat}&OnBeatReverse={OnBeatReverse}&UseBeatTurnOff={UseBeatTurnOff}&LaserCurrentEventID={LaserCurrentEventID}&LaserColorMode={LaserColorMode}")]
-        void UpdateLaserRest( bool AutoChangeEvent, bool AutoChangeEventLaser, int AutoMixDelay,bool Blue, bool Green, bool LaserPause, int LaserSpeedAdj, int LaserSpeedRatio  ,bool ManualBeat, bool ManualBeatOnly, bool OnBeat, bool OnBeatReverse, bool UseBeatTurnOff, string LaserCurrentEventID, string LaserColorMode);
+        void UpdateLaserRest(bool AutoChangeEvent, bool AutoChangeEventLaser, int AutoMixDelay, bool Blue, bool Green, bool LaserPause, int LaserSpeedAdj, int LaserSpeedRatio, bool ManualBeat, bool ManualBeatOnly, bool OnBeat, bool OnBeatReverse, bool UseBeatTurnOff, string LaserCurrentEventID, string LaserColorMode);
 
         [OperationContract]
         LaserDataContract GetLaserStatus();

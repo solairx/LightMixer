@@ -18,11 +18,11 @@ namespace LightMixer.Model.Fixture
         private string lastQuery = "";
         private int SkipRate = 0;
 
-        public override bool SupportAggresiveUpdate => false; 
+        public override bool SupportAggresiveUpdate => false;
 
         public TasmotaRGWFixture(string ip)
         {
-            client = HttpClientFactory.Create(); 
+            client = HttpClientFactory.Create();
             client.Timeout = TimeSpan.FromSeconds(10);
             sv = ClientFactory.GetClient<ServiceClient>();
             this.ip = ip;
@@ -30,7 +30,7 @@ namespace LightMixer.Model.Fixture
             Task.Run(HttpLoop);
         }
 
-        
+
 
         public override int DmxLenght => 1;
 
@@ -38,14 +38,14 @@ namespace LightMixer.Model.Fixture
 
         public int? LastColorEnergy = null;
 
-        public bool HasGreatLightEnergyDifference ()
+        public bool HasGreatLightEnergyDifference()
         {
             if (LastColorEnergy == null)
             {
                 LastColorEnergy = RedValue + GreenValue + BlueValue;
                 return true;
             }
-            if (Math.Abs(LastColorEnergy.Value - (this.RedValue + this.GreenValue + this.BlueValue)) >50)
+            if (Math.Abs(LastColorEnergy.Value - (this.RedValue + this.GreenValue + this.BlueValue)) > 50)
             {
                 LastColorEnergy = RedValue + GreenValue + BlueValue;
                 return true;
@@ -67,11 +67,11 @@ namespace LightMixer.Model.Fixture
             {
                 try
                 {
-                    
+
 
                     LastColorEnergy = RedValue + GreenValue + BlueValue;
                     var newQuery = "http://" + ip + "/cm?cmnd=Color%20" + ToHex(RedValue) + ToHex(GreenValue) + ToHex(BlueValue) + "0000&Dimmer%2088";
-                    if (HasGreatLightEnergyDifference() &&  RedValue + GreenValue + BlueValue > 20)
+                    if (HasGreatLightEnergyDifference() && RedValue + GreenValue + BlueValue > 20)
                     {
                         Thread.Sleep(100);
                     }
@@ -83,7 +83,7 @@ namespace LightMixer.Model.Fixture
                         var task = Task.Run(() => client.GetAsync(newQuery));
                         var res = task.Result;
                         task.Wait();
-                   ///     if (!task.Wait(3000))
+                        ///     if (!task.Wait(3000))
                         {
                             Debug.WriteLine("TASMOTA FAILLLLLLLEDD");
                         }
@@ -93,7 +93,7 @@ namespace LightMixer.Model.Fixture
                         Thread.Sleep(50);
                     }
                 }
-                catch (Exception exp)
+                catch (Exception)
                 {
 
                 }
@@ -121,24 +121,24 @@ namespace LightMixer.Model.Fixture
             {
                 Stopwatch sw = new Stopwatch();
                 sw.Start();
-                
 
-               /* if (lastQuery != newQuery && HasGreatLightEnergyDifference() && !isHttpRunning)
-                {
-                    isHttpRunning = true;
-                    Debug.WriteLine("Tasmota Query Cancel REquest" + cts.IsCancellationRequested); 
-                    
-                    cts = new CancellationTokenSource();
-                    LastColorEnergy = RedValue + GreenValue + BlueValue;
-                    lastQuery = newQuery;
-                    Debug.WriteLine(newQuery);
-                    client.GetAsync(newQuery, HttpCompletionOption.ResponseHeadersRead ,cts.Token)
-                        
-                        .ContinueWith((a) => isHttpRunning = false) ;
-                    cts.CancelAfter(400);
-                }*/
+
+                /* if (lastQuery != newQuery && HasGreatLightEnergyDifference() && !isHttpRunning)
+                 {
+                     isHttpRunning = true;
+                     Debug.WriteLine("Tasmota Query Cancel REquest" + cts.IsCancellationRequested); 
+
+                     cts = new CancellationTokenSource();
+                     LastColorEnergy = RedValue + GreenValue + BlueValue;
+                     lastQuery = newQuery;
+                     Debug.WriteLine(newQuery);
+                     client.GetAsync(newQuery, HttpCompletionOption.ResponseHeadersRead ,cts.Token)
+
+                         .ContinueWith((a) => isHttpRunning = false) ;
+                     cts.CancelAfter(400);
+                 }*/
             }
-            catch (Exception v)
+            catch (Exception)
             {
             }
 

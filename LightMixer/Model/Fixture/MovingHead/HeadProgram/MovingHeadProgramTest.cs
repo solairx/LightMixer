@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using static LightMixer.Model.Fixture.MovingHeadFixture;
 
 namespace LightMixer.Model.Fixture
@@ -9,9 +7,9 @@ namespace LightMixer.Model.Fixture
     {
         public static List<MovingHeadProgramTest> Instance = new List<MovingHeadProgramTest>();
 
-        public static ushort[] PanListDesignShared = new ushort []{ 0,500};
-        public static ushort[] TiltListDesignShared = new ushort []{ 0,5000};
-        public static ushort[] MaxDimmerDesignShared = new ushort []{ 100,100};
+        public static ushort[] PanListDesignShared = new ushort[] { 0, 500 };
+        public static ushort[] TiltListDesignShared = new ushort[] { 0, 5000 };
+        public static ushort[] MaxDimmerDesignShared = new ushort[] { 100, 100 };
         public static int InitialSizeShared = 255;
 
 

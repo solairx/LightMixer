@@ -35,7 +35,7 @@ namespace LightMixer.Model.Fixture
         public byte GreenValue
         {
             get => greenValue;
-            set 
+            set
             {
                 if (greenValue != value)
                 {

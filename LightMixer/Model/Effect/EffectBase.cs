@@ -1,10 +1,10 @@
-﻿using System;
+﻿using LightMixer.Model.Fixture;
+using Microsoft.Practices.Unity;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
-using LightMixer.Model.Fixture;
-using Microsoft.Practices.Unity;
 
 namespace LightMixer.Model
 {
@@ -16,9 +16,20 @@ namespace LightMixer.Model
         }
         public event DmxFrameHandler DmxFrameEvent;
         public delegate void DmxFrameHandler(ObservableCollection<DmxChannelStatus> currentValue, object caller);
-        protected FixtureCollection CurrentValue;
-        private readonly Func<double> intensityGetter;
-        private readonly Func<double> intensityFlashGetter;
+        internal FixtureCollection Owner
+        {
+            get => currentValue;
+            set
+            {
+                currentValue = value;
+                OnFixtureCollectionChanged();
+            }
+        }
+
+        protected virtual void OnFixtureCollectionChanged()
+        {
+        }
+
         protected ObservableCollection<Fixture.FixtureGroup> fixtureGroup;
         public SharedEffectModel _sharedEffectModel;
         protected bool isBeat = false;
@@ -29,27 +40,23 @@ namespace LightMixer.Model
 
         public byte SetValue(byte tentativeValue)
         {
-            return Convert.ToByte(tentativeValue * ((intensityGetter.Invoke()) / 100d));
+            return Convert.ToByte(tentativeValue * ((Owner.intensityGetter.Invoke()) / 100d));
         }
 
         public byte SetValueFlash(byte tentativeValue)
         {
-            return Convert.ToByte(tentativeValue * ((intensityFlashGetter.Invoke()) / 100d));
+            return Convert.ToByte(tentativeValue * ((Owner.intensityFlashGetter.Invoke()) / 100d));
         }
 
         public byte SetValueMovingHead(byte tentativeValue)
         {
-            return Convert.ToByte(tentativeValue * (intensityGetter.Invoke() / 100d));
+            return Convert.ToByte(tentativeValue * (Owner.intensityGetter.Invoke() / 100d));
         }
 
-        public EffectBase(BeatDetector.BeatDetector detector, FixtureCollection currentValue, Func<double> intensityGetter, Func<double> intensityFlashGetter)
+        public EffectBase()
         {
             _sharedEffectModel = BootStrap.UnityContainer.Resolve<SharedEffectModel>();
-            CurrentValue = currentValue;
-            this.intensityGetter = intensityGetter;
-            this.intensityFlashGetter = intensityFlashGetter;
         }
-
 
         public byte GetMaxedByte(int val)
         {
@@ -73,6 +80,7 @@ namespace LightMixer.Model
         private double _lastProcessedBeat = 0;
         private double lastBeatPos = 0;
         private Stopwatch lastBeatPosRunTime = new Stopwatch();
+        private FixtureCollection currentValue;
 
         public void DmxFrameCall(IEnumerable<BeatDetector.VdjEvent> values)
         {
@@ -118,9 +126,9 @@ namespace LightMixer.Model
                 this.bpm = currentDeck.BpmAsDouble;
 
             }
-            foreach (FixtureBase fixture in CurrentValue.FixtureGroups.SelectMany(o => o.FixtureInGroup))
+            foreach (FixtureBase fixture in Owner.FixtureGroups.SelectMany(o => o.FixtureInGroup))
             {
-             //   fixture.currentEffect = this;
+                //   fixture.currentEffect = this;
             }
 
             RenderEffect(values);

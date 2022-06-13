@@ -1,9 +1,9 @@
-﻿using System;
+﻿using LightMixer;
+using Microsoft.Practices.Prism.Events;
+using System;
 using System.ComponentModel;
 using System.Linq.Expressions;
 using System.Windows;
-using LightMixer;
-using Microsoft.Practices.Prism.Events;
 using UIFrameWork.Utils;
 
 namespace UIFrameWork

@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Microsoft.Practices.Unity;
 using System.Collections.ObjectModel;
-using Microsoft.Practices.Unity;
+using System.Linq;
 using UIFrameWork;
 
 namespace LightMixer.ViewModel
 {
-    public class ManualDmxControlViewModel : BaseViewModel  
+    public class ManualDmxControlViewModel : BaseViewModel
     {
         private int mSelectedChannel = 0;
         private byte mSelectedValue = 0;
@@ -22,11 +19,11 @@ namespace LightMixer.ViewModel
         {
             get
             {
-                return BootStrap.UnityContainer.Resolve<DmxModel >();
+                return BootStrap.UnityContainer.Resolve<DmxModel>();
             }
         }
 
-   
+
 
         public int SelectedChannel
         {
@@ -39,10 +36,10 @@ namespace LightMixer.ViewModel
                 mSelectedChannel = value;
                 ObservableCollection<DmxChannelStatus> ChannelList = BootStrap.UnityContainer.Resolve<DmxModel>().DmxChannelStatus;
 
-                 mSelectedValue = (byte)ChannelList.FirstOrDefault(
-                        o => o.DmxChannelNumber == this.SelectedChannel
-                        )
-                    .DmxChannelValue;
+                mSelectedValue = (byte)ChannelList.FirstOrDefault(
+                       o => o.DmxChannelNumber == this.SelectedChannel
+                       )
+                   .DmxChannelValue;
                 AsyncOnPropertyChange(o => this.SelectedChannel);
                 AsyncOnPropertyChange(o => this.SelectedValue);
                 BootStrap.UnityContainer.Resolve<LightService.DmxServiceClient>().SetDmxChannel(this.SelectedChannel, (byte)this.SelectedValue);
@@ -65,9 +62,9 @@ namespace LightMixer.ViewModel
                         o => o.DmxChannelNumber == this.SelectedChannel
                         )
                     .FirstOrDefault().DmxChannelValue = value;
-                
+
             }
         }
-    
+
     }
 }

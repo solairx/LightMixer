@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Collections.ObjectModel;
 
 namespace LightMixer.Model.Fixture
 {
@@ -10,9 +7,10 @@ namespace LightMixer.Model.Fixture
     {
         private FixtureBase masterFixture;
 
-        public FixtureBase MasterFixture { 
+        public FixtureBase MasterFixture
+        {
             get => masterFixture ?? FixtureInGroup.FirstOrDefault();
-            set => masterFixture = value; 
+            set => masterFixture = value;
         }
 
         public FixtureGroup()

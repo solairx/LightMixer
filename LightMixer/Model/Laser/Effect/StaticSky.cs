@@ -1,8 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Drawing;
-using System.Threading;
 using VisualControler.Visual.Laser;
 namespace LaserDisplay
 {
@@ -12,13 +9,13 @@ namespace LaserDisplay
         bool Direction = false;
         private bool DrawReverse = false;
         long waveSync = 0;
-        private int max_x_pos  ;
-        private int sizex ;
+        private int max_x_pos;
+        private int sizex;
         private LaserSetting laserSetting = new LaserSetting();
-        
+
         public StaticSky()
         {
-            
+
         }
         public void ReadSetting()
         {
@@ -33,17 +30,17 @@ namespace LaserDisplay
 
         public void Draw(Graphics g, Pen p)
         {
- 
+
 
         }
 
         public void StopDrawing()
         {
-        
+
         }
         private void run()
         {
-           
+
         }
         public void Transform()
         {
@@ -52,8 +49,8 @@ namespace LaserDisplay
         {
 
         }
-        
-        
+
+
         /*public short[] DrawOnLaser(int HorizontalPosition, int VerticalPosition, int TurnOnPosition, int BufferSize, ResamplingService Sampler, bool Paused, double bpm, bool IsBeat)
         {
             try
@@ -114,7 +111,7 @@ namespace LaserDisplay
 
                 return Buffer;
             }
-            catch (Exception d)
+            catch (Exception)
             {
                 return ReturnNull(BufferSize, HorizontalPosition, VerticalPosition, TurnOnPosition);
             }

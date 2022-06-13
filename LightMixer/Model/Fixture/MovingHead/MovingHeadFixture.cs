@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace LightMixer.Model.Fixture
 {
@@ -9,7 +8,9 @@ namespace LightMixer.Model.Fixture
     {
         public RgbwMovingHeadMasterFixture Master { get; set; }
         public bool EnableAlternateColor { get; set; }
-        public bool EnableDelayedPosition { get => enableDelayedPosition;
+        public bool EnableDelayedPosition
+        {
+            get => enableDelayedPosition;
             set
             {
                 if (enableDelayedPosition != value)

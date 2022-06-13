@@ -1,5 +1,5 @@
-﻿using System.Runtime.Serialization;
-using LaserDisplay;
+﻿using LaserDisplay;
+using System.Runtime.Serialization;
 
 namespace LightMixer.Model.Service
 {
@@ -38,6 +38,6 @@ namespace LightMixer.Model.Service
         public ColorMode LaserColorMode { get; set; }
         [DataMember]
         public string LedCurrentEventID { get; set; }
-        
+
     }
 }

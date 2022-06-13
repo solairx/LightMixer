@@ -1,10 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Drawing;
-using System.Threading;
-using VisualControler.Visual.Laser;
 using VisualControler;
+using VisualControler.Visual.Laser;
 
 namespace LaserDisplay
 {
@@ -92,8 +89,8 @@ namespace LaserDisplay
                         {
                             currentY = 50;
                         }
-                        Buffer[i + HorizontalPosition] = ShortFromDouble(Math.Cos(((double)waveSync++) / ServiceExchangeSingleton.Instance.LaserSpeedAdj/3) * max_x_pos);
-                        Buffer[i + VerticalPosition] = ShortFromDouble(Math.Sin(((double)waveSync++) / ServiceExchangeSingleton.Instance.LaserSpeedAdj/3) * max_y_pos);
+                        Buffer[i + HorizontalPosition] = ShortFromDouble(Math.Cos(((double)waveSync++) / ServiceExchangeSingleton.Instance.LaserSpeedAdj / 3) * max_x_pos);
+                        Buffer[i + VerticalPosition] = ShortFromDouble(Math.Sin(((double)waveSync++) / ServiceExchangeSingleton.Instance.LaserSpeedAdj / 3) * max_y_pos);
                     }
 
                 }
@@ -102,7 +99,7 @@ namespace LaserDisplay
 
                 return Buffer;
             }
-            catch (Exception d)
+            catch (Exception)
             {
                 return ReturnNull(BufferSize, HorizontalPosition, VerticalPosition, TurnOnPosition);
             }

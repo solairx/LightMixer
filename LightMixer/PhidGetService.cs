@@ -1,11 +1,10 @@
-﻿using System;
-using System.Linq;
+﻿using LightMixer.Model;
 using Microsoft.Practices.Unity;
-using LightMixer.Model;
 using Phidgets;
 using Phidgets.Events;
+using System;
 using System.Diagnostics;
-using System.Windows;
+using System.Linq;
 
 namespace LightMixer
 {
@@ -27,8 +26,8 @@ namespace LightMixer
             catch (Exception vepx)
             {
                 Debug.WriteLine(vepx.ToString());
-                
-              //  MessageBox.Show("Unable to open PHIDGET");
+
+                //  MessageBox.Show("Unable to open PHIDGET");
             }
         }
 

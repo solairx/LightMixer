@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.Practices.Unity;
-
-namespace LightMixer
+﻿namespace LightMixer
 {
     public class DmxChannelStatus : UIFrameWork.BaseViewModel
     {
@@ -35,7 +29,7 @@ namespace LightMixer
             {
                 mDmxChannelValue = value;
                 AsyncOnPropertyChange(o => this.DmxChannelValue);
-             //   BootStrap.UnityContainer.Resolve<LightService.DmxServiceClient>().SetDmxChannel(mDmxChannelNumber,(byte)mDmxChannelValue );
+                //   BootStrap.UnityContainer.Resolve<LightService.DmxServiceClient>().SetDmxChannel(mDmxChannelNumber,(byte)mDmxChannelValue );
             }
         }
 

@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Drawing;
-using System.Threading;
-using VisualControler.Visual.Laser;
 using VisualControler;
+using VisualControler.Visual.Laser;
 
 namespace LaserDisplay
 {
@@ -124,7 +121,7 @@ namespace LaserDisplay
 
                 return Buffer;
             }
-            catch (Exception d)
+            catch (Exception)
             {
                 return ReturnNull(BufferSize, HorizontalPosition, VerticalPosition, TurnOnPosition);
             }

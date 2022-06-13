@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
-using VisualControler.Visual.Laser;
 using VisualControler;
+using VisualControler.Visual.Laser;
 
 namespace LaserDisplay
 {
@@ -42,17 +42,17 @@ namespace LaserDisplay
 
         public void Draw(Graphics g, Pen p)
         {
-           
+
 
         }
 
         public void StopDrawing()
         {
-            
+
         }
         private void run()
         {
-            
+
         }
         public void Transform()
         {
@@ -61,8 +61,8 @@ namespace LaserDisplay
         {
 
         }
-        
-        
+
+
         public short[] DrawOnLaser(int HorizontalPosition, int VerticalPosition, int TurnOnPosition, int BufferSize, ResamplingService Sampler, bool Paused, double bpm, bool IsBeat)
         {
             try
@@ -135,15 +135,15 @@ namespace LaserDisplay
 
                 return Buffer;
             }
-            catch (Exception d)
+            catch (Exception)
             {
                 return ReturnNull(BufferSize, HorizontalPosition, VerticalPosition, TurnOnPosition);
             }
-            
+
 
         }
 
-        public short ShortFromDouble ( double d )
+        public short ShortFromDouble(double d)
         {
             if (d >= 32767) return 32767;
             else if (d <= -32767) return -32767;

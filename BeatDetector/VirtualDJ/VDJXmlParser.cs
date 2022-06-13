@@ -11,12 +11,12 @@ namespace BeatDetector
     public class VDJXmlParser
     {
         public Dictionary<string, VDJSong> VDJDatabase = new Dictionary<string, VDJSong>();
- //       private string filename = @"\\Desktop-pjdgjgm\d\VirtualDJ\database.xml";
+        //       private string filename = @"\\Desktop-pjdgjgm\d\VirtualDJ\database.xml";
         private string filename = @"D:\VirtualDJ\database.xml";
 
         public VDJXmlParser()
         {
-             Reload();
+            Reload();
         }
 
         private XDocument Load(FileStream textReader, Dictionary<string, VDJSong> dictionary)
@@ -30,7 +30,7 @@ namespace BeatDetector
                 var scanList = from item in songNode.Descendants("Scan") select new VDJScan(item);
                 var newSong = new VDJSong(songNode,
                     scanList,
-                    from item in songNode.Descendants("Poi").Where( o=>o.Attribute("Type")?.Value == "remix") select new VDJPoi(item, scanList.FirstOrDefault()));
+                    from item in songNode.Descendants("Poi").Where(o => o.Attribute("Type")?.Value == "remix") select new VDJPoi(item, scanList.FirstOrDefault()));
                 dictionary.Add(newSong.FilePath.Replace("C:", "").Replace("D:", ""), newSong);
             }
             return xDoc;
@@ -48,7 +48,7 @@ namespace BeatDetector
                 {
                     foreach (var pois in oldEntry.Pois)
                     {
-                        
+
                         if (pois.IsNew)
                         {
                             var corespondingElement = newEntry.SingleOrDefault(o => o.Value.FilePath == oldEntry.FilePath).Value;
@@ -64,11 +64,11 @@ namespace BeatDetector
                         }
                     }
                 }
-                
+
                 textReader.Close();
                 xdoc.Save(filename);
             }
-            catch(Exception vexp)
+            catch (Exception vexp)
             {
                 MessageBox.Show(vexp.ToString());
             }
@@ -93,7 +93,7 @@ namespace BeatDetector
             if (elementToDelete != null)
             {
                 elementToDelete.Source?.Remove();
-                
+
             }
 
         }
@@ -114,9 +114,9 @@ namespace BeatDetector
                 VDJDatabase = newEntry;
                 LastUpdated = DateTime.Now;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                
+
                 MessageBox.Show("Unable to open VirtualDJ Database");
             }
         }
@@ -124,7 +124,7 @@ namespace BeatDetector
 
         public void CheckForRefresh()
         {
-            if (( DateTime.Now - LastUpdated).TotalSeconds > 5)
+            if ((DateTime.Now - LastUpdated).TotalSeconds > 5)
             {
                 FileInfo fInfo = new FileInfo(filename);
                 if (LastUpdated < fInfo.LastWriteTime)

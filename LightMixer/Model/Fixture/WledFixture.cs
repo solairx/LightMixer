@@ -1,7 +1,5 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Diagnostics;
-using System.Drawing;
 using System.Linq;
 using System.Net.Http;
 using System.Threading;
@@ -143,6 +141,15 @@ namespace LightMixer.Model.Fixture
         private HttpClient client;
         private string lastQuery = "";
 
+        public WledFixture(string serverIp)
+        {
+            IsStaticOnly = true;
+            client = HttpClientFactory.Create();
+            client.Timeout = TimeSpan.FromSeconds(10);
+            this.wledServer = new WledServer(serverIp);
+            this.seg = this.wledServer.State.seg[0];
+        }
+
         public WledFixture(WledServer wledServer, WledServer.Seg seg)
         {
             client = HttpClientFactory.Create();
@@ -168,12 +175,14 @@ namespace LightMixer.Model.Fixture
             return null;
         }
 
+        public bool IsStaticOnly { get; set; }
+
         public void SetOn()
         {
             isDitry = false;
             try
             {
-                
+
 
                 seg.on = this.RedValue + this.GreenValue + this.BlueValue > 0;
                 if (WledEffectCategory == WledEffectCategory.off)
@@ -181,10 +190,11 @@ namespace LightMixer.Model.Fixture
                     seg.on = false;
                 }
 
-                if (CurrentEffect == null || DateTime.Now.Subtract(lastWledEffectChanged).TotalSeconds > 5 || CurrentEffect.Category != WledEffectCategory) 
+                if (CurrentEffect == null || DateTime.Now.Subtract(lastWledEffectChanged).TotalSeconds > 5 || CurrentEffect.Category != WledEffectCategory)
                 {
                     var allAvailableEffect = WledEffect2.EffectList
                         .Where(o => o.Category == WledEffectCategory);
+
 
                     if (!seg.on || CurrentEffect?.Category != WledEffectCategory)
                     {
@@ -193,6 +203,7 @@ namespace LightMixer.Model.Fixture
                             .Skip(1)
                             .FirstOrDefault();
                     }
+
 
                     if (CurrentEffect == null)
                     {
@@ -203,7 +214,7 @@ namespace LightMixer.Model.Fixture
                     lastWledEffectChanged = DateTime.Now;
                 }
 
-                
+
 
                 seg.col[0][0] = this.RedValue;
                 seg.col[0][1] = this.GreenValue;
@@ -217,9 +228,13 @@ namespace LightMixer.Model.Fixture
                 seg.col[2][0] = this.Red3Value;
                 seg.col[2][1] = this.Green3Value;
                 seg.col[2][2] = this.Blue3Value;
+                if (this.IsStaticOnly)
+                {
+                    CurrentEffect = WledEffect2.EffectList.Single(e => e.ID == 0);
+                }
                 CurrentEffect?.Apply(seg);
             }
-            catch (Exception v)
+            catch (Exception)
             {
             }
 

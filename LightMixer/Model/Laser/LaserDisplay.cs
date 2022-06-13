@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Text;
 using Un4seen.Bass;
-using Un4seen.BassAsio;
 using VisualControler;
 
 namespace LaserDisplay
@@ -95,14 +91,14 @@ namespace LaserDisplay
                 this.mCurrentEffect = value;
             }
         }
-        
-        
+
+
         public double BPM = 80;
         public bool _OnBeat = false;
-        
+
 
         public int _DeviceID = -1;
-        
+
         public WaveLib.SpeakerPosition RighChannel
         {
             get
@@ -117,8 +113,8 @@ namespace LaserDisplay
                 return _LeftChannel;
             }
         }
-     
-        public LaserDisplay(WaveLib.SpeakerPosition rightChannel, WaveLib.SpeakerPosition leftChannel, WaveLib.SpeakerPosition pRedChannel, WaveLib.SpeakerPosition pBlueChannel, WaveLib.SpeakerPosition pGreenChannel, int device,bool NotRealTimeMotor)
+
+        public LaserDisplay(WaveLib.SpeakerPosition rightChannel, WaveLib.SpeakerPosition leftChannel, WaveLib.SpeakerPosition pRedChannel, WaveLib.SpeakerPosition pBlueChannel, WaveLib.SpeakerPosition pGreenChannel, int device, bool NotRealTimeMotor)
         {
 
             VisualControler.ServiceExchangeSingleton.Instance.Red = true;
@@ -127,7 +123,7 @@ namespace LaserDisplay
             MixColor = true;
             VisualControler.ServiceExchangeSingleton.Instance.LaserColorMode = ColorMode.Manual;
             this.CurrentEffect = BeatSkySanning;
-            
+
             _DeviceID = device;
             _LeftChannel = leftChannel;
             _RighChannel = rightChannel;
@@ -158,8 +154,8 @@ namespace LaserDisplay
 
         private int timebetween = 0;
 
-        int vBlueSample =1;
-        int vRedSample =1;
+        int vBlueSample = 1;
+        int vRedSample = 1;
         int vGreenSample = 1;
 
         private void CalcColor(int BeatIteration, bool vOnBeat)
@@ -200,7 +196,7 @@ namespace LaserDisplay
                         }
                     }
 
-                    else  if (vRedSample == 1)
+                    else if (vRedSample == 1)
                     {
                         if (VisualControler.ServiceExchangeSingleton.Instance.Blue)
                         {
@@ -233,13 +229,13 @@ namespace LaserDisplay
         {
             try
             {
-                
+
                 bool vCurrentOnBeat = _OnBeat;
                 if (ServiceExchangeSingleton.Instance.UseBeatTurnOff && _OnBeat) BeatIteration = 5;
                 if (ServiceExchangeSingleton.Instance.OnBeatReverse && _OnBeat) BeatIteration = 5;
 
                 short[] Buffer = this.ManualFiller(size);
-                byte[] BufferFinal = new byte[size ];
+                byte[] BufferFinal = new byte[size];
 
                 int x = 0;
 
@@ -281,7 +277,7 @@ namespace LaserDisplay
                         var ScannerY = BitConverter.GetBytes(Buffer[x]);
                         x++;
 
-                        
+
 
                         var Green = BitConverter.GetBytes(Resample(vGreenSample, y / 6, vTurnOff[y] == short.MaxValue));
                         var Blue = BitConverter.GetBytes(Resample(vBlueSample, y / 6 + 3, vTurnOff[y] == short.MaxValue));
@@ -292,16 +288,16 @@ namespace LaserDisplay
 
                         BufferFinal[i + 2] = ScannerY[0];
                         BufferFinal[i + 3] = ScannerY[1];
-                                    
+
                         BufferFinal[i + 4] = 0;
                         BufferFinal[i + 5] = 0;
-                                    
+
                         BufferFinal[i + 6] = 0;
                         BufferFinal[i + 7] = 0;
-                                    
+
                         BufferFinal[i + 8] = Green[0]; //green
                         BufferFinal[i + 9] = Green[1]; //green
-                                    
+
                         BufferFinal[i + 10] = Blue[0]; //Blue
                         BufferFinal[i + 11] = Blue[1]; //Blue
 
@@ -330,10 +326,10 @@ namespace LaserDisplay
             if ((Iterator % pFrequance) == 0 && onBeat) return short.MaxValue;
             return short.MinValue;
         }
-        private static int BeatIteration =0;
-        
+        private static int BeatIteration = 0;
 
-   
+
+
 
         public short[] ManualFiller(int size)
         {
@@ -348,7 +344,7 @@ namespace LaserDisplay
                         {
                             VisualControler.ServiceExchangeSingleton.Instance.LedCurrentEventID = 3;
                         }
-                        else if (VisualControler.ServiceExchangeSingleton.Instance.LedCurrentEventID >=3)
+                        else if (VisualControler.ServiceExchangeSingleton.Instance.LedCurrentEventID >= 3)
                         {
                             VisualControler.ServiceExchangeSingleton.Instance.LedCurrentEventID++;
                         }
@@ -383,14 +379,14 @@ namespace LaserDisplay
             catch (Exception d)
             {
                 throw d;
-               //System.Windows.Forms.MessageBox.Show(d.ToString());
+                //System.Windows.Forms.MessageBox.Show(d.ToString());
             }
             return null;
         }
 
         private static STREAMPROC _myStreamCreate;
         private static byte[] _data = null; // our local buffer
-        private  int MyFileProc(int handle, IntPtr buffer, int length, IntPtr user)
+        private int MyFileProc(int handle, IntPtr buffer, int length, IntPtr user)
         {
             Filler(buffer, length);
             return length;
@@ -398,36 +394,36 @@ namespace LaserDisplay
             // here we need to deliver PCM sample data 
 
             // increase the data buffer as needed 
-        /*    if (_data == null || _data.Length < length)
-                _data = new byte[length];
+            /*    if (_data == null || _data.Length < length)
+                    _data = new byte[length];
 
-            int x = 0;
-            for (x = 0; x < length; x = x + 12)
-            {
-                var ScannerX = BitConverter.GetBytes(0);
-                var ScannerY = BitConverter.GetBytes(short.MaxValue);
-                var Green = BitConverter.GetBytes(short.MaxValue);
-                var Blue = BitConverter.GetBytes(short.MinValue);
-                _data[x] = ScannerX[0];
-                _data[x + 1] = ScannerX[1];
+                int x = 0;
+                for (x = 0; x < length; x = x + 12)
+                {
+                    var ScannerX = BitConverter.GetBytes(0);
+                    var ScannerY = BitConverter.GetBytes(short.MaxValue);
+                    var Green = BitConverter.GetBytes(short.MaxValue);
+                    var Blue = BitConverter.GetBytes(short.MinValue);
+                    _data[x] = ScannerX[0];
+                    _data[x + 1] = ScannerX[1];
 
-                _data[x + 2] = ScannerY[0];
-                _data[x + 3] = ScannerY[1];
+                    _data[x + 2] = ScannerY[0];
+                    _data[x + 3] = ScannerY[1];
 
-                _data[x + 4] = 0;
-                _data[x + 5] = 0;
+                    _data[x + 4] = 0;
+                    _data[x + 5] = 0;
 
-                _data[x + 6] = 0;
-                _data[x + 7] = 0;
+                    _data[x + 6] = 0;
+                    _data[x + 7] = 0;
 
-                _data[x + 8] = Green[0]; //green
-                _data[x + 9] = Green[1]; //green
+                    _data[x + 8] = Green[0]; //green
+                    _data[x + 9] = Green[1]; //green
 
-                _data[x + 10] = Blue[0]; //Blue
-                _data[x + 11] = Blue[1]; //Blue
-            }*/
+                    _data[x + 10] = Blue[0]; //Blue
+                    _data[x + 11] = Blue[1]; //Blue
+                }*/
 
-          //  Marshal.Copy(_data, 0, buffer, length);
+            //  Marshal.Copy(_data, 0, buffer, length);
             return length;
         }
 
@@ -462,25 +458,25 @@ namespace LaserDisplay
 
                     int stream = Bass.BASS_StreamCreate(44100, 6, BASSFlag.BASS_DEFAULT, _myStreamCreate, IntPtr.Zero);
                     Bass.BASS_ChannelPlay(stream, false);
-                    
+
                 }
             }
-            catch (Exception vexp )
+            catch (Exception)
             {
                 Stop();
             }
         }
         public void Stop()
         {
-          /*  if (m_Player != null)
-                try
-                {
-                    m_Player.Dispose();
-                }
-                finally
-                {
-                    m_Player = null;
-                //}*/
+            /*  if (m_Player != null)
+                  try
+                  {
+                      m_Player.Dispose();
+                  }
+                  finally
+                  {
+                      m_Player = null;
+                  //}*/
 
         }
     }

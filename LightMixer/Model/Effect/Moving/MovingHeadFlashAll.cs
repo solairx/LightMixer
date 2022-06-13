@@ -1,19 +1,17 @@
-﻿using System;
+﻿using LightMixer.Model.Fixture;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using LightMixer.Model.Fixture;
 
 namespace LightMixer.Model
 {
     public class MovingHeadFlashAll : EffectBase
     {
-        public MovingHeadFlashAll(BeatDetector.BeatDetector detector, FixtureCollection currentValue, Func<double> intensityGetter, Func<double> intensityFlashGetter)
-            : base(detector, currentValue, intensityGetter, intensityFlashGetter) { }
 
         public override void RenderEffect(IEnumerable<BeatDetector.VdjEvent> values)
         {
 
-            foreach (FixtureBase fixture in CurrentValue.FixtureGroups.SelectMany(o => o.FixtureInGroup))
+            foreach (FixtureBase fixture in Owner.FixtureGroups.SelectMany(o => o.FixtureInGroup))
             {
                 if (fixture is MovingHeadFixture)
                 {
@@ -48,7 +46,7 @@ namespace LightMixer.Model
             }
 
 
-            
+
 
             this.RaiseEvent();
         }

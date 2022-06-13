@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using System.Collections.ObjectModel;
-using LightMixer.Model.Fixture;
+﻿using LightMixer.Model.Fixture;
 using System;
 using System.Collections.Generic;
 
@@ -10,8 +8,6 @@ namespace LightMixer.Model
     {
 
         int skip = 0;
-        public RandomEffect(BeatDetector.BeatDetector detector, FixtureCollection currentValue, Func<double> intensityGetter, Func<double> intensityFlashGetter)
-            : base(detector, currentValue, intensityGetter, intensityFlashGetter) { }
 
         public override void RenderEffect(IEnumerable<BeatDetector.VdjEvent> values)
         {
@@ -20,9 +16,9 @@ namespace LightMixer.Model
                 skip--;
                 return;
             }
-            skip = Convert.ToInt32( _sharedEffectModel.MaxSpeed);
+            skip = Convert.ToInt32(_sharedEffectModel.MaxSpeed);
             var rnd = new Random();
-            var workingGroup = CurrentValue.FixtureGroups;
+            var workingGroup = Owner.FixtureGroups;
             foreach (FixtureGroup group in workingGroup)
             {
                 foreach (FixtureBase fixture in group.FixtureInGroup)
@@ -39,7 +35,7 @@ namespace LightMixer.Model
                         }
                         else
                         {
-                            ((RgbFixture)fixture).RedValue = this.SetValue((byte)(rnd.Next(255)/10));
+                            ((RgbFixture)fixture).RedValue = this.SetValue((byte)(rnd.Next(255) / 10));
                             ((RgbFixture)fixture).GreenValue = this.SetValue((byte)(rnd.Next(255) / 10));
                             ((RgbFixture)fixture).BlueValue = this.SetValue((byte)(rnd.Next(255) / 10));
                             ((RgbFixture)fixture).WhiteValue = 0;

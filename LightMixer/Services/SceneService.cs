@@ -1,8 +1,9 @@
-﻿using LightMixer.Model.Fixture;
-using System.Collections.Generic;
+﻿using LightMixer;
 using LightMixer.Model;
+using LightMixer.Model.Fixture;
+using Microsoft.Practices.Prism;
 using Microsoft.Practices.Unity;
-using LightMixer;
+using System.Collections.Generic;
 
 public class SceneService
 {
@@ -38,14 +39,13 @@ public class SceneService
         RgbFixture bootDjLed5 = new RgbFixture(36);
         RgbFixture bootDjLed6 = new RgbFixture(39);
 
-
-        var haRgb1 = new TasmotaRGWFixture("192.168.1.46");
-        var haRgb2 = new TasmotaRGWFixture("192.168.1.31");
-        var haRgb3 = new TasmotaRGWFixture("192.168.1.6");
-        var haRgb4 = new TasmotaRGWFixture("192.168.1.3");
-        var haRgb5 = new TasmotaRGWFixture("192.168.1.37");
-        var haRgb6 = new TasmotaRGWFixture("192.168.1.11");
-        var haRgb7 = new TasmotaRGWFixture("192.168.1.51");
+        var haRgb1 = new WledFixture("192.168.1.46");
+        var haRgb2 = new WledFixture("192.168.1.31");
+        var haRgb3 = new WledFixture("192.168.1.6");
+        var haRgb4 = new WledFixture("192.168.1.3");
+        var haRgb5 = new WledFixture("192.168.1.37");
+        var haRgb6 = new WledFixture("192.168.1.11");
+        var haRgb7 = new WledFixture("192.168.1.51");
         var haRgbDM = new ShellyDimmerFixture("light.dimmer_plafond_ss");
 
         WledServer djBoothWled = new WledServer("192.168.1.9");
@@ -116,7 +116,7 @@ public class SceneService
         group1.FixtureInGroup.Add(fixtureLed2);
         group1.FixtureInGroup.Add(haRgb1);
         group1.FixtureInGroup.Add(haRgb2);
-        
+
 
         FixtureGroup group2 = new FixtureGroup();
         group2.FixtureInGroup.Add(fixtureLed3);
@@ -184,43 +184,20 @@ public class SceneService
         FixtureCollection poolRgbLed = new RGBLedFixtureCollection();
         poolZone.FixtureTypes.Add(poolRgbLed);
         poolRgbLed.FixtureGroups.AddRange(new[] { boothGroup1, boothGroup2, boothGroup3, boothGroup4, boothGroup5, boothGroup6 });
+        boothDownLight.BindCollectionToIntensityGetter(() => sharedEffect.MaxLightIntesity, () => sharedEffect.MaxLightFlashIntesity);
+        boothDownLight.EffectList.AddRange(new EffectBase[] { new AllOffEffect(), new AllOnEffect(), new FlashAllEffect(), new RandomEffect(), new BreathingEffect(), new ZoneFlashEffect(), new ZoneRotateEffect(), new StaticColorFlashEffect() });
 
-        boothDownLight.EffectList.Add(new AllOffEffect(beatDetector, boothDownLight, () => sharedEffect.MaxLightIntesity, () => sharedEffect.MaxLightFlashIntesity));
-        boothDownLight.EffectList.Add(new AllOnEffect(beatDetector, boothDownLight, () => sharedEffect.MaxLightIntesity, () => sharedEffect.MaxLightFlashIntesity));
-        boothDownLight.EffectList.Add(new RandomEffect(beatDetector, boothDownLight, () => sharedEffect.MaxLightIntesity, () => sharedEffect.MaxLightFlashIntesity));
-        boothDownLight.EffectList.Add(new BreathingEffect(beatDetector, boothDownLight, () => sharedEffect.MaxLightIntesity, () => sharedEffect.MaxLightFlashIntesity));
-        boothDownLight.EffectList.Add(new FlashAllEffect(beatDetector, boothDownLight, () => sharedEffect.MaxLightIntesity, () => sharedEffect.MaxLightFlashIntesity));
-        boothDownLight.EffectList.Add(new ZoneFlashEffect(beatDetector, boothDownLight, () => sharedEffect.MaxLightIntesity, () => sharedEffect.MaxLightFlashIntesity));
-        boothDownLight.EffectList.Add(new ZoneRotateEffect(beatDetector, boothDownLight, () => sharedEffect.MaxLightIntesity, () => sharedEffect.MaxLightFlashIntesity));
-        boothDownLight.EffectList.Add(new StaticColorFlashEffect(beatDetector, boothDownLight, () => sharedEffect.MaxLightIntesity, () => sharedEffect.MaxLightFlashIntesity));
+        rgbLedDownLight.BindCollectionToIntensityGetter(() => sharedEffect.MaxLightIntesity, () => sharedEffect.MaxLightFlashIntesity);
+        rgbLedDownLight.EffectList.AddRange(new EffectBase[] { new AllOffEffect(), new AllOnEffect(), new FlashAllEffect(), new RandomEffect(), new BreathingEffect(), new ZoneFlashEffect(), new ZoneRotateEffect(), new StaticColorFlashEffect() });
 
-        rgbLedDownLight.EffectList.Add(new AllOffEffect(beatDetector, rgbLedDownLight, () => sharedEffect.MaxLightIntesity, () => sharedEffect.MaxLightFlashIntesity));
-        rgbLedDownLight.EffectList.Add(new AllOnEffect(beatDetector, rgbLedDownLight, () => sharedEffect.MaxLightIntesity, () => sharedEffect.MaxLightFlashIntesity));
-        rgbLedDownLight.EffectList.Add(new RandomEffect(beatDetector, rgbLedDownLight, () => sharedEffect.MaxLightIntesity, () => sharedEffect.MaxLightFlashIntesity));
-        rgbLedDownLight.EffectList.Add(new BreathingEffect(beatDetector, rgbLedDownLight, () => sharedEffect.MaxLightIntesity, () => sharedEffect.MaxLightFlashIntesity));
-        rgbLedDownLight.EffectList.Add(new FlashAllEffect(beatDetector, rgbLedDownLight, () => sharedEffect.MaxLightIntesity, () => sharedEffect.MaxLightFlashIntesity));
-        rgbLedDownLight.EffectList.Add(new ZoneFlashEffect(beatDetector, rgbLedDownLight, () => sharedEffect.MaxLightIntesity, () => sharedEffect.MaxLightFlashIntesity));
-        rgbLedDownLight.EffectList.Add(new ZoneRotateEffect(beatDetector, rgbLedDownLight, () => sharedEffect.MaxLightIntesity, () => sharedEffect.MaxLightFlashIntesity));
-        rgbLedDownLight.EffectList.Add(new StaticColorFlashEffect(beatDetector, rgbLedDownLight, () => sharedEffect.MaxLightIntesity, () => sharedEffect.MaxLightFlashIntesity));
+        poolRgbLed.BindCollectionToIntensityGetter(() => sharedEffect.MaxLightIntesity, () => sharedEffect.MaxLightFlashIntesity);
+        poolRgbLed.EffectList.AddRange(new EffectBase[] { new AllOffEffect(), new AllOnEffect(), new FlashAllEffect(), new RandomEffect(), new BreathingEffect(), new ZoneFlashEffect(), new ZoneRotateEffect(), new StaticColorFlashEffect() });
 
-        poolRgbLed.EffectList.Add(new AllOffEffect(beatDetector, poolRgbLed, () => sharedEffect.MaxBoothIntesity, () => sharedEffect.MaxBoothFlashIntesity));
-        poolRgbLed.EffectList.Add(new AllOnEffect(beatDetector, poolRgbLed, () => sharedEffect.MaxBoothIntesity, () => sharedEffect.MaxBoothFlashIntesity));
-        poolRgbLed.EffectList.Add(new FlashAllEffect(beatDetector, poolRgbLed, () => sharedEffect.MaxBoothIntesity, () => sharedEffect.MaxBoothFlashIntesity));
-        poolRgbLed.EffectList.Add(new RandomEffect(beatDetector, poolRgbLed, () => sharedEffect.MaxBoothIntesity, () => sharedEffect.MaxBoothFlashIntesity));
-        poolRgbLed.EffectList.Add(new BreathingEffect(beatDetector, poolRgbLed, () => sharedEffect.MaxBoothIntesity, () => sharedEffect.MaxBoothFlashIntesity));
-        poolRgbLed.EffectList.Add(new ZoneFlashEffect(beatDetector, poolRgbLed, () => sharedEffect.MaxBoothIntesity, () => sharedEffect.MaxBoothFlashIntesity));
-        poolRgbLed.EffectList.Add(new ZoneRotateEffect(beatDetector, poolRgbLed, () => sharedEffect.MaxBoothIntesity, () => sharedEffect.MaxBoothFlashIntesity));
-        poolRgbLed.EffectList.Add(new StaticColorFlashEffect(beatDetector, poolRgbLed, () => sharedEffect.MaxBoothIntesity, () => sharedEffect.MaxBoothFlashIntesity));
+        movingHeadDanceFloor.BindCollectionToIntensityGetter(() => sharedEffect.MaxLightIntesityMovingHead, () => sharedEffect.MaxLightIntesityMovingHead);
+        movingHeadDanceFloor.EffectList.AddRange(new EffectBase[] { new MovingHeadOffEffect(), new MovingHeadFlashAll(), new MovingHeadAllOn() });
 
-        movingHeadDanceFloor.EffectList.Add(new MovingHeadOffEffect(beatDetector, movingHeadDanceFloor, () => sharedEffect.MaxLightIntesityMovingHead, () => sharedEffect.MaxLightIntesityMovingHead));
-        movingHeadDanceFloor.EffectList.Add(new MovingHeadFlashAll(beatDetector, movingHeadDanceFloor, () => sharedEffect.MaxLightIntesityMovingHead, () => sharedEffect.MaxLightIntesityMovingHead));
-        movingHeadDanceFloor.EffectList.Add(new MovingHeadAllOn(beatDetector, movingHeadDanceFloor, () => sharedEffect.MaxLightIntesityMovingHead, () => sharedEffect.MaxLightIntesityMovingHead));
-
-        movingHeadDJ.EffectList.Add(new MovingHeadOffEffect(beatDetector, movingHeadDJ, () => sharedEffect.MaxLightIntesityMovingHead, () => sharedEffect.MaxLightIntesityMovingHead));
-        movingHeadDJ.EffectList.Add(new MovingHeadFlashAll(beatDetector, movingHeadDJ, () => sharedEffect.MaxLightIntesityMovingHead, () => sharedEffect.MaxLightIntesityMovingHead));
-        movingHeadDJ.EffectList.Add(new MovingHeadAllOn(beatDetector, movingHeadDJ, () => sharedEffect.MaxLightIntesityMovingHead, () => sharedEffect.MaxLightIntesityMovingHead));
-
-
+        movingHeadDJ.BindCollectionToIntensityGetter(() => sharedEffect.MaxLightIntesityMovingHead, () => sharedEffect.MaxLightIntesityMovingHead);
+        movingHeadDJ.EffectList.AddRange(new EffectBase[] { new MovingHeadOffEffect(), new MovingHeadFlashAll(), new MovingHeadAllOn() });
     }
 }
 

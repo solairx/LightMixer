@@ -28,7 +28,7 @@ namespace BeatDetector
             {
                 double bpm = 1;
                 double.TryParse(BPM, out bpm);
-                return bpm ;
+                return bpm;
             }
         }
 
@@ -49,7 +49,7 @@ namespace BeatDetector
         {
             get
             {
-                return this.VDJSong?.Pois?.Count >= 3 || GetCurrentPoi.ID == 0 ;
+                return this.VDJSong?.Pois?.Count >= 3 || GetCurrentPoi.ID == 0;
             }
         }
 
@@ -90,7 +90,7 @@ namespace BeatDetector
             get
             {
                 var effectiveCrossFader = CrossFader;
-                
+
                 return Volume * CrossFader;
             }
         }

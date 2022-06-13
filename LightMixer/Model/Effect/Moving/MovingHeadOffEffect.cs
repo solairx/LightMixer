@@ -1,13 +1,11 @@
-﻿using System;
+﻿using LightMixer.Model.Fixture;
 using System.Collections.Generic;
-using LightMixer.Model.Fixture;
 
 namespace LightMixer.Model
 {
     public class MovingHeadOffEffect : RgbEffectBase
     {
-        public MovingHeadOffEffect(BeatDetector.BeatDetector detector, FixtureCollection currentValue, Func<double> intensityGetter, Func<double> intensityFlashGetter)
-            : base(detector, currentValue, intensityGetter, intensityFlashGetter) { }
+
 
         public override void RenderEffect(IEnumerable<BeatDetector.VdjEvent> values)
         {

@@ -1,5 +1,4 @@
-﻿using BeatDetector;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace LightMixer.Model.Tests
 {

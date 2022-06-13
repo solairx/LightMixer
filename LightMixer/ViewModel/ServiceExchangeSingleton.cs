@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.ObjectModel;
 using UIFrameWork;
 
 
@@ -29,7 +25,7 @@ namespace VisualControler
         private bool _red = true;
         private bool _blue = true;
 
-        private bool  _ManualBeat;
+        private bool _ManualBeat;
         private bool _OnBeat;
         private bool _AutoChangeEvent;
         private bool _AutoChangeEventLaser;
@@ -42,9 +38,9 @@ namespace VisualControler
 
         private LaserDisplay.ColorMode _LaserColorMode;
 
-        private int _LaserSpeedAdj = 50 ;
+        private int _LaserSpeedAdj = 50;
 
-        
+
         private bool _LaserPause = true;
         private bool _OnBeatReverse;
 
@@ -85,7 +81,7 @@ namespace VisualControler
 
 
 
-        public  bool ManualBeat 
+        public bool ManualBeat
         {
             get
             {
@@ -97,7 +93,7 @@ namespace VisualControler
                 OnPropertyChanged(o => this.ManualBeat);
             }
         }
-        public  bool OnBeat
+        public bool OnBeat
         {
             get
             {
@@ -131,7 +127,7 @@ namespace VisualControler
             }
             set
             {
-                _blue= value;
+                _blue = value;
                 OnPropertyChanged(o => this.Blue);
             }
         }
@@ -148,7 +144,7 @@ namespace VisualControler
                 OnPropertyChanged(o => this.Red);
             }
         }
-        public  bool AutoChangeEvent 
+        public bool AutoChangeEvent
         {
             get
             {
@@ -244,7 +240,7 @@ namespace VisualControler
                 list.Add(LaserDisplay.ColorMode.Hard);
                 list.Add(LaserDisplay.ColorMode.Manual);
                 list.Add(LaserDisplay.ColorMode.Smooth);
-                
+
                 return list;
             }
         }

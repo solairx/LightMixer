@@ -1,7 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 //using System.Web.Http;
 
@@ -12,18 +12,18 @@ namespace LightMixer.Model.Service
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            
+
         }
 
         public IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
-            var builder =  services.AddMvcCore();
+            var builder = services.AddMvcCore();
             builder.AddJsonFormatters();
             // Default framework order
             builder.AddFormatterMappings();
-            
+
             builder.AddAuthorization();
             /*builder.AddApiExplorer();
             

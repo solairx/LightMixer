@@ -1,22 +1,17 @@
-﻿using System;
+﻿using LightMixer.Model.Fixture;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Collections.ObjectModel;
-using LightMixer.Model.Fixture;
 
 namespace LightMixer.Model
 {
     public class MovingHeadDisco : EffectBase
     {
-        public MovingHeadDisco(BeatDetector.BeatDetector detector, FixtureCollection currentValue, Func<double> intensityGetter, Func<double> intensityFlashGetter)
-            : base(detector, currentValue, intensityGetter, intensityFlashGetter) { }
 
         public override void RenderEffect(IEnumerable<BeatDetector.VdjEvent> values)
         {
 
 
-            foreach (FixtureBase fixture in CurrentValue.FixtureGroups.SelectMany(o => o.FixtureInGroup))
+            foreach (FixtureBase fixture in Owner.FixtureGroups.SelectMany(o => o.FixtureInGroup))
             {
                 if (fixture is MovingHeadFixture)
                 {

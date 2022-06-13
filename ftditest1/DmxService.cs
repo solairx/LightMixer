@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.ServiceModel;
-using System.Text;
-
-namespace DmxLib
+﻿namespace DmxLib
 {
     // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "DmxService" in both code and config file together.
     public class DmxService : IDmxService
@@ -34,9 +27,9 @@ namespace DmxLib
         public void UpdateAllDmxValue(byte[] value)
         {
             DmxController.dmx.Buffer = value;
-            
+
         }
 
-        
+
     }
 }

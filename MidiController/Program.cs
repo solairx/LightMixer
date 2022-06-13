@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace MidiController
 {
@@ -29,13 +26,14 @@ namespace MidiController
         static void Main(string[] args)
         {
             MidiOutController controller = null;
-            _handler += new EventHandler((a) =>{
+            _handler += new EventHandler((a) =>
+            {
                 controller.Dispose();
                 return true;
             });
             SetConsoleCtrlHandler(_handler, true);
 
-            
+
             byte command = 0x90;
             byte note = 0x48;
             byte velocity = 0x7F;
@@ -120,7 +118,7 @@ namespace MidiController
             if (result != 0)
                 throw new Exception("Cannot open midi device");
             //    var resetStatus = SendLongMessage(new byte[] { 0xF0, 0x41, 0x10, 0x42, 0x12, 0x40, 0x00, 0x7F, 0x00, 0x41, 0xF7 });
-            var resetStatus = SendLongMessage(new byte[] { 0xF0, 0x7f, 0x7f, 0x06, 0x01, 0xf7});
+            var resetStatus = SendLongMessage(new byte[] { 0xF0, 0x7f, 0x7f, 0x06, 0x01, 0xf7 });
             var resetStatus1 = SendLongMessage(new byte[] { 0xF0, 0x7f, 0x00, 0x06, 0x01, 0xf7 });
             var resetStatus2 = SendLongMessage(new byte[] { 0xF0, 0x00, 0x20, 0x7f, 0x03, 0x01, 0xf7 });
         }
@@ -133,7 +131,7 @@ namespace MidiController
 
         public void Dispose()
         {
-           var closeRes = midiOutClose(handle);
+            var closeRes = midiOutClose(handle);
         }
 
         [StructLayout(LayoutKind.Sequential)]

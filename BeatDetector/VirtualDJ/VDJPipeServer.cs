@@ -3,11 +3,8 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Concurrent;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Sockets;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -26,7 +23,7 @@ namespace BeatDetector
         public event OS2lServerHandler OS2lServerEvent;
         public delegate void OS2lServerHandler(OS2lEvent os2lEvent);
 
-        public static Func<bool> IsDead = ()=>false;
+        public static Func<bool> IsDead = () => false;
 
         public VirtualDjServer(Func<bool> IsDeadGetter)
         {
@@ -41,7 +38,7 @@ namespace BeatDetector
         private void StartOS2l()
         {
             RegisterServiceToBonjour();
-            Task.Run(()=> StartOS2lListener());
+            Task.Run(() => StartOS2lListener());
         }
 
         private void StartOS2lListener()
@@ -56,7 +53,7 @@ namespace BeatDetector
 
                     server.Start();
                 }
-                catch (SocketException ex)
+                catch (SocketException)
                 {
                     MessageBox.Show("Can't start listener on port 4444 for os2l");
                 }
@@ -116,21 +113,21 @@ namespace BeatDetector
 
                     if (key == "bpm" && value is double)
                     {
-                       newEvent.Bpm = (double)value;
+                        newEvent.Bpm = (double)value;
                     }
                     else if (key == "bpm" && value is int)
                     {
                         newEvent.Bpm = (int)value;
                     }
                 }
-                if (newEvent.Bpm != 0 &&  newEvent.BeatPos !=0)
+                if (newEvent.Bpm != 0 && newEvent.BeatPos != 0)
                 {
                     newEvent.Elapsed = newEvent.BeatPos * (60 / newEvent.Bpm);
                 }
                 OS2lServerEvent?.Invoke(newEvent);
 
             }
-            catch (Exception v)
+            catch (Exception)
             {
 
             }
@@ -164,14 +161,14 @@ namespace BeatDetector
                         try
                         {
                             var deadInstance = InstanceList.Where(inst => inst.Value.IsInstanceDead());
-                            
+
                             foreach (var instance in deadInstance)
                             {
                                 VdjPipeServerInstance removedInstance;
                                 InstanceList.TryRemove(instance.Key, out removedInstance);
-                                   // instance.VirtualDjInstanceEvent -= ServerInstance_VirtualDjInstanceEvent;
+                                // instance.VirtualDjInstanceEvent -= ServerInstance_VirtualDjInstanceEvent;
                                 StartNewInstance();
-                                
+
                             }
                             if (!InstanceList.Any(inst => inst.Value.IsWaitingForConnection))
                             {
@@ -180,13 +177,13 @@ namespace BeatDetector
 
                             Thread.Sleep(100);
                         }
-                        catch (Exception vexp1)
+                        catch (Exception)
                         {
 
                         }
                     }
                 }
-                catch (Exception vexp)
+                catch (Exception)
                 {
 
                 }

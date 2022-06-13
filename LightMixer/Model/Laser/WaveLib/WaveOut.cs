@@ -11,8 +11,8 @@
 //  Copyright (C) 1999-2003 Ianier Munoz. All Rights Reserved.
 
 using System;
-using System.Threading;
 using System.Runtime.InteropServices;
+using System.Threading;
 
 namespace WaveLib
 {
@@ -52,7 +52,7 @@ namespace WaveLib
                     WaveOutBuffer buf = (WaveOutBuffer)h.Target;
                     buf.OnCompleted();
                 }
-                catch (Exception vexp)
+                catch (Exception)
                 {
                 }
             }
@@ -103,7 +103,7 @@ namespace WaveLib
             lock (this)
             {
                 m_PlayEvent.Reset();
-                var playingReturnCode = WaveNative.waveOutWrite(m_WaveOut, ref m_Header, Marshal.SizeOf(m_Header)) ;
+                var playingReturnCode = WaveNative.waveOutWrite(m_WaveOut, ref m_Header, Marshal.SizeOf(m_Header));
                 m_Playing = playingReturnCode == WaveNative.MMSYSERR_NOERROR;
                 return m_Playing;
             }
@@ -198,7 +198,7 @@ namespace WaveLib
                 try
                 {
                     Advance();
-                    if (m_FillProc != null && !m_Finished )
+                    if (m_FillProc != null && !m_Finished)
                         m_FillProc(m_CurrentBuffer.Data, m_CurrentBuffer.Size);
                     else
                     {
@@ -212,7 +212,7 @@ namespace WaveLib
                     }
                     m_CurrentBuffer.Play();
                 }
-                catch (Exception vexp)
+                catch (Exception)
                 {
                     m_Finished = true;
                 }

@@ -65,7 +65,7 @@ namespace BeatDetector
                     vdjEvent.VDJSong = vdjSong;
                     VirtualDjInstanceEvent?.Invoke(vdjEvent);
                 }
-                catch (Exception vexp)
+                catch (Exception)
                 {
                     Debug.WriteLine("Message received from Virtual DJ is invalid " + messageLine);
                 }
@@ -141,7 +141,7 @@ namespace BeatDetector
                     IsWaitingForConnection = false;
                     vdjPipe.Close();
                 }
-                catch (Exception vexp)
+                catch (Exception)
                 {
                     LastUpdate = DateTime.Now;
                     IsWaitingForConnection = false;

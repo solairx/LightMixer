@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Collections.ObjectModel;
-using Microsoft.Practices.Unity;
+﻿using Microsoft.Practices.Unity;
 using UIFrameWork;
 
 namespace LightMixer.ViewModel
 {
-    public class LaserControlerViewModel : BaseViewModel  
+    public class LaserControlerViewModel : BaseViewModel
     {
         private LaserDisplay.LaserControler laser;
         private BeatDetector.BeatDetector mBpmDetector;
@@ -19,9 +14,9 @@ namespace LightMixer.ViewModel
 
             laser.Start();
             mBpmDetector = BootStrap.UnityContainer.Resolve<BeatDetector.BeatDetector>();
-           // mBpmDetector.BeatEvent += new BeatDetector.BeatDetector.BeatHandler(mBpmDetector_BeatEvent);
-           // mBpmDetector.BpmEvent += new BeatDetector.BeatDetector.BpmHandler(mBpmDetector_BpmEvent);
-            
+            // mBpmDetector.BeatEvent += new BeatDetector.BeatDetector.BeatHandler(mBpmDetector_BeatEvent);
+            // mBpmDetector.BpmEvent += new BeatDetector.BeatDetector.BpmHandler(mBpmDetector_BpmEvent);
+
         }
 
         void mBpmDetector_BpmEvent(double Beat, object caller)
@@ -47,7 +42,7 @@ namespace LightMixer.ViewModel
             }
         }
 
-   
+
 
     }
 }

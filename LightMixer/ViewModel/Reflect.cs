@@ -34,7 +34,7 @@ namespace UIFrameWork.Utils
             return MemberImpl(expr);
         }
 
-        public static MemberInfo Member<T,TA>(Expression<Func<T, TA>> expr)
+        public static MemberInfo Member<T, TA>(Expression<Func<T, TA>> expr)
         {
             return MemberImpl(expr);
         }
@@ -49,13 +49,13 @@ namespace UIFrameWork.Utils
             return MemberImpl(expr);
         }
 
-        public static object GetValueFromContactExpression(Expression expression)   
-        {   
-            Expression conversion = Expression.Convert(expression, typeof(object));  
-            var getterLambda = Expression.Lambda<Func<object>>(conversion);        
-            var getter = getterLambda.Compile();        
-            return getter();   
-             
+        public static object GetValueFromContactExpression(Expression expression)
+        {
+            Expression conversion = Expression.Convert(expression, typeof(object));
+            var getterLambda = Expression.Lambda<Func<object>>(conversion);
+            var getter = getterLambda.Compile();
+            return getter();
+
         }
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace UIFrameWork.Utils
             return MemberImpl(expr);
         }
 
-        public static MemberInfo Member<T,TA>(Expression<Action<T,TA>> expr)
+        public static MemberInfo Member<T, TA>(Expression<Action<T, TA>> expr)
         {
             return MemberImpl(expr);
         }
@@ -132,9 +132,9 @@ namespace UIFrameWork.Utils
             }
         }
 
-        public static PropertyInfo Property<T, TA>(Expression<Func<T,TA>> expr)
+        public static PropertyInfo Property<T, TA>(Expression<Func<T, TA>> expr)
         {
-            var pi = Member<T,TA>(expr) as PropertyInfo;
+            var pi = Member<T, TA>(expr) as PropertyInfo;
 
             if (pi != null)
             {
