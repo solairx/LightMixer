@@ -8,11 +8,11 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.Serialization;
 using VisualControler;
+
 //using System.Web.Http;
 
 namespace LightMixer.Model.Service
 {
-
     // REMARQUE : vous pouvez utiliser la commande Renommer du menu Refactoriser pour changer le nom de classe "RemoteLightService" à la fois dans le code et le fichier de configuration.
     public class RemoteLightService : IRemoteLightService
     {
@@ -27,6 +27,7 @@ namespace LightMixer.Model.Service
         {
             return BootStrap.UnityContainer.Resolve<SharedEffectModel>().MovingHeadGobo;
         }
+
         public ObservableCollection<string> LedEffectCollection()
         {
             return new ObservableCollection<string>(BootStrap.UnityContainer.Resolve<DmxChaser>().LedEffectCollection.Select(o => o.Name));
@@ -67,9 +68,6 @@ namespace LightMixer.Model.Service
             BootStrap.UnityContainer.Resolve<SharedEffectModel>().CurrentMovingHeadGobo = gobo;
         }
 
-
-
-
         public void CurrentLedEffect(string selectedEffect)
         {
             var effect = BootStrap.UnityContainer.Resolve<DmxChaser>()
@@ -79,14 +77,11 @@ namespace LightMixer.Model.Service
 
         public void Intensity(double led, double flash, double head, double beatRepeat)
         {
-
-
             var chaser = BootStrap.UnityContainer.Resolve<DmxChaser>();
             var shared = BootStrap.UnityContainer.Resolve<SharedEffectModel>();
             var beatDetector = BootStrap.UnityContainer.Resolve<BeatDetector.BeatDetector>();
             BootStrap.Dispatcher.Invoke(new Action(() =>
             {
-
                 shared.MaxLightFlashIntesity = flash;
                 shared.MaxLightIntesity = led;
                 shared.MaxLightIntesityMovingHead = head;
@@ -97,14 +92,11 @@ namespace LightMixer.Model.Service
 
         public void Color(int red, int green, int blue, bool autoChangeColor)
         {
-
-
             var chaser = BootStrap.UnityContainer.Resolve<DmxChaser>();
             var shared = BootStrap.UnityContainer.Resolve<SharedEffectModel>();
             var beatDetector = BootStrap.UnityContainer.Resolve<BeatDetector.BeatDetector>();
             BootStrap.Dispatcher.Invoke(new Action(() =>
             {
-
                 shared.Red = Convert.ToByte(red);
                 shared.Green = Convert.ToByte(green);
                 shared.Blue = Convert.ToByte(blue);
@@ -214,7 +206,6 @@ namespace LightMixer.Model.Service
 
         public DmxDataContract GetDmxStatus()
         {
-
             var chaser = BootStrap.UnityContainer.Resolve<DmxChaser>();
             var shared = BootStrap.UnityContainer.Resolve<SharedEffectModel>();
             var beatDetector = BootStrap.UnityContainer.Resolve<BeatDetector.BeatDetector>();
@@ -238,7 +229,6 @@ namespace LightMixer.Model.Service
                 Red = shared.Red,
                 SecondBetweenGoboChange = shared.SecondBetweenGoboChange,
                 SecondBetweenProgramChange = shared.SecondBetweenProgramChange
-
             };
             return contract;
         }
@@ -249,7 +239,6 @@ namespace LightMixer.Model.Service
             var shared = BootStrap.UnityContainer.Resolve<SharedEffectModel>();
             BootStrap.Dispatcher.Invoke(new Action(() =>
             {
-
                 shared.CurrentMovingHeadGobo = shared.MovingHeadGobo.FirstOrDefault(o => o.ToString() == gobo);
                 shared.CurrentMovingHeadProgram = shared.MovingHeadProgram.FirstOrDefault(o => o.ToString() == program);
                 chaser.CurrentMovingHeadEffect = chaser.MovingHeadEffectCollection.FirstOrDefault(o => o.Name == effect);
@@ -260,9 +249,9 @@ namespace LightMixer.Model.Service
                 shared.AutoChangeGobo = autoChangeGobo;
             }));
         }
+
         public void UpdateDmx(DmxDataContract contract)
         {
-
             var chaser = BootStrap.UnityContainer.Resolve<DmxChaser>();
             var shared = BootStrap.UnityContainer.Resolve<SharedEffectModel>();
             var beatDetector = BootStrap.UnityContainer.Resolve<BeatDetector.BeatDetector>();
@@ -279,7 +268,6 @@ namespace LightMixer.Model.Service
                 shared.AutoChangeColorOnBeat = contract.AutoChangeColorOnBeat;
                 shared.AutoChangeGobo = contract.AutoChangeGobo;
                 shared.AutoChangeProgram = contract.AutoChangeProgram;
-
 
                 beatDetector.BeatRepeat = contract.BeatRepeat;
 
@@ -311,10 +299,7 @@ namespace LightMixer.Model.Service
 
         public RemoteLightService()
         {
-
         }
-
-
     }
 
     [DataContract]
@@ -325,7 +310,6 @@ namespace LightMixer.Model.Service
 
         [DataMember]
         public MovingHeadFixture.Program CurrentMovingHeadProgram { get; set; }
-
 
         [DataMember]
         public string CurrentMovingHeadEffect { get; set; }

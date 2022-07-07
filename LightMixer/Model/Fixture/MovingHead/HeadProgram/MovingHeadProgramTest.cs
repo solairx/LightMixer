@@ -12,8 +12,6 @@ namespace LightMixer.Model.Fixture
         public static ushort[] MaxDimmerDesignShared = new ushort[] { 100, 100 };
         public static int InitialSizeShared = 255;
 
-
-
         protected override ushort[] MaxDimmerDesign { get => MaxDimmerDesignShared; set => base.MaxDimmerDesign = value; }
         protected override ushort[] MaxDimmerDesignSlave { get => MaxDimmerDesignShared; set => base.MaxDimmerDesignSlave = value; }
         protected override ushort[] PanListDesign { get => PanListDesignShared; set => base.PanListDesign = value; }
@@ -22,7 +20,6 @@ namespace LightMixer.Model.Fixture
 
         protected override ushort[] TiltListDesignSlave { get => TiltListDesignShared; set => base.TiltListDesignSlave = value; }
         protected override int InitialSize { get => InitialSizeShared; set => base.InitialSize = value; }
-
 
         public MovingHeadProgramTest(FixtureBase owner, List<PointOfInterest> pointOfInterests) : base(owner)
         {
@@ -33,6 +30,7 @@ namespace LightMixer.Model.Fixture
             Setup();
             Instance.Add(this);
         }
+
         public override Program LegacyProgram => Program.Test;
 
         internal static void Reset()

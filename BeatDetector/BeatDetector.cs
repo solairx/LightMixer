@@ -7,13 +7,12 @@ namespace BeatDetector
     {
         public static BeatDetector Instance;
 
-
         public event PropertyChangedEventHandler PropertyChanged;
+
         private double _beatRepeat = 1;
         private Brush _beatBackground;
         private Brush _blackColor = new SolidColorBrush(Color.FromRgb(0, 0, 0));
         private Brush _redColor = new SolidColorBrush(Color.FromRgb(255, 0, 0));
-
 
         public double BeatRepeat
         {
@@ -52,18 +51,13 @@ namespace BeatDetector
                 {
                     this.PropertyChanged(this, new PropertyChangedEventArgs(nameof(BeatBackground)));
                 }
-
             }
         }
-
 
         public BeatDetector()
         {
             Instance = this;
             _beatBackground = _blackColor;
         }
-
-
     }
-
 }

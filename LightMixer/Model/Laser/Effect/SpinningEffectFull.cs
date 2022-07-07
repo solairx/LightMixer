@@ -11,16 +11,17 @@ namespace LaserDisplay
         private bool Direction = true;
         private bool DoingX = false;
         private bool DrawReverse = false;
-        long waveSync = 0;
+        private long waveSync = 0;
         private int intervale = 0;
-        double xpos = 0;
-        double ypos = 0;
+        private double xpos = 0;
+        private double ypos = 0;
         private LaserSetting laserSetting = new LaserSetting();
         private dj djSetting = new dj();
         private int max_x_pos;
         private int max_x_neg;
         private int max_y_pos;
         private int max_y_neg;
+
         public SpinningEffectFull()
         {
         }
@@ -39,31 +40,28 @@ namespace LaserDisplay
             xpos = 0;
             ypos = 0;
         }
+
         #region ILaserEffet Members
 
         public void Draw(Graphics g, Pen p)
         {
-
-
         }
 
         public void StopDrawing()
         {
-
         }
+
         private void run()
         {
-
         }
+
         public void Transform()
         {
         }
+
         public void Beat()
         {
-
         }
-
-
 
         public short[] DrawOnLaser(int HorizontalPosition, int VerticalPosition, int TurnOnPosition, int BufferSize, ResamplingService Sampler, bool Paused, double bpm, bool IsBeat)
         {
@@ -97,7 +95,6 @@ namespace LaserDisplay
                     }
                     x = Sampler.Resample(linex);
                     y = Sampler.Resample(liney);
-
                 }
                 if (Direction)
                 {
@@ -110,7 +107,6 @@ namespace LaserDisplay
                             xpos = max_x_pos;
                             DoingX = false;
                         }
-
                     }
                     else
                     {
@@ -134,7 +130,6 @@ namespace LaserDisplay
                             xpos = max_x_neg;
                             DoingX = false;
                         }
-
                     }
                     else
                     {
@@ -150,7 +145,6 @@ namespace LaserDisplay
 
                 for (int i = 0; i < Buffer.Length; i += 2)
                 {
-
                     if (Paused)
                     {
                         Buffer[i + HorizontalPosition] = 0;
@@ -161,10 +155,8 @@ namespace LaserDisplay
                         Buffer[i + HorizontalPosition] = x[i / 2];
                         Buffer[i + VerticalPosition] = y[i / 2];
                     }
-
                 }
                 DrawReverse = !DrawReverse;
-
 
                 return Buffer;
             }
@@ -172,9 +164,8 @@ namespace LaserDisplay
             {
                 return ReturnNull(BufferSize, HorizontalPosition, VerticalPosition, TurnOnPosition);
             }
-
-
         }
+
         private short[] ReturnNull(int BufferSize, int HorizontalPosition, int VerticalPosition, int TurnOnPosition)
         {
             short[] Buffer = new short[BufferSize / 2];
@@ -187,13 +178,13 @@ namespace LaserDisplay
             return Buffer;
         }
 
-        #endregion
+        #endregion ILaserEffet Members
+
         public short ShortFromDouble(double d)
         {
             if (d >= 32767) return 32767;
             else if (d <= -32767) return -32767;
             else return Convert.ToInt16(d);
-
         }
     }
 }

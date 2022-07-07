@@ -6,8 +6,7 @@ namespace LightMixer.Model
 {
     public class RandomEffect : EffectBase
     {
-
-        int skip = 0;
+        private int skip = 0;
 
         public override void RenderEffect(IEnumerable<BeatDetector.VdjEvent> values)
         {
@@ -44,7 +43,6 @@ namespace LightMixer.Model
                 }
             }
 
-
             this.RaiseEvent();
         }
 
@@ -54,9 +52,6 @@ namespace LightMixer.Model
             {
                 return "Random  Flash Effect";
             }
-
         }
     }
-
-
 }

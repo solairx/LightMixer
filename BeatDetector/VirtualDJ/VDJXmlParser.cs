@@ -11,6 +11,7 @@ namespace BeatDetector
     public class VDJXmlParser
     {
         public Dictionary<string, VDJSong> VDJDatabase = new Dictionary<string, VDJSong>();
+
         //       private string filename = @"\\Desktop-pjdgjgm\d\VirtualDJ\database.xml";
         private string filename = @"D:\VirtualDJ\database.xml";
 
@@ -48,7 +49,6 @@ namespace BeatDetector
                 {
                     foreach (var pois in oldEntry.Pois)
                     {
-
                         if (pois.IsNew)
                         {
                             var corespondingElement = newEntry.SingleOrDefault(o => o.Value.FilePath == oldEntry.FilePath).Value;
@@ -93,9 +93,7 @@ namespace BeatDetector
             if (elementToDelete != null)
             {
                 elementToDelete.Source?.Remove();
-
             }
-
         }
 
         public void Reload()
@@ -116,10 +114,10 @@ namespace BeatDetector
             }
             catch (Exception)
             {
-
                 MessageBox.Show("Unable to open VirtualDJ Database");
             }
         }
+
         private DateTime LastUpdated = DateTime.Now;
 
         public void CheckForRefresh()
@@ -138,5 +136,4 @@ namespace BeatDetector
             }
         }
     }
-
 }

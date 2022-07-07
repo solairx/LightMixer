@@ -57,7 +57,6 @@ namespace LightMixer.Model
                 _maxBoothFlashIntesity = value;
                 AsyncOnPropertyChange(o => MaxBoothFlashIntesity);
             }
-
         }
 
         public static BeatDetector.BeatDetector BeatDetector { get; internal set; }
@@ -73,10 +72,7 @@ namespace LightMixer.Model
                 _maxBoothIntesity = value;
                 AsyncOnPropertyChange(o => this.MaxBoothIntesity);
             }
-
         }
-
-
 
         public double MaxLightFlashIntesity
         {
@@ -89,10 +85,7 @@ namespace LightMixer.Model
                 _maxLightFlashIntesity = value;
                 AsyncOnPropertyChange(o => this.MaxLightFlashIntesity);
             }
-
         }
-
-
 
         public double MaxLightIntesity
         {
@@ -105,7 +98,6 @@ namespace LightMixer.Model
                 _maxLightIntesity = value;
                 AsyncOnPropertyChange(o => this.MaxLightIntesity);
             }
-
         }
 
         public bool AutoChangeColorOnBeat
@@ -119,7 +111,6 @@ namespace LightMixer.Model
                 _autoChangeColorOnBeat = value;
                 AsyncOnPropertyChange(o => this.AutoChangeColorOnBeat);
             }
-
         }
 
         public double MaxSpeed
@@ -133,7 +124,6 @@ namespace LightMixer.Model
                 _maxSpeed = value;
                 AsyncOnPropertyChange(o => this.MaxSpeed);
             }
-
         }
 
         public bool AutoChangeGobo
@@ -147,8 +137,8 @@ namespace LightMixer.Model
                 _autoChangeGobo = value;
                 AsyncOnPropertyChange(o => this.AutoChangeGobo);
             }
-
         }
+
         public bool AutoChangeProgram
         {
             get
@@ -160,8 +150,8 @@ namespace LightMixer.Model
                 _autoChangeProgram = value;
                 AsyncOnPropertyChange(o => this.AutoChangeProgram);
             }
-
         }
+
         public int SecondBetweenGoboChange
         {
             get
@@ -173,8 +163,8 @@ namespace LightMixer.Model
                 _secondBetweenGoboChange = value;
                 AsyncOnPropertyChange(o => this.SecondBetweenGoboChange);
             }
-
         }
+
         public int SecondBetweenProgramChange
         {
             get
@@ -186,7 +176,6 @@ namespace LightMixer.Model
                 _secondBetweenProgramChange = value;
                 AsyncOnPropertyChange(o => this.SecondBetweenProgramChange);
             }
-
         }
 
         public bool IsBeat
@@ -220,7 +209,6 @@ namespace LightMixer.Model
                 _maxLightIntesityMovingHead = value;
                 AsyncOnPropertyChange(o => this.MaxLightIntesityMovingHead);
             }
-
         }
 
         private Color TargetColor = Colors.Red;
@@ -232,10 +220,8 @@ namespace LightMixer.Model
             Color currentColor = Color.FromRgb(this.Red, this.Green, this.Blue);
             Color newColor = TransitionColorTo(currentColor, TargetColor);
 
-
             /* if (CompareColor(currentColor, Colors.AliceBlue))
                  TargetColor = Colors.Red;
-
              else if (CompareColor(currentColor, Colors.Red))
                  TargetColor = Colors.Yellow;
              else if (CompareColor(currentColor, Colors.Yellow))
@@ -251,7 +237,6 @@ namespace LightMixer.Model
 
             if (CompareColor(currentColor, Colors.Blue))
                 TargetColor = Colors.Red;
-
             else if (CompareColor(currentColor, Colors.Red))
                 TargetColor = Colors.Green;
             else if (CompareColor(currentColor, Colors.Green))
@@ -360,7 +345,6 @@ namespace LightMixer.Model
                     this.OnPropertyChanged(() => this.CurrentMovingHeadGobo);
                 }
 
-
                 return this._currentMovingHeadGobo;
             }
             set
@@ -456,6 +440,7 @@ namespace LightMixer.Model
                 list.Add(MovingHeadFixture.Program.Circle);
                 list.Add(MovingHeadFixture.Program.Balancing1);
                 list.Add(MovingHeadFixture.Program.DiscoBall);
+                list.Add(MovingHeadFixture.Program.DiscoBallStatic);
                 list.Add(MovingHeadFixture.Program.DJ);
                 list.Add(MovingHeadFixture.Program.Auto1);
                 list.Add(MovingHeadFixture.Program.Auto2);
@@ -478,7 +463,6 @@ namespace LightMixer.Model
                 return list;
             }
         }
-
 
         public ObservableCollection<MovingHeadFixture.Gobo> MovingHeadGobo
         {

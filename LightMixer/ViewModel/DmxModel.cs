@@ -1,7 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using UIFrameWork;
 
-
 namespace LightMixer
 {
     public class DmxModel : BaseViewModel
@@ -15,7 +14,6 @@ namespace LightMixer
             {
                 mDmxChannelStatus.Add(new DmxChannelStatus() { DmxChannelNumber = x, DmxChannelValue = 0 });
             }
-
         }
 
         public ObservableCollection<DmxChannelStatus> DmxChannelStatus
@@ -27,7 +25,6 @@ namespace LightMixer
             set
             {
                 mDmxChannelStatus = value;
-
             }
         }
 
@@ -46,14 +43,5 @@ namespace LightMixer
                 return 255;
             }
         }
-
-
-
-
     }
-
-
-
-
-
 }

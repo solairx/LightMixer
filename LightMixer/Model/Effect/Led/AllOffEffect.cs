@@ -22,7 +22,6 @@ namespace LightMixer.Model
             {
                 return "AllOff";
             }
-
         }
     }
 }

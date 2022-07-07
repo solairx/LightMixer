@@ -43,7 +43,7 @@ else
     async Task Change(object value, string name)
     {
         await ForecastService.UpdateZone(sceneId, id, SelectedItem);
-var  zone = await  ForecastService.GetZoneConfig(sceneId);
+        var  zone = await  ForecastService.GetZoneConfig(sceneId);
         StateHasChanged();
     }
 }

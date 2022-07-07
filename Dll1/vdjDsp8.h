@@ -12,7 +12,6 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-
 #ifndef VdjDsp8H
 #define VdjDsp8H
 
@@ -25,13 +24,13 @@ class IVdjPluginDsp8 : public IVdjPlugin8
 {
 public:
 	// called when the plugin is started or stopped
-	virtual HRESULT VDJ_API OnStart() {return 0;}
-	virtual HRESULT VDJ_API OnStop() {return 0;}
+	virtual HRESULT VDJ_API OnStart() { return 0; }
+	virtual HRESULT VDJ_API OnStop() { return 0; }
 
 	// This function will be called each time VirtualDJ needs your plugin
 	// to be applied on a new sound buffer
 	// NOTE: samples are stereo, so you need to process up to buffer[2*nb]
-	virtual HRESULT VDJ_API OnProcessSamples(float *buffer, int nb)=0;
+	virtual HRESULT VDJ_API OnProcessSamples(float* buffer, int nb) = 0;
 
 	// Some useful variables
 	int SampleRate;			// samplerate of the audio engine
@@ -46,16 +45,16 @@ class IVdjPluginBufferDsp8 : public IVdjPlugin8
 {
 public:
 	// called when the plugin is started or stopped
-	virtual HRESULT VDJ_API OnStart() {return 0;}
-	virtual HRESULT VDJ_API OnStop() {return 0;}
+	virtual HRESULT VDJ_API OnStart() { return 0; }
+	virtual HRESULT VDJ_API OnStop() { return 0; }
 
 	// This function will be called each time VirtualDJ needs your plugin
 	// to be applied on a new sound buffer
 	// NOTE: samples are stereo, so you need to process up to buffer[2*nb]
-	virtual short * VDJ_API OnGetSongBuffer(int songPos, int nb)=0;
+	virtual short* VDJ_API OnGetSongBuffer(int songPos, int nb) = 0;
 
 	// Call this to get the buffer at the specified position
-	HRESULT GetSongBuffer(int pos, int nb, short **buffer) {return cb->GetSongBuffer(pos, nb, buffer);}
+	HRESULT GetSongBuffer(int pos, int nb, short** buffer) { return cb->GetSongBuffer(pos, nb, buffer); }
 
 	// Some useful variables
 	int SampleRate;			// samplerate of the song
@@ -68,24 +67,24 @@ class IVdjPluginPositionDsp8 : public IVdjPluginBufferDsp8
 {
 public:
 	//When called, songPos can be modified
-	virtual HRESULT VDJ_API OnTransformPosition(double *songPos, double *videoPos)=0;
+	virtual HRESULT VDJ_API OnTransformPosition(double* songPos, double* videoPos) = 0;
 
 	//Unused at the moment
-	virtual short * VDJ_API OnGetSongBuffer(int songPos, int nb) override { return NULL; }
+	virtual short* VDJ_API OnGetSongBuffer(int songPos, int nb) override { return NULL; }
 };
 
 //////////////////////////////////////////////////////////////////////////
 // GUID definitions
 
 #ifndef VDJDSP8GUID_DEFINED
-#define VDJDSP8GUID_DEFINED 
+#define VDJDSP8GUID_DEFINED
 static const GUID IID_IVdjPluginDsp8 = { 0x7cfcf3f5, 0x6fb9, 0x434c, { 0xb6, 0x3, 0xd7, 0x3a, 0x88, 0xf6, 0x72, 0x26 } };
 #else
 extern static const GUID IID_IVdjPluginDsp8;
 #endif
 
 #ifndef VDJBUFFER8GUID_DEFINED
-#define VDJBUFFER8GUID_DEFINED 
+#define VDJBUFFER8GUID_DEFINED
 static const GUID IID_IVdjPluginBuffer8 = { 0x1d00e65f, 0x44c7, 0x41bf, { 0xa3, 0x6b, 0x04, 0xda, 0xf2, 0x67, 0x3b, 0x98 } };
 #else
 extern static const GUID IID_IVdjPluginBuffer8;

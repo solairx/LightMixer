@@ -20,7 +20,6 @@ namespace LightMixer.ViewModel
 
         public DmxControlSettingViewModel()
         {
-
         }
 
         public DmxModel DmxModel
@@ -30,7 +29,6 @@ namespace LightMixer.ViewModel
                 return BootStrap.UnityContainer.Resolve<DmxModel>();
             }
         }
-
 
         public long Break
         {
@@ -59,6 +57,7 @@ namespace LightMixer.ViewModel
                 BootStrap.UnityContainer.Resolve<LightService.DmxServiceClient>().SetMBB(value);
             }
         }
+
         public long Mab
         {
             get

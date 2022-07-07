@@ -13,9 +13,13 @@ namespace LightMixer
         public const byte msgEnd = 0xe7;
 
         public event EventHandler<WidgetParameterArgs> WidgetParametersReceived;
+
         public event EventHandler<SerialNumberArgs> SerialNumberReceived;
+
         public event EventHandler<FlashReplyArgs> FlashReplyRecieved;
+
         public event EventHandler<DMXLevelArgs> DMXLevelsRecieved;
+
         public const int CHANNEL_COUNT = 512;  // can be any length up to 512. The shorter the faster.
         private byte[] buffer = new byte[CHANNEL_COUNT];
 
@@ -47,9 +51,6 @@ namespace LightMixer
 
         public void SetDmxValue(int channel, byte value)
         {
-
-
-
             if ((channel > CHANNEL_COUNT)
                 ||
                 (channel < 0))
@@ -57,8 +58,8 @@ namespace LightMixer
 
             buffer[channel] = value;
             this.sendDMXPacketRequest(buffer);
-
         }
+
         public VComWrapper()
         {
             m_port = new System.IO.Ports.SerialPort();
@@ -67,9 +68,10 @@ namespace LightMixer
             m_port.Encoding = Encoding.UTF8;
         }
 
-
         #region static methods
+
         public static string[] comList;
+
         public static void getWidgetList()
         {
             //setup the dummy Com Port
@@ -84,21 +86,15 @@ namespace LightMixer
                 temp.PortName = p;
                 temp.Open();
                 VComWrapper.sendMsg(temp, DMXProMsgLabel.GET_WIDGET_PARAMETERS_REQUEST, new byte[2] { 0, 0 });
-
             }
         }
 
-        static void temp_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
+        private static void temp_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
         {
-
             throw new NotImplementedException();
         }
 
-
-
-
-
-        #endregion
+        #endregion static methods
 
         public bool initPro(string portName)
         {
@@ -125,18 +121,22 @@ namespace LightMixer
                 return false;
             }
         }
+
         public void detatchPro()
         {
             if (m_port.IsOpen)
                 m_port.Close();
         }
-        public bool IsOpen { get { return m_port.IsOpen; } }
 
-        void m_port_ErrorReceived(object sender, System.IO.Ports.SerialErrorReceivedEventArgs e)
+        public bool IsOpen
+        { get { return m_port.IsOpen; } }
+
+        private void m_port_ErrorReceived(object sender, System.IO.Ports.SerialErrorReceivedEventArgs e)
         {
             throw new System.NotImplementedException();
         }
-        void m_port_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
+
+        private void m_port_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
         {
             byte[] header = new byte[4];
             byte[] message;
@@ -170,11 +170,13 @@ namespace LightMixer
                     Array.Copy(msg, 5, UserConfigData, 0, len);
                     if (WidgetParametersReceived != null) WidgetParametersReceived(this, new WidgetParameterArgs(Firmware, DMXOutBreakTime, DMXOutMarkTime, DMXOutRate, UserConfigData));
                     break;
+
                 case DMXProMsgLabel.GET_WIDGET_SERIAL_NUMBER_REPLY: //10
                     UInt32 SerialNumber;
                     SerialNumber = (UInt32)(msg[0] | (msg[1] << 8) | (msg[2] << 16) | (msg[3] << 24));
                     if (SerialNumberReceived != null) SerialNumberReceived(this, new SerialNumberArgs(SerialNumber));
                     break;
+
                 case DMXProMsgLabel.PROGRAM_FLASH_PAGE_REPLY:
                     bool success;
                     string result = Encoding.UTF8.GetString(msg, 0, 4);
@@ -184,13 +186,14 @@ namespace LightMixer
 
                     if (FlashReplyRecieved != null) FlashReplyRecieved(this, new FlashReplyArgs(success));
                     break;
+
                 case DMXProMsgLabel.RECEIVED_DMX_CHANGE_OF_STATE_PACKET:
                     throw new NotImplementedException("Received DMX Change of State Packet is more effort than i want to put in at 12:26");
                 //break;
                 case DMXProMsgLabel.RECEIVED_DMX_PACKET:
-                    /*The Widget sends this message to the PC unsolicited, 
+                    /*The Widget sends this message to the PC unsolicited,
                      * whenever the Widget receives a DMX or
-                     * RDM packet from the DMX port, 
+                     * RDM packet from the DMX port,
                      * and the Receive DMX on Change mode is 'Send always'.*/
                     bool valid = (bool)((msg[0] & 0x01) == 1);
                     len = msg.Length - 1;
@@ -198,8 +201,6 @@ namespace LightMixer
                     Array.Copy(msg, 1, levels, 0, len);
                     if (DMXLevelsRecieved != null) DMXLevelsRecieved(this, new DMXLevelArgs(valid, levels));
                     break;
-
-
             }
         }
 
@@ -222,6 +223,7 @@ namespace LightMixer
             temp.Add(msgEnd);
             m_port.Write(temp.ToArray(), 0, temp.Count);
         }
+
         public static void sendMsg(System.IO.Ports.SerialPort port, DMXProMsgLabel label, byte[] data)
         {
             if (!port.IsOpen) return;
@@ -313,6 +315,7 @@ namespace LightMixer
         {
             sendMsg(DMXProMsgLabel.RECEIVE_DMX_ON_CHANGE, new byte[1] { 1 });
         }
+
         /// <summary>
         /// tells the widget to send the "DMX Changed packet" when the dmx signal changes
         /// </summary>
@@ -320,6 +323,7 @@ namespace LightMixer
         {
             sendMsg(DMXProMsgLabel.RECEIVE_DMX_ON_CHANGE, new byte[1] { 0 });
         }
+
         /// <summary>
         /// requests the serial number of the widget.
         /// this should match the number on the bottom of the widget.

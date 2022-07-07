@@ -7,7 +7,6 @@ namespace BeatDetector
 {
     public class SortableObservableCollection<T> : ObservableCollection<T>
     {
-
         public SortableObservableCollection(IEnumerable<T> items)
         {
             foreach (var item in items)
@@ -48,5 +47,4 @@ namespace BeatDetector
             }
         }
     }
-
 }

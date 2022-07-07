@@ -3,6 +3,9 @@ using Microsoft.Practices.Unity;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Microsoft.AspNetCore.SignalR;
+using System.Threading.Tasks;
+
 //using System.Web.Http;
 
 namespace LightMixer.Model.Service
@@ -28,7 +31,6 @@ namespace LightMixer.Model.Service
         [HttpGet("{scene}/{zone}/effectList")]
         public IEnumerable<string> GetZoneFixtureEffectList(string scene, string zone)
         {
-
             return new ObservableCollection<string>(BootStrap.UnityContainer.Resolve<SceneRenderedService>().GetCurrentFixture<RGBLedFixtureCollection>(scene, zone)
                 .SelectMany(o => o.EffectList)
                 .Select(o => o.Name)
@@ -47,6 +49,8 @@ namespace LightMixer.Model.Service
             }
         }
 
-
     }
+
+    //public class LighMixerHub : Hub
+
 }

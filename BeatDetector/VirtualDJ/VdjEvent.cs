@@ -109,5 +109,4 @@ namespace BeatDetector
             return "Deck " + Deck + ", Playing: " + FileName;
         }
     }
-
 }

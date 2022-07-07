@@ -6,6 +6,7 @@ namespace LightMixer
     {
         public bool valid;
         public byte[] levels;
+
         public DMXLevelArgs(bool isValid, byte[] lvls)
         {
             valid = isValid;

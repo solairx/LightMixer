@@ -6,12 +6,11 @@ namespace LaserDisplay
 {
     public class LineCollection : ICollection<Line>
     {
-        System.Collections.Generic.List<Line> _InnerList = new List<Line>();
+        private System.Collections.Generic.List<Line> _InnerList = new List<Line>();
 
         #region Interface Implementation
 
         #region ICollection<Line> Members
-
 
         public void Add(Line item)
         {
@@ -51,7 +50,7 @@ namespace LaserDisplay
             return true;
         }
 
-        #endregion
+        #endregion ICollection<Line> Members
 
         #region IEnumerable<Line> Members
 
@@ -60,7 +59,7 @@ namespace LaserDisplay
             return this._InnerList.GetEnumerator();
         }
 
-        #endregion
+        #endregion IEnumerable<Line> Members
 
         #region IEnumerable Members
 
@@ -69,9 +68,9 @@ namespace LaserDisplay
             throw new Exception("The method or operation is not implemented.");
         }
 
-        #endregion
+        #endregion IEnumerable Members
 
-        #endregion
+        #endregion Interface Implementation
 
         public void Draw(Graphics G, System.Drawing.Pen P)
         {
@@ -94,6 +93,7 @@ namespace LaserDisplay
                 }
             }
         }
+
         public short[] GetAllXCoordonate(bool DrawReverse)
         {
             Line p = this._InnerList[0];
@@ -105,13 +105,10 @@ namespace LaserDisplay
                 int x = 0;
                 if (DrawReverse)
                 {
-
                     for (x = 0; x < _InnerList.Count; x++)
                     {
-
                         list[x] = ConvertIntToShort(_InnerList[x].x_int);
                         //   System.Windows.Forms.MessageBox.Show(_InnerList[x].y_int.ToString() + "r, " + list[x].ToString());
-
                     }
                 }
                 else
@@ -125,6 +122,7 @@ namespace LaserDisplay
             }
             return list;
         }
+
         public short[] GetAllYCoordonate(bool DrawReverse)
         {
             Line p = this._InnerList[0];
@@ -134,7 +132,6 @@ namespace LaserDisplay
                 int x = 0;
                 if (DrawReverse)
                 {
-
                     for (x = 0; x < _InnerList.Count; x++)
                     {
                         list[x] = ConvertIntToShort(_InnerList[x].y_int);
@@ -147,11 +144,11 @@ namespace LaserDisplay
                     {
                         list[x] = ConvertIntToShort(_InnerList[x].y_int);
                     }
-
                 }
             }
             return list;
         }
+
         public short[] GetAllTransparent(bool DrawReverse)
         {
             Line p = this._InnerList[0];
@@ -165,7 +162,6 @@ namespace LaserDisplay
                     {
                         if (_InnerList[x].Transparent) list[x] = 32767;
                         else list[x] = -32767;
-
                     }
                 }
                 else
@@ -179,18 +175,19 @@ namespace LaserDisplay
             }
             return list;
         }
+
         private short ConvertIntToShort(int r)
         {
             if (r > short.MaxValue) return short.MaxValue;
             else if (r < short.MinValue) return short.MinValue;
             else return Convert.ToInt16(r);
         }
+
         public bool Translate(int x, int y)
         {
             bool outofrange = false;
             foreach (Line l in this._InnerList)
             {
-
                 l.x += x;
                 l.y += y;
                 if ((l.x + x) > 32767) outofrange = true;
@@ -205,7 +202,6 @@ namespace LaserDisplay
         {
             foreach (Line l in this._InnerList)
             {
-
                 l.x *= ratio;
                 l.y *= ratio;
             }
@@ -222,11 +218,10 @@ namespace LaserDisplay
                 l.x = Math.Cos(Math.Tanh(l.y / l.x) + angle) / c;
             }
         }
+
         public void Clean(Graphics g)
         {
             g.FillRectangle(Brushes.Black, new Rectangle(0, 0, 255, 255));
         }
-
-
     }
 }

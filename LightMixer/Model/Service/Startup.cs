@@ -3,16 +3,16 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+
 //using System.Web.Http;
 
 namespace LightMixer.Model.Service
 {
-    class Startup
+    internal class Startup
     {
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-
         }
 
         public IConfiguration Configuration { get; }
@@ -26,7 +26,7 @@ namespace LightMixer.Model.Service
 
             builder.AddAuthorization();
             /*builder.AddApiExplorer();
-            
+
             builder.AddViews();
             builder.AddRazorViewEngine();
             builder.AddCacheTagHelper();

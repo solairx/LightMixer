@@ -16,11 +16,14 @@ namespace LightMixer.Model
     public class DmxChaser : BaseViewModel, IDisposable
     {
         public BeatDetector.BeatDetector mBpmDetector;
+
         private SceneService sceneService
         {
             get { return BootStrap.UnityContainer.Resolve<SceneService>(); }
         }
-        private SceneRenderedService sceneRenderedService { get { return BootStrap.UnityContainer.Resolve<SceneRenderedService>(); } }
+
+        private SceneRenderedService sceneRenderedService
+        { get { return BootStrap.UnityContainer.Resolve<SceneRenderedService>(); } }
         public ObservableCollection<FixtureGroup> fixtureGroupCollection = new ObservableCollection<FixtureGroup>();
         private ObservableCollection<EffectBase> _ledEffectCollection = new ObservableCollection<EffectBase>();
         private ObservableCollection<EffectBase> _boothEffectCollection = new ObservableCollection<EffectBase>();
@@ -142,7 +145,6 @@ namespace LightMixer.Model
             }
         }
 
-
         public VDJPoi CurrentPoi
         {
             get => currentPoi;
@@ -236,8 +238,7 @@ namespace LightMixer.Model
             VdjServer = vdjServer;
         }
 
-
-        void Save()
+        private void Save()
         {
             VdjServer.vdjDataBase.Save();
         }
@@ -287,7 +288,6 @@ namespace LightMixer.Model
                 });
             }
         }
-
 
         private void SetCurrentEffectAsync<T>(string scene, string zone, EffectBase newEffect) where T : FixtureCollection
         {
@@ -355,17 +355,12 @@ namespace LightMixer.Model
             MovingHead
         }
 
-
         #region IDisposable Members
 
         public void Dispose()
         {
         }
 
-        #endregion
-
-
+        #endregion IDisposable Members
     }
 }
-
-

@@ -31,7 +31,6 @@ namespace LightMixer.Model.Fixture
         public byte Red2Value => Color.FromArgb(Color.FromArgb(RedValue, GreenValue, BlueValue).ToArgb() ^ 0xffffff).R;
         public byte Red3Value => Color.FromArgb(Color.FromArgb(RedValue, GreenValue, BlueValue).ToArgb() ^ 0x777777).R;
 
-
         public byte GreenValue
         {
             get => greenValue;
@@ -80,7 +79,8 @@ namespace LightMixer.Model.Fixture
         public byte White2Value => Color.FromArgb(Color.FromArgb(RedValue, GreenValue, BlueValue).ToArgb() ^ 0xffffff).A;
         public byte White3Value => Color.FromArgb(Color.FromArgb(RedValue, GreenValue, BlueValue).ToArgb() ^ 0x777777).A;
 
-        protected RgbFixtureBase() { }
+        protected RgbFixtureBase()
+        { }
 
         protected RgbFixtureBase(int dmxAddress) : base(dmxAddress)
         {

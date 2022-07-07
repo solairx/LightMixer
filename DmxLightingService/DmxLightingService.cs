@@ -11,7 +11,6 @@ namespace DmxLightingService
         {
             InitializeComponent();
             this.ServiceName = "Dmx Lighting Servive";
-
         }
 
         protected override void OnStart(string[] args)
@@ -23,7 +22,5 @@ namespace DmxLightingService
         protected override void OnStop()
         {
         }
-
-
     }
 }

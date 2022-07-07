@@ -38,6 +38,5 @@ namespace LightMixer.Model.Fixture
         DjBooth,
         Bar,
         DanceFloor
-
     }
 }

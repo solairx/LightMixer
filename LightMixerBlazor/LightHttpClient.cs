@@ -4,6 +4,5 @@ namespace LightMixerBlazor
 {
     public class LightHttpClient : HttpClient
     {
-
     }
 }

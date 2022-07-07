@@ -408,6 +408,7 @@
     <Compile Include="Model\Fixture\MovingHead\HeadProgram\MovingHeadProgramCircle.cs" />
     <Compile Include="Model\Fixture\MovingHead\HeadProgram\MovingHeadProgramDisable.cs" />
     <Compile Include="Model\Fixture\MovingHead\HeadProgram\MovingHeadProgramDiscoBall.cs" />
+    <Compile Include="Model\Fixture\MovingHead\HeadProgram\MovingHeadProgramDiscoBallStatic.cs" />
     <Compile Include="Model\Fixture\MovingHead\HeadProgram\MovingHeadProgramDj.cs" />
     <Compile Include="Model\Fixture\MovingHead\HeadProgram\MovingHeadProgramPOV.cs" />
     <Compile Include="Model\Fixture\MovingHead\HeadProgram\MovingHeadProgramPOVOnOff.cs" />

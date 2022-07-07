@@ -28,7 +28,6 @@ namespace LightMixer.Model
                     }
                 }
                 isSimulatedBeat = false;
-
             }
             else
             {
@@ -55,13 +54,11 @@ namespace LightMixer.Model
             {
                 return "FlashAll";
             }
-
         }
     }
 
     public class StaticColorFlashEffect : EffectBase
     {
-
         public override void RenderEffect(IEnumerable<BeatDetector.VdjEvent> values)
         {
             var workingGroup = Owner.FixtureGroups;
@@ -81,7 +78,6 @@ namespace LightMixer.Model
                         }
                     }
                 }
-
             }
             else
             {
@@ -107,9 +103,6 @@ namespace LightMixer.Model
             {
                 return "Static Color Flash";
             }
-
         }
     }
-
-
 }

@@ -4,7 +4,6 @@ namespace LightMixer.Model
 {
     public class AllOnEffect : RgbEffectBase
     {
-
         public override void RenderEffect(IEnumerable<BeatDetector.VdjEvent> values)
         {
             isBeat = false;
@@ -25,7 +24,6 @@ namespace LightMixer.Model
             {
                 return "AllOn";
             }
-
         }
     }
 }

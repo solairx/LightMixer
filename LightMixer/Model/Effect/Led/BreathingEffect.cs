@@ -5,9 +5,8 @@ namespace LightMixer.Model
 {
     public class BreathingEffect : EffectBase
     {
-        double next = 1;
-        bool direction = true;
-
+        private double next = 1;
+        private bool direction = true;
 
         public override void RenderEffect(IEnumerable<BeatDetector.VdjEvent> values)
         {
@@ -16,7 +15,6 @@ namespace LightMixer.Model
             else
                 next -= 1 * _sharedEffectModel.MaxSpeed;
             isBeat = false;
-
 
             if (next > 99)
             {
@@ -36,7 +34,6 @@ namespace LightMixer.Model
                 {
                     if (fixture is RgbFixture)
                     {
-
                         ((RgbFixture)fixture).RedValue = this.SetValue((byte)(this._sharedEffectModel.Red * next / 100d));
                         ((RgbFixture)fixture).GreenValue = this.SetValue((byte)(this._sharedEffectModel.Green * next / 100d));
                         ((RgbFixture)fixture).BlueValue = this.SetValue((byte)(this._sharedEffectModel.Blue * next / 100d));
@@ -44,7 +41,6 @@ namespace LightMixer.Model
                     }
                 }
             }
-
 
             this.RaiseEvent();
         }
@@ -55,7 +51,6 @@ namespace LightMixer.Model
             {
                 return "Breath";
             }
-
         }
     }
 }

@@ -7,8 +7,6 @@ namespace LaserDisplay
 {
     public class AudienceScanning : ILaserEffet
     {
-
-
         private int max_x_pos;
         private int max_x_neg;
         private int max_y_pos;
@@ -18,14 +16,14 @@ namespace LaserDisplay
         private dj djSetting = new dj();
         private double yPos = 0;
         private double _Bpm = 70;
-        bool Direction = false;
+        private bool Direction = false;
         private bool DrawReverse = false;
         private long waveSync = 0;
 
         public AudienceScanning()
         {
-
         }
+
         public void ReadSetting()
         {
             max_x_pos = laserSetting.AS_Max_X_pos;
@@ -37,33 +35,28 @@ namespace LaserDisplay
             Direction = false;
             DrawReverse = false;
             waveSync = 0;
-
         }
-
 
         #region ILaserEffet Members
 
         public void Draw(Graphics g, Pen p)
         {
-
-
         }
 
         public void StopDrawing()
         {
-
         }
+
         private void run()
         {
-
         }
+
         public void Transform()
         {
-
         }
+
         public void Beat()
         {
-
         }
 
         public short[] DrawOnLaser(int HorizontalPosition, int VerticalPosition, int TurnOnPosition, int BufferSize, ResamplingService Sampler, bool Paused, double bpm, bool IsBeat)
@@ -77,12 +70,8 @@ namespace LaserDisplay
                 _Bpm = bpm;
                 short[] Buffer = new short[BufferSize / 2];
 
-
-
-
                 for (int i = 0; i < Buffer.Length; i += 2)
                 {
-
                     if (Paused)
                     {
                         Buffer[i + HorizontalPosition] = 0;
@@ -90,7 +79,6 @@ namespace LaserDisplay
                     }
                     else
                     {
-
                         Buffer[i + HorizontalPosition] = ShortFromDouble(Math.Cos(((double)waveSync++) / size) * max_x_pos);
                         Buffer[i + VerticalPosition] = ShortFromDouble(yPos);
                         if (Direction)
@@ -112,12 +100,9 @@ namespace LaserDisplay
                                 Direction = true;
                             }
                         }
-
                     }
-
                 }
                 DrawReverse = !DrawReverse;
-
 
                 return Buffer;
             }
@@ -125,8 +110,6 @@ namespace LaserDisplay
             {
                 return ReturnNull(BufferSize, HorizontalPosition, VerticalPosition, TurnOnPosition);
             }
-
-
         }
 
         private short[] ReturnNull(int BufferSize, int HorizontalPosition, int VerticalPosition, int TurnOnPosition)
@@ -140,13 +123,14 @@ namespace LaserDisplay
             }
             return Buffer;
         }
-        #endregion
+
+        #endregion ILaserEffet Members
+
         public short ShortFromDouble(double d)
         {
             if (d >= 32767) return 32767;
             else if (d <= -32767) return -32767;
             else return Convert.ToInt16(d);
-
         }
     }
 }

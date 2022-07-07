@@ -10,13 +10,13 @@ namespace LaserDisplay
         private double _y = 0;
         private bool _Transparent;
 
-
         public Line(double x, double y, bool Transparent)
         {
             this._x = x;
             this._y = y;
             this._Transparent = Transparent;
         }
+
         public bool Transparent
         {
             get { return _Transparent; }
@@ -36,6 +36,7 @@ namespace LaserDisplay
                     _x = value;
             }
         }
+
         public double y
         {
             get { return _y; }
@@ -54,10 +55,10 @@ namespace LaserDisplay
         {
             get { return Convert.ToInt32(_y); }
         }
+
         public int x_int
         {
             get { return Convert.ToInt32(_x); }
         }
-
     }
 }

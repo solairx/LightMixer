@@ -19,6 +19,7 @@
                 }
             }
         }
+
         public ushort Tilt2
         {
             get => tilt2 != 0 ? tilt2 : Tilt; set
@@ -28,7 +29,6 @@
                 {
                     tilt2 = 1;
                 }
-
             }
         }
 

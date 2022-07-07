@@ -12,11 +12,14 @@ namespace BeatDetector
     public class VdjPipeServerInstance
     {
         public event VirtualDjInstanceEventHandler VirtualDjInstanceEvent;
+
         public delegate void VirtualDjInstanceEventHandler(VdjEvent vdjEvent);
+
         private VDJXmlParser ingternalVdjDataBase;
         private Task internalTask;
         private DateTime? LastUpdate;
         private NamedPipeServerStream vdjPipe;
+
         internal void StartInstance(VDJXmlParser vdjDataBase)
         {
             IsWaitingForConnection = true;
@@ -25,6 +28,7 @@ namespace BeatDetector
         }
 
         public bool IsWaitingForConnection { get; private set; }
+
         public bool IsInstanceDead()
         {
             if (LastUpdate != null && DateTime.Now.Subtract(LastUpdate.Value).Milliseconds > 100 && !IsWaitingForConnection)
@@ -83,7 +87,6 @@ namespace BeatDetector
                 }
                 catch (Exception)
                 {
-
                 }
             }
             return 0;
@@ -100,7 +103,6 @@ namespace BeatDetector
                 }
                 catch (Exception)
                 {
-
                 }
             }
             return 0;
@@ -112,7 +114,6 @@ namespace BeatDetector
             {
                 try
                 {
-
                     PipeSecurity ps = new PipeSecurity();
                     var sid = new SecurityIdentifier(WellKnownSidType.WorldSid, null);
                     NTAccount account = (NTAccount)sid.Translate(typeof(NTAccount));
@@ -149,5 +150,4 @@ namespace BeatDetector
             });
         }
     }
-
 }

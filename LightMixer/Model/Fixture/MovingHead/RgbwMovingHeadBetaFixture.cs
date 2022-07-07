@@ -3,12 +3,10 @@ using System.Collections.Generic;
 
 namespace LightMixer.Model.Fixture
 {
-
     public class RgbwMovingHeadBetaFixture : MovingHeadFixture
     {
         public RgbwMovingHeadBetaFixture(int dmxAddress, List<PointOfInterest> pointOfInterests) : base(dmxAddress, pointOfInterests)
         {
-
         }
 
         public override byte?[] Render()
@@ -66,7 +64,7 @@ namespace LightMixer.Model.Fixture
             arr[StartDmxAddress + 3] = tiltByte[0];//y
             arr[StartDmxAddress + 4] = 0; //speed
             arr[StartDmxAddress + 5] = 255; //dimmer
-            arr[StartDmxAddress + 6] = 0;//strobe  
+            arr[StartDmxAddress + 6] = 0;//strobe
             if (EnableAlternateColor && (GroupPosition == 0.25 || GroupPosition == 0.75))
             {
                 arr[StartDmxAddress + 7] = Convert.ToByte(Red2Value * Dimmer);
@@ -85,8 +83,6 @@ namespace LightMixer.Model.Fixture
         }
 
         public override int DmxLenght => 11;
-
-
     }
 
     public class RgbwMovingHeadSlaveFixture : MovingHeadFixture
@@ -132,7 +128,5 @@ namespace LightMixer.Model.Fixture
         }
 
         public override int DmxLenght => 9;
-
-
     }
 }

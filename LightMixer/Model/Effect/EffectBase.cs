@@ -10,12 +10,39 @@ namespace LightMixer.Model
 {
     public abstract class EffectBase
     {
+        public SharedEffectModel _sharedEffectModel;
+
+        protected double bpm = 60;
+
+        protected ObservableCollection<Fixture.FixtureGroup> fixtureGroup;
+
+        protected bool isBeat = false;
+
+        protected bool isSimulatedBeat = false;
+
+        private double _lastProcessedBeat = 0;
+
+        private FixtureCollection currentValue;
+
+        private double lastBeatPos = 0;
+
+        private Stopwatch lastBeatPosRunTime = new Stopwatch();
+
+        public EffectBase()
+        {
+            _sharedEffectModel = BootStrap.UnityContainer.Resolve<SharedEffectModel>();
+        }
+
+        public delegate void DmxFrameHandler(ObservableCollection<DmxChannelStatus> currentValue, object caller);
+
+        public event DmxFrameHandler DmxFrameEvent;
+
+        public virtual WledEffect CurrentWledEffect => WledEffect.FX_MODE_CHASE_COLOR;
+
         public abstract string Name
         {
             get;
         }
-        public event DmxFrameHandler DmxFrameEvent;
-        public delegate void DmxFrameHandler(ObservableCollection<DmxChannelStatus> currentValue, object caller);
         internal FixtureCollection Owner
         {
             get => currentValue;
@@ -26,61 +53,17 @@ namespace LightMixer.Model
             }
         }
 
-        protected virtual void OnFixtureCollectionChanged()
+        public static double Ulp(double source, double epsilon)
         {
+            double candidate = 1;
+            while (source < candidate)
+            {
+                candidate -= epsilon;
+                if (candidate < 0)
+                    return 0;
+            }
+            return Math.Round(candidate, 3);
         }
-
-        protected ObservableCollection<Fixture.FixtureGroup> fixtureGroup;
-        public SharedEffectModel _sharedEffectModel;
-        protected bool isBeat = false;
-        protected bool isSimulatedBeat = false;
-        public virtual WledEffect CurrentWledEffect => WledEffect.FX_MODE_CHASE_COLOR;
-
-        protected double bpm = 60;
-
-        public byte SetValue(byte tentativeValue)
-        {
-            return Convert.ToByte(tentativeValue * ((Owner.intensityGetter.Invoke()) / 100d));
-        }
-
-        public byte SetValueFlash(byte tentativeValue)
-        {
-            return Convert.ToByte(tentativeValue * ((Owner.intensityFlashGetter.Invoke()) / 100d));
-        }
-
-        public byte SetValueMovingHead(byte tentativeValue)
-        {
-            return Convert.ToByte(tentativeValue * (Owner.intensityGetter.Invoke() / 100d));
-        }
-
-        public EffectBase()
-        {
-            _sharedEffectModel = BootStrap.UnityContainer.Resolve<SharedEffectModel>();
-        }
-
-        public byte GetMaxedByte(int val)
-        {
-            if (val > 255)
-                return 255;
-            else if (val < 0)
-                return 0;
-            return Convert.ToByte(val);
-
-        }
-        public byte GetMaxedByte(double val)
-        {
-            if (val > 255)
-                return 255;
-            else if (val < 0)
-                return 0;
-            return Convert.ToByte(val);
-
-        }
-
-        private double _lastProcessedBeat = 0;
-        private double lastBeatPos = 0;
-        private Stopwatch lastBeatPosRunTime = new Stopwatch();
-        private FixtureCollection currentValue;
 
         public void DmxFrameCall(IEnumerable<BeatDetector.VdjEvent> values)
         {
@@ -124,7 +107,6 @@ namespace LightMixer.Model
                     }
                 }
                 this.bpm = currentDeck.BpmAsDouble;
-
             }
             foreach (FixtureBase fixture in Owner.FixtureGroups.SelectMany(o => o.FixtureInGroup))
             {
@@ -134,46 +116,22 @@ namespace LightMixer.Model
             RenderEffect(values);
         }
 
-        public static double Ulp(double source, double epsilon)
+        public byte GetMaxedByte(int val)
         {
-            double candidate = 1;
-            while (source < candidate)
-            {
-                candidate -= epsilon;
-                if (candidate < 0)
-                    return 0;
-            }
-            return Math.Round(candidate, 3);
-        }
-        public abstract void RenderEffect(IEnumerable<BeatDetector.VdjEvent> values);
-
-
-        public void StartCalculation()
-        {
-            //  if (runningThread.ThreadState == ThreadState.Suspended) 
-            //    runningThread.Resume();
-        }
-        public void StopCalculation()
-        {
-            //runningThread.Suspend();
+            if (val > 255)
+                return 255;
+            else if (val < 0)
+                return 0;
+            return Convert.ToByte(val);
         }
 
-        void mBpmDetector_BeatEvent(bool Beat, object caller)
+        public byte GetMaxedByte(double val)
         {
-
-            try
-            {
-
-                isBeat = Beat;
-            }
-            catch (Exception)
-            {
-            }
-        }
-
-        void mBpmDetector_BpmEvent(double Beat, object caller)
-        {
-            bpm = Beat;
+            if (val > 255)
+                return 255;
+            else if (val < 0)
+                return 0;
+            return Convert.ToByte(val);
         }
 
         public void RaiseEvent()
@@ -184,5 +142,51 @@ namespace LightMixer.Model
             }
         }
 
+        public abstract void RenderEffect(IEnumerable<BeatDetector.VdjEvent> values);
+
+        public byte SetValue(byte tentativeValue)
+        {
+            return Convert.ToByte(tentativeValue * ((Owner.intensityGetter.Invoke()) / 100d));
+        }
+
+        public byte SetValueFlash(byte tentativeValue)
+        {
+            return Convert.ToByte(tentativeValue * ((Owner.intensityFlashGetter.Invoke()) / 100d));
+        }
+
+        public byte SetValueMovingHead(byte tentativeValue)
+        {
+            return Convert.ToByte(tentativeValue * (Owner.intensityGetter.Invoke() / 100d));
+        }
+
+        public void StartCalculation()
+        {
+            //  if (runningThread.ThreadState == ThreadState.Suspended)
+            //    runningThread.Resume();
+        }
+
+        public void StopCalculation()
+        {
+            //runningThread.Suspend();
+        }
+
+        protected virtual void OnFixtureCollectionChanged()
+        {
+        }
+        private void mBpmDetector_BeatEvent(bool Beat, object caller)
+        {
+            try
+            {
+                isBeat = Beat;
+            }
+            catch (Exception)
+            {
+            }
+        }
+
+        private void mBpmDetector_BpmEvent(double Beat, object caller)
+        {
+            bpm = Beat;
+        }
     }
 }

@@ -30,27 +30,22 @@ namespace LaserDisplay
             GreenLaser.TunnelEffectScanning.ReadSetting();
             GreenLaser.StaticSkyEffect.ReadSetting();
         }
+
         public LaserControler(int Device)
         {
             LaserControlerAccess = this;
             this.Init();
             VisualControler.ServiceExchangeSingleton.Instance.LaserPause = true;
-
-
         }
 
         public void Init()
         {
-
             GreenLaser = new LaserDisplay(WaveLib.SpeakerPosition.SPEAKER_FRONT_LEFT, WaveLib.SpeakerPosition.SPEAKER_FRONT_RIGHT, WaveLib.SpeakerPosition.SPEAKER_FRONT_CENTER, WaveLib.SpeakerPosition.SPEAKER_BACK_RIGHT, WaveLib.SpeakerPosition.SPEAKER_BACK_LEFT, djSetting.LaserDevice, false);
             ReadSetting();
         }
 
-
         public void Reset()
         {
-
-
             try
             {
                 Stop();
@@ -58,15 +53,11 @@ namespace LaserDisplay
                 this.Init();
                 ReadSetting();
                 Start();
-
-
             }
             catch (Exception)
             {
                 //  System.Windows.Forms.MessageBox.Show(ex.ToString());
             }
-
-
         }
 
         public void Start()
@@ -76,16 +67,15 @@ namespace LaserDisplay
 
         public void Stop()
         {
-
             try
             {
-
                 GreenLaser.Stop();
             }
             catch (Exception)
             {
             }
         }
+
         public void OnMusic(int Pourcentage, bool IsBeat, double BPM)
         {
             if (GreenLaser != null)
@@ -93,7 +83,6 @@ namespace LaserDisplay
                 GreenLaser._OnBeat = IsBeat;
                 GreenLaser.BPM = BPM;
             }
-
         }
 
         public void OnMusic(int Pourcentage, bool IsBeat)
@@ -101,24 +90,15 @@ namespace LaserDisplay
             if (GreenLaser != null)
             {
                 GreenLaser._OnBeat = IsBeat;
-
             }
-
         }
 
         public void OnMusic(int Pourcentage, double BPM)
         {
             if (GreenLaser != null)
             {
-
                 GreenLaser.BPM = BPM;
             }
-
         }
-
-
-
-
-
     }
 }

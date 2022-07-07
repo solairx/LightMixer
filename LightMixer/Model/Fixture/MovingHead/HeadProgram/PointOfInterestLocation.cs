@@ -6,6 +6,7 @@
         DanceFloor,
         FrontOfDjBooth,
         DiscoBall,
+        DiscoBallStatic,
         Circle
     }
 }

@@ -8,5 +8,3 @@ namespace LightMixer.Model
         public List<FixtureCollection> FixtureTypes { get; set; } = new List<FixtureCollection>();
     }
 }
-
-

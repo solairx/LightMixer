@@ -7,13 +7,14 @@ namespace DmxLib
 {
     public class DmxController
     {
-
         public static VComWrapper dmx;
 
         private byte[] buffer;
+
         //      public static  OpenDMX dmx;
-        static InterfaceKit kit;
-        ServiceHost host;
+        private static InterfaceKit kit;
+
+        private ServiceHost host;
 
         public DmxController()
         {
@@ -31,12 +32,10 @@ namespace DmxLib
             }
             catch (Exception)
             {
-
             }
             dmx = new VComWrapper();
             dmx.initPro("com3");
             dmx.sendGetWidgetParametersRequest((ushort)0);
-
 
             ServiceHost host = new ServiceHost(typeof(DmxService), new Uri[2]
             {
@@ -45,8 +44,6 @@ namespace DmxLib
             });
 
             host.Open();
-
-
         }
 
         public void Stop()
@@ -60,7 +57,7 @@ namespace DmxLib
         private DateTime LastChanged = DateTime.Now;
         private int lightIntensity = 0;
 
-        void kit_InputChange(object sender, InputChangeEventArgs e)
+        private void kit_InputChange(object sender, InputChangeEventArgs e)
         {
             if (e.Index == 5)
             {
@@ -97,9 +94,6 @@ namespace DmxLib
             }
 
             LastChanged = DateTime.Now;
-
         }
-
-
     }
 }

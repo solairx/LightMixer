@@ -19,7 +19,6 @@ namespace UIFrameWork
             set;
         }
 
-
         #region Events
 
         /// <summary>
@@ -27,7 +26,7 @@ namespace UIFrameWork
         /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
 
-        #endregion
+        #endregion Events
 
         #region Methods
 
@@ -82,7 +81,6 @@ namespace UIFrameWork
             this.OnPropertyChanged(Reflect.Property(propertyExpression).Name);
         }
 
-
         public void OnPropertyChanged<TProperty>(Expression<Func<BaseViewModel, TProperty>> expression)
         {
             this.OnPropertyChanged(this.GetPropertyName(expression));
@@ -125,8 +123,6 @@ namespace UIFrameWork
             return propertyName;
         }
 
-
-
-        #endregion
+        #endregion Methods
     }
 }

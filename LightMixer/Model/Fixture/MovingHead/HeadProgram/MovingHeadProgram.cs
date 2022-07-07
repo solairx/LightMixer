@@ -64,6 +64,7 @@ namespace LightMixer.Model.Fixture
             double effectiveRatio = masterPositionRatio + groupPosition;
             SetSize(newSize, masterPositionRatio, masterPositionRatio + groupPosition);
         }
+
         protected void SetSize(int newSize, double masterPositionRatio, double groupPosition)
         {
             double effectiveRatio = masterPositionRatio + groupPosition;
@@ -76,8 +77,6 @@ namespace LightMixer.Model.Fixture
             var localTilt = IsSlave ? TiltListDesignSlave : TiltListDesign;
             var dimmer = IsSlave ? MaxDimmerDesignSlave : MaxDimmerDesign;
 
-
-
             if (localPan.Length > newSize)
             {
                 newSize = localPan.Length;
@@ -86,7 +85,6 @@ namespace LightMixer.Model.Fixture
             if (Resampler.Size != 0 && newSize != 0 && position != 0)
             {
                 position = Convert.ToInt32(effectiveRatio * position);
-
             }
             Resampler.Size = newSize;
             Resampler.Filter = ResamplingFilters.Box;
@@ -101,6 +99,7 @@ namespace LightMixer.Model.Fixture
         {
             RenderOn(fixture, position / Resampler.Size, 0);
         }
+
         public void RenderOn(MovingHeadFixture fixture, double masterPositionRatio, double groupPosition)
         {
             if (fixture.Speed != 0)
@@ -109,7 +108,6 @@ namespace LightMixer.Model.Fixture
                 if (fixture.Speed > 128)
                 {
                     expectedSize = InitialSize * (1 - (fixture.Speed - 128d) / 128d);
-
                 }
                 else
                 {
@@ -125,8 +123,6 @@ namespace LightMixer.Model.Fixture
             {
                 position = 0;
             }
-            fixture.Pan = PanList[position];
-            fixture.Tilt = TiltList[position];
 
             var dimmerValue = MaxDimmer[position] / 100d;
             if (dimmerValue < 1 && dimmerValue > 0)
@@ -137,11 +133,59 @@ namespace LightMixer.Model.Fixture
             {
                 fixture.Dimmer = 1;
             }
-            position++;
 
+            CalculateNewPosition(fixture);
+                        
         }
 
+        private void CalculateNewPosition( MovingHeadFixture fixture)
+        {
+            ushort maxChangePan = 1250;
+            ushort maxChangeTilt = 2000;
 
+            bool tiltAllign = false;
+            bool panAllign = false; 
+
+            int deltaPan = fixture.Pan - PanList[position];
+            int deltaTilt = fixture.Tilt - TiltList[position];
+
+            if (Math.Abs(deltaPan) < maxChangePan)
+            {
+                fixture.Pan = PanList[position];
+                panAllign = true;
+            }
+            else if ( deltaPan < 0 )
+            {
+                panAllign = false;
+                fixture.Pan += maxChangePan;
+            }
+            else
+            {
+                panAllign = false;
+                fixture.Pan -= maxChangePan;
+            }
+
+            if (Math.Abs(deltaTilt) < maxChangeTilt)
+            {
+                fixture.Tilt = TiltList[position];
+                tiltAllign = true;
+            }
+            else if (deltaTilt < 0)
+            {
+                tiltAllign = false;
+                fixture.Tilt += maxChangeTilt;
+            }
+            else
+            {
+                tiltAllign = false;
+                fixture.Tilt -= maxChangeTilt;
+            }
+
+            if (tiltAllign && panAllign)
+            {
+                position++;
+            }
+        }
 
         protected void LinearInterpolation(ushort[] destination, ushort[] source)
         {
@@ -156,7 +200,6 @@ namespace LightMixer.Model.Fixture
                 LinearInterpolation(destination, new ushort[] { source[0], source[0] });
                 return;
             }
-
 
             if (destination == null)
             {

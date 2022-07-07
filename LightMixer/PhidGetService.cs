@@ -53,7 +53,6 @@ namespace LightMixer
                     shared.Green = 255;
                     shared.Blue = 255;
                     shared.Red = 255;
-
                 }));
             }
         }

@@ -8,9 +8,9 @@ namespace LaserDisplay
     public class TunnelEffect : ILaserEffet
     {
         private double _Bpm = 70;
-        bool Direction = false;
+        private bool Direction = false;
         private bool DrawReverse = false;
-        long waveSync = 0;
+        private long waveSync = 0;
         private LaserSetting laserSetting = new LaserSetting();
         private int max_x_pos;
         private int max_y_pos;
@@ -21,11 +21,10 @@ namespace LaserDisplay
 
         public TunnelEffect()
         {
-
         }
+
         public void ReadSetting()
         {
-
             max_x_pos = laserSetting.Te_Max_X;
             max_y_pos = laserSetting.TE_Max_Y;
             xsize = laserSetting.Te_SizeX * 2;
@@ -39,28 +38,23 @@ namespace LaserDisplay
 
         public void Draw(Graphics g, Pen p)
         {
-
-
         }
 
         public void StopDrawing()
         {
-
         }
+
         private void run()
         {
-
         }
+
         public void Transform()
         {
-
-
         }
+
         public void Beat()
         {
-
         }
-
 
         public short[] DrawOnLaser(int HorizontalPosition, int VerticalPosition, int TurnOnPosition, int BufferSize, ResamplingService Sampler, bool Paused, double bpm, bool IsBeat)
         {
@@ -71,7 +65,6 @@ namespace LaserDisplay
 
                 for (int i = 0; i < Buffer.Length; i += 2)
                 {
-
                     if (Paused)
                     {
                         Buffer[i + HorizontalPosition] = 0;
@@ -92,10 +85,8 @@ namespace LaserDisplay
                         Buffer[i + HorizontalPosition] = ShortFromDouble(Math.Cos(((double)waveSync++) / ServiceExchangeSingleton.Instance.LaserSpeedAdj / 3) * max_x_pos);
                         Buffer[i + VerticalPosition] = ShortFromDouble(Math.Sin(((double)waveSync++) / ServiceExchangeSingleton.Instance.LaserSpeedAdj / 3) * max_y_pos);
                     }
-
                 }
                 DrawReverse = !DrawReverse;
-
 
                 return Buffer;
             }
@@ -103,8 +94,6 @@ namespace LaserDisplay
             {
                 return ReturnNull(BufferSize, HorizontalPosition, VerticalPosition, TurnOnPosition);
             }
-
-
         }
 
         private short[] ReturnNull(int BufferSize, int HorizontalPosition, int VerticalPosition, int TurnOnPosition)
@@ -118,7 +107,9 @@ namespace LaserDisplay
             }
             return Buffer;
         }
-        #endregion
+
+        #endregion ILaserEffet Members
+
         public short ShortFromDouble(double d)
         {
             if (d >= 32767) return 32767;

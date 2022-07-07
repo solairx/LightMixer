@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 
 namespace LightMixer.Model.Fixture
 {
-
     public class TasmotaRGWFixture : RgbFixture
     {
         private readonly string ip = "";
@@ -29,8 +28,6 @@ namespace LightMixer.Model.Fixture
 
             Task.Run(HttpLoop);
         }
-
-
 
         public override int DmxLenght => 1;
 
@@ -59,16 +56,16 @@ namespace LightMixer.Model.Fixture
             this.SetOn();
             return null;
         }
+
         public CancellationTokenSource cts = new CancellationTokenSource();
         private bool isHttpRunning = false;
+
         private void HttpLoop()
         {
             while (!MainWindow.IsDead)
             {
                 try
                 {
-
-
                     LastColorEnergy = RedValue + GreenValue + BlueValue;
                     var newQuery = "http://" + ip + "/cm?cmnd=Color%20" + ToHex(RedValue) + ToHex(GreenValue) + ToHex(BlueValue) + "0000&Dimmer%2088";
                     if (HasGreatLightEnergyDifference() && RedValue + GreenValue + BlueValue > 20)
@@ -95,11 +92,9 @@ namespace LightMixer.Model.Fixture
                 }
                 catch (Exception)
                 {
-
                 }
                 finally
                 {
-
                 }
             }
         }
@@ -113,20 +108,17 @@ namespace LightMixer.Model.Fixture
             }
             SkipRate = 0;
 
-
             isDitry = false;
-
 
             try
             {
                 Stopwatch sw = new Stopwatch();
                 sw.Start();
 
-
                 /* if (lastQuery != newQuery && HasGreatLightEnergyDifference() && !isHttpRunning)
                  {
                      isHttpRunning = true;
-                     Debug.WriteLine("Tasmota Query Cancel REquest" + cts.IsCancellationRequested); 
+                     Debug.WriteLine("Tasmota Query Cancel REquest" + cts.IsCancellationRequested);
 
                      cts = new CancellationTokenSource();
                      LastColorEnergy = RedValue + GreenValue + BlueValue;
@@ -141,8 +133,6 @@ namespace LightMixer.Model.Fixture
             catch (Exception)
             {
             }
-
-
         }
 
         private string ToHex(byte value)

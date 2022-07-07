@@ -18,9 +18,11 @@ namespace BeatDetector
         private readonly Func<bool> isDeadGetter;
 
         public event VirtualDjServerEventHandler VirtualDjServerEvent;
+
         public delegate void VirtualDjServerEventHandler(VdjEvent vdjEvent);
 
         public event OS2lServerHandler OS2lServerEvent;
+
         public delegate void OS2lServerHandler(OS2lEvent os2lEvent);
 
         public static Func<bool> IsDead = () => false;
@@ -50,7 +52,6 @@ namespace BeatDetector
                 server = new TcpListener(port);
                 try
                 {
-
                     server.Start();
                 }
                 catch (SocketException)
@@ -125,11 +126,9 @@ namespace BeatDetector
                     newEvent.Elapsed = newEvent.BeatPos * (60 / newEvent.Bpm);
                 }
                 OS2lServerEvent?.Invoke(newEvent);
-
             }
             catch (Exception)
             {
-
             }
         }
 
@@ -168,7 +167,6 @@ namespace BeatDetector
                                 InstanceList.TryRemove(instance.Key, out removedInstance);
                                 // instance.VirtualDjInstanceEvent -= ServerInstance_VirtualDjInstanceEvent;
                                 StartNewInstance();
-
                             }
                             if (!InstanceList.Any(inst => inst.Value.IsWaitingForConnection))
                             {
@@ -179,13 +177,11 @@ namespace BeatDetector
                         }
                         catch (Exception)
                         {
-
                         }
                     }
                 }
                 catch (Exception)
                 {
-
                 }
             });
         }
@@ -196,5 +192,4 @@ namespace BeatDetector
                 VirtualDjServerEvent(vdjEvent);
         }
     }
-
 }

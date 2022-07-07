@@ -8,7 +8,6 @@ namespace LightMixer
     /// </summary>
     public partial class App : Application
     {
-
         public App()
         {
             if (System.Diagnostics.Process.GetProcessesByName("LightMixer").Length > 1)
@@ -22,10 +21,8 @@ namespace LightMixer
             new BootStrap(new UiDispatcher(Dispatcher));
         }
 
-
         private void App_Exit(object sender, ExitEventArgs e)
         {
-
         }
 
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
@@ -40,7 +37,5 @@ namespace LightMixer
                 MessageBox.Show("Unknow exception");
             }
         }
-
-
     }
 }

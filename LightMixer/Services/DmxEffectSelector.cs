@@ -36,21 +36,17 @@ namespace LightMixer.Model
             else if (workingEvent?.IsPoiPlausible != true || currentPoi.ID == 0)
             {
                 InvalidTrackInfo(dmxChaser);
-
             }
             else if (currentPoi != null && workingEvent.IsPoiPlausible)
             {
                 PoiIsValidSelectEffect(dmxChaser, workingEvent, currentPoi, nextPoi);
             }
-
         }
-
 
         private void PoiIsValidSelectEffect(DmxChaser dmxChaser, VdjEvent workingEvent, VDJPoi currentPoi, VDJPoi nextPoi)
         {
             if (currentPoi.IsBreak)
             {
-
                 if (dmxChaser.UseFlashTransition && nextPoi != null && GetSecondBeforeNextPOI(workingEvent, nextPoi) < 10)
                 {
                     BeforeBeatKickIn(dmxChaser, workingEvent, nextPoi);
@@ -162,8 +158,6 @@ namespace LightMixer.Model
             this.SceneRenderedService.SetMovingHeadAlternateColor(SceneService.indoorSceneName, SceneService.basementZoneName, true);
             //this.SceneRenderedService.SetMovingHeadDelayedPosition(SceneService.indoorSceneName, SceneService.basementZoneName, true);
             this.SceneRenderedService.SetCurrentEffect<RGBLedFixtureCollection>(SceneService.indoorSceneName, SceneService.basementZoneName, dmxChaser.LedEffectCollection.OfType<AllOffEffect>().First());
-
-
         }
 
         private void Before20SecBeatKickIn(DmxChaser dmxChaser, VdjEvent workingEvent, VDJPoi nextPoi)
@@ -185,7 +179,6 @@ namespace LightMixer.Model
             this.SceneRenderedService.SetMovingHeadProgramEffect(SceneService.indoorSceneName, SceneService.basementZoneName, Fixture.MovingHeadFixture.Program.Balancing1);
             this.SceneRenderedService.SetMovingHeadProgramEffect(SceneService.indoorSceneName, SceneService.djboothZoneName, Fixture.MovingHeadFixture.Program.Circle);
             this.SceneRenderedService.SetMovingHeadAlternateColor(SceneService.indoorSceneName, SceneService.basementZoneName, true);
-
         }
 
         private void BeforeBeatKickIn(DmxChaser dmxChaser, VdjEvent workingEvent, VDJPoi nextPoi)
@@ -203,13 +196,12 @@ namespace LightMixer.Model
             this.SceneRenderedService.SetCurrentEffect<MovingHeadFixtureCollection>(SceneService.indoorSceneName, SceneService.djboothZoneName, dmxChaser.MovingHeadEffectCollection.OfType<MovingHeadFlashAll>().First());
             if (GetSecondBeforeNextPOI(workingEvent, nextPoi) < 5)
             {
-                this.SceneRenderedService.SetCurrentEffect<MovingHeadFixtureCollection>(SceneService.indoorSceneName, SceneService.basementZoneName, dmxChaser.MovingHeadEffectCollection.OfType<FlashAllEffect>().First());
-                this.SceneRenderedService.SetCurrentEffect<MovingHeadFixtureCollection>(SceneService.indoorSceneName, SceneService.djboothZoneName, dmxChaser.MovingHeadEffectCollection.OfType<FlashAllEffect>().First());
+                this.SceneRenderedService.SetCurrentEffect<MovingHeadFixtureCollection>(SceneService.indoorSceneName, SceneService.basementZoneName, dmxChaser.MovingHeadEffectCollection.OfType<MovingHeadFlashAll>().First());
+                this.SceneRenderedService.SetCurrentEffect<MovingHeadFixtureCollection>(SceneService.indoorSceneName, SceneService.djboothZoneName, dmxChaser.MovingHeadEffectCollection.OfType<MovingHeadFlashAll>().First());
                 this.SceneRenderedService.SetCurrentEffect<RGBLedFixtureCollection>(SceneService.indoorSceneName, SceneService.basementZoneName, dmxChaser.LedEffectCollection.OfType<FlashAllEffect>().First());
             }
             else
             {
-
                 this.SceneRenderedService.SetCurrentEffect<RGBLedFixtureCollection>(SceneService.indoorSceneName, SceneService.basementZoneName, dmxChaser.LedEffectCollection.OfType<ZoneFlashEffect>().First());
                 this.SceneRenderedService.SetCurrentEffect<RGBLedFixtureCollection>(SceneService.indoorSceneName, SceneService.djboothZoneName, dmxChaser.LedEffectCollection.OfType<ZoneFlashEffect>().First());
             }
@@ -217,17 +209,14 @@ namespace LightMixer.Model
             {
                 dmxChaser.mBpmDetector.BeatRepeat = 10;
             }
-
             else if (GetSecondBeforeNextPOI(workingEvent, nextPoi) < 5)
             {
                 dmxChaser.mBpmDetector.BeatRepeat = 4;
             }
-
             else if (GetSecondBeforeNextPOI(workingEvent, nextPoi) < 6)
             {
                 dmxChaser.mBpmDetector.BeatRepeat = 2;
             }
-
             else if (GetSecondBeforeNextPOI(workingEvent, nextPoi) < 10)
             {
                 dmxChaser.mBpmDetector.BeatRepeat = 2;
@@ -236,14 +225,11 @@ namespace LightMixer.Model
             {
                 dmxChaser.mBpmDetector.BeatRepeat = 1;
             }
-
         }
 
         private void Reset(DmxChaser dmxChaser)
         {
-
         }
-
 
         private static double GetSecondBeforeNextPOI(VdjEvent workingEvent, VDJPoi nextPoi)
         {
@@ -254,6 +240,5 @@ namespace LightMixer.Model
         {
             return (workingEvent.Position - workingEvent.GetCurrentPoi.Position) / workingEvent.BpmAsDouble / 1000;
         }
-
     }
 }

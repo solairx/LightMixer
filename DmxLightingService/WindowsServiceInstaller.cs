@@ -2,10 +2,8 @@
 using System.Configuration.Install;
 using System.ServiceProcess;
 
-
 namespace DmxLightingService
 {
-
     [RunInstaller(true)]
     public class WindowsServiceInstaller : Installer
     {

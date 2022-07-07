@@ -16,15 +16,14 @@ namespace LightMixer.ViewModel
             mBpmDetector = BootStrap.UnityContainer.Resolve<BeatDetector.BeatDetector>();
             // mBpmDetector.BeatEvent += new BeatDetector.BeatDetector.BeatHandler(mBpmDetector_BeatEvent);
             // mBpmDetector.BpmEvent += new BeatDetector.BeatDetector.BpmHandler(mBpmDetector_BpmEvent);
-
         }
 
-        void mBpmDetector_BpmEvent(double Beat, object caller)
+        private void mBpmDetector_BpmEvent(double Beat, object caller)
         {
             laser.OnMusic(100, Beat);
         }
 
-        void mBpmDetector_BeatEvent(bool Beat, object caller)
+        private void mBpmDetector_BeatEvent(bool Beat, object caller)
         {
             laser.OnMusic(100, Beat);
         }
@@ -41,8 +40,5 @@ namespace LightMixer.ViewModel
                 AsyncOnPropertyChange(o => this.LaserConfig);
             }
         }
-
-
-
     }
 }

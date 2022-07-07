@@ -3,7 +3,6 @@ using static LightMixer.Model.Fixture.WledServer;
 
 namespace LightMixer.Model.Fixture
 {
-
     public enum WledEffectCategory
     {
         NA = 0,
@@ -12,6 +11,7 @@ namespace LightMixer.Model.Fixture
         High = 10,
         off = 255,
     }
+
     public class WLedEffectI
     {
         public int ID { get; set; }
@@ -23,12 +23,10 @@ namespace LightMixer.Model.Fixture
         {
             segment.fx = ID;
         }
-
     }
 
     public class WledEffect2
     {
-
         public static List<WLedEffectI> EffectList = new List<WLedEffectI> {
             new WLedEffectI{Name = "FX_MODE_STATIC",ID = 0 , Category = WledEffectCategory.NA },
            new WLedEffectI{Name = "FX_MODE_BLINK",ID = 1 , Category = WledEffectCategory.NA },
@@ -150,6 +148,7 @@ namespace LightMixer.Model.Fixture
            new WLedEffectI{Name = "FX_MODE_DYNAMIC_SMOOTH",ID = 117},
         };
     }
+
     public enum WledEffect
     {
         FX_MODE_STATIC = 0,

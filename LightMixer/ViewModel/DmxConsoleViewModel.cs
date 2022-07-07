@@ -25,7 +25,6 @@ namespace LightMixer.ViewModel
         private Dispatcher dispatcher;
         public static Process MidiController;
 
-
         public DmxConsoleViewModel()
         {
             dispatcher = Dispatcher;
@@ -35,10 +34,8 @@ namespace LightMixer.ViewModel
 
             try
             {
-
                 try
                 {
-
                     foreach (var pro in Process.GetProcessesByName("LightMixer"))
                     {
                         if (Process.GetCurrentProcess().Id != pro.Id)
@@ -53,7 +50,6 @@ namespace LightMixer.ViewModel
                 }
                 catch (Exception)
                 {
-
                 }
                 _midiInProc = new MIDIINPROC(MyMidiInProc);
                 MIDIError ret = Midi.MIDI_InOpen(ref _midiInHandle, GetTotalControl(), _midiInProc, IntPtr.Zero, MIDIFlags.MIDI_IO_STATUS);
@@ -114,7 +110,6 @@ namespace LightMixer.ViewModel
 
         private void MyMidiInProc(IntPtr handle, MIDIMessage msg, IntPtr instance, IntPtr param1, IntPtr param2)
         {
-
             // handle all Midi messages here
             if (msg == MIDIMessage.MIM_DATA)
             {
@@ -128,7 +123,6 @@ namespace LightMixer.ViewModel
                 BootStrap.Dispatcher.Invoke(() =>
                 {
                     ProcessAllMessage(shortMsg);
-
                 });
             }
             else if (msg == MIDIMessage.MIM_LONGDATA)
@@ -174,6 +168,7 @@ namespace LightMixer.ViewModel
         }
 
         private Dictionary<string, int> Skipper = new Dictionary<string, int>();
+
         private void ProcessMessageForEncoder<T>(MidiShortMessage shortMsg, int channel, int note, IList<T> collectionSource, T currentItem, Action<T> itemSetter, int skipper)
         {
             if (!UpdateSkipper(shortMsg, channel, note, skipper)) return;
@@ -217,6 +212,7 @@ namespace LightMixer.ViewModel
             Skipper[chanStr]++;
             return false;
         }
+
         private void ProcessMessageForSlider(MidiShortMessage shortMsg, int channel, int note, int skipper, double sliderCurrent, Action<double> itemSetter, double increment)
         {
             if (!UpdateSkipper(shortMsg, channel, note, skipper)) return;
@@ -242,7 +238,6 @@ namespace LightMixer.ViewModel
 
         private static int GetTotalControl()
         {
-
             var DeviceDescriptions = new List<string>(MidiInputDevice.GetDeviceDescriptions());
             int deviceId = 0;
             foreach (string deviceDescription in DeviceDescriptions)
@@ -275,10 +270,9 @@ namespace LightMixer.ViewModel
             else
                 Console.WriteLine("Midi device could not be opened! Error: " + _inDevice.LastErrorCode.ToString());
         }
+
         private void InDevice_MessageReceived(object sender, MidiMessageEventArgs e)
         {
-
-
             Debug.WriteLine(e.ShortMessage?.Note + " " + e.ShortMessage?.Velocity);
         }
 
@@ -315,4 +309,3 @@ namespace LightMixer.ViewModel
         }
     }
 }
-

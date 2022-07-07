@@ -4,12 +4,12 @@
     {
         private int mDmxChannelNumber = 0;
         private int mDmxChannelValue = 0;
+
         public int DmxChannelNumber
         {
             get
             {
                 return mDmxChannelNumber;
-
             }
             set
             {
@@ -23,7 +23,6 @@
             get
             {
                 return mDmxChannelValue;
-
             }
             set
             {
@@ -32,7 +31,5 @@
                 //   BootStrap.UnityContainer.Resolve<LightService.DmxServiceClient>().SetDmxChannel(mDmxChannelNumber,(byte)mDmxChannelValue );
             }
         }
-
-
     }
 }

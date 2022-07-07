@@ -12,7 +12,6 @@ namespace LightMixer.ViewModel
 
         public ManualDmxControlViewModel()
         {
-
         }
 
         public DmxModel DmxModel
@@ -22,8 +21,6 @@ namespace LightMixer.ViewModel
                 return BootStrap.UnityContainer.Resolve<DmxModel>();
             }
         }
-
-
 
         public int SelectedChannel
         {
@@ -43,7 +40,6 @@ namespace LightMixer.ViewModel
                 AsyncOnPropertyChange(o => this.SelectedChannel);
                 AsyncOnPropertyChange(o => this.SelectedValue);
                 BootStrap.UnityContainer.Resolve<LightService.DmxServiceClient>().SetDmxChannel(this.SelectedChannel, (byte)this.SelectedValue);
-
             }
         }
 
@@ -62,9 +58,7 @@ namespace LightMixer.ViewModel
                         o => o.DmxChannelNumber == this.SelectedChannel
                         )
                     .FirstOrDefault().DmxChannelValue = value;
-
             }
         }
-
     }
 }

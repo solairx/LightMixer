@@ -1,9 +1,9 @@
 ﻿namespace LightMixer.Model.Fixture
 {
-
     public abstract class FixtureBase
     {
-        public virtual void Init() { }
+        public virtual void Init()
+        { }
 
         private bool isInit = false;
         private EffectBase currentEffect1;
@@ -16,7 +16,6 @@
             }
         }
 
-
         public void InternalInit()
         {
             if (!isInit)
@@ -26,7 +25,9 @@
         public FixtureGroup OwnerGroup { get; set; }
 
         public EffectBase currentEffect { get => currentEffect1; set => currentEffect1 = value; }
-        protected FixtureBase() { }
+
+        protected FixtureBase()
+        { }
 
         public FixtureBase(int dmxAddress)
         {

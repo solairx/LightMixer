@@ -15,7 +15,6 @@ namespace LightMixerBlazor
 
         private static void ConfigureService(HostBuilderContext arg1, IServiceCollection services)
         {
-
             if (!services.Any(x => x.ServiceType == typeof(LightHttpClient)))
             {
                 // Setup HttpClient for server side in a client side compatible fashion

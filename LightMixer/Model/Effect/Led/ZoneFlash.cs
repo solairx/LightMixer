@@ -9,7 +9,6 @@ namespace LightMixer.Model
         public override WledEffect CurrentWledEffect => WledEffect.FX_MODE_STATIC;
         private int nextGroup = 0;
 
-
         public override void RenderEffect(IEnumerable<BeatDetector.VdjEvent> values)
         {
             var currentGroups = Owner.FixtureGroups;
@@ -17,7 +16,6 @@ namespace LightMixer.Model
             if (currentGroups.Count() - 1 < nextGroup)
                 nextGroup = 0;
             var group = currentGroups.ElementAt(nextGroup);
-
 
             foreach (FixtureGroup groupall in currentGroups)
             {
@@ -30,22 +28,22 @@ namespace LightMixer.Model
                 }
             }
 
-            if (isBeat)
+            if (isBeat || isSimulatedBeat)
             {
                 foreach (FixtureBase fixture in group.FixtureInGroup)
                 {
-
-                    ((RgbFixture)fixture).RedValue = this.SetValueFlash(this._sharedEffectModel.Red);
-                    ((RgbFixture)fixture).GreenValue = this.SetValueFlash(this._sharedEffectModel.Green);
-                    ((RgbFixture)fixture).BlueValue = this.SetValueFlash(this._sharedEffectModel.Blue);
-                    ((RgbFixture)fixture).WhiteValue = 0;
+                    if ((!isSimulatedBeat || fixture.SupportAggresiveUpdate))
+                    {
+                        ((RgbFixture)fixture).RedValue = this.SetValueFlash(this._sharedEffectModel.Red);
+                        ((RgbFixture)fixture).GreenValue = this.SetValueFlash(this._sharedEffectModel.Green);
+                        ((RgbFixture)fixture).BlueValue = this.SetValueFlash(this._sharedEffectModel.Blue);
+                        ((RgbFixture)fixture).WhiteValue = 0;
+                    }
                 }
                 nextGroup++;
                 isBeat = false;
+                isSimulatedBeat = false;
             }
-
-
-
 
             this.RaiseEvent();
         }
@@ -56,7 +54,6 @@ namespace LightMixer.Model
             {
                 return "Zone Flash Effect";
             }
-
         }
     }
 }

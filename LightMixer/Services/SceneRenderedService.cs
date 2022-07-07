@@ -51,13 +51,12 @@ namespace LightMixer.Model
             }
         }
 
-
-
         private void Run()
         {
             while (!MainWindow.IsDead)
             {
                 var sw = new Stopwatch();
+                sw.Start();
                 try
                 {
                     var activeDeck = ActiveDeckSelector.Select(LastVdjEvent.Values);
@@ -106,7 +105,7 @@ namespace LightMixer.Model
                 {
                     Debug.WriteLine(vexp.ToString());
                 }
-                //      Debug.WriteLine("FRAME TIME : " + sw.ElapsedMilliseconds);
+                Debug.WriteLine("FRAME TIME : " + sw.ElapsedMilliseconds);
                 Thread.Sleep(FrameRate);
             }
         }
@@ -117,7 +116,6 @@ namespace LightMixer.Model
 
             foreach (FixtureBase fixture in fixtures.Where(f => f.IsRenderOnDmx))
             {
-
                 byte?[] fixtureValue = fixture.Render();
 
                 int x = 0;
@@ -141,14 +139,13 @@ namespace LightMixer.Model
             return array;
         }
 
-
-
         private void VdjServer_OS2lServerEvent(OS2lEvent os2lEvent)
         {
             LastOs2lEvent = os2lEvent;
             LastVdjEvent[1].BeatPos = LastOs2lEvent.BeatPos;
             LastVdjEvent[2].BeatPos = LastOs2lEvent.BeatPos;
         }
+
         private void VirtualDjServer_VirtualDjServerEvent(VdjEvent vdjEvent)
         {
             if (LastOs2lEvent.BeatPos != 0)
@@ -178,8 +175,10 @@ namespace LightMixer.Model
 
         public IEnumerable<FixtureCollection> GetCurrentFixture<T>(string scene, string zone) where T : FixtureCollection
         {
-            return sceneService.Scenes
-                            .First(o => o.Name == scene)
+            var selectedscene = sceneService.Scenes
+                            .First(o => o.Name == scene);
+
+            return selectedscene
                             .Zones.Where(z => z.Name == zone)
                             .First().FixtureTypes.OfType<T>();
         }
@@ -191,11 +190,9 @@ namespace LightMixer.Model
             .First(o => o.Name == scene)
             .Zones.Where(z => z.Name == zone);
 
-
             selectedZone.Single().FixtureTypes.OfType<T>()
             .First().CurrentEffect = newEffect;
         }
-
 
         public void SetMovingHeadProgramEffect(string scene, string zone, Program newProgram)
         {
@@ -273,5 +270,3 @@ namespace LightMixer.Model
         }
     }
 }
-
-

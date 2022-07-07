@@ -1,22 +1,23 @@
 using System;
 using System.Drawing;
 using VisualControler.Visual.Laser;
+
 namespace LaserDisplay
 {
     public class StaticSky : ILaserEffet
     {
         private double _Bpm = 70;
-        bool Direction = false;
+        private bool Direction = false;
         private bool DrawReverse = false;
-        long waveSync = 0;
+        private long waveSync = 0;
         private int max_x_pos;
         private int sizex;
         private LaserSetting laserSetting = new LaserSetting();
 
         public StaticSky()
         {
-
         }
+
         public void ReadSetting()
         {
             max_x_pos = laserSetting.SS_Max_X;
@@ -30,26 +31,23 @@ namespace LaserDisplay
 
         public void Draw(Graphics g, Pen p)
         {
-
-
         }
 
         public void StopDrawing()
         {
-
         }
+
         private void run()
         {
-
         }
+
         public void Transform()
         {
         }
+
         public void Beat()
         {
-
         }
-
 
         /*public short[] DrawOnLaser(int HorizontalPosition, int VerticalPosition, int TurnOnPosition, int BufferSize, ResamplingService Sampler, bool Paused, double bpm, bool IsBeat)
         {
@@ -60,7 +58,6 @@ namespace LaserDisplay
 
                 for (int i = 0; i < Buffer.Length; i += 2)
                 {
-
                     if (Paused)
                     {
                         Buffer[i + HorizontalPosition] = 0;
@@ -71,10 +68,8 @@ namespace LaserDisplay
                         Buffer[i + HorizontalPosition] = ShortFromDouble(Math.Cos(((double)waveSync++) / sizex) * max_x_pos);
                         Buffer[i + VerticalPosition] = 0;
                     }
-
                 }
                 DrawReverse = !DrawReverse;
-
 
                 return Buffer;
             }
@@ -82,7 +77,6 @@ namespace LaserDisplay
             {
                 return ReturnNull(BufferSize, HorizontalPosition, VerticalPosition, TurnOnPosition);
             }
-
         }*/
 
         public short[] DrawOnLaser(int HorizontalPosition, int VerticalPosition, int TurnOnPosition, int BufferSize, ResamplingService Sampler, bool Paused, double bpm, bool IsBeat)
@@ -104,10 +98,8 @@ namespace LaserDisplay
                         Buffer[i + HorizontalPosition] = ShortFromDouble(Math.Cos(((double)waveSync++) / sizex) * max_x_pos);
                         Buffer[i + VerticalPosition] = 0;
                     }
-
                 }
                 DrawReverse = !DrawReverse;
-
 
                 return Buffer;
             }
@@ -115,7 +107,6 @@ namespace LaserDisplay
             {
                 return ReturnNull(BufferSize, HorizontalPosition, VerticalPosition, TurnOnPosition);
             }
-
         }
 
         private short[] ReturnNull(int BufferSize, int HorizontalPosition, int VerticalPosition, int TurnOnPosition)
@@ -129,13 +120,14 @@ namespace LaserDisplay
             }
             return Buffer;
         }
-        #endregion
+
+        #endregion ILaserEffet Members
+
         public short ShortFromDouble(double d)
         {
             if (d >= 32767) return 32767;
             else if (d <= -32767) return -32767;
             else return Convert.ToInt16(d);
-
         }
     }
 }

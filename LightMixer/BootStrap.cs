@@ -17,10 +17,12 @@ namespace LightMixer
     public class UiDispatcher : IDispatcher
     {
         private Dispatcher innerDispatcher;
+
         public UiDispatcher(Dispatcher dispatcher)
         {
             innerDispatcher = dispatcher;
         }
+
         public void Invoke(Action action)
         {
             innerDispatcher.Invoke(action);
@@ -32,6 +34,7 @@ namespace LightMixer
         public ServiceDispatcher()
         {
         }
+
         public void Invoke(Action action)
         {
             action.Invoke();
@@ -41,8 +44,8 @@ namespace LightMixer
     public interface IDispatcher
     {
         void Invoke(Action action);
-
     }
+
     public class BootStrap
     {
         public static IUnityContainer UnityContainer
@@ -69,7 +72,6 @@ namespace LightMixer
             var beatDetector = new BeatDetector.BeatDetector();
             var sceneService = new SceneService(beatDetector);
             UnityContainer.RegisterInstance(new PhidGetService());
-
 
             SharedEffectModel.BeatDetector = beatDetector;
             BootStrap.UnityContainer.RegisterInstance<BeatDetector.BeatDetector>(beatDetector);

@@ -8,6 +8,7 @@ namespace LightMixer.Model.Fixture
     {
         public RgbwMovingHeadMasterFixture Master { get; set; }
         public bool EnableAlternateColor { get; set; }
+
         public bool EnableDelayedPosition
         {
             get => enableDelayedPosition;
@@ -32,7 +33,6 @@ namespace LightMixer.Model.Fixture
 
         private List<IMovingHeadProgram> internalProgram = new List<IMovingHeadProgram>();
 
-
         public MovingHeadFixture(int dmxAddress, List<PointOfInterest> pointOfInterests)
             : base(dmxAddress)
         {
@@ -46,6 +46,7 @@ namespace LightMixer.Model.Fixture
             internalProgram.Add(new MovingHeadProgramDj(this, PointOfInterests));
             internalProgram.Add(new MovingHeadProgramDisable(this, PointOfInterests));
             internalProgram.Add(new MovingHeadProgramDiscoBall(this, PointOfInterests));
+            internalProgram.Add(new MovingHeadProgramDiscoBallStatic(this, PointOfInterests));
             internalProgram.Add(new MovingHeadProgramBalancing1(this, PointOfInterests));
         }
 
@@ -69,7 +70,6 @@ namespace LightMixer.Model.Fixture
             set;
         }
 
-
         public byte SpeedColor
         {
             get;
@@ -81,11 +81,13 @@ namespace LightMixer.Model.Fixture
             get;
             set;
         }
+
         public Gobo GoboPaturn
         {
             get;
             set;
         }
+
         public Program ProgramMode
         {
             get;
@@ -105,7 +107,6 @@ namespace LightMixer.Model.Fixture
             EffectPositionRatio = codeProgram.PositionRatio;
             if (codeProgram == null)
             {
-
                 Dimmer = 1;
             }
 
@@ -190,13 +191,13 @@ namespace LightMixer.Model.Fixture
 
         public enum Program : byte
         {
-
             Disable = 0,
             CodeDisable = 1,
             DJ = 2,
             Balancing1 = 3,
             Circle = 13,
             DiscoBall = 14,
+            DiscoBallStatic = 16,
             Auto1 = 15,
             Auto2 = 27,
             Auto3 = 42,
@@ -215,8 +216,5 @@ namespace LightMixer.Model.Fixture
             Test = 254,
             SoundAuto8 = 255,
         }
-
     }
-
-
 }

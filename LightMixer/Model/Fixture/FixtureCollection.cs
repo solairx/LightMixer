@@ -13,6 +13,7 @@ namespace LightMixer.Model
         private EffectBase currentEffect;
 
         public event CurrentEffectChangedEventHandler CurrentEffectChanged;
+
         public delegate void CurrentEffectChangedEventHandler();
 
         public ObservableCollection<EffectBase> EffectList { get; } = new ObservableCollection<EffectBase>();
@@ -68,5 +69,3 @@ namespace LightMixer.Model
         public List<FixtureGroup> FixtureGroups { get; set; } = new List<FixtureGroup>();
     }
 }
-
-

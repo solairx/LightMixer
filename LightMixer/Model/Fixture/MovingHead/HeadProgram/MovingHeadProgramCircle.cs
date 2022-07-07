@@ -9,6 +9,7 @@ namespace LightMixer.Model.Fixture
         public MovingHeadProgramCircle(FixtureBase owner, List<PointOfInterest> pointOfInterests) : base(owner, pointOfInterests.First(o => o.Location == PointOfInterestLocation.Circle))
         {
         }
+
         public override Program LegacyProgram => Program.Circle;
     }
 }

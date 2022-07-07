@@ -12,7 +12,6 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-
 #ifndef VdjVideo8H
 #define VdjVideo8H
 
@@ -24,9 +23,9 @@
 #ifndef TVertex
 struct TVertex
 {
-	struct {float x,y,z;} position;
+	struct { float x, y, z; } position;
 	DWORD color;
-	float tu,tv;
+	float tu, tv;
 };
 #endif
 
@@ -55,18 +54,17 @@ enum EVdjVideoEngine
 // Internal structures
 struct IVdjVideoCallbacks8
 {
-	virtual HRESULT DrawDeck()=0;
+	virtual HRESULT DrawDeck() = 0;
 
 	//For DirectX 9 (windows 32-bit) device is IDirect3DDevice9*
 	//For DirectX 11 (windows 64-bit) device is ID3D11Device*
-	virtual HRESULT GetDevice(EVdjVideoEngine engine, void **device)=0;
-	
+	virtual HRESULT GetDevice(EVdjVideoEngine engine, void** device) = 0;
+
 	//For DirectX 9 (windows 32-bit) texture is IDirect3DTexture9*
 	//For DirectX 11 (windows 64-bit) texture is ID3D11ShaderResourceView*
 	//For OpenGL (macOS) texture is a regular opengl texture id, with type GLuint
-	virtual HRESULT GetTexture(EVdjVideoEngine engine, void **texture, TVertex **vertices)=0;
+	virtual HRESULT GetTexture(EVdjVideoEngine engine, void** texture, TVertex** vertices) = 0;
 };
-
 
 //////////////////////////////////////////////////////////////////////////
 // VideoTransition plugin class
@@ -78,18 +76,18 @@ public:
 	// this function should mix the two images from both decks.
 	// call DrawDeck() to draw the image for each deck with the specified vertices.
 	// call GetVertices() to retrive the default vertices, and modify it. (or pass NULL to DrawDeck() to use the default)
-	virtual HRESULT VDJ_API OnDraw(float crossfader)=0;
+	virtual HRESULT VDJ_API OnDraw(float crossfader) = 0;
 	TVertex* (*GetVertices)(int deck);
-	HRESULT (*DrawDeck)(int deck, TVertex* vertices);
+	HRESULT(*DrawDeck)(int deck, TVertex* vertices);
 
 	// for more complicated operations, you can ask direct access to the device and textures
-    // For OpenGL texture needs to point to a GLuint, for DirectX 9, it needs to point to a IDirect3DTexture9*
-	HRESULT (*GetDevice)(EVdjVideoEngine engine, void **device);
-	HRESULT (*GetTexture)(EVdjVideoEngine engine, int deck, void**texture);
+	// For OpenGL texture needs to point to a GLuint, for DirectX 9, it needs to point to a IDirect3DTexture9*
+	HRESULT(*GetDevice)(EVdjVideoEngine engine, void** device);
+	HRESULT(*GetTexture)(EVdjVideoEngine engine, int deck, void** texture);
 
 	// When DirectX/OpenGL is initialized or closed, these functions will be called
-	virtual HRESULT VDJ_API OnDeviceInit() {return S_OK;}
-	virtual HRESULT VDJ_API OnDeviceClose() {return S_OK;}
+	virtual HRESULT VDJ_API OnDeviceInit() { return S_OK; }
+	virtual HRESULT VDJ_API OnDeviceClose() { return S_OK; }
 
 	// size of the output
 	int width, height;
@@ -110,17 +108,17 @@ public:
 	// call DrawDeck() to draw the images for each deck with the specified vertices.
 	// call GetVertices to initialize the vertices to their default value, and modify it. (or pass NULL to DrawDeck() to use the default)
 	// NOTE: if you want to retrieve the value of the video crossfader, call GetInfo("video_crossfader");
-	virtual HRESULT VDJ_API OnDrawMultiDeck(int nbVideoDecks, int *videoDecks)=0;
+	virtual HRESULT VDJ_API OnDrawMultiDeck(int nbVideoDecks, int* videoDecks) = 0;
 	TVertex* (*GetVertices)(int deck);
-	HRESULT (*DrawDeck)(int deck, TVertex* vertices);
-	
+	HRESULT(*DrawDeck)(int deck, TVertex* vertices);
+
 	// for more complicated operations, you can ask direct access to the device and textures
-	HRESULT (*GetDevice)(EVdjVideoEngine engine, void **device);
-	HRESULT (*GetTexture)(EVdjVideoEngine engine, int deck, void**texture);
+	HRESULT(*GetDevice)(EVdjVideoEngine engine, void** device);
+	HRESULT(*GetTexture)(EVdjVideoEngine engine, int deck, void** texture);
 
 	// When DirectX/OpenGL is initialized or closed, these functions will be called
-	virtual HRESULT VDJ_API OnDeviceInit() {return S_OK;}
-	virtual HRESULT VDJ_API OnDeviceClose() {return S_OK;}
+	virtual HRESULT VDJ_API OnDeviceInit() { return S_OK; }
+	virtual HRESULT VDJ_API OnDeviceClose() { return S_OK; }
 
 	// size of the output
 	int width, height;
@@ -131,7 +129,6 @@ public:
 	double SongPosBeats; // number of beats since the first beat in the master song
 };
 
-
 //////////////////////////////////////////////////////////////////////////
 // VideoFx plugin class
 
@@ -139,32 +136,32 @@ class IVdjPluginVideoFx8 : public IVdjPlugin8
 {
 public:
 	// called on start and stop of the plugin
-	virtual HRESULT VDJ_API OnStart() {return S_OK;}
-	virtual HRESULT VDJ_API OnStop() {return S_OK;}
+	virtual HRESULT VDJ_API OnStart() { return S_OK; }
+	virtual HRESULT VDJ_API OnStop() { return S_OK; }
 
 	// OnDraw() is called every frame while your plugin is activated.
 	// You can get access to the DirectX/OpenGL device by calling GetDevice, and do any operation you want
 	// In order to draw the original image, you can either just call DrawDeck() if you don't need to modify the image (for overlay plugins for examples),
 	// or call GetTexture to get low-level access to the texture and its vertices.
-	virtual HRESULT VDJ_API OnDraw()=0;
-	
+	virtual HRESULT VDJ_API OnDraw() = 0;
+
 	//For DirectX 9 (windows 32-bit) device is IDirect3DDevice9*
 	//For DirectX 11 (windows 64-bit) device is ID3D11Device*
-	HRESULT GetDevice(EVdjVideoEngine engine, void **device) {return vcb->GetDevice(engine,device);}
-	
+	HRESULT GetDevice(EVdjVideoEngine engine, void** device) { return vcb->GetDevice(engine, device); }
+
 	//For DirectX 9 (windows 32-bit) texture is IDirect3DTexture9*
 	//For DirectX 11 (windows 64-bit) texture is ID3D11ShaderResourceView*
 	//For OpenGL (macOS) texture is a regular opengl texture id, with type GLuint
-	HRESULT GetTexture(EVdjVideoEngine engine, void **texture, TVertex **vertices) {return vcb->GetTexture(engine,texture,vertices);}
-	
-	HRESULT DrawDeck() {return vcb->DrawDeck();}
+	HRESULT GetTexture(EVdjVideoEngine engine, void** texture, TVertex** vertices) { return vcb->GetTexture(engine, texture, vertices); }
+
+	HRESULT DrawDeck() { return vcb->DrawDeck(); }
 
 	// When DirectX/OpenGL is initialized or closed, these functions will be called
-	virtual HRESULT VDJ_API OnDeviceInit() {return S_OK;}
-	virtual HRESULT VDJ_API OnDeviceClose() {return S_OK;}
+	virtual HRESULT VDJ_API OnDeviceInit() { return S_OK; }
+	virtual HRESULT VDJ_API OnDeviceClose() { return S_OK; }
 
 	// Optionally, you can implement OnAudioSamples to make your video effect operate based on sound input
-	virtual HRESULT VDJ_API OnAudioSamples(float *buffer, int nb) { return E_NOTIMPL; };
+	virtual HRESULT VDJ_API OnAudioSamples(float* buffer, int nb) { return E_NOTIMPL; };
 
 	// Some useful variables
 	int SampleRate;		 // samplerate of the audio engine
@@ -174,7 +171,7 @@ public:
 	// size of the output
 	int width, height;
 
-	IVdjVideoCallbacks8 *vcb;
+	IVdjVideoCallbacks8* vcb;
 };
 
 //////////////////////////////////////////////////////////////////////////

@@ -10,9 +10,9 @@ namespace BeatDetector
             Bpm = (string)source.Attribute("Bpm");
             Key = (string)source.Attribute("Key");
         }
+
         public string Bpm { get; }
         public string AltBpm { get; }
         public string Key { get; }
     }
-
 }

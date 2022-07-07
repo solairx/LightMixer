@@ -5,11 +5,11 @@ using System;
 
 namespace OpenDmx
 {
-    class Program
+    internal class Program
     {
+        private static bool switchOn = false;
+        private static OpenDMX dmx;
 
-        static bool switchOn = false;
-        static OpenDMX dmx;
         public static void SetDmxValue(int channel, byte value)
         {
             if ((channel >= 513)
@@ -18,75 +18,12 @@ namespace OpenDmx
                 throw new InvalidOperationException("Channel number must be between 0 and " + 513);
 
             arr[channel] = value;
-
         }
-        static byte[] arr = new byte[513];
-        static void Main(string[] args)
+
+        private static byte[] arr = new byte[513];
+
+        private static void Main(string[] args)
         {
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             while (true)
             {
                 int x = 0;
@@ -114,6 +51,7 @@ namespace OpenDmx
             }
             controller.Stop();
         }
+
         public void old()
         {
             Console.WriteLine("Kit start");
@@ -130,9 +68,9 @@ namespace OpenDmx
                for (x = 1; x < OpenDmx.OpenDMX.CHANNEL_COUNT ; x++)
                {
                    if (switchOn)
-                       dmx.SetDmxValue(x, 64); // set DMX channel 1 to maximum value  
+                       dmx.SetDmxValue(x, 64); // set DMX channel 1 to maximum value
                    else
-                       dmx.SetDmxValue(x, 0); // set DMX channel 1 to maximum value  
+                       dmx.SetDmxValue(x, 0); // set DMX channel 1 to maximum value
                }*/
             /*dmx.SetDmxValue(1, 255); // set DMX channel 1 to maximum value
             dmx.SetDmxValue(2, 0); // set DMX channel 1 to maximum value
@@ -156,20 +94,14 @@ namespace OpenDmx
             Console.WriteLine("stoping");
             dmx.Stop();
 
-
             Console.WriteLine("stoped");
         }
 
-        static void kit_InputChange(object sender, InputChangeEventArgs e)
+        private static void kit_InputChange(object sender, InputChangeEventArgs e)
         {
             if (e.Index == 5)
 
                 dmx.SwitchOn = e.Value;
-
         }
     }
-
-
-
 }
-

@@ -7,10 +7,8 @@ namespace LightMixer.Model
 {
     public class MovingHeadFlashAll : EffectBase
     {
-
         public override void RenderEffect(IEnumerable<BeatDetector.VdjEvent> values)
         {
-
             foreach (FixtureBase fixture in Owner.FixtureGroups.SelectMany(o => o.FixtureInGroup))
             {
                 if (fixture is MovingHeadFixture)
@@ -31,7 +29,6 @@ namespace LightMixer.Model
                     }
                     else
                     {
-
                         ((MovingHeadFixture)fixture).RedValue = 0;
                         ((MovingHeadFixture)fixture).GreenValue = 0;
                         ((MovingHeadFixture)fixture).BlueValue = 0;
@@ -45,9 +42,6 @@ namespace LightMixer.Model
                 isSimulatedBeat = false;
             }
 
-
-
-
             this.RaiseEvent();
         }
 
@@ -57,7 +51,6 @@ namespace LightMixer.Model
             {
                 return "MovingFlashAll";
             }
-
         }
     }
 }

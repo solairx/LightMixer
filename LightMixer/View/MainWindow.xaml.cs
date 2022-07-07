@@ -8,7 +8,6 @@ namespace LightMixer.View
     /// </summary>
     public partial class MainWindow : Window
     {
-
         public static readonly DependencyProperty ScaleValueProperty = DependencyProperty.Register("ScaleValue", typeof(double), typeof(MainWindow), new UIPropertyMetadata(1.0, new PropertyChangedCallback(OnScaleValueChanged), new CoerceValueCallback(OnCoerceScaleValue)));
 
         private static object OnCoerceScaleValue(DependencyObject o, object value)
@@ -38,7 +37,6 @@ namespace LightMixer.View
 
         protected virtual void OnScaleValueChanged(double oldValue, double newValue)
         {
-
         }
 
         public double ScaleValue
@@ -65,6 +63,7 @@ namespace LightMixer.View
             double value = Math.Min(xScale, yScale);
             ScaleValue = (double)OnCoerceScaleValue(MainGrid, value);
         }
+
         public MainWindow()
         {
             InitializeComponent();
@@ -81,7 +80,6 @@ namespace LightMixer.View
             {
                 IsDead = true;
             }
-
         }
 
         public static bool IsDead = false;

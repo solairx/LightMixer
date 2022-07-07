@@ -17,7 +17,10 @@ namespace BeatDetector
             Pos = pos;
             Type = type;
         }
-        public VDJPoi() { }
+
+        public VDJPoi()
+        { }
+
         public VDJPoi(XElement source, VDJScan vDJScan)
         {
             Source = source;
@@ -28,6 +31,7 @@ namespace BeatDetector
             IsDeleted = false;
             IsNew = false;
         }
+
         public string Name { get; }
         public string Pos { get; }
         public string Type { get; }
@@ -58,12 +62,12 @@ namespace BeatDetector
                 int id = 0;
                 if (!string.IsNullOrWhiteSpace(Name))
                 {
-
                     int.TryParse(Name.Split(' ').Last(), out id);
                 }
                 return id;
             }
         }
+
         public long Position
         {
             get
@@ -92,7 +96,6 @@ namespace BeatDetector
                 isCurrent = value;
                 OnPropertyChanged(nameof(IsCurrent));
             }
-
         }
 
         public bool IsNull
@@ -115,5 +118,4 @@ namespace BeatDetector
                 poisToCompare.Pos == Pos; ;
         }
     }
-
 }

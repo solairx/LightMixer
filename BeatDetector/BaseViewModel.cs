@@ -9,16 +9,12 @@ namespace BeatDetector
     /// </summary>
     public abstract class ViewModelBase : INotifyPropertyChanged
     {
-
-
         /// <summary>
         /// Occurs when a property value changes.
         /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
 
-
         #region Methods
-
 
         /// <summary>
         /// Invoked whenever the value of a property on this object has been updated.
@@ -47,9 +43,6 @@ namespace BeatDetector
             //     System.Windows.MessageBox.Show("Une Erreur est survenu dans la génération de cette fonction");
         }
 
-
-
-
         public void OnPropertyChanged<TProperty>(Expression<Func<ViewModelBase, TProperty>> expression)
         {
             this.OnPropertyChanged(this.GetPropertyName(expression));
@@ -76,9 +69,6 @@ namespace BeatDetector
             return propertyName;
         }
 
-
-
-        #endregion
+        #endregion Methods
     }
-
 }

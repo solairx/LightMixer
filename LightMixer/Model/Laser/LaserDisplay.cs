@@ -6,13 +6,11 @@ namespace LaserDisplay
 {
     public class LaserDisplay
     {
-
         private WaveLib.WaveFormatExtensible waveFormat;
         private ResamplingService Resampler;
 
         private WaveLib.WaveOutPlayer m_Player;
         private WaveLib.FifoStream m_Fifo = new WaveLib.FifoStream();
-
 
         public short w = 1;
         public short fact = -1;
@@ -45,7 +43,6 @@ namespace LaserDisplay
 
         public ILaserEffet CurrentEffect
         {
-
             get
             {
                 if (VisualControler.ServiceExchangeSingleton.Instance.LedCurrentEventID == 0)
@@ -92,10 +89,8 @@ namespace LaserDisplay
             }
         }
 
-
         public double BPM = 80;
         public bool _OnBeat = false;
-
 
         public int _DeviceID = -1;
 
@@ -106,6 +101,7 @@ namespace LaserDisplay
                 return _RighChannel;
             }
         }
+
         public WaveLib.SpeakerPosition LeftChannel
         {
             get
@@ -116,7 +112,6 @@ namespace LaserDisplay
 
         public LaserDisplay(WaveLib.SpeakerPosition rightChannel, WaveLib.SpeakerPosition leftChannel, WaveLib.SpeakerPosition pRedChannel, WaveLib.SpeakerPosition pBlueChannel, WaveLib.SpeakerPosition pGreenChannel, int device, bool NotRealTimeMotor)
         {
-
             VisualControler.ServiceExchangeSingleton.Instance.Red = true;
             VisualControler.ServiceExchangeSingleton.Instance.Blue = true;
             VisualControler.ServiceExchangeSingleton.Instance.Green = true;
@@ -138,7 +133,6 @@ namespace LaserDisplay
             _LeftFilerSpeaker = SpeakerFillerValue(leftChannel);
             Resampler = new ResamplingService();
             Resampler.Filter = ResamplingFilters.Bell;
-
         }
 
         private int SpeakerFillerValue(WaveLib.SpeakerPosition pSpeaker)
@@ -154,9 +148,9 @@ namespace LaserDisplay
 
         private int timebetween = 0;
 
-        int vBlueSample = 1;
-        int vRedSample = 1;
-        int vGreenSample = 1;
+        private int vBlueSample = 1;
+        private int vRedSample = 1;
+        private int vGreenSample = 1;
 
         private void CalcColor(int BeatIteration, bool vOnBeat)
         {
@@ -179,7 +173,6 @@ namespace LaserDisplay
                             vGreenSample = 0;
                         }
                     }
-
                     else if (vGreenSample == 1)
                     {
                         if (VisualControler.ServiceExchangeSingleton.Instance.Red)
@@ -195,7 +188,6 @@ namespace LaserDisplay
                             vGreenSample = 0;
                         }
                     }
-
                     else if (vRedSample == 1)
                     {
                         if (VisualControler.ServiceExchangeSingleton.Instance.Blue)
@@ -215,7 +207,6 @@ namespace LaserDisplay
             }
             if (VisualControler.ServiceExchangeSingleton.Instance.LaserColorMode == ColorMode.Smooth)
             {
-
             }
             if (VisualControler.ServiceExchangeSingleton.Instance.LaserColorMode == ColorMode.Manual)
             {
@@ -229,7 +220,6 @@ namespace LaserDisplay
         {
             try
             {
-
                 bool vCurrentOnBeat = _OnBeat;
                 if (ServiceExchangeSingleton.Instance.UseBeatTurnOff && _OnBeat) BeatIteration = 5;
                 if (ServiceExchangeSingleton.Instance.OnBeatReverse && _OnBeat) BeatIteration = 5;
@@ -267,7 +257,6 @@ namespace LaserDisplay
                     BeatIteration--;
                 }
 
-
                 int y = 0;
                 {
                     for (int i = 0; i < BufferFinal.Length; i += 12)
@@ -277,11 +266,8 @@ namespace LaserDisplay
                         var ScannerY = BitConverter.GetBytes(Buffer[x]);
                         x++;
 
-
-
                         var Green = BitConverter.GetBytes(Resample(vGreenSample, y / 6, vTurnOff[y] == short.MaxValue));
                         var Blue = BitConverter.GetBytes(Resample(vBlueSample, y / 6 + 3, vTurnOff[y] == short.MaxValue));
-
 
                         BufferFinal[i] = ScannerX[0];
                         BufferFinal[i + 1] = ScannerX[1];
@@ -302,7 +288,6 @@ namespace LaserDisplay
                         BufferFinal[i + 11] = Blue[1]; //Blue
 
                         y++;
-
                     }
                 }
 
@@ -314,10 +299,9 @@ namespace LaserDisplay
             }
             catch (Exception)
             {
-
             }
-
         }
+
         public short Resample(int pFrequance, int Iterator, bool onBeat)
         {
             if (VisualControler.ServiceExchangeSingleton.Instance.LaserPause) return short.MaxValue;
@@ -326,10 +310,8 @@ namespace LaserDisplay
             if ((Iterator % pFrequance) == 0 && onBeat) return short.MaxValue;
             return short.MinValue;
         }
+
         private static int BeatIteration = 0;
-
-
-
 
         public short[] ManualFiller(int size)
         {
@@ -356,13 +338,11 @@ namespace LaserDisplay
 
                 if (ef != null)
                 {
-
                     Resampler.Size = size;
                     Resampler.Filter = ResamplingFilters.Box;
                     Buffer = this.CurrentEffect.DrawOnLaser(0, 1, 2, size / 3, Resampler, VisualControler.ServiceExchangeSingleton.Instance.LaserPause, BPM, _OnBeat);
                     _OnBeat = false;
                     ef.Transform();
-
                 }
                 else
                 {
@@ -386,14 +366,15 @@ namespace LaserDisplay
 
         private static STREAMPROC _myStreamCreate;
         private static byte[] _data = null; // our local buffer
+
         private int MyFileProc(int handle, IntPtr buffer, int length, IntPtr user)
         {
             Filler(buffer, length);
             return length;
-            // implementing the callback for BASS_StreamCreate... 
-            // here we need to deliver PCM sample data 
+            // implementing the callback for BASS_StreamCreate...
+            // here we need to deliver PCM sample data
 
-            // increase the data buffer as needed 
+            // increase the data buffer as needed
             /*    if (_data == null || _data.Length < length)
                     _data = new byte[length];
 
@@ -427,7 +408,6 @@ namespace LaserDisplay
             return length;
         }
 
-
         private static int? GetLaserUsbDevice()
         {
             var usbDevice = Bass.BASS_GetDeviceInfos();
@@ -442,13 +422,11 @@ namespace LaserDisplay
             return null;
         }
 
-
         public void Start()
         {
             Stop();
             try
             {
-
                 var usbDevice = GetLaserUsbDevice();
                 if (usbDevice != null)
                 {
@@ -458,7 +436,6 @@ namespace LaserDisplay
 
                     int stream = Bass.BASS_StreamCreate(44100, 6, BASSFlag.BASS_DEFAULT, _myStreamCreate, IntPtr.Zero);
                     Bass.BASS_ChannelPlay(stream, false);
-
                 }
             }
             catch (Exception)
@@ -466,6 +443,7 @@ namespace LaserDisplay
                 Stop();
             }
         }
+
         public void Stop()
         {
             /*  if (m_Player != null)
@@ -477,9 +455,9 @@ namespace LaserDisplay
                   {
                       m_Player = null;
                   //}*/
-
         }
     }
+
     public enum ColorMode
     {
         Manual,

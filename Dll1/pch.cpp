@@ -1,6 +1,6 @@
 #include "pch.h"
 #include <string>
-#include <thread> 
+#include <thread>
 #include <sstream>
 #include <iostream>
 #include <fstream> // add this
@@ -14,7 +14,6 @@ HRESULT VDJ_API CMyPlugin8::OnLoad()
 	m_Wet = 0.0f;
 
 	bool bMasterFX = isMasterFX();
-
 
 	DeclareParameterButton(&m_Reset, ID_BUTTON_1, "Reset", "R");
 	DeclareParameterSlider(&m_Wet, ID_SLIDER_1, "Dry/Wet", "D/W", 1.0f);
@@ -62,7 +61,6 @@ HRESULT VDJ_API CMyPlugin8::OnParameter(int id)
 			m_Wet = 0.5f;
 			HRESULT hr;
 			hr = SendCommand("effect_slider 1 50%");
-
 		}
 		break;
 
@@ -84,7 +82,6 @@ HRESULT VDJ_API CMyPlugin8::OnProcessSamples(float* buffer, int nb)
 	return S_OK;
 }
 
-
 bool thrdStart = false;
 void CMyPlugin8::task1()
 {
@@ -95,16 +92,16 @@ void CMyPlugin8::task1()
 		//DisconnectNamedPipe(pipe);
 	//	pipe = NULL;
 	}
-	
+
 	while (thrdStart)
 	{
-	//	std::stringstream ss;
+		//	std::stringstream ss;
 
 		DWORD numWritten;
 		std::ofstream deck1{ TEXT("\\\\.\\pipe\\virtualDJ"), std::wofstream::trunc };
 		std::string crossfader = GetStringFromVDJ("crossfader");
-				
-		deck1 << "fileName:" <<  GetStringFromVDJ("deck  1 get loaded_song \"Filename\"") << "*";
+
+		deck1 << "fileName:" << GetStringFromVDJ("deck  1 get loaded_song \"Filename\"") << "*";
 		deck1 << "filePath:" << GetStringFromVDJ("deck  1 get loaded_song \"Filepath\" ") << "*";
 		deck1 << "beatPos:" << GetStringFromVDJ("deck  1 get_beatpos") << "*";
 		deck1 << "bpm:" << GetStringFromVDJ("deck  1 get_bpm") << "*";
@@ -126,7 +123,7 @@ void CMyPlugin8::task1()
 		deck2 << "crossfader:" << crossfader << "*";
 		deck2 << "elapsed:" << GetStringFromVDJ("deck  2 get_time elapsed 1000") << "*";
 		deck2 << "\r\n";
-		
+
 		Sleep(100);
 	}
 }
@@ -142,20 +139,17 @@ HRESULT VDJ_API CMyPlugin8::OnStart()
 	return 0;
 }
 
-
-
 std::string CMyPlugin8::GetStringFromVDJ(const char* vdjCommand)
 {
 	std::string fileName = "";
 	char temp_filepath[512];
-    GetStringInfo(vdjCommand, temp_filepath, 512);
-	
+	GetStringInfo(vdjCommand, temp_filepath, 512);
+
 	fileName.append(temp_filepath);
 	fileName.erase(fileName.find_last_not_of(" \n\r\t") + 1);
-	
+
 	return fileName;
 }
-
 
 HRESULT VDJ_API CMyPlugin8::OnStop()
 {
@@ -169,12 +163,9 @@ HRESULT VDJ_API CMyPlugin8::OnStop()
 		thrdStart = false;
 		thrd.join();
 	}
-	
-	
+
 	return 0;
 }
-
-
 
 //---------------------------------------------------------------------------
 HRESULT VDJ_API CMyPlugin8::OnGetParameterString(int id, char* outParam, int outParamSize)

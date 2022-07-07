@@ -3,8 +3,8 @@
 //  IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR
 //  PURPOSE.
 //
-//  This material may not be duplicated in whole or in part, except for 
-//  personal use, without the express written consent of the author. 
+//  This material may not be duplicated in whole or in part, except for
+//  personal use, without the express written consent of the author.
 //
 //  Email:  ianier@hotmail.com
 //
@@ -33,11 +33,13 @@ namespace WaveLib
             Result = m_UsedBlocks.Count > 0 ? (byte[])m_UsedBlocks.Pop() : new byte[BlockSize];
             return Result;
         }
+
         private void FreeBlock(byte[] block)
         {
             if (m_UsedBlocks.Count < MaxBlocksInCache)
                 m_UsedBlocks.Push(block);
         }
+
         private byte[] GetWBlock()
         {
             byte[] Result = null;
@@ -57,14 +59,17 @@ namespace WaveLib
         {
             get { return true; }
         }
+
         public override bool CanSeek
         {
             get { return false; }
         }
+
         public override bool CanWrite
         {
             get { return true; }
         }
+
         public override long Length
         {
             get
@@ -73,15 +78,18 @@ namespace WaveLib
                     return m_Size;
             }
         }
+
         public override long Position
         {
             get { throw new InvalidOperationException(); }
             set { throw new InvalidOperationException(); }
         }
+
         public override void Close()
         {
             Flush();
         }
+
         public override void Flush()
         {
             lock (this)
@@ -94,14 +102,17 @@ namespace WaveLib
                 m_Size = 0;
             }
         }
+
         public override void SetLength(long len)
         {
             throw new InvalidOperationException();
         }
+
         public override long Seek(long pos, SeekOrigin o)
         {
             throw new InvalidOperationException();
         }
+
         public override int Read(byte[] buf, int ofs, int count)
         {
             lock (this)
@@ -111,6 +122,7 @@ namespace WaveLib
                 return Result;
             }
         }
+
         public override void Write(byte[] buf, int ofs, int count)
         {
             lock (this)
@@ -149,6 +161,7 @@ namespace WaveLib
                 return count - SizeLeft;
             }
         }
+
         public int Peek(byte[] buf, int ofs, int count)
         {
             lock (this)

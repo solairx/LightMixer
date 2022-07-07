@@ -3,8 +3,8 @@
 //  IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR
 //  PURPOSE.
 //
-//  This material may not be duplicated in whole or in part, except for 
-//  personal use, without the express written consent of the author. 
+//  This material may not be duplicated in whole or in part, except for
+//  personal use, without the express written consent of the author.
 //
 //  Email:  ianier@hotmail.com
 //
@@ -58,16 +58,16 @@ namespace WaveLib
         public const int MM_WIM_CLOSE = 0x3BF;
         public const int MM_WIM_DATA = 0x3C0;
 
-        public const int CALLBACK_FUNCTION = 0x00030000;    // dwCallback is a FARPROC 
+        public const int CALLBACK_FUNCTION = 0x00030000;    // dwCallback is a FARPROC
 
-        public const int TIME_MS = 0x0001;  // time in milliseconds 
-        public const int TIME_SAMPLES = 0x0002;  // number of wave samples 
-        public const int TIME_BYTES = 0x0004;  // current byte offset 
+        public const int TIME_MS = 0x0001;  // time in milliseconds
+        public const int TIME_SAMPLES = 0x0002;  // number of wave samples
+        public const int TIME_BYTES = 0x0004;  // current byte offset
 
         // callbacks
         public delegate void WaveDelegate(IntPtr hdrvr, int uMsg, int dwUser, ref WaveHdr wavhdr, int dwParam2);
 
-        // structs 
+        // structs
 
         [StructLayout(LayoutKind.Sequential)]
         public struct WaveHdr
@@ -87,50 +87,71 @@ namespace WaveLib
         // WaveOut calls
         [DllImport(mmdll)]
         public static extern int waveOutGetNumDevs();
+
         [DllImport(mmdll)]
         public static extern int waveOutPrepareHeader(IntPtr hWaveOut, ref WaveHdr lpWaveOutHdr, int uSize);
+
         [DllImport(mmdll)]
         public static extern int waveOutUnprepareHeader(IntPtr hWaveOut, ref WaveHdr lpWaveOutHdr, int uSize);
+
         [DllImport(mmdll)]
         public static extern int waveOutWrite(IntPtr hWaveOut, ref WaveHdr lpWaveOutHdr, int uSize);
+
         [DllImport(mmdll)]
         public static extern int waveOutOpen(out IntPtr hWaveOut, int uDeviceID, WaveFormat lpFormat, WaveDelegate dwCallback, int dwInstance, int dwFlags);
+
         [DllImport(mmdll)]
         public static extern int waveOutOpen(out IntPtr hWaveOut, int uDeviceID, WaveFormatExtensible lpFormat, WaveDelegate dwCallback, int dwInstance, int dwFlags);
+
         [DllImport(mmdll)]
         public static extern int waveOutReset(IntPtr hWaveOut);
+
         [DllImport(mmdll)]
         public static extern int waveOutClose(IntPtr hWaveOut);
+
         [DllImport(mmdll)]
         public static extern int waveOutPause(IntPtr hWaveOut);
+
         [DllImport(mmdll)]
         public static extern int waveOutRestart(IntPtr hWaveOut);
+
         [DllImport(mmdll)]
         public static extern int waveOutGetPosition(IntPtr hWaveOut, out int lpInfo, int uSize);
+
         [DllImport(mmdll)]
         public static extern int waveOutSetVolume(IntPtr hWaveOut, int dwVolume);
+
         [DllImport(mmdll)]
         public static extern int waveOutGetVolume(IntPtr hWaveOut, out int dwVolume);
 
         // WaveIn calls
         [DllImport(mmdll)]
         public static extern int waveInGetNumDevs();
+
         [DllImport(mmdll)]
         public static extern int waveInAddBuffer(IntPtr hwi, ref WaveHdr pwh, int cbwh);
+
         [DllImport(mmdll)]
         public static extern int waveInClose(IntPtr hwi);
+
         [DllImport(mmdll)]
         public static extern int waveInOpen(out IntPtr phwi, int uDeviceID, WaveFormat lpFormat, WaveDelegate dwCallback, int dwInstance, int dwFlags);
+
         [DllImport(mmdll)]
         public static extern int waveInOpen(out IntPtr phwi, int uDeviceID, WaveFormatExtensible lpFormat, WaveDelegate dwCallback, int dwInstance, int dwFlags);
+
         [DllImport(mmdll)]
         public static extern int waveInPrepareHeader(IntPtr hWaveIn, ref WaveHdr lpWaveInHdr, int uSize);
+
         [DllImport(mmdll)]
         public static extern int waveInUnprepareHeader(IntPtr hWaveIn, ref WaveHdr lpWaveInHdr, int uSize);
+
         [DllImport(mmdll)]
         public static extern int waveInReset(IntPtr hwi);
+
         [DllImport(mmdll)]
         public static extern int waveInStart(IntPtr hwi);
+
         [DllImport(mmdll)]
         public static extern int waveInStop(IntPtr hwi);
     }
@@ -165,7 +186,6 @@ namespace WaveLib
             dwChannelMask = 3; //Stereo
             SubFormat = new Guid("00000001-0000-0010-8000-00aa00389b71");
         }
-
     }
 
     public enum SpeakerPosition : uint
@@ -189,7 +209,4 @@ namespace WaveLib
         SPEAKER_TOP_BACK_CENTER = 0x10000,
         SPEAKER_TOP_BACK_RIGHT = 0x20000
     }
-
-
-
 }

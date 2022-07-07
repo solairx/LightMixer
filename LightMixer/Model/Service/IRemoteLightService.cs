@@ -55,7 +55,6 @@ namespace LightMixer.Model.Service
         [WebInvoke(RequestFormat = WebMessageFormat.Json, Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Bare, UriTemplate = "UpdateMovingHead?effect={effect}&program={program}&gobo={gobo}&secondBetweenGoboChange={secondBetweenGoboChange}&secondBetweenProgramChange={secondBetweenProgramChange}&movingHeadMaxSpeed={movingHeadMaxSpeed}&autoChangeGobo={autoChangeGobo}&autoChangeProgram={autoChangeProgram}")]
         void UpdateMovingHead(string effect, string program, string gobo, int secondBetweenGoboChange, int secondBetweenProgramChange, double movingHeadMaxSpeed, bool autoChangeGobo, bool autoChangeProgram);
 
-
         [OperationContract]
         [WebInvoke(RequestFormat = WebMessageFormat.Json, Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Bare, UriTemplate = "UpdateLaserRest?AutoChangeEvent={AutoChangeEvent}&AutoChangeEventLaser={AutoChangeEventLaser}&AutoMixDelay={AutoMixDelay}&Blue={Blue}&Green={Green}&LaserPause={LaserPause}&LaserSpeedAdj={LaserSpeedAdj}&LaserSpeedRatio={LaserSpeedRatio}&ManualBeat={ManualBeat}&ManualBeatOnly={ManualBeatOnly}&OnBeat={OnBeat}&OnBeatReverse={OnBeatReverse}&UseBeatTurnOff={UseBeatTurnOff}&LaserCurrentEventID={LaserCurrentEventID}&LaserColorMode={LaserColorMode}")]
         void UpdateLaserRest(bool AutoChangeEvent, bool AutoChangeEventLaser, int AutoMixDelay, bool Blue, bool Green, bool LaserPause, int LaserSpeedAdj, int LaserSpeedRatio, bool ManualBeat, bool ManualBeatOnly, bool OnBeat, bool OnBeatReverse, bool UseBeatTurnOff, string LaserCurrentEventID, string LaserColorMode);
@@ -65,7 +64,6 @@ namespace LightMixer.Model.Service
 
         [OperationContract]
         void UpdateDmx(DmxDataContract contract);
-
 
         [OperationContract]
         [WebInvoke(RequestFormat = WebMessageFormat.Json, Method = "GET", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Bare, UriTemplate = "CurrentLedEffect?effect={currentEffect}")]

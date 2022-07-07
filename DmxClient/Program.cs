@@ -2,9 +2,9 @@
 
 namespace DmxClient
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             DmxService.DmxServiceClient client = new DmxService.DmxServiceClient();
             client.Open();

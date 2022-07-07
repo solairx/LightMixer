@@ -4,7 +4,6 @@ using System.Threading;
 
 namespace OpenDmx
 {
-
     /// <summary>
     /// http://www.erwinrol.com/index.php?stagecraft/dmx.php
     /// </summary>
@@ -12,30 +11,43 @@ namespace OpenDmx
     {
         [DllImport("FTD2XX.dll")]
         public static extern FT_STATUS FT_Open(UInt32 uiPort, ref uint ftHandle);
+
         [DllImport("FTD2XX.dll")]
         public static extern FT_STATUS FT_Close(uint ftHandle);
+
         [DllImport("FTD2XX.dll")]
         public static extern FT_STATUS FT_Read(uint ftHandle, IntPtr lpBuffer, UInt32 dwBytesToRead, ref UInt32 lpdwBytesReturned);
+
         [DllImport("FTD2XX.dll")]
         public static extern FT_STATUS FT_Write(uint ftHandle, IntPtr lpBuffer, UInt32 dwBytesToRead, ref UInt32 lpdwBytesWritten);
+
         [DllImport("FTD2XX.dll")]
         public static extern FT_STATUS FT_SetDataCharacteristics(uint ftHandle, byte uWordLength, byte uStopBits, byte uParity);
+
         [DllImport("FTD2XX.dll")]
         public static extern FT_STATUS FT_SetFlowControl(uint ftHandle, char usFlowControl, byte uXon, byte uXoff);
+
         [DllImport("FTD2XX.dll")]
         public static extern FT_STATUS FT_GetModemStatus(uint ftHandle, ref UInt32 lpdwModemStatus);
+
         [DllImport("FTD2XX.dll")]
         public static extern FT_STATUS FT_Purge(uint ftHandle, UInt32 dwMask);
+
         [DllImport("FTD2XX.dll")]
         public static extern FT_STATUS FT_SetBreakOn(uint ftHandle);
+
         [DllImport("FTD2XX.dll")]
         public static extern FT_STATUS FT_SetBreakOff(uint ftHandle);
+
         [DllImport("FTD2XX.dll")]
         public static extern FT_STATUS FT_GetStatus(uint ftHandle, ref UInt32 lpdwAmountInRxQueue, ref UInt32 lpdwAmountInTxQueue, ref UInt32 lpdwEventStatus);
+
         [DllImport("FTD2XX.dll")]
         public static extern FT_STATUS FT_ResetDevice(uint ftHandle);
+
         [DllImport("FTD2XX.dll")]
         public static extern FT_STATUS FT_SetDivisor(uint ftHandle, char usDivisor);
+
         [DllImport("FTD2XX.dll")]
         public static extern FT_STATUS FT_ClrRts(uint ftHandle);
 
@@ -54,7 +66,7 @@ namespace OpenDmx
         public const int CHANNEL_COUNT = 513;  // can be any length up to 512. The shorter the faster.
         private bool mAllOn = false;
 
-        TimeSpan mBreakLenght = new TimeSpan(22728 * 2);
+        private TimeSpan mBreakLenght = new TimeSpan(22728 * 2);
 
         public bool AllOn
         {
@@ -69,28 +81,22 @@ namespace OpenDmx
                 for (x = 1; x < CHANNEL_COUNT; x++)
                 {
                     if (AllOn)
-                        SetDmxValue(x, 255); // set DMX channel 1 to maximum value  
+                        SetDmxValue(x, 255); // set DMX channel 1 to maximum value
                     else
-                        SetDmxValue(x, 0); // set DMX channel 1 to maximum value  
+                        SetDmxValue(x, 0); // set DMX channel 1 to maximum value
                 }
                 SetDmxValue(0, 0);
             }
         }
 
-
-
-
-
         public OpenDMX()
         {
-
             buffer = new byte[CHANNEL_COUNT];
             AllOn = false;
         }
 
         public void Start()
         {
-
             handle = 0;
             status = FT_Open(0, ref handle);
             Thread thread = new Thread(new ThreadStart(writeData));
@@ -109,7 +115,6 @@ namespace OpenDmx
                 (channel < 0))
                 throw new InvalidOperationException("Channel number must be between 0 and " + CHANNEL_COUNT);
             buffer[channel] = value;
-
         }
 
         private void writeData()
@@ -124,7 +129,6 @@ namespace OpenDmx
                 System.Threading.Thread.Sleep(mBreakLenght);
             }
             FT_Close(handle);
-
         }
 
         private int writeSafe(uint handle, byte[] data, int length)
@@ -135,6 +139,7 @@ namespace OpenDmx
             FT_Write(handle, ptr, (uint)length, ref bytesWritten);
             return (int)bytesWritten;
         }
+
         /*
         private unsafe int writeUnsafe(uint handle, byte[] data, int length)
         {
@@ -144,6 +149,7 @@ namespace OpenDmx
             FT_Write(handle, ptr, (uint)length, ref bytesWritten);
             return (int)bytesWritten;
         }*/
+
         private void initOpenDMX()
         {
             status = FT_ResetDevice(handle);
@@ -154,6 +160,7 @@ namespace OpenDmx
             status = FT_Purge(handle, PURGE_TX);
             status = FT_Purge(handle, PURGE_RX);
         }
+
         #region IDisposable Members
 
         public void Dispose()
@@ -161,10 +168,8 @@ namespace OpenDmx
             this.Stop();
         }
 
-        #endregion
+        #endregion IDisposable Members
     }
-
-
 
     public enum FT_STATUS
     {
@@ -187,5 +192,4 @@ namespace OpenDmx
         FT_INVALID_ARGS,
         FT_OTHER_ERROR
     };
-
 }

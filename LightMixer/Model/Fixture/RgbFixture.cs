@@ -1,18 +1,14 @@
 ﻿namespace LightMixer.Model.Fixture
 {
-
-
     public class RgbFixture : RgbFixtureBase
     {
         public RgbFixture(int dmxAddress) : base(dmxAddress)
         {
-
         }
+
         public RgbFixture()
         {
-
         }
-
 
         public override byte?[] Render()
         {
@@ -24,6 +20,5 @@
         }
 
         public override int DmxLenght => 4;
-
     }
 }

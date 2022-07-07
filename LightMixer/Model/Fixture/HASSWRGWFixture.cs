@@ -31,11 +31,9 @@ namespace LightMixer.Model.Fixture
 
         public void SetOn()
         {
-
             if (!isDitry)
                 return;
             isDitry = false;
-
 
             try
             {
@@ -65,7 +63,6 @@ namespace LightMixer.Model.Fixture
                 }
                 else
                 {
-
                     string json = "{\"entity_id\": \"" + haEntity + "\", \"rgbw_color\": [" + this.RedValue + ", " + this.GreenValue + ", " + this.BlueValue + ", 0]}";
                     //string json = "{\"entity_id\": \"light.chambre_maitre_rgb1_2\"" +
                     //        ", \"rgbw_color\": [0, 255, 0, 0]}";
@@ -82,8 +79,6 @@ namespace LightMixer.Model.Fixture
             catch (Exception)
             {
             }
-
-
         }
     }
 }

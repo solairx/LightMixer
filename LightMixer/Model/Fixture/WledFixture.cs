@@ -38,6 +38,7 @@ namespace LightMixer.Model.Fixture
             public int pal { get; set; }
             public bool sel { get; set; }
         }
+
         public WledServer(string ip)
         {
             _httpClient.Timeout = TimeSpan.FromSeconds(10);
@@ -109,21 +110,35 @@ namespace LightMixer.Model.Fixture
                 }
             };
             this.ip = ip;
+            PreparatedQuery = JsonConvert.SerializeObject(State, Formatting.Indented);
+
+            Task.Run(() => {
+                while (true)
+                {
+                    try
+                    {
+                        if (PreparatedQuery != lastQuery)
+                        {
+                            lastQuery = PreparatedQuery;
+                            GetResult(PreparatedQuery);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
+                    Thread.Sleep(5);
+                }
+            });
         }
 
         public CancellationTokenSource cts = new CancellationTokenSource();
 
+        public string PreparatedQuery = string.Empty;
+
         public void Render()
         {
-            var jsonstr = JsonConvert.SerializeObject(State, Formatting.Indented);
-            if (jsonstr != lastQuery)
-            {
-                cts.Cancel();
-                cts = new CancellationTokenSource();
-                lastQuery = jsonstr;
-                Task.Run(() => GetResult(jsonstr));
-            }
-
+            PreparatedQuery = JsonConvert.SerializeObject(State, Formatting.Indented);
         }
 
         private HttpResponseMessage GetResult(string jsonstr)
@@ -132,6 +147,7 @@ namespace LightMixer.Model.Fixture
             return res;
         }
     }
+
     public class WledFixture : RgbFixture
     {
         private readonly string ip = "";
@@ -182,8 +198,6 @@ namespace LightMixer.Model.Fixture
             isDitry = false;
             try
             {
-
-
                 seg.on = this.RedValue + this.GreenValue + this.BlueValue > 0;
                 if (WledEffectCategory == WledEffectCategory.off)
                 {
@@ -195,7 +209,6 @@ namespace LightMixer.Model.Fixture
                     var allAvailableEffect = WledEffect2.EffectList
                         .Where(o => o.Category == WledEffectCategory);
 
-
                     if (!seg.on || CurrentEffect?.Category != WledEffectCategory)
                     {
                         CurrentEffect = allAvailableEffect
@@ -204,17 +217,13 @@ namespace LightMixer.Model.Fixture
                             .FirstOrDefault();
                     }
 
-
                     if (CurrentEffect == null)
                     {
                         CurrentEffect = allAvailableEffect.First();
                     }
 
-
                     lastWledEffectChanged = DateTime.Now;
                 }
-
-
 
                 seg.col[0][0] = this.RedValue;
                 seg.col[0][1] = this.GreenValue;
@@ -237,9 +246,6 @@ namespace LightMixer.Model.Fixture
             catch (Exception)
             {
             }
-
-
         }
-
     }
 }

@@ -8,7 +8,6 @@ namespace LightMixer.Model
     {
         private int nextGroup = 0;
 
-
         public override void RenderEffect(IEnumerable<BeatDetector.VdjEvent> values)
         {
             var currentGroups = Owner.FixtureGroups;
@@ -31,7 +30,6 @@ namespace LightMixer.Model
                     {
                         fixtureToreset.WhiteValue = this.SetValueFlash(0);
                     }
-
                 }
             }
 
@@ -43,10 +41,6 @@ namespace LightMixer.Model
                 if (!fixture.SupportRGB)
                 {
                     fixture.WhiteValue = 10;
-                }
-                else
-                {
-                    fixture.BlueValue = 0;
                 }
             }
             if (isBeat)
@@ -62,7 +56,6 @@ namespace LightMixer.Model
             {
                 return "Zone Rotate Effect";
             }
-
         }
     }
 }

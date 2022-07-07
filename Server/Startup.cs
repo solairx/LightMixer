@@ -11,6 +11,7 @@ namespace BlazorSignalRApp.Server
     public class Startup
     {
         #region snippet_ConfigureServices
+
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSignalR();
@@ -21,9 +22,11 @@ namespace BlazorSignalRApp.Server
                     new[] { "application/octet-stream" });
             });
         }
-        #endregion
+
+        #endregion snippet_ConfigureServices
 
         #region snippet_Configure
+
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseResponseCompression();
@@ -52,6 +55,7 @@ namespace BlazorSignalRApp.Server
                 endpoints.MapFallbackToFile("index.html");
             });
         }
-        #endregion
+
+        #endregion snippet_Configure
     }
 }

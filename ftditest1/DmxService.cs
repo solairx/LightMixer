@@ -23,13 +23,9 @@
             //DmxController.dmx.DMXSetting.MAB = value;
         }
 
-
         public void UpdateAllDmxValue(byte[] value)
         {
             DmxController.dmx.Buffer = value;
-
         }
-
-
     }
 }

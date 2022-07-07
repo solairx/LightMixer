@@ -1,7 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using UIFrameWork;
 
-
 namespace VisualControler
 {
     public class ServiceExchangeSingleton : BaseViewModel
@@ -13,7 +12,6 @@ namespace VisualControler
             get
             {
                 return _Instance;
-
             }
             set
             {
@@ -21,6 +19,7 @@ namespace VisualControler
                 _Instance.OnPropertyChanged(o => Instance);
             }
         }
+
         private bool _green = true;
         private bool _red = true;
         private bool _blue = true;
@@ -31,7 +30,6 @@ namespace VisualControler
         private bool _AutoChangeEventLaser;
         private bool _ManualBeatOnly;
 
-
         private int _AutoMixDelay = 15;
         private int _LedCurrentEventID = 1;
         private int _LaserSpeedRatio = 50;
@@ -40,17 +38,10 @@ namespace VisualControler
 
         private int _LaserSpeedAdj = 50;
 
-
         private bool _LaserPause = true;
         private bool _OnBeatReverse;
 
         private bool _UseBeatTurnOff;
-
-
-
-
-
-
 
         public bool OnBeatReverse
         {
@@ -78,9 +69,6 @@ namespace VisualControler
             }
         }
 
-
-
-
         public bool ManualBeat
         {
             get
@@ -93,6 +81,7 @@ namespace VisualControler
                 OnPropertyChanged(o => this.ManualBeat);
             }
         }
+
         public bool OnBeat
         {
             get
@@ -144,6 +133,7 @@ namespace VisualControler
                 OnPropertyChanged(o => this.Red);
             }
         }
+
         public bool AutoChangeEvent
         {
             get
@@ -156,6 +146,7 @@ namespace VisualControler
                 OnPropertyChanged(o => this.AutoChangeEvent);
             }
         }
+
         public bool AutoChangeEventLaser
         {
             get
@@ -168,6 +159,7 @@ namespace VisualControler
                 OnPropertyChanged(o => this.AutoChangeEventLaser);
             }
         }
+
         public bool ManualBeatOnly
         {
             get
@@ -181,7 +173,6 @@ namespace VisualControler
             }
         }
 
-
         public int AutoMixDelay
         {
             get
@@ -194,6 +185,7 @@ namespace VisualControler
                 OnPropertyChanged(o => this.AutoMixDelay);
             }
         }
+
         public int LedCurrentEventID
         {
             get
@@ -206,6 +198,7 @@ namespace VisualControler
                 OnPropertyChanged(o => this.LedCurrentEventID);
             }
         }
+
         public int LaserSpeedRatio
         {
             get
@@ -259,7 +252,6 @@ namespace VisualControler
                 list.Add(new LaserEffectUIElement() { ID = 6, Name = "Spinning" });
                 list.Add(new LaserEffectUIElement() { ID = 7, Name = "Spinning R" });
                 list.Add(new LaserEffectUIElement() { ID = 8, Name = "Spinning Full" });
-
 
                 return list;
             }

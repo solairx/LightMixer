@@ -18,6 +18,7 @@ namespace UIFrameWork.Utils
         {
             return MemberImpl(expr);
         }
+
         public static MemberInfo Member<T>(Expression<Func<T>> expr)
         {
             return MemberImpl(expr);
@@ -55,7 +56,6 @@ namespace UIFrameWork.Utils
             var getterLambda = Expression.Lambda<Func<object>>(conversion);
             var getter = getterLambda.Compile();
             return getter();
-
         }
 
         /// <summary>

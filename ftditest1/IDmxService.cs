@@ -14,10 +14,11 @@ namespace DmxLib
 
         [OperationContract]
         void SetBreak(long value);
+
         [OperationContract]
         void SetMBB(long value);
+
         [OperationContract]
         void SetMab(long value);
-
     }
 }

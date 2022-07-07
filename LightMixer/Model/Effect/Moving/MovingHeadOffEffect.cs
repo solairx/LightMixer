@@ -5,8 +5,6 @@ namespace LightMixer.Model
 {
     public class MovingHeadOffEffect : RgbEffectBase
     {
-
-
         public override void RenderEffect(IEnumerable<BeatDetector.VdjEvent> values)
         {
             foreach (var fixture in fixtureInGroup)

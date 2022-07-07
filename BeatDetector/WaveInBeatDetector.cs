@@ -12,9 +12,11 @@ namespace BeatDetector
         private DateTime lastBeatRunned;
 
         public event BeatHandler BeatEvent;
+
         public delegate void BeatHandler(bool Beat, object caller);
 
         public event BpmHandler BpmEvent;
+
         public delegate void BpmHandler(double Beat, object caller);
 
         private double _beatRepeat = 1;
@@ -31,14 +33,14 @@ namespace BeatDetector
             }
         }
 
-        BPMCounter counter = new BPMCounter(10, 44100);
+        private BPMCounter counter = new BPMCounter(10, 44100);
         public double bpm;
         public bool beat = false;
         public double mbeatpos;
         public float mpercent;
+
         public WaveInBeatDetector()
         {
-
             if (Bass.BASS_RecordInit(-1))
             {
                 _myRecProc = new RECORDPROC(MyRecording);
@@ -52,14 +54,10 @@ namespace BeatDetector
             {
                 throw new Exception("Cannot start recording");
             }
-
-
         }
-
 
         private bool MyRecording(int handle, IntPtr buffer, int length, IntPtr user)
         {
-
             double currentBpm = 60;
             bool newBeat = counter.ProcessAudio(handle, false);
 
@@ -80,7 +78,6 @@ namespace BeatDetector
                     BeatEvent(true, this);
                 lastBeatRunned = DateTime.Now;
             }
-
 
             if (this.bpm != currentBpm && BeatEvent != null)
                 BpmEvent(currentBpm, this);

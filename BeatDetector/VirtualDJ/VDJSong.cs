@@ -6,6 +6,7 @@ namespace BeatDetector
     public class VDJSong
     {
         public XElement XmlNode;
+
         public VDJSong(XElement source, IEnumerable<VDJScan> scanList, IEnumerable<VDJPoi> poiList)
         {
             XmlNode = source;
@@ -14,6 +15,7 @@ namespace BeatDetector
             Pois = new SortableObservableCollection<VDJPoi>(poiList);
             Pois.Sort(o => o.Position, System.ComponentModel.ListSortDirection.Ascending);
         }
+
         public string FilePath { get; }
 
         public IEnumerable<VDJScan> Scans { get; }
@@ -24,5 +26,4 @@ namespace BeatDetector
             return FilePath;
         }
     }
-
 }

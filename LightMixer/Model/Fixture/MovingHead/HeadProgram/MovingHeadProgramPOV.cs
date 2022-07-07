@@ -6,7 +6,7 @@ namespace LightMixer.Model.Fixture
     {
         public MovingHeadProgramPOV(FixtureBase owner, PointOfInterest pov) : base(owner)
         {
-            InitialSize = 255;
+            InitialSize = 2500;
             PanListDesign = PanListDesignSlave = new ushort[] { pov.Pan, pov.Pan2, pov.Pan };
             TiltListDesign = TiltListDesignSlave = new ushort[] { pov.Tilt, pov.Tilt2, pov.Tilt };
             MaxDimmerDesign = MaxDimmerDesignSlave = new ushort[] { 100 };

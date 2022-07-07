@@ -5,10 +5,9 @@ using System.Threading;
 
 namespace MidiController
 {
-    class Program
+    internal class Program
     {
-
-        enum CtrlType
+        private enum CtrlType
         {
             CTRL_C_EVENT = 0,
             CTRL_BREAK_EVENT = 1,
@@ -21,9 +20,10 @@ namespace MidiController
         private static extern bool SetConsoleCtrlHandler(EventHandler handler, bool add);
 
         private delegate bool EventHandler(CtrlType sig);
-        static EventHandler _handler;
 
-        static void Main(string[] args)
+        private static EventHandler _handler;
+
+        private static void Main(string[] args)
         {
             MidiOutController controller = null;
             _handler += new EventHandler((a) =>
@@ -32,7 +32,6 @@ namespace MidiController
                 return true;
             });
             SetConsoleCtrlHandler(_handler, true);
-
 
             byte command = 0x90;
             byte note = 0x48;
@@ -60,13 +59,11 @@ namespace MidiController
                     var res = controller.Send(int.Parse(x));
                     Console.WriteLine(res);
                     Thread.Sleep(1);
-
                 }
                 catch (Exception vexp)
                 {
                     Console.WriteLine(vexp.ToString());
                 }
-
             }
         }
 
@@ -83,18 +80,19 @@ namespace MidiController
         int hMidiIn);
 
         private static int handle = 0;
+
         protected delegate void MidiCallback(int handle, int msg, int instance, int param1, int param2);
+
         [DllImport("winmm.dll")]
         private static extern int midiOutOpen(ref int handle, int deviceID, MidiCallback proc, int instance, int flags);
-        [DllImport("winmm.dll")]
 
+        [DllImport("winmm.dll")]
         private static extern int midiOutMessage(ref int handle, int msg, int dw1, int dw2);
 
         [DllImport("winmm.dll")]
         private static extern int midiOutLongMsg(int hmo, IntPtr pmh, uint cbmh);
 
         [DllImport("winmm.dll")]
-
         protected static extern int midiOutShortMsg(int handle, int message);
 
         [DllImport("winmm.dll")]
@@ -102,6 +100,7 @@ namespace MidiController
         int hMidiOut,
         IntPtr lpMidiOutHdr,
         uint uSize);
+
         [DllImport("winmm.dll")]
         public static extern uint midiOutUnprepareHeader(
             IntPtr hMidiOut,
@@ -110,8 +109,8 @@ namespace MidiController
 
         public MidiOutController()
         {
-
         }
+
         public MidiOutController(int device)
         {
             int result = midiOutOpen(ref handle, device, null, 0, 0);
@@ -145,6 +144,7 @@ namespace MidiController
             public IntPtr lpNext;
             public int Reserved;
             public uint dwOffset;
+
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
             public int[] reservedArray;
         }
@@ -183,11 +183,9 @@ namespace MidiController
 
                 Marshal.Release(typMsgHeader.lpData);
                 Marshal.Release(DataBufferPointer);
-
             }
 
             return blnResult;
         }
     }
-
 }

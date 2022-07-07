@@ -7,13 +7,13 @@ namespace LightMixer.Model.Fixture
     {
         public MovingHeadProgramDisable(FixtureBase owner, List<PointOfInterest> pointOfInterests) : base(owner)
         {
-
             PanListDesign = PanListDesignSlave = new ushort[] { 0, 0 };
             TiltListDesign = TiltListDesignSlave = new ushort[] { 0, 0 };
             MaxDimmerDesign = MaxDimmerDesignSlave = new ushort[] { 0, 0 };
             InitialSize = 10;
             Setup();
         }
+
         public override Program LegacyProgram => Program.CodeDisable;
     }
 }
