@@ -2,7 +2,9 @@
 
 @using LightMixerBlazor.Data
 @inject ZoneService ForecastService
+@inject NavigationManager NavigationManager
 @using Radzen.Blazor.Rendering
+@using Microsoft.AspNetCore.SignalR.Client
 @using Radzen.Blazor
 
 <h2>Zone @id</h2>
@@ -22,6 +24,8 @@ else
 
 @code {
 
+    private HubConnection? hubConnection;
+
     [Parameter]
     public string sceneId { get; set; }
 
@@ -36,14 +40,24 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-
         zoneEffectList = await ForecastService.GetZone(sceneId, id);
+
+         var hubConnection = new HubConnectionBuilder()
+            .WithUrl(NavigationManager.ToAbsoluteUri("http://127.0.0.1:8088/hub"))
+            .Build();
+
+        hubConnection.On<string, string>("SendMessage", (user, message) =>
+        {
+            
+        });
+
+        await hubConnection.StartAsync();
     }
 
     async Task Change(object value, string name)
     {
         await ForecastService.UpdateZone(sceneId, id, SelectedItem);
-        var  zone = await  ForecastService.GetZoneConfig(sceneId);
         StateHasChanged();
+
     }
 }

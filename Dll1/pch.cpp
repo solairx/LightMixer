@@ -102,29 +102,40 @@ void CMyPlugin8::task1()
 		std::string crossfader = GetStringFromVDJ("crossfader");
 
 		deck1 << "fileName:" << GetStringFromVDJ("deck  1 get loaded_song \"Filename\"") << "*";
+		Sleep(50);
 		deck1 << "filePath:" << GetStringFromVDJ("deck  1 get loaded_song \"Filepath\" ") << "*";
+		Sleep(50);
 		deck1 << "beatPos:" << GetStringFromVDJ("deck  1 get_beatpos") << "*";
 		deck1 << "bpm:" << GetStringFromVDJ("deck  1 get_bpm") << "*";
+		Sleep(50);
 		deck1 << "position:" << GetStringFromVDJ("deck  1 get_position") << "*";
 		deck1 << "volume:" << GetStringFromVDJ("deck  1 get_volume") << "*";
 		deck1 << "deck:1*";
+		Sleep(50);
 		deck1 << "crossfader:" << crossfader << "*";
 		deck1 << "elapsed:" << GetStringFromVDJ("deck  1 get_time elapsed 1000") << "*";
+		Sleep(50);
 		deck1 << "\r\n";
-		Sleep(100);
+		Sleep(50);
+		
 		std::ofstream deck2{ TEXT("\\\\.\\pipe\\virtualDJ"), std::wofstream::trunc };
 		deck2 << "fileName:" << GetStringFromVDJ("deck  2 get loaded_song \"Filename\"") << "*";
+		Sleep(50);
 		deck2 << "filePath:" << GetStringFromVDJ("deck  2 get loaded_song \"Filepath\" ") << "*";
 		deck2 << "beatPos:" << GetStringFromVDJ("deck  2 get_beatpos") << "*";
+		Sleep(50);
 		deck2 << "bpm:" << GetStringFromVDJ("deck  2 get_bpm") << "*";
+		Sleep(50);
 		deck2 << "position:" << GetStringFromVDJ("deck  2 get_position") << "*";
 		deck2 << "volume:" << GetStringFromVDJ("deck  2 get_volume") << "*";
+		Sleep(50);
 		deck2 << "deck:2*";
 		deck2 << "crossfader:" << crossfader << "*";
+		Sleep(50);
 		deck2 << "elapsed:" << GetStringFromVDJ("deck  2 get_time elapsed 1000") << "*";
 		deck2 << "\r\n";
 
-		Sleep(100);
+		Sleep(50);
 	}
 }
 std::thread thrd;

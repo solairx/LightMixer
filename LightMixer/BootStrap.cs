@@ -77,7 +77,7 @@ namespace LightMixer
             BootStrap.UnityContainer.RegisterInstance<BeatDetector.BeatDetector>(beatDetector);
             BootStrap.UnityContainer.RegisterInstance<SceneService>(sceneService);
 
-            UnityContainer.RegisterInstance<LightService.DmxServiceClient>(new LightService.DmxServiceClient());
+            //UnityContainer.RegisterInstance<LightService.DmxServiceClient>(new LightService.DmxServiceClient());
             DmxModel model = new DmxModel();
             var dmxChaser = new DmxChaser(virtualDjServer);
             var sceneRenderedService = new SceneRenderedService(sceneService, dmxChaser, dmxWrapper, virtualDjServer);

@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Concurrent;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net.Sockets;
 using System.Threading;
@@ -25,10 +26,13 @@ namespace BeatDetector
 
         public delegate void OS2lServerHandler(OS2lEvent os2lEvent);
 
+        public static string LogWriter = "lock";
+
         public static Func<bool> IsDead = () => false;
 
         public VirtualDjServer(Func<bool> IsDeadGetter)
         {
+            
             isDeadGetter = IsDeadGetter;
             IsDead = IsDeadGetter;
             vdjDataBase = new VDJXmlParser();
@@ -41,6 +45,7 @@ namespace BeatDetector
         {
             RegisterServiceToBonjour();
             Task.Run(() => StartOS2lListener());
+            
         }
 
         private void StartOS2lListener()

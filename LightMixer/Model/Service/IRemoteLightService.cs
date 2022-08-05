@@ -3,7 +3,7 @@ using LightMixer.Model.Fixture;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ServiceModel;
-using System.ServiceModel.Web;
+//using System.ServiceModel.Web;
 
 namespace LightMixer.Model.Service
 {
@@ -11,7 +11,7 @@ namespace LightMixer.Model.Service
     [ServiceContract]
     public interface IRemoteLightService
     {
-        [OperationContract]
+     /*   [OperationContract]
         ObservableCollection<MovingHeadFixture.Program> MovingHeadProgram();
 
         [OperationContract]
@@ -78,6 +78,6 @@ namespace LightMixer.Model.Service
         void Color(int red, int green, int blue, bool autoChangeColor);
 
         [OperationContract]
-        DmxDataContract GetDmxStatus();
+        DmxDataContract GetDmxStatus();*/
     }
 }

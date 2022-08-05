@@ -344,7 +344,15 @@ namespace LightMixer.Model
                 this.CurrentVdjSong = activeDeck.FirstOrDefault()?.VDJSong;
                 this.CurrentVDJEvent = activeDeck.FirstOrDefault();
                 this.CurrentPoi = activeDeck.FirstOrDefault()?.GetCurrentPoi;
-                this.POIs = activeDeck.FirstOrDefault()?.VDJSong?.Pois;
+                if (activeDeck.FirstOrDefault()?.VDJSong?.ZPlanePois != null && activeDeck.FirstOrDefault()?.VDJSong?.ZPlanePois.Count > 2)
+                {
+                    this.POIs = activeDeck.FirstOrDefault()?.VDJSong?.ZPlanePois;
+                }
+                else
+                {
+                    this.POIs = activeDeck.FirstOrDefault()?.VDJSong?.Pois;
+                }
+
             }
         }
 

@@ -19,6 +19,11 @@ namespace LightMixerBlazor.Data
             return httpClient.GetJsonAsync<IEnumerable<string>>("LightMixer/" + sceneName + "/" + zoneName + "/effectList");
         }
 
+        public Task<IEnumerable<string>> GetZoneList(string sceneName)
+        {
+            return httpClient.GetJsonAsync<IEnumerable<string>>("LightMixer/" + sceneName + "/ZoneList");
+        }
+
         public Task<string> GetZoneConfig(string sceneName)
         {
             return httpClient.GetStringAsync("LightMixer/" + sceneName + "/ZoneConfig");

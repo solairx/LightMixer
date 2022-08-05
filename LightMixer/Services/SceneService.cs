@@ -63,31 +63,31 @@ public class SceneService
         var djBoothfourPov1 = new List<PointOfInterest>
         {
             new PointOfInterest{  Location = PointOfInterestLocation.DJ, Tilt = 10000, Pan = 4000},
-            new PointOfInterest{  Location = PointOfInterestLocation.DiscoBall, Tilt = 1500, Tilt2=4500, Pan = 0, Pan2 = 1000},
-            new PointOfInterest{  Location = PointOfInterestLocation.DiscoBallStatic, Tilt = 3000, Tilt2=3000, Pan = 0, Pan2 = 0},
+            new PointOfInterest{  Location = PointOfInterestLocation.DiscoBall, Pan = 0, Pan2=0, Tilt = 4000, Tilt2 = 7250},
+            new PointOfInterest{  Location = PointOfInterestLocation.DiscoBallStatic, Pan = 0, Pan2=0, Tilt = 6250, Tilt2 = 6250},
             new PointOfInterest{  Location = PointOfInterestLocation.Circle, Tilt = 0, Tilt2=65535, Pan = 65535, Pan2 = 1}
         };
 
         var djBoothfourPov2 = new List<PointOfInterest>
         {
             new PointOfInterest{  Location = PointOfInterestLocation.DJ, Tilt = 10000, Pan = 38000},
-            new PointOfInterest{  Location = PointOfInterestLocation.DiscoBall, Tilt = 1500, Tilt2=4500, Pan = 0, Pan2 = 1000},
-            new PointOfInterest{  Location = PointOfInterestLocation.DiscoBallStatic, Tilt = 3000, Tilt2=3000, Pan = 0, Pan2 = 0},
+            new PointOfInterest{  Location = PointOfInterestLocation.DiscoBall, Pan = 0, Pan2=0, Tilt = 3000, Tilt2 = 6250},
+            new PointOfInterest{  Location = PointOfInterestLocation.DiscoBallStatic,Pan = 0, Pan2=0, Tilt = 4000, Tilt2 = 4000},
             new PointOfInterest{  Location = PointOfInterestLocation.Circle, Tilt = 0, Tilt2=65535, Pan = 65535, Pan2 = 1}
         };
 
         var djBoothfourPov3 = new List<PointOfInterest>
         {
          new PointOfInterest{  Location = PointOfInterestLocation.DJ, Tilt = 3000, Pan = 0},
-            new PointOfInterest{  Location = PointOfInterestLocation.DiscoBall, Tilt = 1500, Tilt2=4500, Pan = 0, Pan2 = 1000},
-            new PointOfInterest{  Location = PointOfInterestLocation.DiscoBallStatic, Tilt = 3000, Tilt2=3000, Pan = 0, Pan2 = 0},
+            new PointOfInterest{  Location = PointOfInterestLocation.DiscoBall, Pan = 0, Pan2=0, Tilt = 3000, Tilt2 = 6250},
+            new PointOfInterest{  Location = PointOfInterestLocation.DiscoBallStatic,Pan = 0, Pan2=0, Tilt = 4000, Tilt2 = 4000},
             new PointOfInterest{  Location = PointOfInterestLocation.Circle, Tilt = 0, Tilt2=65535, Pan = 65535, Pan2 = 1}
         };
         var djBoothfourPov4 = new List<PointOfInterest>
         {
             new PointOfInterest{  Location = PointOfInterestLocation.DJ, Tilt = 3000, Pan = 0},
-            new PointOfInterest{  Location = PointOfInterestLocation.DiscoBall, Tilt = 1500, Tilt2=4500, Pan = 0, Pan2 = 1000},
-            new PointOfInterest{  Location = PointOfInterestLocation.DiscoBallStatic, Tilt = 3000, Tilt2=3000, Pan = 0, Pan2 = 0},
+            new PointOfInterest{  Location = PointOfInterestLocation.DiscoBall, Pan = 0, Pan2=0, Tilt = 3000, Tilt2 = 6250},
+            new PointOfInterest{  Location = PointOfInterestLocation.DiscoBallStatic,Pan = 0, Pan2=0, Tilt = 4000, Tilt2 = 4000},
             new PointOfInterest{  Location = PointOfInterestLocation.Circle, Tilt = 0, Tilt2=65535, Pan = 65535, Pan2 = 1}
         };
         var fourHead1 = new RgbwMovingHeadMasterFixture(349, djBoothfourPov1, 0);

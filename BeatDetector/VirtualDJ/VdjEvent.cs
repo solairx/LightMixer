@@ -17,10 +17,25 @@ namespace BeatDetector
         public string FileName { get; set; }
 
         public string FilePath { get; set; }
-        public string Elapsed { get; internal set; }
+
+        private DateTime elapsedsettime = DateTime.Now;
+        public string Elapsed
+        {
+            get
+            {
+                return elapsed;
+            }
+
+            internal set
+            {
+                elapsed = value;
+                elapsedsettime = DateTime.Now;
+            }
+        }
         public string BPM { get; internal set; }
 
         private static VDJPoi DefaultPOI = new VDJPoi();
+        private string elapsed;
 
         public double BpmAsDouble
         {
@@ -49,7 +64,7 @@ namespace BeatDetector
         {
             get
             {
-                return this.VDJSong?.Pois?.Count >= 3 || GetCurrentPoi.ID == 0;
+                return this.VDJSong.ZPlanePois?.Count >= 3 || this.VDJSong?.Pois?.Count >= 3 || GetCurrentPoi.ID == 0;
             }
         }
 
@@ -57,10 +72,18 @@ namespace BeatDetector
         {
             get
             {
-                var currentPoi = this.VDJSong?.Pois
-                        .Where(o => Position > o.Position && o.Type == "remix")
+                VDJPoi currentPoi = this.VDJSong?.ZPlanePois?
+                        .Where(o => Position > o.Position && o.Type == "Zplane")
                         .OrderBy(o => o.Position)
                         .LastOrDefault();
+
+                if (currentPoi == null)
+                {
+                    currentPoi = this.VDJSong?.Pois
+                            .Where(o => Position > o.Position && o.Type == "remix")
+                            .OrderBy(o => o.Position)
+                            .LastOrDefault();
+                }
                 if (currentPoi != null)
                 {
                     return currentPoi;
@@ -73,10 +96,19 @@ namespace BeatDetector
         {
             get
             {
-                var currentPoi = this.VDJSong?.Pois
+
+                VDJPoi currentPoi = this.VDJSong?.ZPlanePois?
+                        .Where(o => Position < o.Position && o.Type == "Zplane")
+                        .OrderBy(o => o.Position)
+                        .FirstOrDefault();
+
+                if (currentPoi == null)
+                {
+                    currentPoi = this.VDJSong?.Pois
                         .Where(o => Position < o.Position && o.Type == "remix")
                         .OrderBy(o => o.Position)
                         .FirstOrDefault();
+                }
                 if (currentPoi != null)
                 {
                     return currentPoi;

@@ -1,6 +1,8 @@
 ﻿using BeatDetector;
 using LightMixer.Model.Fixture;
+using LightMixer.Model.Service;
 using LightMixer.View;
+using Microsoft.AspNet.SignalR;
 using Microsoft.Practices.ObjectBuilder2;
 using System;
 using System.Collections.Concurrent;
@@ -8,6 +10,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
+using System.Windows;
 using static LightMixer.Model.Fixture.MovingHeadFixture;
 
 namespace LightMixer.Model
@@ -192,6 +195,9 @@ namespace LightMixer.Model
 
             selectedZone.Single().FixtureTypes.OfType<T>()
             .First().CurrentEffect = newEffect;
+            var h = new object[1] { newEffect.Name};
+            LightMixerHubBackGroundService.HubContext.Clients.All.SendCoreAsync("SendMessage", h);
+            
         }
 
         public void SetMovingHeadProgramEffect(string scene, string zone, Program newProgram)

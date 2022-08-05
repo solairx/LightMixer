@@ -1,277 +1,36 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\Microsoft.Extensions.Configuration.UserSecrets.3.1.4\build\netstandard2.0\Microsoft.Extensions.Configuration.UserSecrets.props" Condition="Exists('..\packages\Microsoft.Extensions.Configuration.UserSecrets.3.1.4\build\netstandard2.0\Microsoft.Extensions.Configuration.UserSecrets.props')" />
-  <Import Project="..\packages\Microsoft.NET.Test.Sdk.16.6.1\build\net40\Microsoft.NET.Test.Sdk.props" Condition="Exists('..\packages\Microsoft.NET.Test.Sdk.16.6.1\build\net40\Microsoft.NET.Test.Sdk.props')" />
-  <Import Project="..\packages\Microsoft.CodeCoverage.16.6.1\build\netstandard1.0\Microsoft.CodeCoverage.props" Condition="Exists('..\packages\Microsoft.CodeCoverage.16.6.1\build\netstandard1.0\Microsoft.CodeCoverage.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+    <TargetFramework>net6.0-windows10.0.22000.0</TargetFramework>
     <PreserveCompilationContext>true</PreserveCompilationContext>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{68C9AFB7-4D80-4B0E-8A2C-1151A3698B27}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>LightMixer</RootNamespace>
-    <AssemblyName>LightMixer</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
-    <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <WarningLevel>4</WarningLevel>
     <WcfConfigValidationEnabled>True</WcfConfigValidationEnabled>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-    <PlatformTarget>x86</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <UseWPF>true</UseWPF>
+    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+    <SupportedOSPlatformVersion>10.0.22000.0</SupportedOSPlatformVersion>
+    <StartupObject>LightMixer.App</StartupObject>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x64\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <OutputPath>bin\x64\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Arkane.Zeroconf, Version=1.2.20.0, Culture=neutral, PublicKeyToken=b8b190e47a4882b0, processorArchitecture=MSIL">
-      <HintPath>..\packages\Arkane.Zeroconf.1.2.20\lib\netstandard2.0\Arkane.Zeroconf.dll</HintPath>
-    </Reference>
     <Reference Include="AvalonDock">
       <HintPath>.\AvalonDock.dll</HintPath>
     </Reference>
     <Reference Include="Bass.Net, Version=2.4.11.1, Culture=neutral, PublicKeyToken=b7566c273e6ef480, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\BeatDetector\Bass.Net.dll</HintPath>
-    </Reference>
-    <Reference Include="HADotNet.Core, Version=1.5.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\HADotNet.Core.1.5.1\lib\netstandard2.0\HADotNet.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="HADotNet.Entities, Version=0.1.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\HADotNet.Entities.0.1.2\lib\netstandard2.0\HADotNet.Entities.dll</HintPath>
-    </Reference>
-    <Reference Include="MathNet.Numerics, Version=4.15.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MathNet.Numerics.4.15.0\lib\net461\MathNet.Numerics.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AspNetCore, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNetCore.2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AspNetCore.Authentication.Abstractions, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNetCore.Authentication.Abstractions.2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Authentication.Abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AspNetCore.Authentication.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNetCore.Authentication.Core.2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Authentication.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AspNetCore.Authorization, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNetCore.Authorization.2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Authorization.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AspNetCore.Authorization.Policy, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNetCore.Authorization.Policy.2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Authorization.Policy.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AspNetCore.Connections.Abstractions, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNetCore.Connections.Abstractions.2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Connections.Abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AspNetCore.Diagnostics, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNetCore.Diagnostics.2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Diagnostics.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AspNetCore.Diagnostics.Abstractions, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNetCore.Diagnostics.Abstractions.2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Diagnostics.Abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AspNetCore.HostFiltering, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNetCore.HostFiltering.2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.HostFiltering.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AspNetCore.Hosting, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNetCore.Hosting.2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Hosting.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AspNetCore.Hosting.Abstractions, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNetCore.Hosting.Abstractions.2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Hosting.Abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AspNetCore.Hosting.Server.Abstractions, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNetCore.Hosting.Server.Abstractions.2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Hosting.Server.Abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AspNetCore.Http, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNetCore.Http.2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Http.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AspNetCore.Http.Abstractions, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNetCore.Http.Abstractions.2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Http.Abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AspNetCore.Http.Extensions, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNetCore.Http.Extensions.2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Http.Extensions.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AspNetCore.Http.Features, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNetCore.Http.Features.2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Http.Features.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AspNetCore.HttpOverrides, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNetCore.HttpOverrides.2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.HttpOverrides.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AspNetCore.JsonPatch, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNetCore.JsonPatch.2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.JsonPatch.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AspNetCore.Mvc.Abstractions, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNetCore.Mvc.Abstractions.2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Mvc.Abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AspNetCore.Mvc.Core, Version=2.2.5.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNetCore.Mvc.Core.2.2.5\lib\netstandard2.0\Microsoft.AspNetCore.Mvc.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AspNetCore.Mvc.Formatters.Json, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNetCore.Mvc.Formatters.Json.2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Mvc.Formatters.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AspNetCore.ResponseCaching.Abstractions, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNetCore.ResponseCaching.Abstractions.2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.ResponseCaching.Abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AspNetCore.Routing, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNetCore.Routing.2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Routing.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AspNetCore.Routing.Abstractions, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNetCore.Routing.Abstractions.2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Routing.Abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AspNetCore.Server.IIS, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNetCore.Server.IIS.2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Server.IIS.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AspNetCore.Server.IISIntegration, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNetCore.Server.IISIntegration.2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Server.IISIntegration.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AspNetCore.Server.Kestrel, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNetCore.Server.Kestrel.2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Server.Kestrel.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AspNetCore.Server.Kestrel.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNetCore.Server.Kestrel.Core.2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Server.Kestrel.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AspNetCore.Server.Kestrel.Https, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNetCore.Server.Kestrel.Https.2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Server.Kestrel.Https.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AspNetCore.Server.Kestrel.Transport.Abstractions, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNetCore.Server.Kestrel.Transport.Abstractions.2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Server.Kestrel.Transport.Abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AspNetCore.WebUtilities, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNetCore.WebUtilities.2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.WebUtilities.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.1.1.1\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.DotNet.PlatformAbstractions, Version=2.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.DotNet.PlatformAbstractions.2.1.0\lib\net45\Microsoft.DotNet.PlatformAbstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.Configuration, Version=3.1.4.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.Configuration.3.1.4\lib\netstandard2.0\Microsoft.Extensions.Configuration.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.Configuration.Abstractions, Version=3.1.4.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.Configuration.Abstractions.3.1.4\lib\netstandard2.0\Microsoft.Extensions.Configuration.Abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.Configuration.Binder, Version=3.1.4.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.Configuration.Binder.3.1.4\lib\netstandard2.0\Microsoft.Extensions.Configuration.Binder.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.Configuration.CommandLine, Version=3.1.4.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.Configuration.CommandLine.3.1.4\lib\netstandard2.0\Microsoft.Extensions.Configuration.CommandLine.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.Configuration.EnvironmentVariables, Version=3.1.4.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.Configuration.EnvironmentVariables.3.1.4\lib\netstandard2.0\Microsoft.Extensions.Configuration.EnvironmentVariables.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.Configuration.FileExtensions, Version=3.1.4.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.Configuration.FileExtensions.3.1.4\lib\netstandard2.0\Microsoft.Extensions.Configuration.FileExtensions.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.Configuration.Json, Version=3.1.4.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.Configuration.Json.3.1.4\lib\netstandard2.0\Microsoft.Extensions.Configuration.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.Configuration.UserSecrets, Version=3.1.4.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.Configuration.UserSecrets.3.1.4\lib\netstandard2.0\Microsoft.Extensions.Configuration.UserSecrets.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.DependencyInjection, Version=3.1.4.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.3.1.4\lib\net461\Microsoft.Extensions.DependencyInjection.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=3.1.4.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.3.1.4\lib\netstandard2.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.DependencyModel, Version=2.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.DependencyModel.2.1.0\lib\net451\Microsoft.Extensions.DependencyModel.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.FileProviders.Abstractions, Version=3.1.4.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.FileProviders.Abstractions.3.1.4\lib\netstandard2.0\Microsoft.Extensions.FileProviders.Abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.FileProviders.Physical, Version=3.1.4.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.FileProviders.Physical.3.1.4\lib\netstandard2.0\Microsoft.Extensions.FileProviders.Physical.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.FileSystemGlobbing, Version=3.1.4.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.FileSystemGlobbing.3.1.4\lib\netstandard2.0\Microsoft.Extensions.FileSystemGlobbing.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.Hosting, Version=3.1.4.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.Hosting.3.1.4\lib\netstandard2.0\Microsoft.Extensions.Hosting.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.Hosting.Abstractions, Version=3.1.4.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.Hosting.Abstractions.3.1.4\lib\netstandard2.0\Microsoft.Extensions.Hosting.Abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.Logging, Version=3.1.4.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.Logging.3.1.4\lib\netstandard2.0\Microsoft.Extensions.Logging.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.Logging.Abstractions, Version=3.1.4.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.Logging.Abstractions.3.1.4\lib\netstandard2.0\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.Logging.Configuration, Version=3.1.4.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.Logging.Configuration.3.1.4\lib\netstandard2.0\Microsoft.Extensions.Logging.Configuration.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.Logging.Console, Version=3.1.4.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.Logging.Console.3.1.4\lib\netstandard2.0\Microsoft.Extensions.Logging.Console.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.Logging.Debug, Version=3.1.4.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.Logging.Debug.3.1.4\lib\netstandard2.0\Microsoft.Extensions.Logging.Debug.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.Logging.EventLog, Version=3.1.4.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.Logging.EventLog.3.1.4\lib\net461\Microsoft.Extensions.Logging.EventLog.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.Logging.EventSource, Version=3.1.4.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.Logging.EventSource.3.1.4\lib\netstandard2.0\Microsoft.Extensions.Logging.EventSource.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.ObjectPool, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.ObjectPool.2.2.0\lib\netstandard2.0\Microsoft.Extensions.ObjectPool.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.Options, Version=3.1.4.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.Options.3.1.4\lib\netstandard2.0\Microsoft.Extensions.Options.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.Options.ConfigurationExtensions, Version=3.1.4.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.Options.ConfigurationExtensions.3.1.4\lib\netstandard2.0\Microsoft.Extensions.Options.ConfigurationExtensions.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.Primitives, Version=3.1.4.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.Primitives.3.1.4\lib\netstandard2.0\Microsoft.Extensions.Primitives.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Net.Http.Headers, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Net.Http.Headers.2.2.0\lib\netstandard2.0\Microsoft.Net.Http.Headers.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Practices.Prism">
       <HintPath>.\Microsoft.Practices.Prism.dll</HintPath>
@@ -288,290 +47,33 @@
     <Reference Include="Microsoft.Practices.Unity">
       <HintPath>.\Microsoft.Practices.Unity.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.VisualStudio.CodeCoverage.Shim, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.CodeCoverage.16.6.1\lib\net45\Microsoft.VisualStudio.CodeCoverage.Shim.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="Phidget21.NET, Version=2.1.8.208, Culture=neutral, PublicKeyToken=c2b1f2a3594bce52, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Program Files\Phidgets\Phidget21.NET.dll</HintPath>
     </Reference>
     <Reference Include="PresentationFramework.Aero2" />
-    <Reference Include="RestSharp, Version=106.11.7.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
-      <HintPath>..\packages\RestSharp.106.11.7\lib\net452\RestSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Collections.Immutable, Version=1.2.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Collections.Immutable.1.5.0\lib\netstandard2.0\System.Collections.Immutable.dll</HintPath>
-    </Reference>
-    <Reference Include="System.ComponentModel.Annotations, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.ComponentModel.Annotations.4.7.0\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
-    </Reference>
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Diagnostics.DiagnosticSource.4.5.0\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Diagnostics.EventLog, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Diagnostics.EventLog.4.7.0\lib\net461\System.Diagnostics.EventLog.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.IO.Pipelines, Version=4.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.IO.Pipelines.4.5.2\lib\netstandard2.0\System.IO.Pipelines.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Net.Http.Formatting, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.7\lib\net45\System.Net.Http.Formatting.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Numerics" />
-    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reflection.Metadata, Version=1.4.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Reflection.Metadata.1.6.0\lib\netstandard2.0\System.Reflection.Metadata.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.7.1\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.0.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
-      <Private>True</Private>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Security.Cryptography.Cng, Version=4.3.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Security.Cryptography.Cng.4.5.0\lib\net47\System.Security.Cryptography.Cng.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Security.Principal.Windows, Version=4.1.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Security.Principal.Windows.4.7.0\lib\net461\System.Security.Principal.Windows.dll</HintPath>
-    </Reference>
-    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Security" />
     <Reference Include="System.ServiceModel.Web" />
-    <Reference Include="System.Text.Encodings.Web, Version=4.0.5.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Text.Encodings.Web.4.7.1\lib\net461\System.Text.Encodings.Web.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Text.Json, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Text.Json.4.7.2\lib\net461\System.Text.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
-    </Reference>
-    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web" />
-    <Reference Include="System.Web.Http, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.7\lib\net45\System.Web.Http.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Http.SelfHost, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.SelfHost.5.2.7\lib\net45\System.Web.Http.SelfHost.dll</HintPath>
-    </Reference>
     <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>.\System.Windows.Interactivity.dll</HintPath>
     </Reference>
-    <Reference Include="System.Xml" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Xaml">
-      <RequiredTargetFramework>4.0</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="WindowsBase" />
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </ApplicationDefinition>
-    <Compile Include="BootStrap.cs" />
-    <Compile Include="dj.Designer.cs" />
-    <Compile Include="DMX\DMXLevelArgs.cs" />
-    <Compile Include="DMX\DMXMessage.cs" />
-    <Compile Include="DMX\DMXProMsgLabel.cs" />
-    <Compile Include="DMX\FlashReplyArgs.cs" />
-    <Compile Include="Model\Effect\RgbEffectBase.cs" />
-    <Compile Include="Model\Fixture\MovingHead\HeadProgram\IMovingHeadProgram.cs" />
-    <Compile Include="Model\Fixture\MovingHead\HeadProgram\MovingHeadProgram.cs" />
-    <Compile Include="Model\Fixture\MovingHead\HeadProgram\MovingHeadProgramBalancing1.cs" />
-    <Compile Include="Model\Fixture\MovingHead\HeadProgram\MovingHeadProgramCircle.cs" />
-    <Compile Include="Model\Fixture\MovingHead\HeadProgram\MovingHeadProgramDisable.cs" />
-    <Compile Include="Model\Fixture\MovingHead\HeadProgram\MovingHeadProgramDiscoBall.cs" />
-    <Compile Include="Model\Fixture\MovingHead\HeadProgram\MovingHeadProgramDiscoBallStatic.cs" />
-    <Compile Include="Model\Fixture\MovingHead\HeadProgram\MovingHeadProgramDj.cs" />
-    <Compile Include="Model\Fixture\MovingHead\HeadProgram\MovingHeadProgramPOV.cs" />
-    <Compile Include="Model\Fixture\MovingHead\HeadProgram\MovingHeadProgramPOVOnOff.cs" />
-    <Compile Include="Model\Fixture\MovingHead\HeadProgram\MovingHeadProgramTest.cs" />
-    <Compile Include="Model\Fixture\MovingHead\HeadProgram\PointOfInterest.cs" />
-    <Compile Include="Model\Fixture\MovingHead\HeadProgram\PointOfInterestLocation.cs" />
-    <Compile Include="Model\Fixture\RgbFixtureBase.cs" />
-    <Compile Include="Model\Fixture\HASSWRGWFixture.cs" />
-    <Compile Include="Model\Fixture\MovingHead\RgbwMovingHeadBetaFixture.cs" />
-    <Compile Include="Model\Fixture\MovingHead\RgbwMovingHeadFixture.cs" />
-    <Compile Include="Model\Fixture\ShellyDimmerFixture.cs" />
-    <Compile Include="Model\Fixture\TasmotaRGWFixture.cs" />
-    <Compile Include="Model\Fixture\WledEffect.cs" />
-    <Compile Include="Model\Fixture\WledFixture.cs" />
-    <Compile Include="PhidGetService.cs" />
-    <Compile Include="DMX\SerialNumberArgs.cs" />
-    <Compile Include="Services\ActiveDeckSelector.cs" />
-    <Compile Include="Services\DmxEffectSelector.cs" />
-    <Compile Include="Model\Effect\Led\BreathingEffect.cs" />
-    <Compile Include="Model\Effect\Led\RandomEffect.cs" />
-    <Compile Include="Model\Fixture\FixtureCollection.cs" />
-    <Compile Include="Model\Fixture\MovingHead\MovingHeadFixtureCollection.cs" />
-    <Compile Include="Model\Fixture\RGBLedFixtureCollection.cs" />
-    <Compile Include="Model\Scene.cs" />
-    <Compile Include="Services\SceneRenderedService.cs" />
-    <Compile Include="Services\SceneService.cs" />
-    <Compile Include="Model\Service\IRemoteLightService.cs" />
-    <Compile Include="Model\Effect\Led\AllOffEffect.cs" />
-    <Compile Include="Model\DmxChannelStatus.cs" />
-    <Compile Include="DMX\VComWrapper.cs" />
-    <Compile Include="ViewModel\DmxChaser.cs" />
-    <Compile Include="ViewModel\DmxModel.cs" />
-    <Compile Include="Model\Effect\Led\AllOn.cs" />
-    <Compile Include="Model\Effect\Led\ZoneRotate.cs" />
-    <Compile Include="Model\Effect\Led\ZoneFlash.cs" />
-    <Compile Include="Model\Effect\Moving\MovingHeadDisco.cs" />
-    <Compile Include="Model\Effect\Moving\MovingHeadAllOn.cs" />
-    <Compile Include="Model\Effect\Moving\MovingHeadFlashAll.cs" />
-    <Compile Include="Model\Effect\Moving\MovingHeadOffEffect.cs" />
-    <Compile Include="Model\Effect\EffectBase.cs" />
-    <Compile Include="Model\Fixture\FixtureGroup.cs" />
-    <Compile Include="Model\Fixture\MovingHead\MovingHeadFixture.cs" />
-    <Compile Include="Model\Fixture\FixtureBase.cs" />
-    <Compile Include="Model\Fixture\RgbFixture.cs" />
-    <Compile Include="Model\Effect\Led\FlashAll.cs" />
-    <Compile Include="Model\Service\LaserDataContract.cs" />
-    <Compile Include="Model\Service\LightMixerController.cs" />
-    <Compile Include="Model\Service\Startup.cs" />
-    <Compile Include="ViewModel\SharedEffectModel.cs" />
-    <Compile Include="Model\Service\RemoteLightService.cs" />
-    <Compile Include="Model\Zone.cs" />
-    <Compile Include="ViewModel\BaseViewModel.cs" />
-    <Compile Include="ViewModel\DmxConsoleViewModel.cs" />
-    <Compile Include="ViewModel\LaserControlerViewModel.cs" />
-    <Compile Include="ViewModel\DmxControlSettingViewModel.cs" />
-    <Compile Include="ViewModel\ManualDmxControlViewModel.cs" />
-    <Compile Include="ViewModel\MainWindowViewModel.cs" />
-    <Compile Include="Service References\LightService\Reference.cs">
+    <Compile Update="Service References\LightService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
-    <Compile Include="ViewModel\Reflect.cs" />
-    <Compile Include="ViewModel\ServiceExchangeSingleton.cs" />
-    <Compile Include="View\DmxConsoleView.xaml.cs">
-      <DependentUpon>DmxConsoleView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\LaserControlerView.xaml.cs">
-      <DependentUpon>LaserControlerView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\DmxControlSetting.xaml.cs">
-      <DependentUpon>DmxControlSetting.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\ManualDmxControl.xaml.cs">
-      <DependentUpon>ManualDmxControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Model\Laser\Effect\AudienceScanning.cs" />
-    <Compile Include="Model\Laser\Effect\AudienceScanningR.cs" />
-    <Compile Include="Model\Laser\Effect\BeatSky.cs" />
-    <Compile Include="Model\Laser\Effect\Lib\ILaserEffect.cs" />
-    <Compile Include="Model\Laser\Effect\Lib\Line.cs" />
-    <Compile Include="Model\Laser\Effect\Lib\LineCollection.cs" />
-    <Compile Include="Model\Laser\Effect\SpinningEffect.cs" />
-    <Compile Include="Model\Laser\Effect\SpinningEffectFull.cs" />
-    <Compile Include="Model\Laser\Effect\SpinningEffectR.cs" />
-    <Compile Include="Model\Laser\Effect\StaticSky.cs" />
-    <Compile Include="Model\Laser\Effect\TunnelEffect.cs" />
-    <Compile Include="Model\Laser\Interpoled.cs" />
-    <Compile Include="Model\Laser\LaserControler.cs" />
-    <Compile Include="Model\Laser\LaserDisplay.cs" />
-    <Compile Include="Model\Laser\LaserSetting.Designer.cs" />
-    <Compile Include="Model\Laser\WaveLib\FifoStream.cs" />
-    <Compile Include="Model\Laser\WaveLib\WaveNative.cs" />
-    <Compile Include="Model\Laser\WaveLib\WaveOut.cs" />
-    <Compile Include="Model\Laser\WaveLib\WaveStream.cs" />
-    <Compile Include="Services\OpenDmx.cs" />
-    <Compile Include="DMX\WidgetParameterArgs.cs" />
-    <Page Include="View\DmxConsoleView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\LaserControlerView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="View\DmxControlSetting.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="View\MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Compile Include="App.xaml.cs">
-      <DependentUpon>App.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="View\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Page Include="View\ManualDmxControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <None Include="app.config">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="dj.settings" />
-    <None Include="packages.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
     <AppDesigner Include="Properties\" />
-    <None Include="Service References\LightService\DmxService.wsdl" />
-    <None Include="Service References\LightService\Metadata.xsd">
+    <None Update="Service References\LightService\Metadata.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\LightService\Metadata1.xsd">
+    <None Update="Service References\LightService\Metadata1.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Model\Laser\app.config" />
-    <None Include="Model\Laser\LaserSetting.settings" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
@@ -580,29 +82,14 @@
     <WCFMetadataStorage Include="Service References\LightService\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Service References\LightService\Metadata.disco" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\LightService\configuration91.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\LightService\configuration.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\LightService\Reference.svcmap">
+    <None Update="Service References\LightService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BeatDetector\BeatDetector.csproj">
-      <Project>{0b5cad10-7334-468a-a6ae-d47cc1dd5b12}</Project>
-      <Name>BeatDetector</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MidiController\MidiController.csproj">
-      <Project>{91ab987b-e47b-45ed-96ef-8223fcbc75f7}</Project>
-      <Name>MidiController</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\BeatDetector\BeatDetector.csproj" />
+    <ProjectReference Include="..\MidiController\MidiController.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="AvalonDock.dll" />
@@ -620,31 +107,51 @@
     </Content>
     <Content Include="Phidget21.NET.dll" />
   </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Microsoft.AspNetCore.Server.IIS.2.2.0\build\netstandard2.0\Microsoft.AspNetCore.Server.IIS.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.AspNetCore.Server.IIS.2.2.0\build\netstandard2.0\Microsoft.AspNetCore.Server.IIS.targets'))" />
-    <Error Condition="!Exists('..\packages\Microsoft.AspNetCore.Server.IISIntegration.2.2.0\build\netstandard2.0\Microsoft.AspNetCore.Server.IISIntegration.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.AspNetCore.Server.IISIntegration.2.2.0\build\netstandard2.0\Microsoft.AspNetCore.Server.IISIntegration.targets'))" />
-    <Error Condition="!Exists('..\packages\Microsoft.CodeCoverage.16.6.1\build\netstandard1.0\Microsoft.CodeCoverage.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeCoverage.16.6.1\build\netstandard1.0\Microsoft.CodeCoverage.props'))" />
-    <Error Condition="!Exists('..\packages\Microsoft.CodeCoverage.16.6.1\build\netstandard1.0\Microsoft.CodeCoverage.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeCoverage.16.6.1\build\netstandard1.0\Microsoft.CodeCoverage.targets'))" />
-    <Error Condition="!Exists('..\packages\Microsoft.NET.Test.Sdk.16.6.1\build\net40\Microsoft.NET.Test.Sdk.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.NET.Test.Sdk.16.6.1\build\net40\Microsoft.NET.Test.Sdk.props'))" />
-    <Error Condition="!Exists('..\packages\Microsoft.NET.Test.Sdk.16.6.1\build\net40\Microsoft.NET.Test.Sdk.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.NET.Test.Sdk.16.6.1\build\net40\Microsoft.NET.Test.Sdk.targets'))" />
-    <Error Condition="!Exists('..\packages\Microsoft.Extensions.Configuration.UserSecrets.3.1.4\build\netstandard2.0\Microsoft.Extensions.Configuration.UserSecrets.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Extensions.Configuration.UserSecrets.3.1.4\build\netstandard2.0\Microsoft.Extensions.Configuration.UserSecrets.props'))" />
-    <Error Condition="!Exists('..\packages\Microsoft.Extensions.Configuration.UserSecrets.3.1.4\build\netstandard2.0\Microsoft.Extensions.Configuration.UserSecrets.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Extensions.Configuration.UserSecrets.3.1.4\build\netstandard2.0\Microsoft.Extensions.Configuration.UserSecrets.targets'))" />
-  </Target>
-  <Import Project="..\packages\Microsoft.AspNetCore.Server.IIS.2.2.0\build\netstandard2.0\Microsoft.AspNetCore.Server.IIS.targets" Condition="Exists('..\packages\Microsoft.AspNetCore.Server.IIS.2.2.0\build\netstandard2.0\Microsoft.AspNetCore.Server.IIS.targets')" />
-  <Import Project="..\packages\Microsoft.AspNetCore.Server.IISIntegration.2.2.0\build\netstandard2.0\Microsoft.AspNetCore.Server.IISIntegration.targets" Condition="Exists('..\packages\Microsoft.AspNetCore.Server.IISIntegration.2.2.0\build\netstandard2.0\Microsoft.AspNetCore.Server.IISIntegration.targets')" />
-  <Import Project="..\packages\Microsoft.CodeCoverage.16.6.1\build\netstandard1.0\Microsoft.CodeCoverage.targets" Condition="Exists('..\packages\Microsoft.CodeCoverage.16.6.1\build\netstandard1.0\Microsoft.CodeCoverage.targets')" />
-  <Import Project="..\packages\Microsoft.NET.Test.Sdk.16.6.1\build\net40\Microsoft.NET.Test.Sdk.targets" Condition="Exists('..\packages\Microsoft.NET.Test.Sdk.16.6.1\build\net40\Microsoft.NET.Test.Sdk.targets')" />
-  <Import Project="..\packages\Microsoft.Extensions.Configuration.UserSecrets.3.1.4\build\netstandard2.0\Microsoft.Extensions.Configuration.UserSecrets.targets" Condition="Exists('..\packages\Microsoft.Extensions.Configuration.UserSecrets.3.1.4\build\netstandard2.0\Microsoft.Extensions.Configuration.UserSecrets.targets')" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+  <ItemGroup>
+    <PackageReference Include="Arkane.Zeroconf">
+      <Version>1.2.20</Version>
+    </PackageReference>
+    <PackageReference Include="HADotNet.Entities">
+      <Version>0.1.2</Version>
+    </PackageReference>
+    <PackageReference Include="MathNet.Numerics">
+      <Version>4.15.0</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.AspNet.SignalR">
+      <Version>2.4.3</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.AspNet.SignalR.Core">
+      <Version>2.4.3</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.AspNetCore">
+      <Version>2.2.0</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core">
+      <Version>2.2.5</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Formatters.Json">
+      <Version>2.2.0</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client">
+      <Version>6.0.6</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting">
+      <Version>3.1.4</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.NET.Test.Sdk">
+      <Version>16.6.1</Version>
+    </PackageReference>
+    <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
+    <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
+    <PackageReference Include="System.ServiceModel.Federation" Version="4.8.1" />
+    <PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.3.330701">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.AspNet.WebApi.SelfHost" Version="5.2.9" />
+    <PackageReference Include="Microsoft.Windows.Compatibility" Version="6.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
 </Project>

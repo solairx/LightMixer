@@ -15,7 +15,6 @@ namespace LightMixer.Model
                 {
                     ((MovingHeadFixture)fixture).ColorMode = MovingHeadFixture.ColorMacro.Auto;
                     ((MovingHeadFixture)fixture).GoboPaturn = _sharedEffectModel.CurrentMovingHeadGobo;
-                    ((MovingHeadFixture)fixture).Pan = 32000;
                     if (DateTime.Now.Subtract(_sharedEffectModel.IsCurrentMovingHeadProgramDirty).TotalMilliseconds < 250)
                     {
                         ((MovingHeadFixture)fixture).ProgramMode = _sharedEffectModel.CurrentMovingHeadProgram;

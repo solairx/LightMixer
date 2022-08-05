@@ -8,22 +8,32 @@
 
 <h1>Scene @id</h1>
 
-<Zone id="basement" sceneId="@id"></Zone>
+@if (zoneList == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    foreach (var item in zoneList)
+    {
+        <Zone id="@item" sceneId="@id"></Zone>
+    }
+}
 
 @code {
 
     [Parameter]
     public string id { get; set; } 
 
-    string SelectedItem;
-
-    IEnumerable<string> zoneEffectList;
+    [Inject]
+    public IEnumerable<string> zoneList { get; set; } 
 
     Dictionary<DateTime, string> events = new Dictionary<DateTime, string>();
 
     protected override async Task OnInitializedAsync()
     {
-        zoneEffectList = await ForecastService.GetZone("outdoor","pool");
+        zoneList = await  ForecastService.GetZoneList(id);
+
     }
 
     void Change(object value, string name)

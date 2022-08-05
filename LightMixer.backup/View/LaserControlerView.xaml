@@ -1,0 +1,31 @@
+﻿<UserControl
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Class="LightMixer.View.LaserControlerView"
+             mc:Ignorable="d"
+             d:DesignHeight="350" d:DesignWidth="553">
+
+    <Grid Background="Black">
+        <CheckBox Content="Laser Pause" HorizontalAlignment="Left" Margin="20,57,0,0" VerticalAlignment="Top" IsChecked="{Binding LaserConfig.LaserPause}" />
+        <CheckBox Content="Auto Change" HorizontalAlignment="Left" Margin="126,57,0,0" VerticalAlignment="Top" IsChecked="{Binding LaserConfig.AutoChangeEvent}" />
+        <CheckBox Content="Auto Change Laser Event" Margin="243,57,145.58,0" VerticalAlignment="Top" IsChecked="{Binding LaserConfig.AutoChangeEventLaser}" />
+        <CheckBox Content="Manual Beat" HorizontalAlignment="Left" Height="17" Margin="20,86,0,0" VerticalAlignment="Top" Width="91.573" IsChecked="{Binding LaserConfig.ManualBeat}" />
+        <CheckBox Content="Manual Beat Only" HorizontalAlignment="Left" Height="17" Margin="126,86,0,0" VerticalAlignment="Top" Width="121.373" IsChecked="{Binding LaserConfig.ManualBeatOnly}" />
+        <CheckBox Content="On Beat" Height="17" Margin="243,86,204.373,0" VerticalAlignment="Top" IsChecked="{Binding LaserConfig.OnBeat}" />
+        <Slider Margin="126,119,231,0" RenderTransformOrigin="-0.25,-0.955" VerticalAlignment="Top" Value="{Binding LaserConfig.LaserSpeedAdj}" Maximum="100" TickFrequency="10" />
+        <Slider Margin="126,160,231,164" Value="{Binding LaserConfig.LaserSpeedRatio}" Maximum="100" TickFrequency="10" />
+        <TextBlock HorizontalAlignment="Left" Margin="20,125.04,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Text="Laser Speed Adj" />
+        <TextBlock HorizontalAlignment="Left" Margin="20,160,0,164" TextWrapping="Wrap" Width="102"><Run Language="en-ca" Text="Laser Speed Ratio" /></TextBlock>
+        <TextBlock HorizontalAlignment="Left" Height="22" Margin="20,201,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="84.633"><Run Language="en-ca" Text="Auto Mix Delay" /></TextBlock>
+        <Slider Height="23" Margin="126,201,231,0" VerticalAlignment="Top" Maximum="100" TickFrequency="10" LargeChange="10" Value="{Binding LaserConfig.AutoMixDelay}" />
+        <ComboBox  HorizontalAlignment="Right" Height="25" Margin="0,116,51,0" VerticalAlignment="Top" Width="115" ItemsSource="{Binding LaserConfig.LaserColorModeList}" SelectedItem="{Binding LaserConfig.LaserColorMode}" />
+        <ListBox HorizontalAlignment="Right" Width="166" ItemsSource="{Binding LaserConfig.LaserEffectList}" SelectedValue="{Binding LaserConfig.LedCurrentEventID}" SelectedValuePath="ID" DisplayMemberPath="Name" Margin="0,172,19,19" />
+        <CheckBox Content="Red" HorizontalAlignment="Left" Margin="32,0,0,71.04" VerticalAlignment="Bottom" IsChecked="{Binding LaserConfig.Red}" />
+        <CheckBox Content="Green" HorizontalAlignment="Left" Margin="32,0,0,51.08" VerticalAlignment="Bottom" IsChecked="{Binding LaserConfig.Green}" />
+        <CheckBox Content="Blue" HorizontalAlignment="Left" Margin="32,0,0,31.12" VerticalAlignment="Bottom" IsChecked="{Binding LaserConfig.Blue}" />
+        <CheckBox Content="On Beat Turn On" HorizontalAlignment="Left" Margin="20,27,0,0" VerticalAlignment="Top" IsChecked="{Binding LaserConfig.UseBeatTurnOff}" />
+        <CheckBox Content="On beat reverse" HorizontalAlignment="Left" Margin="129.903,27,0,0"  VerticalAlignment="Top" IsChecked="{Binding LaserConfig.OnBeatReverse}" />
+    </Grid>
+</UserControl>

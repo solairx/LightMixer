@@ -4,6 +4,7 @@ using System.Xml.Linq;
 
 namespace BeatDetector
 {
+
     public class VDJPoi : ViewModelBase
     {
         private readonly VDJScan vDJScan;
@@ -39,7 +40,7 @@ namespace BeatDetector
         public bool IsDeleted { get; set; }
         public bool IsNew { get; set; }
 
-        public bool IsBreak
+        public virtual bool IsBreak
         {
             get
             {
@@ -47,7 +48,7 @@ namespace BeatDetector
             }
         }
 
-        public bool IsEndBreak
+        public virtual bool IsEndBreak
         {
             get
             {

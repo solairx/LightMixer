@@ -12,7 +12,7 @@ namespace LightMixer.Model.Service
 {
     [ApiController]
     [Route("[controller]")]
-    public class LightMixerController : ControllerBase
+    public class LightMixerController : Hub
 
     {
         [HttpGet]
@@ -26,6 +26,13 @@ namespace LightMixer.Model.Service
         {
             return BootStrap.UnityContainer.Resolve<SceneRenderedService>().sceneService.Scenes
                             .First(o => o.Name == scene);
+        }
+
+        [HttpGet("{scene}/ZoneList")]
+        public IEnumerable<string> GetZonesList(string scene)
+        {
+            return BootStrap.UnityContainer.Resolve<SceneRenderedService>().sceneService.Scenes
+                            .First(o => o.Name == scene).Zones.Select(o=> o.Name);
         }
 
         [HttpGet("{scene}/{zone}/effectList")]
@@ -49,8 +56,14 @@ namespace LightMixer.Model.Service
             }
         }
 
+        public async Task UpdateZoneFixtureEffect(string user, string message)
+        {
+            await Clients.All.SendAsync("ReceiveMessage", user, message);
+        }
+
     }
 
-    //public class LighMixerHub : Hub
+    
+
 
 }

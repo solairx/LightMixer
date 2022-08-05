@@ -14,7 +14,7 @@ using VisualControler;
 namespace LightMixer.Model.Service
 {
     // REMARQUE : vous pouvez utiliser la commande Renommer du menu Refactoriser pour changer le nom de classe "RemoteLightService" à la fois dans le code et le fichier de configuration.
-    public class RemoteLightService : IRemoteLightService
+   /* public class RemoteLightService : IRemoteLightService
     {
         private InterfaceKit kit;
 
@@ -300,7 +300,7 @@ namespace LightMixer.Model.Service
         public RemoteLightService()
         {
         }
-    }
+    }*/
 
     [DataContract]
     public class DmxDataContract

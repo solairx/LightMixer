@@ -39,6 +39,8 @@ namespace BeatDetector
             return false;
         }
 
+        private static List<string> lastLog = new List<string> ();
+
         private void ProcessVdjEvent(string messageLine)
         {
             Task.Factory.StartNew(() =>
@@ -53,6 +55,27 @@ namespace BeatDetector
                     var vdjEvent = new VdjEvent();
                     vdjEvent.FilePath = keyValuePairs["filePath"];
                     vdjEvent.FileName = keyValuePairs["fileName"];
+                    var candidateLogLine = vdjEvent.FilePath + vdjEvent.FileName;
+                    if (!lastLog.Contains(candidateLogLine) && candidateLogLine.Length > 5)
+                    {
+                        lock (VirtualDjServer.LogWriter)
+                        {
+                            if (!lastLog.Contains(candidateLogLine) && candidateLogLine.Length > 5)
+                            {
+                                try
+                                {
+                                    var LogWriter = new StreamWriter(@"d:\virtualdj\lightmixer.log", true);
+                                    LogWriter.WriteLine(@"D:" + candidateLogLine);
+                                    LogWriter.Close();
+                                    lastLog.Add(candidateLogLine);
+                                }
+                                catch (Exception vexp)
+                                {
+
+                                }
+                            }
+                        }
+                    }
                     vdjEvent.Elapsed = keyValuePairs["elapsed"];
                     vdjEvent.BPM = keyValuePairs["bpm"];
                     vdjEvent.CrossFader = GetDoubleFromMessage(keyValuePairs, "crossfader");
@@ -67,6 +90,10 @@ namespace BeatDetector
                     VDJSong vdjSong = null;
                     ingternalVdjDataBase.VDJDatabase.TryGetValue(fullFileName, out vdjSong);
                     vdjEvent.VDJSong = vdjSong;
+                    if (vdjSong !=null && !vdjSong.ZplaneLoad)
+                    {
+                        vdjSong.LoadZplace();
+                    }
                     VirtualDjInstanceEvent?.Invoke(vdjEvent);
                 }
                 catch (Exception)

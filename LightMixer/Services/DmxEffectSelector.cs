@@ -29,31 +29,33 @@ namespace LightMixer.Model
             var nextPoi = workingEvent?.GetNextPoi;
 
             Reset(dmxChaser);
-            if (workingEvent?.IsPoiPlausible == true && currentPoi.ID == 0)
+            if (workingEvent?.IsPoiPlausible == true && (currentPoi.ID == 0 && !(currentPoi is ZplanePoi)))
             {
                 Intro(dmxChaser);
             }
-            else if (workingEvent?.IsPoiPlausible != true || currentPoi.ID == 0)
+            else if (workingEvent?.IsPoiPlausible != true || (currentPoi.ID == 0 && !(currentPoi is ZplanePoi)))
             {
                 InvalidTrackInfo(dmxChaser);
             }
             else if (currentPoi != null && workingEvent.IsPoiPlausible)
             {
-                PoiIsValidSelectEffect(dmxChaser, workingEvent, currentPoi, nextPoi);
+                PoiIsValidSelectEffect(dmxChaser, workingEvent);
             }
         }
 
-        private void PoiIsValidSelectEffect(DmxChaser dmxChaser, VdjEvent workingEvent, VDJPoi currentPoi, VDJPoi nextPoi)
+        private void PoiIsValidSelectEffect(DmxChaser dmxChaser, VdjEvent workingEvent)
         {
+            var nextPoi = workingEvent?.GetNextPoi;
+            var currentPoi = workingEvent?.GetCurrentPoi;
             if (currentPoi.IsBreak)
             {
                 if (dmxChaser.UseFlashTransition && nextPoi != null && GetSecondBeforeNextPOI(workingEvent, nextPoi) < 10)
                 {
-                    BeforeBeatKickIn(dmxChaser, workingEvent, nextPoi);
+                    BeforeBeatKickIn(dmxChaser, workingEvent);
                 }
                 else if (nextPoi != null && GetSecondBeforeNextPOI(workingEvent, nextPoi) < 20)
                 {
-                    Before20SecBeatKickIn(dmxChaser, workingEvent, nextPoi);
+                    Before20SecBeatKickIn(dmxChaser);
                 }
                 else
                 {
@@ -160,7 +162,7 @@ namespace LightMixer.Model
             this.SceneRenderedService.SetCurrentEffect<RGBLedFixtureCollection>(SceneService.indoorSceneName, SceneService.basementZoneName, dmxChaser.LedEffectCollection.OfType<AllOffEffect>().First());
         }
 
-        private void Before20SecBeatKickIn(DmxChaser dmxChaser, VdjEvent workingEvent, VDJPoi nextPoi)
+        private void Before20SecBeatKickIn(DmxChaser dmxChaser)
         {
             this.SceneRenderedService.SetMovingHeadAlternateColor(SceneService.indoorSceneName, SceneService.basementZoneName, false);
             this.SceneRenderedService.SetMovingHeadDelayedPosition(SceneService.indoorSceneName, SceneService.basementZoneName, true);
@@ -181,8 +183,9 @@ namespace LightMixer.Model
             this.SceneRenderedService.SetMovingHeadAlternateColor(SceneService.indoorSceneName, SceneService.basementZoneName, true);
         }
 
-        private void BeforeBeatKickIn(DmxChaser dmxChaser, VdjEvent workingEvent, VDJPoi nextPoi)
+        private void BeforeBeatKickIn(DmxChaser dmxChaser, VdjEvent workingEvent)
         {
+            var nextPoi = workingEvent?.GetNextPoi;
             this.SceneRenderedService.SetMovingHeadAlternateColor(SceneService.indoorSceneName, SceneService.basementZoneName, false);
             this.SceneRenderedService.SetMovingHeadDelayedPosition(SceneService.indoorSceneName, SceneService.basementZoneName, false);
             this.SceneRenderedService.SetMovingHeadAlternateColor(SceneService.indoorSceneName, SceneService.djboothZoneName, false);

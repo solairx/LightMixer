@@ -20,12 +20,15 @@ namespace LightMixer.Model.Service
         public void ConfigureServices(IServiceCollection services)
         {
             var builder = services.AddMvcCore();
-            builder.AddJsonFormatters();
+            services.AddSignalR();
+            services.AddHostedService<LightMixerHubBackGroundService>();
+            //builder.AddJsonFormatters();
             // Default framework order
             builder.AddFormatterMappings();
 
             builder.AddAuthorization();
             /*builder.AddApiExplorer();
+             * MvcOptions.EnableEndpointRouting = false
 
             builder.AddViews();
             builder.AddRazorViewEngine();
@@ -41,8 +44,13 @@ namespace LightMixer.Model.Service
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            app.UseMvc();
-            app.UseMvcWithDefaultRoute();
+            app.UseRouting();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapHub<LightMixerHub>("/hub");
+                endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}");
+            });
+         //   app.UseMvcWithDefaultRoute();
         }
     }
 }
