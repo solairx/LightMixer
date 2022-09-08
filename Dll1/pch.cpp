@@ -85,18 +85,8 @@ HRESULT VDJ_API CMyPlugin8::OnProcessSamples(float* buffer, int nb)
 bool thrdStart = false;
 void CMyPlugin8::task1()
 {
-	//pipe = CreateFile(TEXT("\\\\.\\pipe\\virtualDJ"), GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, 0, NULL);
-//	bool connected = ConnectNamedPipe(pipe, NULL);
-//	if (!connected)
-	{
-		//DisconnectNamedPipe(pipe);
-	//	pipe = NULL;
-	}
-
 	while (thrdStart)
 	{
-		//	std::stringstream ss;
-
 		DWORD numWritten;
 		std::ofstream deck1{ TEXT("\\\\.\\pipe\\virtualDJ"), std::wofstream::trunc };
 		std::string crossfader = GetStringFromVDJ("crossfader");
@@ -117,7 +107,7 @@ void CMyPlugin8::task1()
 		Sleep(50);
 		deck1 << "\r\n";
 		Sleep(50);
-		
+
 		std::ofstream deck2{ TEXT("\\\\.\\pipe\\virtualDJ"), std::wofstream::trunc };
 		deck2 << "fileName:" << GetStringFromVDJ("deck  2 get loaded_song \"Filename\"") << "*";
 		Sleep(50);
