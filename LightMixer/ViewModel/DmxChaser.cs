@@ -38,6 +38,10 @@ namespace LightMixer.Model
         private VDJPoi selectedPOI;
         private bool useDarkMode;
         private bool useLightMode;
+        private AutomatedEffect currentAutomationEffect;
+        private string currentSongPosition;
+        private bool useAutomation;
+        private VDJSong currentVdjSong;
 
         public VDJPoi SelectedPOI
         {
@@ -74,7 +78,7 @@ namespace LightMixer.Model
             }
         }
 
-        public VDJSong CurrentVdjSong { get; private set; }
+        public VDJSong CurrentVdjSong { get => currentVdjSong; set => currentVdjSong = value; }
         public VdjEvent CurrentVDJEvent { get; private set; }
 
         public bool AutoChaser
@@ -228,6 +232,52 @@ namespace LightMixer.Model
             }
         }
 
+        public string CurrentSongPosition
+        {
+            get => currentSongPosition;
+            set
+            {
+                this.AsyncOnPropertyChange(o => this.CurrentSongPosition);
+                currentSongPosition = value;
+            }
+        }
+
+        public bool UseAutomation
+        {
+            get => useAutomation;
+            set
+            {
+                if (value != useAutomation)
+                {
+                    useAutomation = value;
+                    var song = this.CurrentVdjSong;
+                    if (song != null)
+                    {
+                        song.UseAutomation = value;
+                    }
+
+                    
+
+                    this.AsyncOnPropertyChange(o => this.UseAutomation);
+                }
+            }
+        }
+
+        public AutomatedEffect CurrentAutomationEffect
+        {
+            get => currentAutomationEffect;
+            set
+            {
+                currentAutomationEffect = value;
+                this.AsyncOnPropertyChange(o => this.CurrentAutomationEffect);
+            }
+        }
+
+        public List<AutomatedEffect> AutomationEffects
+        {
+            get => AutomatedEffect.AutomatedEffectList.Values.ToList();
+        }
+
         public DmxChaser(VirtualDjServer vdjServer)
         {
             mBpmDetector = BootStrap.UnityContainer.Resolve<BeatDetector.BeatDetector>();
@@ -240,7 +290,7 @@ namespace LightMixer.Model
 
         private void Save()
         {
-            VdjServer.vdjDataBase.Save();
+            this.CurrentVdjSong?.Save();
         }
 
         public ICommand SaveCommand
@@ -279,11 +329,18 @@ namespace LightMixer.Model
             {
                 return new DelegateCommand(() =>
                 {
+                    if (this.currentVdjSong == null || this.currentAutomationEffect == null)
+                        return;
+                    if (this.CurrentVdjSong.AutomatedPois == null)
+                    {
+                        this.CurrentVdjSong.AutomatedPois = new SortableObservableCollection<VDJPoi>(new List<AutomatedPoi>());
+                    }
                     var newPoi = CreatePOI();
                     if (newPoi != null)
                     {
-                        this.CurrentVdjSong.Pois.Add(newPoi);
-                        this.CurrentVdjSong.Pois.Sort(o => o.Position, System.ComponentModel.ListSortDirection.Ascending);
+
+                        this.CurrentVdjSong.AutomatedPois.Add(newPoi);
+                        this.CurrentVdjSong.AutomatedPois.Sort(o => o.Position, System.ComponentModel.ListSortDirection.Ascending);
                     }
                 });
             }
@@ -308,16 +365,21 @@ namespace LightMixer.Model
             effectList.AddRange(fixtureType.EffectList);
         }
 
-        private VDJPoi CreatePOI()
+        private AutomatedPoi CreatePOI()
         {
-            var nextId = pois.Max(o => o.ID) + 1;
+            var json = new VDJSong.AutomationPoi();
+            json.UseAutomation = this.useAutomation;
+            json.ID = this.CurrentVdjSong.AutomatedPois.Any() ? CurrentVdjSong.AutomatedPois.Max(o => o.ID) + 1 : 0;
+            json.AutomationEnum = this.currentAutomationEffect.Name;
             var currentPoi = CurrentVDJEvent.GetCurrentPoi;
             var vscanBPM = Convert.ToDouble(CurrentVdjSong?.Scans?.FirstOrDefault()?.Bpm);
             var currentBPM = Convert.ToDouble(CurrentVDJEvent?.BPM);
             var elapsed = Convert.ToDouble(CurrentVDJEvent?.Elapsed);
-            double position = 60 / vscanBPM / currentBPM * elapsed / 1000;
-            var poi = new VDJPoi(currentPoi.IsBreak ? "End Break " : "Break " + nextId, position.ToString(), "remix", CurrentVdjSong?.Scans?.FirstOrDefault());
 
+            json.Position = 60 / vscanBPM / currentBPM * elapsed / 1000;
+            //  var poi = new AutomatedPoi(currentPoi.IsBreak ? "End Break " : "Break " + nextId, position.ToString(), "remix", CurrentVdjSong?.Scans?.FirstOrDefault());
+            var poi = new AutomatedPoi(json, CurrentVdjSong);
+            poi.Automation = this.currentAutomationEffect.Name;
             poi.IsDeleted = false;
             poi.IsNew = true;
             return poi;
@@ -336,15 +398,21 @@ namespace LightMixer.Model
 
         public VirtualDjServer VdjServer { get; }
 
+
         public void UpdateVDJUiElement(IEnumerable<VdjEvent> activeDeck)
         {
             if (activeDeck.Count() > 0)
             {
                 this.TrackName = activeDeck.FirstOrDefault()?.FileName;
                 this.CurrentVdjSong = activeDeck.FirstOrDefault()?.VDJSong;
+                this.UseAutomation = this.currentVdjSong?.UseAutomation ?? false;
                 this.CurrentVDJEvent = activeDeck.FirstOrDefault();
                 this.CurrentPoi = activeDeck.FirstOrDefault()?.GetCurrentPoi;
-                if (activeDeck.FirstOrDefault()?.VDJSong?.ZPlanePois != null && activeDeck.FirstOrDefault()?.VDJSong?.ZPlanePois.Count > 2)
+                if (this.UseAutomation)
+                {
+                    this.POIs = activeDeck.FirstOrDefault()?.VDJSong?.AutomatedPois;
+                }
+                else if (activeDeck.FirstOrDefault()?.VDJSong?.ZPlanePois != null && activeDeck.FirstOrDefault()?.VDJSong?.ZPlanePois.Count > 2)
                 {
                     this.POIs = activeDeck.FirstOrDefault()?.VDJSong?.ZPlanePois;
                 }

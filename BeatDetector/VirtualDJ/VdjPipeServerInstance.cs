@@ -94,6 +94,12 @@ namespace BeatDetector
                     {
                         vdjSong.LoadZplace();
                     }
+                    if (vdjSong != null && !vdjSong.AutomationLoad)
+                    {
+                        vdjSong.LoadAutomation();
+                    }
+
+                    
                     VirtualDjInstanceEvent?.Invoke(vdjEvent);
                 }
                 catch (Exception)

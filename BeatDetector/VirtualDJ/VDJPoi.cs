@@ -1,9 +1,27 @@
-﻿using System;
+﻿using LightMixer.Model;
+using System;
 using System.Linq;
 using System.Xml.Linq;
+using static BeatDetector.VDJSong;
 
 namespace BeatDetector
 {
+    public class AutomatedPoi : VDJPoi
+    {
+        public AutomatedPoi(AutomationPoi json, VDJSong song) : base(json.AutomationEnum.ToString(), json.Position.ToString(), "remix", song?.Scans?.FirstOrDefault())
+        {
+            this.json = json;
+        }
+
+        public override bool IsBreak => false;
+        public override bool IsEndBreak => false;
+
+        public AutomatedEffectEnum Automation { get; set; }
+
+        public override string Name => Automation.ToString();
+
+        public AutomationPoi json { get; private set; }
+    }
 
     public class VDJPoi : ViewModelBase
     {
@@ -20,7 +38,9 @@ namespace BeatDetector
         }
 
         public VDJPoi()
-        { }
+        {
+            
+        }
 
         public VDJPoi(XElement source, VDJScan vDJScan)
         {
@@ -33,8 +53,27 @@ namespace BeatDetector
             IsNew = false;
         }
 
-        public string Name { get; }
+        public virtual string Name { get; }
         public string Pos { get; }
+
+        public string PosInSecond
+        {
+            get
+            {
+                Double dblPos = -1;
+                Double.TryParse(this.Pos, out dblPos);
+                var ts = TimeSpan.FromSeconds(dblPos);
+                if (ts.Hours > 0)
+                {
+                    return ts.Hours + ":" + ts.Minutes.ToString("00") + ":" + ts.Seconds.ToString("00") + ":" + ts.Milliseconds.ToString("00");
+                }
+                else
+                {
+                    return ts.Minutes + ":" + ts.Seconds.ToString("00") + ":" + ts.Milliseconds.ToString("00");
+                }
+
+            }
+        }
         public string Type { get; }
 
         public bool IsDeleted { get; set; }
@@ -44,7 +83,7 @@ namespace BeatDetector
         {
             get
             {
-                return Name.Contains("Break") && !IsEndBreak;
+                return Name?.Contains("Break")== true && !IsEndBreak;
             }
         }
 
@@ -52,7 +91,7 @@ namespace BeatDetector
         {
             get
             {
-                return Name.Contains("End Break");
+                return Name?.Contains("End Break") == true;
             }
         }
 
@@ -96,8 +135,12 @@ namespace BeatDetector
             {
                 isCurrent = value;
                 OnPropertyChanged(nameof(IsCurrent));
+                OnPropertyChanged(nameof(IsCurrentAndNew));
             }
         }
+
+        public bool IsCurrentAndNew => isCurrent && IsNew;
+        
 
         public bool IsNull
         {

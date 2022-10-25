@@ -64,7 +64,7 @@ namespace BeatDetector
         {
             get
             {
-                return this.VDJSong.ZPlanePois?.Count >= 3 || this.VDJSong?.Pois?.Count >= 3 || GetCurrentPoi.ID == 0;
+                return this.VDJSong.AutomatedPois.Any() || this.VDJSong.ZPlanePois?.Count >= 3 || this.VDJSong?.Pois?.Count >= 3 || GetCurrentPoi.ID == 0;
             }
         }
 
@@ -72,21 +72,31 @@ namespace BeatDetector
         {
             get
             {
-                VDJPoi currentPoi = this.VDJSong?.ZPlanePois?
-                        .Where(o => Position > o.Position && o.Type == "Zplane")
-                        .OrderBy(o => o.Position)
-                        .LastOrDefault();
-
-                if (currentPoi == null)
+                if (VDJSong?.UseAutomation == true)
                 {
-                    currentPoi = this.VDJSong?.Pois
-                            .Where(o => Position > o.Position && o.Type == "remix")
+                    return this.VDJSong?.AutomatedPois?
+                            .Where(o => Position > o.Position)
+                            .OrderBy(o => o.Position)
+                            .LastOrDefault() ?? DefaultPOI;
+                }
+                else
+                {
+                    VDJPoi currentPoi = this.VDJSong?.ZPlanePois?
+                            .Where(o => Position > o.Position && o.Type == "Zplane")
                             .OrderBy(o => o.Position)
                             .LastOrDefault();
-                }
-                if (currentPoi != null)
-                {
-                    return currentPoi;
+
+                    if (currentPoi == null)
+                    {
+                        currentPoi = this.VDJSong?.Pois
+                                .Where(o => Position > o.Position && o.Type == "remix")
+                                .OrderBy(o => o.Position)
+                                .LastOrDefault();
+                    }
+                    if (currentPoi != null)
+                    {
+                        return currentPoi;
+                    }
                 }
                 return DefaultPOI;
             }

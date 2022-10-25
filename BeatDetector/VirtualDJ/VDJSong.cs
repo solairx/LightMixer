@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using LightMixer.Model;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,7 +12,10 @@ namespace BeatDetector
     public class VDJSong
     {
         public XElement XmlNode;
+        private bool useAutomation;
+
         public bool ZplaneLoad { get; set; } = false;
+        public bool AutomationLoad { get; set; } = false;
 
         public VDJSong(XElement source, IEnumerable<VDJScan> scanList, IEnumerable<VDJPoi> poiList)
         {
@@ -29,6 +33,25 @@ namespace BeatDetector
 
         public SortableObservableCollection<VDJPoi> ZPlanePois { get; set; }
 
+        public SortableObservableCollection<VDJPoi> AutomatedPois { get; set; }
+
+        public bool UseAutomation
+        {
+            get => useAutomation; set
+            {
+                if (AutomatedPois != null)
+                {
+                    foreach (var pois in AutomatedPois.OfType<AutomatedPoi>())
+                    {
+                        pois.json.UseAutomation = value;
+                    }
+                }
+                useAutomation = value;
+            }
+        }
+
+
+
         public override string ToString()
         {
             return FilePath;
@@ -42,7 +65,7 @@ namespace BeatDetector
                 {
                     var fileContent = File.ReadAllText(FilePath + ".json");
 
-                    var json = JsonConvert.DeserializeObject<IEnumerable<ZPlanePOI>>(fileContent) ;
+                    var json = JsonConvert.DeserializeObject<IEnumerable<ZPlanePOI>>(fileContent);
                     var order = json.Select(o => o.G)
                     .Distinct()
                     .OrderBy(o => o)
@@ -73,6 +96,42 @@ namespace BeatDetector
             }
         }
 
+        public void Save()
+        {
+            var json = JsonConvert.SerializeObject(AutomatedPois.OfType<AutomatedPoi>().Select(o=>o.json));
+            File.WriteAllText(FilePath + ".a.json", json);
+        }
+
+        public void LoadAutomation()
+        {
+            if (File.Exists(FilePath + ".a.json"))
+            {
+                Task.Factory.StartNew(() =>
+                {
+                    var fileContent = File.ReadAllText(FilePath + ".a.json");
+
+                    var json = JsonConvert.DeserializeObject<IEnumerable<AutomationPoi>>(fileContent);
+                    var automationList = new List<AutomatedPoi>();
+
+                    foreach (var zplaneElement in json)
+                    {
+                        if (zplaneElement.UseAutomation)
+                        {
+                            this.UseAutomation = true;
+                        }
+                        var vdjpois = new AutomatedPoi(zplaneElement, this);
+                        automationList.Add(vdjpois);
+                    }
+
+                    var automatedPoisList = new SortableObservableCollection<VDJPoi>(automationList);
+                    automatedPoisList.Sort(o => o.Position, System.ComponentModel.ListSortDirection.Ascending);
+                    this.AutomatedPois = automatedPoisList;
+                    AutomationLoad = true;
+                });
+
+            }
+        }
+
         public class ZPlanePOI
         {
             public int R { get; set; }
@@ -80,6 +139,15 @@ namespace BeatDetector
             public int B { get; set; }
             public TimeSpan Start { get; set; }
             public TimeSpan Stop { get; set; }
+        }
+
+        public class AutomationPoi
+        {
+            public AutomatedEffectEnum AutomationEnum { get; set; }
+            public int ID { get; set; }
+
+            public double Position { get;set;}
+            public bool UseAutomation { get; set; }
         }
     }
 }

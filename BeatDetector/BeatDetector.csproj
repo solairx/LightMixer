@@ -100,6 +100,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseViewModel.cs" />
+    <Compile Include="VirtualDJ\AutomatedEffect.cs" />
     <Compile Include="VirtualDJ\ZplanePoi.cs" />
     <Compile Include="WaveInBeatDetector.cs" />
     <Compile Include="BeatDetector.cs" />

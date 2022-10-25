@@ -22,6 +22,7 @@ HRESULT VDJ_API CMyPlugin8::OnLoad()
 
 	//Sleep(5000);
 	//this->OnStart();
+	this->OnStart();
 	return S_OK;
 }
 //-----------------------------------------------------------------------------
@@ -85,6 +86,7 @@ HRESULT VDJ_API CMyPlugin8::OnProcessSamples(float* buffer, int nb)
 bool thrdStart = false;
 void CMyPlugin8::task1()
 {
+//	Sleep(3000);
 	while (thrdStart)
 	{
 		DWORD numWritten;

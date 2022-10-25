@@ -23,7 +23,7 @@
 #include "vdjDsp8.h"
 #include "string"
 
-class CMyPlugin8 : public IVdjPluginDsp8
+class CMyPlugin8 : public IVdjPlugin8
 {
 public:
 	HRESULT VDJ_API OnLoad();
