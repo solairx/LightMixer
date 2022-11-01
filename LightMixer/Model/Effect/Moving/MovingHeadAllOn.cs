@@ -15,13 +15,10 @@ namespace LightMixer.Model
                 {
                     ((MovingHeadFixture)fixture).ColorMode = MovingHeadFixture.ColorMacro.Auto;
                     ((MovingHeadFixture)fixture).GoboPaturn = _sharedEffectModel.CurrentMovingHeadGobo;
-                    //((MovingHeadFixture)fixture).Pan = 0;
-                    //((MovingHeadFixture)fixture).Tilt = Convert.ToUInt16(this._sharedEffectModel.MaxSpeed);
                     if (DateTime.Now.Subtract(_sharedEffectModel.IsCurrentMovingHeadProgramDirty).TotalMilliseconds < 250)
                     {
                         ((MovingHeadFixture)fixture).ProgramMode = _sharedEffectModel.CurrentMovingHeadProgram;
                     }
-                    //((MovingHeadFixture)fixture).ProgramMode = MovingHeadFixture.Program.Disable;
                     ((MovingHeadFixture)fixture).Speed = this.GetMaxedByte(this._sharedEffectModel.MaxSpeed * (this.bpm < 40 ? 128 : this.bpm));
                     ((MovingHeadFixture)fixture).RedValue = this.SetValueMovingHead(this._sharedEffectModel.Red);
                     ((MovingHeadFixture)fixture).GreenValue = this.SetValueMovingHead(this._sharedEffectModel.Green);

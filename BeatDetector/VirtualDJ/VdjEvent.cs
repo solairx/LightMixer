@@ -64,7 +64,7 @@ namespace BeatDetector
         {
             get
             {
-                return this.VDJSong.AutomatedPois.Any() || this.VDJSong.ZPlanePois?.Count >= 3 || this.VDJSong?.Pois?.Count >= 3 || GetCurrentPoi.ID == 0;
+                return this.VDJSong.AutomatedPois?.ToArray().Any() == true || this.VDJSong.ZPlanePois?.ToArray().Length >= 3 || this.VDJSong?.Pois?.Count >= 3 || GetCurrentPoi.ID == 0;
             }
         }
 
@@ -75,13 +75,15 @@ namespace BeatDetector
                 if (VDJSong?.UseAutomation == true)
                 {
                     return this.VDJSong?.AutomatedPois?
-                            .Where(o => Position > o.Position)
-                            .OrderBy(o => o.Position)
-                            .LastOrDefault() ?? DefaultPOI;
+                        .ToArray()
+                        .Where(o => Position > o.Position)
+                        .OrderBy(o => o.Position)
+                        .LastOrDefault() ?? DefaultPOI;
                 }
                 else
                 {
                     VDJPoi currentPoi = this.VDJSong?.ZPlanePois?
+                            .ToArray()
                             .Where(o => Position > o.Position && o.Type == "Zplane")
                             .OrderBy(o => o.Position)
                             .LastOrDefault();

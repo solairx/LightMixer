@@ -10,6 +10,8 @@ namespace LightMixer.Model
         public static SceneRenderedService SceneRenderedService { get; set; }
 
         public AutomatedEffectEnum Name { get; }
+
+        public string DisplayName { get; set; }
         
         public static Dictionary<AutomatedEffectEnum, AutomatedEffect> AutomatedEffectList = new Dictionary<AutomatedEffectEnum, AutomatedEffect>();
 
@@ -34,7 +36,7 @@ namespace LightMixer.Model
 
         public void Run(VdjEvent workingEvent)
         {
-            dmxChaser.CurrentAutomationEffect = this;
+            dmxChaser.SetCurrentAutomationEffectInternal(this);
             RunInternal(workingEvent);
         }
 

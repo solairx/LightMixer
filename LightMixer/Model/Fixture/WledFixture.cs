@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading;
@@ -157,6 +158,10 @@ namespace LightMixer.Model.Fixture
         private HttpClient client;
         private string lastQuery = "";
 
+        public event CurrentEffectChangedEventHandler CurrentEffectChanged;
+
+        public delegate void CurrentEffectChangedEventHandler();
+
         public WledFixture(string serverIp)
         {
             IsStaticOnly = true;
@@ -180,11 +185,25 @@ namespace LightMixer.Model.Fixture
 
         public override bool IsRenderOnDmx => false;
 
-        private static WLedEffectI CurrentEffect;
+        private static WLedEffectI CurrentWledEffect;
         private static DateTime lastWledEffectChanged = DateTime.Now;
+        private WledEffectCategory wledEffectCategory = WledEffectCategory.High;
 
-        public WledEffectCategory WledEffectCategory { get; set; } = WledEffectCategory.High;
+        public WledEffectCategory WledEffectCategory
+        {
+            get => wledEffectCategory;
+            set 
+            {
+                if (wledEffectCategory != value)
+                {
+                    wledEffectCategory = value;
+                    CurrentEffectChanged?.Invoke();
+                }
+            }
+        }
 
+        public static IEnumerable<WledEffectCategory> WledEffectCategoryList => Enum.GetValues(typeof(WledEffectCategory))
+            .Cast<WledEffectCategory>();
         public override byte?[] Render()
         {
             this.SetOn();
@@ -204,22 +223,22 @@ namespace LightMixer.Model.Fixture
                     seg.on = false;
                 }
 
-                if (CurrentEffect == null || DateTime.Now.Subtract(lastWledEffectChanged).TotalSeconds > 5 || CurrentEffect.Category != WledEffectCategory)
+                if (CurrentWledEffect == null || DateTime.Now.Subtract(lastWledEffectChanged).TotalSeconds > 5 || CurrentWledEffect.Category != WledEffectCategory)
                 {
                     var allAvailableEffect = WledEffect2.EffectList
                         .Where(o => o.Category == WledEffectCategory);
 
-                    if (!seg.on || CurrentEffect?.Category != WledEffectCategory)
+                    if (!seg.on || CurrentWledEffect?.Category != WledEffectCategory)
                     {
-                        CurrentEffect = allAvailableEffect
-                            .SkipWhile(o => o != CurrentEffect)
+                        CurrentWledEffect = allAvailableEffect
+                            .SkipWhile(o => o != CurrentWledEffect)
                             .Skip(1)
                             .FirstOrDefault();
                     }
 
-                    if (CurrentEffect == null)
+                    if (CurrentWledEffect == null)
                     {
-                        CurrentEffect = allAvailableEffect.First();
+                        CurrentWledEffect = allAvailableEffect.First();
                     }
 
                     lastWledEffectChanged = DateTime.Now;
@@ -239,9 +258,9 @@ namespace LightMixer.Model.Fixture
                 seg.col[2][2] = this.Blue3Value;
                 if (this.IsStaticOnly)
                 {
-                    CurrentEffect = WledEffect2.EffectList.Single(e => e.ID == 0);
+                    CurrentWledEffect = WledEffect2.EffectList.Single(e => e.ID == 0);
                 }
-                CurrentEffect?.Apply(seg);
+                CurrentWledEffect?.Apply(seg);
             }
             catch (Exception)
             {

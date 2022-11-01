@@ -33,7 +33,7 @@ namespace BeatDetector
 
         public SortableObservableCollection<VDJPoi> ZPlanePois { get; set; }
 
-        public SortableObservableCollection<VDJPoi> AutomatedPois { get; set; }
+        public SortableObservableCollection<VDJPoi> AutomatedPois { get; set; } 
 
         public bool UseAutomation
         {
@@ -65,7 +65,7 @@ namespace BeatDetector
                 {
                     var fileContent = File.ReadAllText(FilePath + ".json");
 
-                    var json = JsonConvert.DeserializeObject<IEnumerable<ZPlanePOI>>(fileContent);
+                    var json = JsonConvert.DeserializeObject<IEnumerable<ZPlanePoiJson>>(fileContent);
                     var order = json.Select(o => o.G)
                     .Distinct()
                     .OrderBy(o => o)
@@ -110,7 +110,7 @@ namespace BeatDetector
                 {
                     var fileContent = File.ReadAllText(FilePath + ".a.json");
 
-                    var json = JsonConvert.DeserializeObject<IEnumerable<AutomationPoi>>(fileContent);
+                    var json = JsonConvert.DeserializeObject<IEnumerable<AutomatedPOIJson>>(fileContent);
                     var automationList = new List<AutomatedPoi>();
 
                     foreach (var zplaneElement in json)
@@ -132,7 +132,7 @@ namespace BeatDetector
             }
         }
 
-        public class ZPlanePOI
+        public class ZPlanePoiJson
         {
             public int R { get; set; }
             public int G { get; set; }
@@ -141,7 +141,7 @@ namespace BeatDetector
             public TimeSpan Stop { get; set; }
         }
 
-        public class AutomationPoi
+        public class AutomatedPOIJson
         {
             public AutomatedEffectEnum AutomationEnum { get; set; }
             public int ID { get; set; }

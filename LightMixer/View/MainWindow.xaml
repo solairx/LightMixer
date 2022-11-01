@@ -29,13 +29,13 @@
             <ColumnDefinition Width="101*" />
         </Grid.ColumnDefinitions>
 
-        <Grid.LayoutTransform>
+       <!-- <Grid.LayoutTransform>
             <ScaleTransform x:Name="ApplicationScaleTransform"
                         CenterX="0"
                         CenterY="0"
                         ScaleX="{Binding ElementName=myMainWindow, Path=ScaleValue}"
                         ScaleY="{Binding ElementName=myMainWindow, Path=ScaleValue}" />
-        </Grid.LayoutTransform>
+        </Grid.LayoutTransform>-->
 
         <TabControl TabStripPlacement="Left" Grid.ColumnSpan="2">
 
@@ -95,6 +95,11 @@
                 <View:DmxConsoleView>
                 </View:DmxConsoleView>
             </TabItem>
+            <TabItem Header="AutomationDesigner" Margin="0" Foreground="White">
+                <View:AutomationDesigner>
+                </View:AutomationDesigner>
+            </TabItem>
         </TabControl>
+        
     </Grid>
 </Window>

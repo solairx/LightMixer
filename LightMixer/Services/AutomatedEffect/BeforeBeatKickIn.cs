@@ -6,7 +6,7 @@ namespace LightMixer.Model
 {
     public class BeforeBeatKickIn : AutomatedEffect
     {        
-        public BeforeBeatKickIn() : base(AutomatedEffectEnum.BeforeBeatKickIn) { }
+        public BeforeBeatKickIn() : base(AutomatedEffectEnum.BeforeBeatKickIn) { DisplayName = "Beat repeat"; }
 
         public override void RunInternal(VdjEvent workingEvent)
         {

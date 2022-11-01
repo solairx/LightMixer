@@ -431,7 +431,7 @@ namespace LightMixer.Model
                 this._currentMovingHeadProgram = MovingHeadFixture.Program.Circle;
         }
 
-        public ObservableCollection<MovingHeadFixture.Program> MovingHeadProgram
+        public static ObservableCollection<MovingHeadFixture.Program> MovingHeadProgram
         {
             get
             {
@@ -464,7 +464,7 @@ namespace LightMixer.Model
             }
         }
 
-        public ObservableCollection<MovingHeadFixture.Gobo> MovingHeadGobo
+        public static ObservableCollection<MovingHeadFixture.Gobo> MovingHeadGobo
         {
             get
             {

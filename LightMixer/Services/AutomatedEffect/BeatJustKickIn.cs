@@ -6,7 +6,7 @@ namespace LightMixer.Model
 {
     public class BeatJustKickIn : AutomatedEffect
     {
-        public BeatJustKickIn() : base(AutomatedEffectEnum.BeatJustKickIn) { }
+        public BeatJustKickIn() : base(AutomatedEffectEnum.BeatJustKickIn) { DisplayName = "Alternate Rotate Flash dj"; }
         public override void RunInternal(VdjEvent workingEvent)
         {
             SceneRenderedService.SetMovingHeadAlternateColor(SceneService.indoorSceneName, SceneService.basementZoneName, false);

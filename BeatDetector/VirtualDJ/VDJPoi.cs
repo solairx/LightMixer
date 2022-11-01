@@ -8,9 +8,12 @@ namespace BeatDetector
 {
     public class AutomatedPoi : VDJPoi
     {
-        public AutomatedPoi(AutomationPoi json, VDJSong song) : base(json.AutomationEnum.ToString(), json.Position.ToString(), "remix", song?.Scans?.FirstOrDefault())
+        public AutomatedPoi(AutomatedPOIJson json, VDJSong song) : base(json.AutomationEnum.ToString(), json.Position.ToString(), "remix", song?.Scans?.FirstOrDefault())
         {
             this.json = json;
+
+            Automation = json.AutomationEnum;
+
         }
 
         public override bool IsBreak => false;
@@ -20,7 +23,7 @@ namespace BeatDetector
 
         public override string Name => Automation.ToString();
 
-        public AutomationPoi json { get; private set; }
+        public AutomatedPOIJson json { get; private set; }
     }
 
     public class VDJPoi : ViewModelBase

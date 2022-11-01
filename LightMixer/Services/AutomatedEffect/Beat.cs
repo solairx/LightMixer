@@ -6,7 +6,7 @@ namespace LightMixer.Model
 {
     public class Beat : AutomatedEffect
     {
-        public Beat() : base(AutomatedEffectEnum.Beat) { }
+        public Beat() : base(AutomatedEffectEnum.Beat) { DisplayName = "Beat Rotate, MH DJ Flash"; }
         public override void RunInternal(VdjEvent workingEvent)
         {
             SceneRenderedService.SetMovingHeadAlternateColor(SceneService.indoorSceneName, SceneService.basementZoneName, false);

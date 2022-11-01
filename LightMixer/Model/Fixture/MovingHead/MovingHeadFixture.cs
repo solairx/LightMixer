@@ -7,7 +7,21 @@ namespace LightMixer.Model.Fixture
     public class MovingHeadFixture : RgbFixtureBase
     {
         public RgbwMovingHeadMasterFixture Master { get; set; }
-        public bool EnableAlternateColor { get; set; }
+        public bool EnableAlternateColor
+        {
+            get => enableAlternateColor; set
+            {
+                if (enableAlternateColor != value)
+                {
+                    enableAlternateColor = value;
+                    CurrentEffectChanged?.Invoke();
+                }
+            }
+        }
+
+        public event CurrentEffectChangedEventHandler CurrentEffectChanged;
+
+        public delegate void CurrentEffectChangedEventHandler();
 
         public bool EnableDelayedPosition
         {
@@ -25,6 +39,7 @@ namespace LightMixer.Model.Fixture
                         RenderProgram(1, 0);
                     }
                     enableDelayedPosition = value;
+                    CurrentEffectChanged?.Invoke();
                 }
             }
         }
@@ -66,32 +81,67 @@ namespace LightMixer.Model.Fixture
 
         public byte Speed
         {
-            get;
-            set;
+            get => speed;
+            set
+            {
+                if (speed != value)
+                {
+                    speed = value;
+                    CurrentEffectChanged?.Invoke();
+                }
+            }
         }
 
         public byte SpeedColor
         {
-            get;
-            set;
+            get => speedColor;
+            set
+            {
+                if (speedColor != value)
+                {
+                    speedColor = value;
+                    CurrentEffectChanged?.Invoke();
+                }
+            }
         }
 
         public ColorMacro ColorMode
         {
-            get;
-            set;
+            get => colorMode;
+            set
+            {
+                if (colorMode != value)
+                {
+                    colorMode = value;
+                    CurrentEffectChanged?.Invoke();
+                }
+            }
         }
 
         public Gobo GoboPaturn
         {
-            get;
-            set;
+            get => goboPaturn;
+            set
+            {
+                if (goboPaturn != value)
+                {
+                    goboPaturn = value;
+                    CurrentEffectChanged?.Invoke();
+                }
+            }
         }
 
         public Program ProgramMode
         {
-            get;
-            set;
+            get => programMode;
+            set
+            {
+                if (programMode != value)
+                {
+                    programMode = value;
+                    CurrentEffectChanged?.Invoke();
+                }
+            }
         }
 
         public override int DmxLenght => 13;
@@ -100,6 +150,12 @@ namespace LightMixer.Model.Fixture
 
         public double EffectPositionRatio = 0;
         private bool enableDelayedPosition;
+        private Program programMode;
+        private Gobo goboPaturn;
+        private ColorMacro colorMode;
+        private byte speedColor;
+        private byte speed;
+        private bool enableAlternateColor;
 
         public override byte?[] Render()
         {

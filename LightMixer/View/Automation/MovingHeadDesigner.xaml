@@ -1,0 +1,40 @@
+﻿<UserControl x:Class="LightMixer.View.Automation.MovingHeadDesigner"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:LightMixer.View.Automation"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="visibilityConverter"/>
+    </UserControl.Resources>
+    <GroupBox Header="{Binding Name}" FontSize="12">
+        <StackPanel Orientation="Horizontal">
+            <StackPanel Orientation="Vertical">
+                <ListBox ItemsSource="{Binding EffectList}" SelectedItem="{Binding SelectedEffect}" DisplayMemberPath="Name"/>
+                <ComboBox ItemsSource="{Binding MovingHeadProgram}" SelectedValue="{Binding CurrentMovingHeadProgram}"  />
+                <ComboBox SelectedValue="{Binding CurrentMovingHeadGobo}" ItemsSource="{Binding MovingHeadGobo}" />
+                <Slider Minimum="0.1" Maximum="2" Value="{Binding MaxSpeed}"/>
+            </StackPanel>
+            <StackPanel Orientation="Vertical">
+                <CheckBox Content="Use Alternate Color:" IsChecked="{Binding UseAlternateColor}" />
+                <CheckBox Content="Use Delayed Position:" IsChecked="{Binding UseDelatedPosition}" />
+            </StackPanel>
+            <Expander Visibility="{Binding ChildrenVisibility, Converter={StaticResource visibilityConverter}}">
+                <ItemsControl ItemsSource="{Binding Childrens}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <local:MovingHeadDesigner DataContext="{Binding}"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Expander>
+        </StackPanel>
+    </GroupBox>
+</UserControl>

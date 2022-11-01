@@ -6,7 +6,7 @@ namespace LightMixer.Model
 {
     public class Before20SecBeatKickIn : AutomatedEffect
     {       
-        public Before20SecBeatKickIn() : base(AutomatedEffectEnum.Before20SecBeatKickIn) { }
+        public Before20SecBeatKickIn() : base(AutomatedEffectEnum.Before20SecBeatKickIn) { DisplayName = "Flash all, Balancing"; }
         public override void RunInternal(VdjEvent workingEvent)
         {
             SceneRenderedService.SetMovingHeadAlternateColor(SceneService.indoorSceneName, SceneService.basementZoneName, false);

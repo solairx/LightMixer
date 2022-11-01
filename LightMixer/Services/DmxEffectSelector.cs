@@ -26,25 +26,30 @@ namespace LightMixer.Model
 
             var currentPoi = workingEvent?.GetCurrentPoi;
             DisplayElapsed(dmxChaser, workingEvent);
+            var manualEffect = dmxChaser.CurrentAutomationEffect;
 
-            if (!dmxChaser.AutoChaser)
-                return;
-
-            if (currentPoi is AutomatedPoi)
+            if (dmxChaser.AutoChaser)
             {
-                AutomatedEffect.Get((currentPoi as AutomatedPoi).Automation).Run(workingEvent);
+                if (currentPoi is AutomatedPoi)
+                {
+                    AutomatedEffect.Get((currentPoi as AutomatedPoi).Automation).Run(workingEvent);
+                }
+                else if (workingEvent?.IsPoiPlausible == true && currentPoi.ID == 0 && !(currentPoi is ZplanePoi))
+                {
+                    AutomatedEffect.Get(AutomatedEffectEnum.Intro).Run(workingEvent);
+                }
+                else if (workingEvent?.IsPoiPlausible != true || (currentPoi.ID == 0 && !(currentPoi is ZplanePoi)))
+                {
+                    InvalidTrackInfo(dmxChaser);
+                }
+                else if (currentPoi != null && workingEvent.IsPoiPlausible)
+                {
+                    PoiIsValidSelectEffect(dmxChaser, workingEvent);
+                }
             }
-            else if (workingEvent?.IsPoiPlausible == true && currentPoi.ID == 0 && !(currentPoi is ZplanePoi))
+            else if (manualEffect !=null)
             {
-                AutomatedEffect.Get(AutomatedEffectEnum.Intro).Run(workingEvent);
-            }
-            else if (workingEvent?.IsPoiPlausible != true || (currentPoi.ID == 0 && !(currentPoi is ZplanePoi)))
-            {
-                InvalidTrackInfo(dmxChaser);
-            }
-            else if (currentPoi != null && workingEvent.IsPoiPlausible)
-            {
-                PoiIsValidSelectEffect(dmxChaser, workingEvent);
+                manualEffect.Run(workingEvent);
             }
         }
 

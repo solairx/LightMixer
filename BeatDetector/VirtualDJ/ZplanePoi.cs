@@ -5,12 +5,13 @@ namespace BeatDetector
     public class ZplanePoi : VDJPoi
     {
         public ZplanePoi(int energyPos, int energyMax, int g, int b, string pos, VDJScan vDJScan)
-            : base("E=" + energyPos + "G=" + g + "B=" + b, pos, "Zplane", vDJScan)
+            : base("E=" + energyPos + "G=" + g + "B=" + b + "T=" + (g+b), pos, "Zplane", vDJScan)
         {
             EnergyPos = energyPos;
             EnergyMax = energyMax;
             G = g;
             B = b;
+            
         }
 
         public int EnergyPos { get; }

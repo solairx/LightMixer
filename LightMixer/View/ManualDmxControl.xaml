@@ -13,8 +13,8 @@
         <Binding Mode="OneWay" Source="{StaticResource ManualDmxControlViewModelDataSource}" />
     </UserControl.DataContext>
     <Grid>
-        <ComboBox  HorizontalAlignment="Left" Height="28" Margin="70,94,0,0" VerticalAlignment="Top" Width="123" ItemsSource="{Binding DmxModel.DmxChannelStatus}" SelectedValue="{Binding SelectedChannel}" DisplayMemberPath="DmxChannelNumber" SelectedValuePath="DmxChannelNumber" />
-        <Slider x:Name="slider" Height="24" Margin="70,126,96,0" VerticalAlignment="Top" Minimum="{Binding DmxModel.MinDmxValue, Mode=OneWay}" Maximum="{Binding DmxModel.MaxDmxValue, Mode=OneWay}" Value="{Binding SelectedValue}" />
+        <ComboBox  HorizontalAlignment="Left" Height="28" Margin="10,312,0,0" VerticalAlignment="Top" Width="123" ItemsSource="{Binding DmxModel.DmxChannelStatus}" SelectedValue="{Binding SelectedChannel}" DisplayMemberPath="DmxChannelNumber" SelectedValuePath="DmxChannelNumber" />
+        <Slider x:Name="slider" Height="24" Margin="158,316,8,0" VerticalAlignment="Top" Minimum="{Binding DmxModel.MinDmxValue, Mode=OneWay}" Maximum="{Binding DmxModel.MaxDmxValue, Mode=OneWay}" Value="{Binding SelectedValue}" />
         <TextBlock HorizontalAlignment="Right" Height="24" Margin="0,126,8,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="63" DataContext="{Binding Value, ElementName=slider}" Text="{Binding Mode=OneWay}" />
     </Grid>
 </UserControl>

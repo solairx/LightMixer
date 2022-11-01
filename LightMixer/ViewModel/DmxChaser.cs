@@ -256,7 +256,7 @@ namespace LightMixer.Model
                         song.UseAutomation = value;
                     }
 
-                    
+
 
                     this.AsyncOnPropertyChange(o => this.UseAutomation);
                 }
@@ -269,8 +269,15 @@ namespace LightMixer.Model
             set
             {
                 currentAutomationEffect = value;
+                this.AutoChaser = false;
                 this.AsyncOnPropertyChange(o => this.CurrentAutomationEffect);
             }
+        }
+
+        public void SetCurrentAutomationEffectInternal(AutomatedEffect effect)
+        {
+            currentAutomationEffect = effect;
+            this.AsyncOnPropertyChange(o => this.CurrentAutomationEffect);
         }
 
         public List<AutomatedEffect> AutomationEffects
@@ -307,18 +314,14 @@ namespace LightMixer.Model
             {
                 return new DelegateCommand(() =>
                 {
+          
                     if (selectedPOI == null)
                     {
                         return;
                     }
-                    if (selectedPOI.IsNew)
-                    {
-                        this.POIs.Remove(selectedPOI);
-                    }
-                    else
-                    {
-                        SelectedPOI.IsDeleted = true;
-                    }
+                    SelectedPOI.IsDeleted = true;
+                    this.POIs.Remove(selectedPOI);
+                    
                 });
             }
         }
@@ -367,7 +370,7 @@ namespace LightMixer.Model
 
         private AutomatedPoi CreatePOI()
         {
-            var json = new VDJSong.AutomationPoi();
+            var json = new VDJSong.AutomatedPOIJson();
             json.UseAutomation = this.useAutomation;
             json.ID = this.CurrentVdjSong.AutomatedPois.Any() ? CurrentVdjSong.AutomatedPois.Max(o => o.ID) + 1 : 0;
             json.AutomationEnum = this.currentAutomationEffect.Name;
