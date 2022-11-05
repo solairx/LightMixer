@@ -6,7 +6,8 @@ namespace LightMixer.Model
 {
     public class Chorus : AutomatedEffect
     {
-        public Chorus() : base(AutomatedEffectEnum.Chorus) { DisplayName = "Chorus Alternate+Delayed"; }
+        public static string ID = "3";
+        public Chorus() : base(ID) { DisplayName = "Chorus Alternate+Delayed"; }
         public override void RunInternal(VdjEvent workingEvent)
         {
             SceneRenderedService.SetMovingHeadDelayedPosition(SceneService.indoorSceneName, SceneService.basementZoneName, true);

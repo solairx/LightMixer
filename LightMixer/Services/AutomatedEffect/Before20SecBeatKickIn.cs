@@ -5,8 +5,9 @@ using System.Linq;
 namespace LightMixer.Model
 {
     public class Before20SecBeatKickIn : AutomatedEffect
-    {       
-        public Before20SecBeatKickIn() : base(AutomatedEffectEnum.Before20SecBeatKickIn) { DisplayName = "Flash all, Balancing"; }
+    {
+        public static string ID = "4";
+        public Before20SecBeatKickIn() : base(ID) { DisplayName = "Flash all, Balancing"; }
         public override void RunInternal(VdjEvent workingEvent)
         {
             SceneRenderedService.SetMovingHeadAlternateColor(SceneService.indoorSceneName, SceneService.basementZoneName, false);

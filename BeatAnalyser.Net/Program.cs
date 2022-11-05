@@ -16,7 +16,7 @@ using Newtonsoft.Json;
 
 namespace BeatAnalyser.Net
 {
-    internal class Program
+    internal partial class Program
     {
         private class FileRetry
         {
@@ -367,17 +367,6 @@ namespace BeatAnalyser.Net
                     WaveFileWriter.CreateWaveFile(_outPath_, pcm);
                 }
             }
-        }
-
-
-
-        public class ZPlanePOI
-        {
-            public int R { get; set; }
-            public int G { get; set; }
-            public int B { get; set; }
-            public TimeSpan Start { get; set; }
-            public TimeSpan Stop { get; set; }
         }
     }
 

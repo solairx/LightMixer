@@ -9,11 +9,11 @@ namespace LightMixer.Model
         public static SharedEffectModel Model { get; set; }
         public static SceneRenderedService SceneRenderedService { get; set; }
 
-        public AutomatedEffectEnum Name { get; }
+        public string Name { get; }
 
         public string DisplayName { get; set; }
         
-        public static Dictionary<AutomatedEffectEnum, AutomatedEffect> AutomatedEffectList = new Dictionary<AutomatedEffectEnum, AutomatedEffect>();
+        public static Dictionary<string, AutomatedEffect> AutomatedEffectList = new Dictionary<string, AutomatedEffect>();
 
         static AutomatedEffect()
         {
@@ -24,13 +24,13 @@ namespace LightMixer.Model
             new BeforeBeatKickIn();
             new Intro(); 
         }
-        public AutomatedEffect(AutomatedEffectEnum name)
+        public AutomatedEffect(string name)
         {
             Name = name;
             AutomatedEffectList.Add(name, this);
         }
 
-        public static AutomatedEffect Get(AutomatedEffectEnum name) => AutomatedEffectList[name];
+        public static AutomatedEffect Get(string name) => AutomatedEffectList[name];
 
         public abstract void RunInternal(VdjEvent workingEvent);
 

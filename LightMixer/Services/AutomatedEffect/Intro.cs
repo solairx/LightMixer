@@ -6,7 +6,9 @@ namespace LightMixer.Model
 {
     public class Intro : AutomatedEffect
     {
-        public Intro() : base(AutomatedEffectEnum.Intro) { DisplayName = "Intro Alternate+Med+Rotate MH=Flash"; }
+        public static string ID = "5";
+
+        public Intro() : base(ID) { DisplayName = "Intro Alternate+Med+Rotate MH=Flash"; }
         public override void RunInternal(VdjEvent workingEvent)
         {
             SceneRenderedService.SetMovingHeadAlternateColor(SceneService.indoorSceneName, SceneService.basementZoneName, false);

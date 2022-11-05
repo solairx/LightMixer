@@ -19,7 +19,7 @@ namespace BeatDetector
         public override bool IsBreak => false;
         public override bool IsEndBreak => false;
 
-        public AutomatedEffectEnum Automation { get; set; }
+        public string Automation { get; set; }
 
         public override string Name => Automation.ToString();
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace LightMixer.Model
 {
-    public enum AutomatedEffectEnum
+    /*public enum AutomatedEffectEnum
     {
         BeforeBeatKickIn,
         Beat,
@@ -11,5 +11,5 @@ namespace LightMixer.Model
         Chorus,
         Before20SecBeatKickIn,
         Intro,
-    }
+    }*/
 }

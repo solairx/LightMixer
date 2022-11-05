@@ -36,7 +36,7 @@ namespace LightMixer.Model
                 }
                 else if (workingEvent?.IsPoiPlausible == true && currentPoi.ID == 0 && !(currentPoi is ZplanePoi))
                 {
-                    AutomatedEffect.Get(AutomatedEffectEnum.Intro).Run(workingEvent);
+                    AutomatedEffect.Get(Intro.ID).Run(workingEvent);
                 }
                 else if (workingEvent?.IsPoiPlausible != true || (currentPoi.ID == 0 && !(currentPoi is ZplanePoi)))
                 {
@@ -83,30 +83,30 @@ namespace LightMixer.Model
             {
                 if (dmxChaser.UseFlashTransition && nextPoi != null && GetSecondBeforeNextPOI(workingEvent, nextPoi) < 10)
                 {
-                    AutomatedEffect.Get(AutomatedEffectEnum.BeforeBeatKickIn).Run(workingEvent);
+                    AutomatedEffect.Get(BeforeBeatKickIn.ID).Run(workingEvent);
                 }
                 else if (nextPoi != null && GetSecondBeforeNextPOI(workingEvent, nextPoi) < 20)
                 {
-                    AutomatedEffect.Get(AutomatedEffectEnum.Before20SecBeatKickIn).Run(workingEvent);
+                    AutomatedEffect.Get(Before20SecBeatKickIn.ID).Run(workingEvent);
                 }
                 else
                 {
-                    AutomatedEffect.Get(AutomatedEffectEnum.Chorus).Run(workingEvent);
+                    AutomatedEffect.Get(Chorus.ID).Run(workingEvent);
                 }
             }
             else if (currentPoi.IsEndBreak && GetSecondInCurrentPoi(workingEvent) < 10)
             {
-                AutomatedEffect.Get(AutomatedEffectEnum.BeatJustKickIn).Run(workingEvent);
+                AutomatedEffect.Get(BeatJustKickIn.ID).Run(workingEvent);
             }
             else if (currentPoi.IsEndBreak)
             {
-                AutomatedEffect.Get(AutomatedEffectEnum.Beat).Run(workingEvent);
+                AutomatedEffect.Get(Beat.ID).Run(workingEvent);
             }
         }
 
         private void InvalidTrackInfo(DmxChaser dmxChaser)
         {
-            AutomatedEffect.Get(AutomatedEffectEnum.Intro).Run(null);
+            AutomatedEffect.Get(Intro.ID).Run(null);
         }
 
         private static double GetSecondBeforeNextPOI(VdjEvent workingEvent, VDJPoi nextPoi)

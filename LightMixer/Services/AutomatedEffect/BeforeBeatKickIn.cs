@@ -5,8 +5,9 @@ using System.Linq;
 namespace LightMixer.Model
 {
     public class BeforeBeatKickIn : AutomatedEffect
-    {        
-        public BeforeBeatKickIn() : base(AutomatedEffectEnum.BeforeBeatKickIn) { DisplayName = "Beat repeat"; }
+    {
+        public static string ID = "0";
+        public BeforeBeatKickIn() : base(ID) { DisplayName = "Beat repeat"; }
 
         public override void RunInternal(VdjEvent workingEvent)
         {
