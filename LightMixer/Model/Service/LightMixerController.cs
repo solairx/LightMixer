@@ -1,16 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Practices.Unity;
+﻿using Microsoft.Practices.Unity;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Microsoft.AspNetCore.SignalR;
 using System.Threading.Tasks;
 
-//using System.Web.Http;
 
 namespace LightMixer.Model.Service
 {
-    [ApiController]
+    /*[ApiController]
     [Route("[controller]")]
     public class LightMixerController : Hub
 
@@ -61,7 +58,7 @@ namespace LightMixer.Model.Service
             await Clients.All.SendAsync("ReceiveMessage", user, message);
         }
 
-    }
+    }*/
 
     
 

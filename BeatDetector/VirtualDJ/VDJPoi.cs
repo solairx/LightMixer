@@ -40,6 +40,17 @@ namespace BeatDetector
             Type = type;
         }
 
+        public VDJPoi(string name, TimeSpan pos, VDJScan vDJScan)
+        {
+            this.vDJScan = vDJScan;
+            Name = name;
+            Pos = pos.TotalMilliseconds.ToString();
+            Type = "ML";
+            RawPosition = pos;
+        }
+
+        public TimeSpan RawPosition { get; set; }
+
         public VDJPoi()
         {
             
@@ -55,9 +66,25 @@ namespace BeatDetector
             IsDeleted = false;
             IsNew = false;
         }
+        /// <summary>
+        /// For generation of vdjPOIS when some are missing, ex BREAK BREAK ENDBREAK, a endbreak is missing
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="pos"></param>
+        /// <param name="vDJScan"></param>
+        public VDJPoi(string name, double pos, VDJScan vDJScan)
+        {
+            Name = name;
+            Pos = pos.ToString();
+            Type = "remix";
+            this.vDJScan = vDJScan;
+            IsDeleted = false;
+            IsNew = false;
+        }
 
         public virtual string Name { get; }
         public string Pos { get; }
+        public double PosAsDouble => double.Parse(Pos);
 
         public string PosInSecond
         {

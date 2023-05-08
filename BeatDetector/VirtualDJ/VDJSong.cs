@@ -1,6 +1,5 @@
 ﻿using LightMixer.Model;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,20 +8,30 @@ using System.Xml.Linq;
 
 namespace BeatDetector
 {
+
     public class VDJSong
     {
         public XElement XmlNode;
         private bool useAutomation;
 
         public bool ZplaneLoad { get; set; } = false;
+
         public bool AutomationLoad { get; set; } = false;
+
+        public MLSongModel MLSongModel { get; }
 
         public VDJSong(XElement source, IEnumerable<VDJScan> scanList, IEnumerable<VDJPoi> poiList)
         {
+            MLSongModel = new MLSongModel(this);
             XmlNode = source;
             FilePath = (string)source.Attribute("FilePath");
             Scans = scanList;
             Pois = new SortableObservableCollection<VDJPoi>(poiList);
+            Sort();
+        }
+
+        public void Sort()
+        {
             Pois.Sort(o => o.Position, System.ComponentModel.ListSortDirection.Ascending);
         }
 
@@ -33,7 +42,7 @@ namespace BeatDetector
 
         public SortableObservableCollection<VDJPoi> ZPlanePois { get; set; }
 
-        public SortableObservableCollection<VDJPoi> AutomatedPois { get; set; } 
+        public SortableObservableCollection<VDJPoi> AutomatedPois { get; set; }
 
         public bool UseAutomation
         {
@@ -50,12 +59,16 @@ namespace BeatDetector
             }
         }
 
+        public bool UseZPlane { get;set;}
+
 
 
         public override string ToString()
         {
             return FilePath;
         }
+
+
 
         internal void LoadZplace()
         {
@@ -98,7 +111,7 @@ namespace BeatDetector
 
         public void Save()
         {
-            var json = JsonConvert.SerializeObject(AutomatedPois.OfType<AutomatedPoi>().Select(o=>o.json));
+            var json = JsonConvert.SerializeObject(AutomatedPois.OfType<AutomatedPoi>().Select(o => o.json));
             File.WriteAllText(FilePath + ".a.json", json);
         }
 
@@ -131,23 +144,6 @@ namespace BeatDetector
 
             }
         }
-
-        public class ZPlanePoiJson
-        {
-            public int R { get; set; }
-            public int G { get; set; }
-            public int B { get; set; }
-            public TimeSpan Start { get; set; }
-            public TimeSpan Stop { get; set; }
-        }
-
-        public class AutomatedPOIJson
-        {
-            public string AutomationEnum { get; set; }
-            public int ID { get; set; }
-
-            public double Position { get;set;}
-            public bool UseAutomation { get; set; }
-        }
     }
+    
 }

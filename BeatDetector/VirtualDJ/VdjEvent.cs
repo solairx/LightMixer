@@ -82,11 +82,15 @@ namespace BeatDetector
                 }
                 else
                 {
-                    VDJPoi currentPoi = this.VDJSong?.ZPlanePois?
-                            .ToArray()
-                            .Where(o => Position > o.Position && o.Type == "Zplane")
-                            .OrderBy(o => o.Position)
-                            .LastOrDefault();
+                    VDJPoi currentPoi = null;
+                    if (VDJSong?.UseZPlane == true)
+                    {
+                        currentPoi = this.VDJSong?.ZPlanePois?
+                                .ToArray()
+                                .Where(o => Position > o.Position && o.Type == "Zplane")
+                                .OrderBy(o => o.Position)
+                                .LastOrDefault();
+                    }
 
                     if (currentPoi == null)
                     {

@@ -1,7 +1,6 @@
 ﻿using LaserDisplay;
 using LightMixer.Model.Fixture;
 using Microsoft.Practices.Unity;
-using Phidgets;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -9,7 +8,6 @@ using System.Linq;
 using System.Runtime.Serialization;
 using VisualControler;
 
-//using System.Web.Http;
 
 namespace LightMixer.Model.Service
 {

@@ -101,7 +101,11 @@
   <ItemGroup>
     <Compile Include="BaseViewModel.cs" />
     <Compile Include="VirtualDJ\AutomatedEffect.cs" />
+    <Compile Include="VirtualDJ\AutomatedPOIJson.cs" />
+    <Compile Include="VirtualDJ\MLSongModel.cs" />
+    <Compile Include="VirtualDJ\MusicMLModel.cs" />
     <Compile Include="VirtualDJ\ZplanePoi.cs" />
+    <Compile Include="VirtualDJ\ZPlanePoiJson.cs" />
     <Compile Include="WaveInBeatDetector.cs" />
     <Compile Include="BeatDetector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

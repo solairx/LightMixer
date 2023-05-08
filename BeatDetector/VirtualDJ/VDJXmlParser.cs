@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
@@ -32,9 +33,59 @@ namespace BeatDetector
                 var newSong = new VDJSong(songNode,
                     scanList,
                     from item in songNode.Descendants("Poi").Where(o => o.Attribute("Type")?.Value == "remix") select new VDJPoi(item, scanList.FirstOrDefault()));
+                InterpolateMissingPoisFromVDJDB(songNode, scanList, newSong);
+
                 dictionary.Add(newSong.FilePath.Replace("C:", "").Replace("D:", ""), newSong);
             }
             return xDoc;
+        }
+
+        private void InterpolateMissingPoisFromVDJDB(XElement songNode, IEnumerable<VDJScan> scanList, VDJSong newSong)
+        {
+            var energyKeyValuePair = from item in songNode.Descendants("Poi").Where(o => o.Attribute("Type")?.Value == "cue" && o.Attribute("Name")?.Value?.Contains("Energy") == true)
+                                     select new KeyValuePair<double, int>(Double.Parse(item.Attribute("Pos")?.Value ?? "0"), Int32.Parse(item.Attribute("Name").Value.Split('y')[1]));
+            if (energyKeyValuePair.Count() > 2)
+            {
+                var min = energyKeyValuePair.Min(o => o.Value);
+                var max = energyKeyValuePair.Max(o => o.Value);
+                var avg = (min + max) / 2;
+
+                if (newSong.Pois.Count > 1 && avg > 4)
+                {
+                    var candidateList = new List<KeyValuePair<string, KeyValuePair<double, int>>>();
+                    var last = newSong.Pois.First();
+                    foreach (var vdjPois in newSong.Pois.Skip(1))
+                    {
+                        var energyPoisInBtw = energyKeyValuePair
+                            .Where(o => o.Key <= vdjPois.PosAsDouble && o.Key >= last.PosAsDouble)
+                            .OrderBy(o => o.Key);
+                        if (vdjPois.IsBreak && last.IsBreak)
+                        {
+                            // double break found
+                            // ex BREAK BREAK ENDBREAK
+                            // need to find backward the highest energy and generate POIS for EndBreak
+                            var candidate = energyPoisInBtw.LastOrDefault(o => o.Value > avg);
+                            if (energyPoisInBtw.Any(o => o.Value > avg))
+                            {
+                                candidateList.Add(new KeyValuePair<string, KeyValuePair<double, int>>("End Break ", energyPoisInBtw.LastOrDefault(o => o.Value > avg)));
+                            }
+                        }
+                        else if (!vdjPois.IsBreak && !last.IsBreak)
+                        {
+                            // double end break found
+                        }
+                        last = vdjPois;
+                    }
+                    if (candidateList.Any())
+                    {
+                        foreach (var candidate in candidateList)
+                        {
+                            newSong.Pois.Add(new VDJPoi(candidate.Key, candidate.Value.Key, scanList.FirstOrDefault()));
+                        }
+                        newSong.Sort();
+                    }
+                }
+            }
         }
 
         public void Save()

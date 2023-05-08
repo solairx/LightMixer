@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNet.SignalR.Hubs;
+﻿/*using Microsoft.AspNet.SignalR.Hubs;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Hosting;
 using System;
@@ -45,4 +45,4 @@ namespace LightMixer.Model.Service
         {
         }
     }
-}
+}*/

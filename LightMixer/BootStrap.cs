@@ -2,10 +2,6 @@
 using LightMixer.Model;
 using LightMixer.Model.Service;
 using LightMixer.View;
-using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Server.Kestrel.Core;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Practices.Unity;
 using System;
 using System.Diagnostics;
@@ -84,7 +80,7 @@ namespace LightMixer
             UnityContainer.RegisterInstance<DmxChaser>(dmxChaser);
             BootStrap.UnityContainer.RegisterInstance<SceneRenderedService>(sceneRenderedService);
             UnityContainer.RegisterInstance<DmxModel>(model);
-            try
+           /* try
             {
                 var host = CreateWebHostBuilder(new string[] { })
                     .Build()
@@ -94,10 +90,10 @@ namespace LightMixer
             {
                 Debug.WriteLine(vexp.ToString());
                 MessageBox.Show("Can't open webapi service for Listen, " + vexp.Message);
-            }
+            }*/
         }
 
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
+       /* public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
            WebHost.CreateDefaultBuilder(args)
            .ConfigureKestrel((context, options) =>
            {
@@ -106,6 +102,6 @@ namespace LightMixer
                    listenOptions.Protocols = HttpProtocols.Http1;
                });
            })
-           .UseStartup<Startup>();
+           .UseStartup<Startup>();*/
     }
 }

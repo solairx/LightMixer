@@ -15,6 +15,7 @@ namespace LightMixer.Model
 {
     public class DmxChaser : BaseViewModel, IDisposable
     {
+
         public BeatDetector.BeatDetector mBpmDetector;
 
         private SceneService sceneService
@@ -41,6 +42,7 @@ namespace LightMixer.Model
         private AutomatedEffect currentAutomationEffect;
         private string currentSongPosition;
         private bool useAutomation;
+        private bool useZPlane;
         private VDJSong currentVdjSong;
 
         public VDJPoi SelectedPOI
@@ -256,9 +258,25 @@ namespace LightMixer.Model
                         song.UseAutomation = value;
                     }
 
-
-
                     this.AsyncOnPropertyChange(o => this.UseAutomation);
+                }
+            }
+        }
+
+        public bool UseZPlane
+        {
+            get => useZPlane;
+            set
+            {
+                if (value != useZPlane)
+                {
+                    useZPlane = value;
+                    var song = this.CurrentVdjSong;
+                    if (song != null)
+                    {
+                        song.UseZPlane = value;
+                    }
+                    this.AsyncOnPropertyChange(o => this.UseZPlane);
                 }
             }
         }
@@ -370,7 +388,7 @@ namespace LightMixer.Model
 
         private AutomatedPoi CreatePOI()
         {
-            var json = new VDJSong.AutomatedPOIJson();
+            var json = new AutomatedPOIJson();
             json.UseAutomation = this.useAutomation;
             json.ID = this.CurrentVdjSong.AutomatedPois.Any() ? CurrentVdjSong.AutomatedPois.Max(o => o.ID) + 1 : 0;
             json.AutomationEnum = this.currentAutomationEffect.Name;
@@ -409,13 +427,14 @@ namespace LightMixer.Model
                 this.TrackName = activeDeck.FirstOrDefault()?.FileName;
                 this.CurrentVdjSong = activeDeck.FirstOrDefault()?.VDJSong;
                 this.UseAutomation = this.currentVdjSong?.UseAutomation ?? false;
+                this.UseZPlane = this.UseZPlane;//refresh hack
                 this.CurrentVDJEvent = activeDeck.FirstOrDefault();
                 this.CurrentPoi = activeDeck.FirstOrDefault()?.GetCurrentPoi;
                 if (this.UseAutomation)
                 {
                     this.POIs = activeDeck.FirstOrDefault()?.VDJSong?.AutomatedPois;
                 }
-                else if (activeDeck.FirstOrDefault()?.VDJSong?.ZPlanePois != null && activeDeck.FirstOrDefault()?.VDJSong?.ZPlanePois.Count > 2)
+                else if (this.UseZPlane && activeDeck.FirstOrDefault()?.VDJSong?.ZPlanePois != null && activeDeck.FirstOrDefault()?.VDJSong?.ZPlanePois.Count > 2)
                 {
                     this.POIs = activeDeck.FirstOrDefault()?.VDJSong?.ZPlanePois;
                 }

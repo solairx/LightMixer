@@ -94,6 +94,10 @@ namespace BeatDetector
                     {
                         vdjSong.LoadZplace();
                     }
+                    if (vdjSong != null && !vdjSong.MLSongModel.MusicMLLoad)
+                    {
+                        vdjSong.MLSongModel.LoadMusicML();
+                    }
                     if (vdjSong != null && !vdjSong.AutomationLoad)
                     {
                         vdjSong.LoadAutomation();

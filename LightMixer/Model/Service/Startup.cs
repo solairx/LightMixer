@@ -1,14 +1,11 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-//using System.Web.Http;
 
 namespace LightMixer.Model.Service
 {
-    internal class Startup
+   /* internal class Startup
     {
         public Startup(IConfiguration configuration)
         {
@@ -22,20 +19,15 @@ namespace LightMixer.Model.Service
             var builder = services.AddMvcCore();
             services.AddSignalR();
             services.AddHostedService<LightMixerHubBackGroundService>();
-            //builder.AddJsonFormatters();
-            // Default framework order
             builder.AddFormatterMappings();
 
             builder.AddAuthorization();
-            /*builder.AddApiExplorer();
-             * MvcOptions.EnableEndpointRouting = false
 
             builder.AddViews();
             builder.AddRazorViewEngine();
             builder.AddCacheTagHelper();
 
-            // +1 order
-            builder.AddDataAnnotations(); // +1 order*/
+            builder.AddDataAnnotations(); 
             services.AddLogging(opt =>
             {
                 opt.AddDebug();
@@ -50,7 +42,6 @@ namespace LightMixer.Model.Service
                 endpoints.MapHub<LightMixerHub>("/hub");
                 endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}");
             });
-         //   app.UseMvcWithDefaultRoute();
         }
-    }
+    }*/
 }

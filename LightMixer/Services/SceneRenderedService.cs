@@ -2,7 +2,6 @@
 using LightMixer.Model.Fixture;
 using LightMixer.Model.Service;
 using LightMixer.View;
-using Microsoft.AspNet.SignalR;
 using Microsoft.Practices.ObjectBuilder2;
 using System;
 using System.Collections.Concurrent;
@@ -196,7 +195,7 @@ namespace LightMixer.Model
             selectedZone.Single().FixtureTypes.OfType<T>()
             .First().CurrentEffect = newEffect;
             var h = new object[1] { newEffect.Name};
-            LightMixerHubBackGroundService.HubContext.Clients.All.SendCoreAsync("SendMessage", h);
+            //LightMixerHubBackGroundService.HubContext.Clients.All.SendCoreAsync("SendMessage", h);
             
         }
 
