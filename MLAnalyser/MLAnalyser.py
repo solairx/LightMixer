@@ -22,8 +22,8 @@ class NumpyArrayEncoder(JSONEncoder):
             return obj.tolist()
         return JSONEncoder.default(self, obj)
 
-taggramSmall, tagsSmall = extractor(sys.argv[1], model='MSD_musicnn_big', input_length=3, input_overlap=0.5, extract_features=False)
-taggram, tags = extractor(sys.argv[1], model='MSD_musicnn_big', input_length=5, input_overlap=False, extract_features=False)
+taggramSmall, tagsSmall = extractor(sys.argv[1], model='MTT_musicnn', input_length=3, input_overlap=0.5, extract_features=False)
+taggram, tags = extractor(sys.argv[1], model='MTT_musicnn', input_length=5, input_overlap=False, extract_features=False)
 json_str = "{\n \"Version\":\"1.0\",\n\"SmallSampleTags\":" + json.dumps(tagsSmall, indent=4,cls=NumpyArrayEncoder)+ ",\n\"SmallSampleRate\":"+ json.dumps(taggramSmall, indent=4,cls=NumpyArrayEncoder) +",\n\"BigSampleTags\":"+ json.dumps(tags, indent=4,cls=NumpyArrayEncoder)+ ",\n\"BigSampleRate\":"+ json.dumps(taggram, indent=4,cls=NumpyArrayEncoder) +"\n}"
 print ("Result = ")
 print (json_str)

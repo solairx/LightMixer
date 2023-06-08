@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LightMixer\LightMixer.csproj" />
+    <ProjectReference Include="..\LightMixerStandard\LightMixerStandard.csproj" />
   </ItemGroup>
 
 </Project>
