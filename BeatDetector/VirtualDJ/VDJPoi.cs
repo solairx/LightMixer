@@ -44,7 +44,7 @@ namespace BeatDetector
         {
             this.vDJScan = vDJScan;
             Name = name;
-            Pos = pos.TotalMilliseconds.ToString();
+            Pos = (pos.TotalMilliseconds/1000).ToString();
             Type = "ML";
             RawPosition = pos;
         }

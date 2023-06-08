@@ -107,9 +107,33 @@ namespace LightMixer.Model
                 {
                     Debug.WriteLine(vexp.ToString());
                 }
-                Debug.WriteLine("FRAME TIME : " + sw.ElapsedMilliseconds);
+               // Debug.WriteLine("FRAME TIME : " + sw.ElapsedMilliseconds);
                 Thread.Sleep(FrameRate);
             }
+        }
+
+        public IEnumerable<KeyValuePair<double, AutomatedEffect>> GetEffectBasedOnPosition()
+        {
+            
+            var list = new List<KeyValuePair<double, AutomatedEffect>>();
+            var activeDeck = ActiveDeckSelector.Select(LastVdjEvent.Values).FirstOrDefault();
+            
+            if (activeDeck !=null)
+            {
+                KeyValuePair<double, AutomatedEffect> currentEffect = new KeyValuePair<double, AutomatedEffect>();
+                
+                for (long position = 0; position < 100000000; position = position + 20000)
+                {
+                    var effect = DmxEffectSelector.SelectEventToRun(legacyChaser, activeDeck, position);
+                    if (currentEffect.Value !=effect)
+                    {
+                        var ajustedPos = (position / activeDeck.BpmAsDouble/1000) ;
+                        currentEffect = new KeyValuePair<double, AutomatedEffect>(ajustedPos, effect);
+                        list.Add(currentEffect);
+                    }
+                }
+            }
+            return list;
         }
 
         private byte?[] RenderDMXFrame(IEnumerable<FixtureBase> fixtures)

@@ -1,15 +1,19 @@
 ﻿using BeatDetector;
 using LightMixer.Model.Fixture;
 using System.Linq;
+using System.Windows.Media;
 
 namespace LightMixer.Model
 {
     public class Beat : AutomatedEffect
     {
         public static string ID = "1";
-        public Beat() : base(ID) { DisplayName = "Beat Rotate, MH DJ Flash"; }
+        public Beat() : base(ID) {
+            Color = Colors.Brown;
+            DisplayName = "Beat Rotate, MH DJ Flash"; }
         public override void RunInternal(VdjEvent workingEvent)
         {
+            
             SceneRenderedService.SetMovingHeadAlternateColor(SceneService.indoorSceneName, SceneService.basementZoneName, false);
             SceneRenderedService.SetMovingHeadDelayedPosition(SceneService.indoorSceneName, SceneService.basementZoneName, false);
             SceneRenderedService.SetMovingHeadAlternateColor(SceneService.indoorSceneName, SceneService.djboothZoneName, false);

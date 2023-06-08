@@ -1,13 +1,18 @@
 ﻿using BeatDetector;
 using LightMixer.Model.Fixture;
 using System.Linq;
+using System.Windows.Media;
 
 namespace LightMixer.Model
 {
     public class Chorus : AutomatedEffect
     {
         public static string ID = "3";
-        public Chorus() : base(ID) { DisplayName = "Chorus Alternate+Delayed"; }
+        public Chorus() : base(ID) 
+        {
+            Color = Colors.Blue;
+            DisplayName = "Chorus Alternate+Delayed"; 
+        }
         public override void RunInternal(VdjEvent workingEvent)
         {
             SceneRenderedService.SetMovingHeadDelayedPosition(SceneService.indoorSceneName, SceneService.basementZoneName, true);

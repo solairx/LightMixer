@@ -108,7 +108,19 @@
                 </StackPanel>
             </StackPanel>
         </StackPanel>
-        <automation:TimeLine DataContext="{Binding Chaser}"></automation:TimeLine>
+        <automation:TimeLineRenderedChaserEffect HorizontalContentAlignment="Stretch" MinWidth="700" Height="50" IsEditable="True"></automation:TimeLineRenderedChaserEffect>
+        <automation:TimeLinePois HorizontalContentAlignment="Stretch" MinWidth="700" Height="15" IsEditable="true"></automation:TimeLinePois>
+        <automation:TimeLineML HorizontalContentAlignment="Stretch" MinWidth="700" Height="15" ConfidenceLevel="0" IsEditable="False"></automation:TimeLineML>
+        <automation:TimeLineML HorizontalContentAlignment="Stretch" MinWidth="700" Height="15" ConfidenceLevel="1" IsEditable="False"></automation:TimeLineML>
+        <automation:TimeLineML HorizontalContentAlignment="Stretch" MinWidth="700" Height="15" ConfidenceLevel="2" IsEditable="False"></automation:TimeLineML>
+        <automation:TimeLineML HorizontalContentAlignment="Stretch" MinWidth="700" Height="15" ConfidenceLevel="3" IsEditable="False"></automation:TimeLineML>
+        <automation:TimeLineML HorizontalContentAlignment="Stretch" MinWidth="700" Height="15" ConfidenceLevel="4" IsEditable="False"></automation:TimeLineML>
+        <automation:TimeLineML HorizontalContentAlignment="Stretch" MinWidth="700" Height="15" ConfidenceLevel="5" IsEditable="False"></automation:TimeLineML>
+        <automation:TimeLineML HorizontalContentAlignment="Stretch" MinWidth="700" Height="15" ConfidenceLevel="6" IsEditable="False"></automation:TimeLineML>
+        <automation:TimeLineML HorizontalContentAlignment="Stretch" MinWidth="700" Height="15" ConfidenceLevel="7" IsEditable="False"></automation:TimeLineML>
+        <automation:TimeLineML HorizontalContentAlignment="Stretch" MinWidth="700" Height="15" ConfidenceLevel="8" IsEditable="False"></automation:TimeLineML>
+        <automation:TimeLineML HorizontalContentAlignment="Stretch" MinWidth="700" Height="15" ConfidenceLevel="9" IsEditable="False"></automation:TimeLineML>
+        <automation:TimeLineML HorizontalContentAlignment="Stretch" MinWidth="700" Height="15" ConfidenceLevel="10" IsEditable="False"></automation:TimeLineML>
     </StackPanel>
 
 </UserControl>

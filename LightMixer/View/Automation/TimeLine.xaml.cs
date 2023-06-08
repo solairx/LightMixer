@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -20,9 +21,40 @@ namespace LightMixer.View.Automation
     /// </summary>
     public partial class TimeLine : UserControl
     {
+
+        public bool IsEditable { get => (DataContext as TimeLineViewModel).IsEditable; set => (DataContext as TimeLineViewModel).IsEditable = value; }
+
         public TimeLine()
         {
             InitializeComponent();
+            this.SizeChanged += TimeLine_SizeChanged;
+        }
+
+        private void TimeLine_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            (DataContext as TimeLineViewModel).TimeLineWidth = this.ActualWidth;
+        }
+
+        private void Thumb_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+
+        }
+
+        private DragDeltaEventArgs dragDelta ;
+
+        private void Thumb_DragDelta(object sender, DragDeltaEventArgs e)
+        {
+            dragDelta = e;
+        }
+
+        private void Thumb_DragEnter(object sender, DragEventArgs e)
+        {
+
+        }
+
+        private void Thumb_DragCompleted(object sender, DragCompletedEventArgs e)
+        {
+            (DataContext as TimeLineViewModel).ResizeIndividualItem(((sender as Thumb).DataContext as ItemLineItemViewModel), dragDelta);
         }
     }
 }

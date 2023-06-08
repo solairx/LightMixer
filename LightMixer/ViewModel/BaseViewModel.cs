@@ -49,7 +49,7 @@ namespace UIFrameWork
         /// Invoked whenever the value of a property on this object has been updated.
         /// </summary>
         /// <param name="propertyName">Name of the property.</param>
-        private void OnPropertyChanged(string propertyName)
+        protected void OnPropertyChanged(string propertyName)
         {
             var handlers = this.PropertyChanged;
             if (handlers != null)
@@ -99,6 +99,14 @@ namespace UIFrameWork
             BootStrap.Dispatcher.Invoke(() =>
             {
                 this.OnPropertyChanged(name);
+            });
+        }
+
+        public void RunOnUIThread(Action ac)
+        {
+            BootStrap.Dispatcher.Invoke(() =>
+            {
+                ac.Invoke();
             });
         }
 

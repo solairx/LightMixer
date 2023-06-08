@@ -23,29 +23,14 @@ namespace LightMixer.Model
             AutomatedEffect.Model = dmxChaser.LedEffectCollection[0]._sharedEffectModel;
 
             var workingEvent = lastEvent.FirstOrDefault();
-
-            var currentPoi = workingEvent?.GetCurrentPoi;
+                        
             DisplayElapsed(dmxChaser, workingEvent);
             var manualEffect = dmxChaser.CurrentAutomationEffect;
 
             if (dmxChaser.AutoChaser)
             {
-                if (currentPoi is AutomatedPoi)
-                {
-                    AutomatedEffect.Get((currentPoi as AutomatedPoi).Automation).Run(workingEvent);
-                }
-                else if (workingEvent?.IsPoiPlausible == true && currentPoi.ID == 0 && !(currentPoi is ZplanePoi))
-                {
-                    AutomatedEffect.Get(Intro.ID).Run(workingEvent);
-                }
-                else if (workingEvent?.IsPoiPlausible != true || (currentPoi.ID == 0 && !(currentPoi is ZplanePoi)))
-                {
-                    InvalidTrackInfo(dmxChaser);
-                }
-                else if (currentPoi != null && workingEvent.IsPoiPlausible)
-                {
-                    PoiIsValidSelectEffect(dmxChaser, workingEvent);
-                }
+                SelectEventToRun(dmxChaser, workingEvent,  workingEvent.Position)
+                    .Run(workingEvent);
             }
             else if (manualEffect !=null)
             {
@@ -53,7 +38,31 @@ namespace LightMixer.Model
             }
         }
 
-        private static void DisplayElapsed(DmxChaser dmxChaser, VdjEvent workingEvent)
+        
+
+        public AutomatedEffect SelectEventToRun(DmxChaser dmxChaser, VdjEvent workingEvent, long position)
+        {
+            var currentPoi = workingEvent?.GetNextPoiBasedOnPosition(position);
+            if (currentPoi is AutomatedPoi)
+            {
+                return AutomatedEffect.Get((currentPoi as AutomatedPoi).Automation);
+            }
+            else if (workingEvent?.IsPoiPlausible == true && currentPoi.ID == 0 && !(currentPoi is ZplanePoi))
+            {
+                return AutomatedEffect.Get(Intro.ID);
+            }
+            else if (workingEvent?.IsPoiPlausible != true || (currentPoi.ID == 0 && !(currentPoi is ZplanePoi)))
+            {
+                return InvalidTrackInfo();
+            }
+            else if (currentPoi != null && workingEvent.IsPoiPlausible)
+            {
+                return PoiIsValidSelectEffect(dmxChaser, workingEvent, position);
+            }
+            return InvalidTrackInfo();
+        }
+        
+        private void DisplayElapsed(DmxChaser dmxChaser, VdjEvent workingEvent)
         {
             var elapsed = workingEvent.Elapsed?.ToString();
 
@@ -63,6 +72,7 @@ namespace LightMixer.Model
                 if (double.TryParse(elapsed, out elapsedMs))
                 {
                     var ts = TimeSpan.FromMilliseconds(elapsedMs);
+                    dmxChaser.Elapsed = elapsedMs;
                     if (ts.Hours > 0)
                     {
                         dmxChaser.CurrentSongPosition = ts.Hours + ":" + ts.Minutes.ToString("00") + ":" + ts.Seconds.ToString("00") + ":" + ts.Milliseconds.ToString("00");
@@ -75,48 +85,52 @@ namespace LightMixer.Model
             }
         }
 
-        private void PoiIsValidSelectEffect(DmxChaser dmxChaser, VdjEvent workingEvent)
+        private AutomatedEffect PoiIsValidSelectEffect(DmxChaser dmxChaser, VdjEvent workingEvent, long position)
         {
-            var nextPoi = workingEvent?.GetNextPoi;
-            var currentPoi = workingEvent?.GetCurrentPoi;
+            var nextPoi = workingEvent?.GetNextPoiBasedOnPosition(position);
+            var currentPoi = workingEvent?.GetPoisAtPosition(position); 
+            
+
             if (currentPoi.IsBreak)
             {
-                if (dmxChaser.UseFlashTransition && nextPoi != null && GetSecondBeforeNextPOI(workingEvent, nextPoi) < 10)
+                if (dmxChaser.UseFlashTransition && nextPoi != null && GetSecondBeforeNextPOI(workingEvent, nextPoi, position) < 10)
                 {
-                    AutomatedEffect.Get(BeforeBeatKickIn.ID).Run(workingEvent);
+                    return AutomatedEffect.Get(BeforeBeatKickIn.ID);
                 }
-                else if (nextPoi != null && GetSecondBeforeNextPOI(workingEvent, nextPoi) < 20)
+                else if (nextPoi != null && GetSecondBeforeNextPOI(workingEvent, nextPoi, position) < 20)
                 {
-                    AutomatedEffect.Get(Before20SecBeatKickIn.ID).Run(workingEvent);
+                    return AutomatedEffect.Get(Before20SecBeatKickIn.ID);
                 }
                 else
                 {
-                    AutomatedEffect.Get(Chorus.ID).Run(workingEvent);
+                    return AutomatedEffect.Get(Chorus.ID);
                 }
             }
-            else if (currentPoi.IsEndBreak && GetSecondInCurrentPoi(workingEvent) < 10)
+            else if (currentPoi.IsEndBreak && GetSecondInCurrentPoi(workingEvent, position) < 10)
             {
-                AutomatedEffect.Get(BeatJustKickIn.ID).Run(workingEvent);
+                return AutomatedEffect.Get(BeatJustKickIn.ID);
             }
             else if (currentPoi.IsEndBreak)
             {
-                AutomatedEffect.Get(Beat.ID).Run(workingEvent);
+                return AutomatedEffect.Get(Beat.ID);
             }
+
+            return InvalidTrackInfo();
         }
 
-        private void InvalidTrackInfo(DmxChaser dmxChaser)
+        private AutomatedEffect InvalidTrackInfo()
         {
-            AutomatedEffect.Get(Intro.ID).Run(null);
+            return AutomatedEffect.Get(Intro.ID);
         }
 
-        private static double GetSecondBeforeNextPOI(VdjEvent workingEvent, VDJPoi nextPoi)
+        private static double GetSecondBeforeNextPOI(VdjEvent workingEvent, VDJPoi nextPoi, long currentPosition)
         {
-            return (nextPoi.Position - workingEvent.Position) / workingEvent.BpmAsDouble / 1000;
+            return (nextPoi.Position - currentPosition) / workingEvent.BpmAsDouble / 1000;
         }
 
-        private static double GetSecondInCurrentPoi(VdjEvent workingEvent)
+        private static double GetSecondInCurrentPoi(VdjEvent workingEvent, long currentPosition)
         {
-            return (workingEvent.Position - workingEvent.GetCurrentPoi.Position) / workingEvent.BpmAsDouble / 1000;
+            return (currentPosition - workingEvent.GetPoisAtPosition(currentPosition).Position) / workingEvent.BpmAsDouble / 1000;
         }
     }
 }

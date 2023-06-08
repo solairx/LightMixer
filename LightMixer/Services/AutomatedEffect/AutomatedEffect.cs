@@ -1,5 +1,6 @@
 ﻿using BeatDetector;
 using System.Collections.Generic;
+using System.Drawing;
 
 namespace LightMixer.Model
 {
@@ -8,6 +9,8 @@ namespace LightMixer.Model
         public static DmxChaser dmxChaser;
         public static SharedEffectModel Model { get; set; }
         public static SceneRenderedService SceneRenderedService { get; set; }
+
+        public System.Windows.Media.Color Color { get; set; }
 
         public string Name { get; }
 

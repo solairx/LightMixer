@@ -1,5 +1,6 @@
 ﻿using LightMixer.Model;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -20,11 +21,29 @@ namespace BeatDetector
 
         public MLSongModel MLSongModel { get; }
 
+        public bool VDJPoiPlausible
+        {
+            get
+            {
+                return Pois?.Where(o => o.Type == "remix")?.Count() > 2;
+            }
+        }
+
+
+        public double SongLenght { get; set; }
+
         public VDJSong(XElement source, IEnumerable<VDJScan> scanList, IEnumerable<VDJPoi> poiList)
         {
+
             MLSongModel = new MLSongModel(this);
             XmlNode = source;
             FilePath = (string)source.Attribute("FilePath");
+            var songLenght = source.Descendants("Infos").FirstOrDefault()?.Attribute("SongLength")?.Value;
+            if (songLenght != null)
+            {
+                SongLenght = Double.Parse(songLenght);
+            }
+
             Scans = scanList;
             Pois = new SortableObservableCollection<VDJPoi>(poiList);
             Sort();
@@ -59,7 +78,7 @@ namespace BeatDetector
             }
         }
 
-        public bool UseZPlane { get;set;}
+        public bool UseZPlane { get; set; }
 
 
 
@@ -145,5 +164,5 @@ namespace BeatDetector
             }
         }
     }
-    
+
 }

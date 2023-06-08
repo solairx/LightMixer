@@ -1,13 +1,18 @@
 ﻿using BeatDetector;
 using LightMixer.Model.Fixture;
 using System.Linq;
+using System.Windows.Media;
 
 namespace LightMixer.Model
 {
     public class BeforeBeatKickIn : AutomatedEffect
     {
         public static string ID = "0";
-        public BeforeBeatKickIn() : base(ID) { DisplayName = "Beat repeat"; }
+        public BeforeBeatKickIn() : base(ID) 
+        {
+            Color = Colors.Pink;
+            DisplayName = "Beat repeat"; 
+        }
 
         public override void RunInternal(VdjEvent workingEvent)
         {

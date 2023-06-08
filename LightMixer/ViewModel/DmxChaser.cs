@@ -7,6 +7,7 @@ using Microsoft.Practices.Unity;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
 using UIFrameWork;
@@ -17,6 +18,8 @@ namespace LightMixer.Model
     {
 
         public BeatDetector.BeatDetector mBpmDetector;
+        public event EventHandler PoisChanged;
+        public event EventHandler PosChanged;
 
         private SceneService sceneService
         {
@@ -80,7 +83,18 @@ namespace LightMixer.Model
             }
         }
 
-        public VDJSong CurrentVdjSong { get => currentVdjSong; set => currentVdjSong = value; }
+        public VDJSong CurrentVdjSong 
+        {   get => currentVdjSong;
+            set 
+            {
+                if (currentVdjSong != value)
+                {
+                    currentVdjSong = value;
+                    PoisChanged?.Invoke(this, new EventArgs());
+                }
+                
+            }
+        }
         public VdjEvent CurrentVDJEvent { get; private set; }
 
         public bool AutoChaser
@@ -147,6 +161,7 @@ namespace LightMixer.Model
                 {
                     pois = value;
                     this.AsyncOnPropertyChange(o => this.POIs);
+                    this.PoisChanged?.Invoke(this, new EventArgs());
                 }
             }
         }
@@ -241,6 +256,7 @@ namespace LightMixer.Model
             {
                 this.AsyncOnPropertyChange(o => this.CurrentSongPosition);
                 currentSongPosition = value;
+                this.PosChanged?.Invoke(this, EventArgs.Empty); 
             }
         }
 
@@ -332,14 +348,14 @@ namespace LightMixer.Model
             {
                 return new DelegateCommand(() =>
                 {
-          
+
                     if (selectedPOI == null)
                     {
                         return;
                     }
                     SelectedPOI.IsDeleted = true;
                     this.POIs.Remove(selectedPOI);
-                    
+
                 });
             }
         }
@@ -350,7 +366,7 @@ namespace LightMixer.Model
             {
                 return new DelegateCommand(() =>
                 {
-                    if (this.currentVdjSong == null || this.currentAutomationEffect == null)
+                    if (this.CurrentVdjSong == null || this.currentAutomationEffect == null)
                         return;
                     if (this.CurrentVdjSong.AutomatedPois == null)
                     {
@@ -418,7 +434,7 @@ namespace LightMixer.Model
         }
 
         public VirtualDjServer VdjServer { get; }
-
+        public double Elapsed { get; internal set; }
 
         public void UpdateVDJUiElement(IEnumerable<VdjEvent> activeDeck)
         {
@@ -426,7 +442,7 @@ namespace LightMixer.Model
             {
                 this.TrackName = activeDeck.FirstOrDefault()?.FileName;
                 this.CurrentVdjSong = activeDeck.FirstOrDefault()?.VDJSong;
-                this.UseAutomation = this.currentVdjSong?.UseAutomation ?? false;
+                this.UseAutomation = this.CurrentVdjSong?.UseAutomation ?? false;
                 this.UseZPlane = this.UseZPlane;//refresh hack
                 this.CurrentVDJEvent = activeDeck.FirstOrDefault();
                 this.CurrentPoi = activeDeck.FirstOrDefault()?.GetCurrentPoi;
@@ -434,7 +450,7 @@ namespace LightMixer.Model
                 {
                     this.POIs = activeDeck.FirstOrDefault()?.VDJSong?.AutomatedPois;
                 }
-                else if (this.UseZPlane && activeDeck.FirstOrDefault()?.VDJSong?.ZPlanePois != null && activeDeck.FirstOrDefault()?.VDJSong?.ZPlanePois.Count > 2)
+                else if ((this.UseZPlane || activeDeck.FirstOrDefault()?.VDJSong?.VDJPoiPlausible != true) && activeDeck.FirstOrDefault()?.VDJSong?.ZPlanePois != null && activeDeck.FirstOrDefault()?.VDJSong?.ZPlanePois.Count > 2)
                 {
                     this.POIs = activeDeck.FirstOrDefault()?.VDJSong?.ZPlanePois;
                 }

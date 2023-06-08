@@ -1,6 +1,7 @@
 ﻿using BeatDetector;
 using LightMixer.Model.Fixture;
 using System.Linq;
+using System.Windows.Media;
 
 namespace LightMixer.Model
 {
@@ -8,7 +9,11 @@ namespace LightMixer.Model
     {
         public static string ID = "5";
 
-        public Intro() : base(ID) { DisplayName = "Intro Alternate+Med+Rotate MH=Flash"; }
+        public Intro() : base(ID) 
+        {
+            Color = Colors.Yellow;
+            DisplayName = "Intro Alternate+Med+Rotate MH=Flash"; 
+        }
         public override void RunInternal(VdjEvent workingEvent)
         {
             SceneRenderedService.SetMovingHeadAlternateColor(SceneService.indoorSceneName, SceneService.basementZoneName, false);

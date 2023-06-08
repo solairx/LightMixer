@@ -2,6 +2,8 @@
 using LightMixer.Model;
 using LightMixer.Model.Service;
 using LightMixer.View;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Practices.Unity;
 using System;
 using System.Diagnostics;
@@ -80,11 +82,13 @@ namespace LightMixer
             UnityContainer.RegisterInstance<DmxChaser>(dmxChaser);
             BootStrap.UnityContainer.RegisterInstance<SceneRenderedService>(sceneRenderedService);
             UnityContainer.RegisterInstance<DmxModel>(model);
-           /* try
+            /*try
             {
                 var host = CreateWebHostBuilder(new string[] { })
                     .Build()
                     .RunAsync();
+
+    
             }
             catch (Exception vexp)
             {

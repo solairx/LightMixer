@@ -4,11 +4,9 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 
-
 namespace LightMixer.Model.Service
 {
-    /*[ApiController]
-    [Route("[controller]")]
+   /* [Route("[controller]")]
     public class LightMixerController : Hub
 
     {
@@ -18,21 +16,24 @@ namespace LightMixer.Model.Service
             return "Hello World!";
         }
 
-        [HttpGet("{scene}/ZoneConfig")]
+        [HttpGet()]
+        [Route("{scene}/ZoneConfig")]
         public Scene GetZonesConfig(string scene)
         {
             return BootStrap.UnityContainer.Resolve<SceneRenderedService>().sceneService.Scenes
                             .First(o => o.Name == scene);
         }
 
-        [HttpGet("{scene}/ZoneList")]
+        [HttpGet]
+        [Route("{scene}/ZoneList")]
         public IEnumerable<string> GetZonesList(string scene)
         {
             return BootStrap.UnityContainer.Resolve<SceneRenderedService>().sceneService.Scenes
                             .First(o => o.Name == scene).Zones.Select(o=> o.Name);
         }
 
-        [HttpGet("{scene}/{zone}/effectList")]
+        [HttpGet]
+        [Route("{scene}/{zone}/effectList")]
         public IEnumerable<string> GetZoneFixtureEffectList(string scene, string zone)
         {
             return new ObservableCollection<string>(BootStrap.UnityContainer.Resolve<SceneRenderedService>().GetCurrentFixture<RGBLedFixtureCollection>(scene, zone)
@@ -41,7 +42,8 @@ namespace LightMixer.Model.Service
                 .ToArray());
         }
 
-        [HttpGet("set/{scene}/{zone}/{effect}")]
+        [HttpGet]
+        [Route("set/{scene}/{zone}/{effect}")]
         public void SetZoneFixtureEffect(string scene, string zone, string effect)
         {
             var effectSelected = BootStrap.UnityContainer.Resolve<SceneRenderedService>().GetCurrentFixture<RGBLedFixtureCollection>(scene, zone)

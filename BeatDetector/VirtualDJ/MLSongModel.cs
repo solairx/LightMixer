@@ -3,19 +3,29 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Threading.Tasks;
 using static BeatDetector.VDJSong;
 
 namespace BeatDetector
 {
+    public class MLSongModelCategory
+    {
+        public double Confidence { get; set; }
+        public List<VDJPoi> Pois { get; set; } = new List<VDJPoi>();
+        public string Name { get; set; }
+    }
+
     public class MLSongModel
     {
+        public event EventHandler MLLoaded;
+
         public MLSongModel(VDJSong vDJSong)
         {
             VDJSong = vDJSong;
         }
-
+        public List<MLSongModelCategory> MLPois { get; set; } = new List<MLSongModelCategory>();
         public bool MusicMLLoad { get; set; } = false;
         public bool MusicMLLoading { get; set; } = false;
         public bool MusicMLFailed { get; set; } = false;
@@ -23,8 +33,8 @@ namespace BeatDetector
 
         internal void LoadMusicML()
         {
-            string mlFile = VDJSong.FilePath + ".ml";
-            /*if (File.Exists(mlFile))
+            string mlFile = VDJSong.FilePath + ".gml";
+            if (File.Exists(mlFile) && !MusicMLLoading)
             {
                 Task.Factory.StartNew(() =>
                 {
@@ -33,16 +43,16 @@ namespace BeatDetector
                         if (MusicMLLoad)
                             return;
                         string analysisJson = null;
-                        using (var reader = new StreamReader(mlFile))
+                        using (var reader = new StreamReader(new GZipStream(File.OpenRead(mlFile), CompressionMode.Decompress)))
                         {
                             analysisJson = reader.ReadToEnd();
                         }
 
-                        ComputeAnalysisAndBuildPOI(analysisJson);
+                        ComputeAnalysisAndBuildPOI(analysisJson, VDJSong.Scans.FirstOrDefault());
                     }
-                    catch (Exception)
+                    catch (Exception e)
                     {
-                        
+
                     }
                     finally
                     {
@@ -50,7 +60,7 @@ namespace BeatDetector
                     }
                 });
             }
-            else*/ if (!MusicMLFailed && !MusicMLLoading)
+            else if (!MusicMLFailed && !MusicMLLoading)
             {
                 MusicMLLoading = true;
                 Task.Factory.StartNew(() =>
@@ -58,14 +68,19 @@ namespace BeatDetector
                     try
                     {
                         ProcessStartInfo startInfo = new ProcessStartInfo("env1\\Scripts\\python.exe", "MLAnalyser.py \"" + VDJSong.FilePath + "\"");
+
+                        Console.WriteLine("Analyzing " + VDJSong.FilePath);
                         startInfo.RedirectStandardOutput = true;
                         startInfo.UseShellExecute = false;
                         var mlAnalyzer = Process.Start(startInfo);
+                        mlAnalyzer.PriorityClass = ProcessPriorityClass.BelowNormal;
                         var analysisResult = mlAnalyzer.StandardOutput.ReadToEnd();
                         var analysisJson = analysisResult.Substring(analysisResult.IndexOf("Result =") + 9);
-                        ComputeAnalysisAndBuildPOI(analysisJson);
 
-                        using (var streamWriter = new StreamWriter(mlFile))
+                        ComputeAnalysisAndBuildPOI(analysisJson, VDJSong.Scans.FirstOrDefault());
+
+
+                        using (var streamWriter = new StreamWriter(new GZipStream(File.Create(mlFile), CompressionMode.Compress)))
                         {
                             streamWriter.Write(analysisJson);
                         }
@@ -83,14 +98,14 @@ namespace BeatDetector
 
         }
 
-        private void ComputeAnalysisAndBuildPOI(string analysisJson)
+        private void ComputeAnalysisAndBuildPOI(string analysisJson, VDJScan vDJScan)
         {
             var json = JsonConvert.DeserializeObject<MusicMLModel>(analysisJson);
             var unsortedTimeLine = new List<MusicMLTimeLineItem>();
 
             for (int pos = 0; pos < json.SmallSampleRate.Length; pos++)
             {
-                var line = new MusicMLTimeLineItem { Position = new TimeSpan(0, 0, 0, 0, pos *480), TagType = MusicMLTagType.Small, };
+                var line = new MusicMLTimeLineItem { Position = new TimeSpan(0, 0, 0, 0, pos * 480), TagType = MusicMLTagType.Small, };
                 for (int tagPos = 0; tagPos < json.SmallSampleTags.Length; tagPos++)
                 {
                     line.Tag.Add(new MusicMLTag { Value = json.SmallSampleRate[pos][tagPos], Tag = json.GetOrCreateMLTag(json.SmallSampleTags[tagPos]) });
@@ -131,91 +146,102 @@ namespace BeatDetector
                 .Average();
             }
             json.TimeLines.AddRange(unsortedTimeLine.OrderBy(ml => ml.Position.Ticks));
-            bool isBreakBig = false;
-            bool isBreakSmall = false;
-            bool recordedEndBrakePoi = false;
-            bool recordedBrakePoi = false;
+
+
+
+            //var breakTag = "dance";
+            foreach (var breakTag in json.BigSampleTags)
+            {
+                ComputeBreakTag(vDJScan, json, breakTag);
+            }
+            MusicMLLoad = true;
+            MLLoaded?.Invoke(this, new EventArgs());
+        }
+
+        private void ComputeBreakTag(VDJScan vDJScan, MusicMLModel json, string breakTag)
+        {
             var pois = new List<VDJPoi>();
             TimeSpan accuratePos = new TimeSpan(0);
             TimeSpan grossPos = new TimeSpan(0);
             int iteration = 0;
+            double confidence = 0;
+            bool isBreakBig = false;
+            bool isBreakSmall = false;
+            bool recordedEndBrakePoi = false;
+            bool recordedBrakePoi = false;
             foreach (var timeLine in json.TimeLines)
             {
-                var breakTag = "dance";
-                if (json.MLTags.FirstOrDefault(o=> o.Name == breakTag)?.AverageHigh25 > 0.4 )
+                var currentTag = timeLine.Tag.FirstOrDefault(o => o.Tag.Name == breakTag);
+                confidence = confidence + currentTag.Value;
+                if (filter(json, breakTag, currentTag))
                 {
-                    var currentTag = timeLine.Tag.FirstOrDefault(o => o.Tag.Name == breakTag);
-                    if (filter(json, breakTag, currentTag))
+                    if (timeLine.TagType == MusicMLTagType.Big && isBreakBig)
                     {
-                        if (timeLine.TagType == MusicMLTagType.Big && isBreakBig)
-                        {
-                            isBreakBig = false;
-                            grossPos = timeLine.Position;
-                        }
-                        if (!isBreakBig && !recordedEndBrakePoi && timeLine.TagType == MusicMLTagType.Big)
-                        {
-                            //record endbreak poi
-                            recordedEndBrakePoi = true;
-                            recordedBrakePoi = false;
-                            var relativePos = json.TimeLines.IndexOf(timeLine) - 10;
-                            if (relativePos < 0)
-                            {
-                                relativePos = 0;
-                            }
-
-                            var testSmallList = json.TimeLines.Skip(relativePos)
-                                .Take(21)
-                                .Where( o=>o.TagType == MusicMLTagType.Small);
-                            var accurate = testSmallList.FirstOrDefault(o=> filterSmall(json,breakTag,o.Tag.FirstOrDefault(w => w.Tag.Name == breakTag)));
-                            if (accurate !=null)
-                            {
-                                pois.Add(new VDJPoi("End Break", accurate.Position, null));
-                            }
-                            else
-                            {
-                                pois.Add(new VDJPoi("End Break", grossPos, null));
-                            }
-                            
-                        }
+                        isBreakBig = false;
+                        grossPos = timeLine.Position;
                     }
-                    else
+                    if (!isBreakBig && !recordedEndBrakePoi && timeLine.TagType == MusicMLTagType.Big)
                     {
-                        // break 
-
-                        if (timeLine.TagType == MusicMLTagType.Big && !isBreakBig)
+                        //record endbreak poi
+                        recordedEndBrakePoi = true;
+                        recordedBrakePoi = false;
+                        var relativePos = json.TimeLines.IndexOf(timeLine) - 10;
+                        if (relativePos < 0)
                         {
-                            isBreakBig = true;
-                            grossPos = timeLine.Position;
+                            relativePos = 0;
                         }
-                        if (isBreakBig && !recordedBrakePoi && timeLine.TagType == MusicMLTagType.Big)
+
+                        var testSmallList = json.TimeLines.Skip(relativePos)
+                            .Take(21)
+                            .Where(o => o.TagType == MusicMLTagType.Small);
+                        var accurate = testSmallList.FirstOrDefault(o => filterSmall(json, breakTag, o.Tag.FirstOrDefault(w => w.Tag.Name == breakTag)));
+                        if (accurate != null)
                         {
-                            //record break poi
-                            recordedBrakePoi = true;
-                            recordedEndBrakePoi = false;
-                            pois.Add(new VDJPoi("Break", grossPos, null));
-                            var relativePos = json.TimeLines.IndexOf(timeLine) - 10;
-                            if (relativePos < 0)
-                            {
-                                relativePos = 0;
-                            }
-                            var accurate = json.TimeLines.Skip(relativePos)
-                                .Take(20)
-                                .FirstOrDefault(o => !filterSmall(json, breakTag, o.Tag.FirstOrDefault(w => w.Tag.Name == breakTag)));
-                            if (accurate != null)
-                            {
-                                pois.Add(new VDJPoi("End Break", accurate.Position, null));
-                            }
-                            else
-                            {
-                                pois.Add(new VDJPoi("End Break", grossPos, null));
-                            }
+                            pois.Add(new VDJPoi("Break", accurate.Position, vDJScan));
+                        }
+                        else
+                        {
+                            pois.Add(new VDJPoi("Break", grossPos, vDJScan));
+                        }
+
+                    }
+                }
+                else
+                {
+                    // break 
+
+                    if (timeLine.TagType == MusicMLTagType.Big && !isBreakBig)
+                    {
+                        isBreakBig = true;
+                        grossPos = timeLine.Position;
+                    }
+                    if (isBreakBig && !recordedBrakePoi && timeLine.TagType == MusicMLTagType.Big)
+                    {
+                        //record break poi
+                        recordedBrakePoi = true;
+                        recordedEndBrakePoi = false;
+                        // pois.Add(new VDJPoi("Break", grossPos, null));
+                        var relativePos = json.TimeLines.IndexOf(timeLine) - 10;
+                        if (relativePos < 0)
+                        {
+                            relativePos = 0;
+                        }
+                        var accurate = json.TimeLines.Skip(relativePos)
+                            .Take(20)
+                            .FirstOrDefault(o => !filterSmall(json, breakTag, o.Tag.FirstOrDefault(w => w.Tag.Name == breakTag)));
+                        if (accurate != null)
+                        {
+                            pois.Add(new VDJPoi("End Break", accurate.Position, vDJScan));
+                        }
+                        else
+                        {
+                            pois.Add(new VDJPoi("End Break", grossPos, vDJScan));
                         }
                     }
                 }
                 iteration++;
             }
-
-            MusicMLLoad = true;
+            MLPois.Add(new MLSongModelCategory { Name = breakTag, Confidence = confidence, Pois = pois });
         }
 
         private static bool filter(MusicMLModel json, string breakTag, MusicMLTag currentTag)

@@ -18,6 +18,8 @@ namespace BeatDetector
 
         public string FilePath { get; set; }
 
+        
+
         private DateTime elapsedsettime = DateTime.Now;
         public string Elapsed
         {
@@ -64,7 +66,7 @@ namespace BeatDetector
         {
             get
             {
-                return this.VDJSong.AutomatedPois?.ToArray().Any() == true || this.VDJSong.ZPlanePois?.ToArray().Length >= 3 || this.VDJSong?.Pois?.Count >= 3 || GetCurrentPoi.ID == 0;
+                return this.VDJSong?.AutomatedPois?.ToArray().Any() == true || this.VDJSong?.ZPlanePois?.ToArray().Length >= 3 || this.VDJSong?.Pois?.Count >= 3 || GetCurrentPoi.ID == 0;
             }
         }
 
@@ -72,65 +74,74 @@ namespace BeatDetector
         {
             get
             {
-                if (VDJSong?.UseAutomation == true)
-                {
-                    return this.VDJSong?.AutomatedPois?
-                        .ToArray()
-                        .Where(o => Position > o.Position)
-                        .OrderBy(o => o.Position)
-                        .LastOrDefault() ?? DefaultPOI;
-                }
-                else
-                {
-                    VDJPoi currentPoi = null;
-                    if (VDJSong?.UseZPlane == true)
-                    {
-                        currentPoi = this.VDJSong?.ZPlanePois?
-                                .ToArray()
-                                .Where(o => Position > o.Position && o.Type == "Zplane")
-                                .OrderBy(o => o.Position)
-                                .LastOrDefault();
-                    }
-
-                    if (currentPoi == null)
-                    {
-                        currentPoi = this.VDJSong?.Pois
-                                .Where(o => Position > o.Position && o.Type == "remix")
-                                .OrderBy(o => o.Position)
-                                .LastOrDefault();
-                    }
-                    if (currentPoi != null)
-                    {
-                        return currentPoi;
-                    }
-                }
-                return DefaultPOI;
+                return GetPoisAtPosition(this.Position);
             }
+        }
+
+        public VDJPoi GetPoisAtPosition(long position)
+        {
+            if (VDJSong?.UseAutomation == true)
+            {
+                return this.VDJSong?.AutomatedPois?
+                    .ToArray()
+                    .Where(o => position > o.Position)
+                    .OrderBy(o => o.Position)
+                    .LastOrDefault() ?? DefaultPOI;
+            }
+            else
+            {
+                VDJPoi currentPoi = null;
+                if (VDJSong?.UseZPlane == true || this.VDJSong?.VDJPoiPlausible !=true)
+                {
+                    currentPoi = this.VDJSong?.ZPlanePois?
+                            .ToArray()
+                            .Where(o => position > o.Position && o.Type == "Zplane")
+                            .OrderBy(o => o.Position)
+                            .LastOrDefault();
+                }
+
+                if (currentPoi == null)
+                {
+                    currentPoi = this.VDJSong?.Pois
+                            .Where(o => position > o.Position && o.Type == "remix")
+                            .OrderBy(o => o.Position)
+                            .LastOrDefault();
+                }
+                if (currentPoi != null)
+                {
+                    return currentPoi;
+                }
+            }
+            return DefaultPOI;
         }
 
         public VDJPoi GetNextPoi
         {
             get
             {
-
-                VDJPoi currentPoi = this.VDJSong?.ZPlanePois?
-                        .Where(o => Position < o.Position && o.Type == "Zplane")
-                        .OrderBy(o => o.Position)
-                        .FirstOrDefault();
-
-                if (currentPoi == null)
-                {
-                    currentPoi = this.VDJSong?.Pois
-                        .Where(o => Position < o.Position && o.Type == "remix")
-                        .OrderBy(o => o.Position)
-                        .FirstOrDefault();
-                }
-                if (currentPoi != null)
-                {
-                    return currentPoi;
-                }
-                return DefaultPOI;
+                return GetNextPoiBasedOnPosition(Position);
             }
+        }
+
+        public VDJPoi GetNextPoiBasedOnPosition(long position)
+        {
+            VDJPoi currentPoi = this.VDJSong?.ZPlanePois?
+                                    .Where(o => position < o.Position && o.Type == "Zplane")
+                                    .OrderBy(o => o.Position)
+                                    .FirstOrDefault();
+
+            if (currentPoi == null)
+            {
+                currentPoi = this.VDJSong?.Pois
+                    .Where(o => position < o.Position && o.Type == "remix")
+                    .OrderBy(o => o.Position)
+                    .FirstOrDefault();
+            }
+            if (currentPoi != null)
+            {
+                return currentPoi;
+            }
+            return DefaultPOI;
         }
 
         public double GetEffectiveVolume
