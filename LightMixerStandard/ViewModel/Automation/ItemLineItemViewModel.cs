@@ -4,7 +4,7 @@ using UIFrameWork;
 
 namespace LightMixer.View
 {
-    internal class ItemLineItemViewModel : BaseViewModel
+    public class ItemLineItemViewModel : BaseViewModel
     {
         private double width;
         private Color color;

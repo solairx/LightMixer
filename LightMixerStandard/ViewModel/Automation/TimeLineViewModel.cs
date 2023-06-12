@@ -11,14 +11,14 @@ using UIFrameWork;
 namespace LightMixer.View
 {
 
-    internal class TimeLineViewModel : BaseViewModel
+    public class TimeLineViewModel : BaseViewModel
     {
         private bool isEditable;
 
         private double timeLineWidth;
         private List<ItemLineItemViewModel> items;
         private double positionTicker;
-        public bool IsEditable { get => isEditable; internal set => isEditable = value; }
+        public bool IsEditable { get => isEditable; set => isEditable = value; }
         public DmxChaser Chaser { get; }
         public List<ItemLineItemViewModel> Items { get => items; set => items = value; }
 
@@ -111,11 +111,11 @@ namespace LightMixer.View
             OnPropertyChanged(nameof(Items));
         }
 
-       /* internal void ResizeIndividualItem(ItemLineItemViewModel itemLineItemViewModel, DragDeltaEventArgs e)
+        public void ResizeIndividualItem(ItemLineItemViewModel itemLineItemViewModel, double horizontalChange)
         {
-            itemLineItemViewModel.Position += MaxPosition / timeLineWidth * e.HorizontalChange;
+            itemLineItemViewModel.Position += MaxPosition / timeLineWidth * horizontalChange;
             ResizePanel();
-        }*/
+        }
 
         public double TimeLineWidth //600
         {

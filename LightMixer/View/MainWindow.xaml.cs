@@ -72,16 +72,17 @@ namespace LightMixer.View
 
         private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (!IsDead && MessageBox.Show("Closing ?", "Are you sure", MessageBoxButton.YesNo) != MessageBoxResult.Yes)
+            if (!LightMixerBootStrap.IsDead && MessageBox.Show("Closing ?", "Are you sure", MessageBoxButton.YesNo) != MessageBoxResult.Yes)
             {
+                
                 e.Cancel = true;
             }
             else
             {
-                IsDead = true;
+                LightMixerBootStrap.IsDead = true;
             }
         }
 
-        public static bool IsDead = false;
+        
     }
 }

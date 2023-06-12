@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace LightMixer.View
 {
-    internal class TimeLinePoisViewModel : TimeLineViewModel
+    public class TimeLinePoisViewModel : TimeLineViewModel
     {
         protected override void SongChanged()
         {

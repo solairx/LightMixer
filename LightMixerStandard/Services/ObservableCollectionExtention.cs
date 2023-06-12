@@ -3,9 +3,12 @@ using System.Collections;
 
 public static class ObservableCollectionExtention
 {
-    public static void AddRange<t>(this ObservableCollection<t> collection, IEnumerable item)
+    public static void AddRange<t>(this ObservableCollection<t> collection, IEnumerable<t> item)
     {
-        collection.AddRange(item);
+        foreach (var i in item)
+        {
+            collection.Add(i);
+        }
     }
 
     

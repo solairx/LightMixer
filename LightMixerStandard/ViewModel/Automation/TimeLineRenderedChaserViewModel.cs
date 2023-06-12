@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace LightMixer.View
 {
-    internal class TimeLineRenderedChaserViewModel : TimeLineViewModel
+    public class TimeLineRenderedChaserViewModel : TimeLineViewModel
     {
         private SceneRenderedService sceneRendererService;
         public TimeLineRenderedChaserViewModel()

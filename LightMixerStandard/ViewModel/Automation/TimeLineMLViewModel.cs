@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace LightMixer.View
 {
-    internal class TimeLineMLViewModel : TimeLineViewModel
+    public class TimeLineMLViewModel : TimeLineViewModel
     {
         
         public int ConfidenceLevel { get; set; }

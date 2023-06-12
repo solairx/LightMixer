@@ -8,7 +8,7 @@ using UIFrameWork;
 namespace LightMixer.View
 {
 
-    internal class AutomationDesignerViewModel : BaseViewModel
+    public class AutomationDesignerViewModel : BaseViewModel
     {
         private SceneService sceneService;
         private SceneRenderedService sceneRendererService;

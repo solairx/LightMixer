@@ -3,11 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:LightMixer.View.Automation"
+             xmlns:local="clr-namespace:LightMixer.View.Automation" xmlns:view="clr-namespace:LightMixer.View"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" Width="{Binding TimeLineWidth,Mode=OneWayToSource}">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="visibilityConverter"/>
+        <view:ColorToSolidColorBrushValueConverter x:Key="ColorConverter" />
     </UserControl.Resources>
     <Border Background="AliceBlue">
         <Grid>
@@ -20,7 +21,7 @@
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Border DataContext="{Binding}" Width="{Binding DisplayLenght}" Background="{Binding Color}" Height="50">
+                        <Border DataContext="{Binding}" Width="{Binding DisplayLenght}" Background="{Binding Color, Converter={StaticResource ColorConverter}}" Height="50">
                         <StackPanel Orientation="Horizontal">
                                 <Thumb Visibility="{Binding RelativeSource={RelativeSource AncestorType=ItemsControl},  Path=DataContext.IsEditable, Converter={StaticResource visibilityConverter}}" Width="5" SizeChanged="Thumb_SizeChanged" DragDelta="Thumb_DragDelta" DragEnter="Thumb_DragEnter" DragCompleted="Thumb_DragCompleted" >
                                 <Thumb.Style>

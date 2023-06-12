@@ -56,7 +56,7 @@ namespace LightMixer.Model
             }
         }
 
-        public static BeatDetector.BeatDetector BeatDetector { get; internal set; }
+        public static BeatDetector.BeatDetector BeatDetector { get; set; }
 
         public double MaxBoothIntesity
         {

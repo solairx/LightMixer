@@ -39,10 +39,7 @@ namespace LightMixer
         }
     }
 
-    public interface IDispatcher
-    {
-        void Invoke(Action action);
-    }
+    
 
     public class BootStrap
     {
@@ -57,44 +54,9 @@ namespace LightMixer
         public BootStrap(IDispatcher dispatcher)
         {
             Dispatcher = dispatcher;
-            UnityContainer = new UnityContainer();
-            UnityContainer.RegisterInstance<IDispatcher>(dispatcher);
-            var virtualDjServer = new VirtualDjServer(() => MainWindow.IsDead);
-            UnityContainer.RegisterInstance<SharedEffectModel>(new SharedEffectModel(virtualDjServer));
+            LightMixerBootStrap bootstrap = new LightMixerBootStrap(dispatcher);
 
-            var dmxWrapper = new VComWrapper();
-            dmxWrapper.initPro("com3");
-            dmxWrapper.sendGetWidgetParametersRequest((ushort)0);
-            UnityContainer.RegisterInstance(dmxWrapper);
-
-            var beatDetector = new BeatDetector.BeatDetector();
-            var sceneService = new SceneService(beatDetector);
-            UnityContainer.RegisterInstance(new PhidGetService());
-
-            SharedEffectModel.BeatDetector = beatDetector;
-            BootStrap.UnityContainer.RegisterInstance<BeatDetector.BeatDetector>(beatDetector);
-            BootStrap.UnityContainer.RegisterInstance<SceneService>(sceneService);
-
-            //UnityContainer.RegisterInstance<LightService.DmxServiceClient>(new LightService.DmxServiceClient());
-            DmxModel model = new DmxModel();
-            var dmxChaser = new DmxChaser(virtualDjServer);
-            var sceneRenderedService = new SceneRenderedService(sceneService, dmxChaser, dmxWrapper, virtualDjServer);
-            UnityContainer.RegisterInstance<DmxChaser>(dmxChaser);
-            BootStrap.UnityContainer.RegisterInstance<SceneRenderedService>(sceneRenderedService);
-            UnityContainer.RegisterInstance<DmxModel>(model);
-            /*try
-            {
-                var host = CreateWebHostBuilder(new string[] { })
-                    .Build()
-                    .RunAsync();
-
-    
-            }
-            catch (Exception vexp)
-            {
-                Debug.WriteLine(vexp.ToString());
-                MessageBox.Show("Can't open webapi service for Listen, " + vexp.Message);
-            }*/
+           
         }
 
        /* public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>

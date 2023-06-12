@@ -76,9 +76,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BeatDetector\BeatDetector.csproj" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="AvalonDock.dll" />
     <Content Include="bass.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -95,9 +92,6 @@
     <Content Include="Phidget21.NET.dll" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Arkane.Zeroconf">
-      <Version>1.2.20</Version>
-    </PackageReference>
     <PackageReference Include="HADotNet.Entities">
       <Version>0.1.2</Version>
     </PackageReference>
@@ -119,5 +113,8 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.Windows.Compatibility" Version="6.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LightMixerStandard\LightMixerStandard.csproj" />
   </ItemGroup>
 </Project>
