@@ -50,7 +50,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightMixerAPI", "LightMixer
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightMixerStandard", "LightMixerStandard\LightMixerStandard.csproj", "{674206D6-6E20-49A9-B80A-00C1BA92966E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightMixerAngular", "LightMixerAngular\LightMixerAngular.csproj", "{C8E8D8F4-CCDF-40FF-9B53-0323E4BEC60B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightMixerAngular", "LightMixerAngular\LightMixerAngular.csproj", "{C8E8D8F4-CCDF-40FF-9B53-0323E4BEC60B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -116,8 +116,8 @@ Global
 		{68C9AFB7-4D80-4B0E-8A2C-1151A3698B27}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{68C9AFB7-4D80-4B0E-8A2C-1151A3698B27}.Debug|Any CPU.Build.0 = Debug|x86
 		{68C9AFB7-4D80-4B0E-8A2C-1151A3698B27}.Debug|ARM.ActiveCfg = Debug|x86
-		{68C9AFB7-4D80-4B0E-8A2C-1151A3698B27}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{68C9AFB7-4D80-4B0E-8A2C-1151A3698B27}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{68C9AFB7-4D80-4B0E-8A2C-1151A3698B27}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{68C9AFB7-4D80-4B0E-8A2C-1151A3698B27}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
 		{68C9AFB7-4D80-4B0E-8A2C-1151A3698B27}.Debug|x64.ActiveCfg = Debug|Any CPU
 		{68C9AFB7-4D80-4B0E-8A2C-1151A3698B27}.Debug|x64.Build.0 = Debug|Any CPU
 		{68C9AFB7-4D80-4B0E-8A2C-1151A3698B27}.Debug|x86.ActiveCfg = Debug|x86

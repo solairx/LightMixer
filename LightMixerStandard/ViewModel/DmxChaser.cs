@@ -71,7 +71,7 @@ namespace LightMixer.Model
                 if (trackName != value)
                 {
                     trackName = value;
-                    this.AsyncOnPropertyChange(o => this.trackName);
+                    this.AsyncOnPropertyChange(o => this.TrackName);
                 }
             }
         }

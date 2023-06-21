@@ -1,6 +1,7 @@
 ﻿using LightMixer.View;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using System.Linq.Expressions;
 
 namespace LightMixerAPI.Controllers
 {
@@ -29,17 +30,13 @@ namespace LightMixerAPI.Controllers
     [ApiController]
     public class SongHub : Hub
     {
-
-        int x = 0;
-        
-
         public override Task OnConnectedAsync()
         {
             return base.OnConnectedAsync();
         }
         public async Task SendMessage(string user, string message)
         {
-            await Clients.All.SendAsync(x++.ToString(), user, message);
+            await Clients.All.SendAsync("TrackInfo", new TrackInfo { });
         }
     }
 }

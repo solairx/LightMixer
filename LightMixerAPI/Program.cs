@@ -9,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSingleton(LightMixerBootStrap.UnityContainer.Resolve<SceneService>());
 
 
+
 var policyName = "defaultCorsPolicy";
 builder.Services.AddCors(options =>
 {
@@ -27,6 +28,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddSingleton<TrackService>();
 
 var app = builder.Build();
 
@@ -43,5 +45,5 @@ app.UseAuthorization();
 
 app.MapControllers();
 app.MapHub<SongHub>("/hub");
-
+app.Services.GetService<TrackService>();
 app.Run();

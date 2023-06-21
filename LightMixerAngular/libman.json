@@ -1,0 +1,10 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "rxjs@7.8.1",
+      "destination": "ClientApp/rxjs/"
+    }
+  ]
+}
