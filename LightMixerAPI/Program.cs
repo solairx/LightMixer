@@ -15,10 +15,11 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy(policyName, builder =>
     {
-        builder.WithOrigins() // the Angular app url
+        builder // the Angular app url
             .AllowAnyMethod()
             .AllowAnyHeader()
-            .AllowCredentials();
+            .AllowAnyOrigin();
+            
     });
 });
 
@@ -44,6 +45,7 @@ if (app.Environment.IsDevelopment())
 app.UseAuthorization();
 
 app.MapControllers();
+app.UseCors("defaultCorsPolicy");
 app.MapHub<SongHub>("/hub");
 app.Services.GetService<TrackService>();
 app.Run();

@@ -1,12 +1,8 @@
 import * as signalR from '@microsoft/signalr';
 import { HubConnection, HubConnectionBuilder, Subject } from '@microsoft/signalr';
 import { environment } from '../../environments/environment';
+import { TrackInfo } from './TrackInfo';
 
-
-export class TrackInfo {
-  isBeat: boolean = false;
-  trackInfo: string = '';
-}
 
 export class SignalrService {
 

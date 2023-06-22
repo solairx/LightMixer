@@ -1,0 +1,18 @@
+
+
+<p *ngIf="!scenes?.length"><em>Loading...</em></p>
+
+<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="scenes.length">
+  <thead>
+    <tr>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let scene of scenes">
+      <td>{{ scene.name }}</td>
+    </tr>
+  </tbody>
+</table>
+
+

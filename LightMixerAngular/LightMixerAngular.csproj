@@ -22,6 +22,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="proxy.conf.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\LightMixerStandard\LightMixerStandard.csproj" />
   </ItemGroup>
 

@@ -1,7 +1,8 @@
 import { Component,  Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { IStreamSubscriber } from '@microsoft/signalr';
-import { SignalrService, TrackInfo } from './SignalrService';
+import { SignalrService } from './SignalrService';
+import { TrackInfo } from "./TrackInfo";
 import { environment } from '../../environments/environment';
 
 
@@ -21,11 +22,6 @@ export class FetchDataComponent {
   TrackName = 'NA'
 
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
-    
-    http.get<SceneModel[]>(environment.apiUrl + 'scenes')
-      .subscribe(result => {
-      this.scenes = result;
-    }, error => console.error(error));
 
     var signalR = new SignalrService();
     signalR.startConnection().then(() => {
