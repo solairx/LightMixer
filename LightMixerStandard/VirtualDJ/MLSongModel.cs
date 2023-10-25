@@ -67,7 +67,7 @@ namespace BeatDetector
                 {
                     try
                     {
-                        ProcessStartInfo startInfo = new ProcessStartInfo("env1\\Scripts\\python.exe", "MLAnalyser.py \"" + VDJSong.FilePath + "\"");
+                        ProcessStartInfo startInfo = new ProcessStartInfo("C:\\Users\\ec_as\\AppData\\Local\\Programs\\Python\\Python37\\python.exe", "MLAnalyser.py \"" + VDJSong.FilePath + "\"");
 
                         Console.WriteLine("Analyzing " + VDJSong.FilePath);
                         startInfo.RedirectStandardOutput = true;
@@ -85,9 +85,10 @@ namespace BeatDetector
                             streamWriter.Write(analysisJson);
                         }
                     }
-                    catch (Exception)
+                    catch (Exception exp)
                     {
                         MusicMLFailed = true;
+                        Console.WriteLine("ML Failed " + exp.ToString());
                     }
                     finally
                     {

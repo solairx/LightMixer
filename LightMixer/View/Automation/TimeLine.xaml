@@ -9,6 +9,7 @@
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="visibilityConverter"/>
         <view:ColorToSolidColorBrushValueConverter x:Key="ColorConverter" />
+        <view:MarginLeftConverter x:Key="MarginLeftConverter"></view:MarginLeftConverter>
     </UserControl.Resources>
     <Border Background="AliceBlue">
         <Grid>
@@ -44,7 +45,7 @@
             </ItemsControl.ItemTemplate>
 
         </ItemsControl>
-            <Border HorizontalAlignment="Left" Height="80" Width="5"    Background="Orange" Margin="{Binding PositionTicker}">
+            <Border HorizontalAlignment="Left" Height="80" Width="5"    Background="Orange" Margin="{Binding PositionTicker , Converter={StaticResource MarginLeftConverter}}">
 
             </Border>
         </Grid>
