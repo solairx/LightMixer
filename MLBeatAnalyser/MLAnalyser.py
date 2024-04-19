@@ -42,7 +42,7 @@ ax.title.set_fontsize(fontsize)
 # x-axis title
 ax.set_xlabel('(seconds)', fontsize=fontsize)
 
-# y-axis
+# y-axisML
 y_pos = np.arange(len(tags))
 ax.set_yticks(y_pos)
 ax.set_yticklabels(tags, fontsize=fontsize-1)
