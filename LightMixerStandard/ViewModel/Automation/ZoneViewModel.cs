@@ -1,4 +1,5 @@
 ﻿using LightMixer.Model;
+using LightMixerStandard.Model.Fixture.Laser;
 using System.Collections.Generic;
 using System.Linq;
 using UIFrameWork;
@@ -45,6 +46,16 @@ namespace LightMixer.View
                 return zone.FixtureTypes
                     .OfType<MovingHeadFixtureCollection>()
                     .Select(s => new MovingHeadViewModel(s));
+            }
+        }
+
+        public IEnumerable<LaserViewModel> Laser
+        {
+            get
+            {
+                return zone.FixtureTypes
+                    .OfType<LaserFixtureCollection>()
+                    .Select(s => new LaserViewModel(s));
             }
         }
     }

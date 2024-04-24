@@ -8,6 +8,7 @@ using System.Windows;
 
 namespace LightMixer.View
 {
+
     public class MovingHeadViewModel : MovingHeadFixtureViewModelBase
     {
         private readonly MovingHeadFixtureCollection movingHeadFixtureCollection;
@@ -31,7 +32,7 @@ namespace LightMixer.View
             AsyncOnPropertyChange(nameof(UseDelatedPosition));
         }
 
-        
+
         public ObservableCollection<EffectBase> EffectList => movingHeadFixtureCollection.EffectList;
 
         public IEnumerable<MovingHeadFixtureViewModelChildren> Childrens
@@ -59,7 +60,7 @@ namespace LightMixer.View
         {
             get
             {
-                if (movingHeadFixtureCollection.FixtureGroups.SelectMany(o => o.FixtureInGroup).OfType<MovingHeadFixture>().GroupBy(o=>o.ProgramMode).Count() >1)
+                if (movingHeadFixtureCollection.FixtureGroups.SelectMany(o => o.FixtureInGroup).OfType<MovingHeadFixture>().GroupBy(o => o.ProgramMode).Count() > 1)
                 {
                     return MovingHeadFixture.Program.CodeDisable;
                 }

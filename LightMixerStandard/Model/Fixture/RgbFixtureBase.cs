@@ -2,6 +2,8 @@
 
 namespace LightMixer.Model.Fixture
 {
+
+
     public abstract class RgbFixtureBase : FixtureBase
     {
         private byte redValue;

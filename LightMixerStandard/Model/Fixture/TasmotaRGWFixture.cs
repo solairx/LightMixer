@@ -116,20 +116,6 @@ namespace LightMixer.Model.Fixture
                 Stopwatch sw = new Stopwatch();
                 sw.Start();
 
-                /* if (lastQuery != newQuery && HasGreatLightEnergyDifference() && !isHttpRunning)
-                 {
-                     isHttpRunning = true;
-                     Debug.WriteLine("Tasmota Query Cancel REquest" + cts.IsCancellationRequested);
-
-                     cts = new CancellationTokenSource();
-                     LastColorEnergy = RedValue + GreenValue + BlueValue;
-                     lastQuery = newQuery;
-                     Debug.WriteLine(newQuery);
-                     client.GetAsync(newQuery, HttpCompletionOption.ResponseHeadersRead ,cts.Token)
-
-                         .ContinueWith((a) => isHttpRunning = false) ;
-                     cts.CancelAfter(400);
-                 }*/
             }
             catch (Exception)
             {

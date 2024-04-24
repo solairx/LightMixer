@@ -299,6 +299,7 @@ namespace LightMixer.Model
             {
                 _red = value;
                 this.OnPropertyChanged(() => this.Red);
+                this.OnPropertyChanged(() => this.Color);
             }
         }
 
@@ -312,6 +313,7 @@ namespace LightMixer.Model
             {
                 _green = value;
                 this.OnPropertyChanged(() => this.Green);
+                this.OnPropertyChanged(() => this.Color);
             }
         }
 
@@ -325,6 +327,15 @@ namespace LightMixer.Model
             {
                 _blue = value;
                 this.OnPropertyChanged(() => this.Blue);
+                this.OnPropertyChanged(() => this.Color);
+            }
+        }
+
+        public Color Color
+        {
+            get
+            {
+                return Color.FromArgb(Red, Green, Blue);
             }
         }
 

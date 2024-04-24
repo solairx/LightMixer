@@ -5,6 +5,7 @@ using Unity;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Runtime.CompilerServices;
+using LightMixerStandard.Model.Fixture.Laser;
 
 public class SceneService
 {
@@ -108,6 +109,10 @@ public class SceneService
             new PointOfInterest{  Location = PointOfInterestLocation.DiscoBallStatic, Tilt = 3000, Tilt2=3000, Pan = 0, Pan2 = 0},
             new PointOfInterest{  Location = PointOfInterestLocation.Circle, Tilt = 0, Tilt2=65535, Pan = 65535, Pan2 = 1}
         };
+        FixtureGroup LaserGroupBooth = new FixtureGroup();
+        var laser = new Laser();
+        LaserGroupBooth.FixtureInGroup.Add(laser);
+
         var movingHeadMasterDJ = new MovingHeadFixture(399, djBoothPov);
         movingHeadGroupBooth.FixtureInGroup.Add(movingHeadMasterDJ);
         movingHeadGroupBooth.FixtureInGroup.Add(new MovingHeadFixture(299, djBoothPov)); /// remember that we have a 0 here , it start at 1 on the ctrl
@@ -177,16 +182,19 @@ public class SceneService
         FixtureCollection boothDownLight = new RGBLedFixtureCollection();
         FixtureCollection movingHeadDanceFloor = new MovingHeadFixtureCollection();
         FixtureCollection movingHeadDJ = new MovingHeadFixtureCollection();
+        FixtureCollection laserCollection = new LaserFixtureCollection();
         djBoothZone.FixtureTypes.Add(boothDownLight);
         danceFloorZone.FixtureTypes.Add(rgbLedDownLight);
         danceFloorZone.FixtureTypes.Add(movingHeadDanceFloor);
         djBoothZone.FixtureTypes.Add(movingHeadDJ);
+        djBoothZone.FixtureTypes.Add(laserCollection);
         rgbLedDownLight.FixtureGroups.AddRange(new[] { group1, group2, group3, group4 });
 
         boothDownLight.FixtureGroups.AddRange(new[] { groupBooth1, groupBooth2, groupBooth3, groupBooth4 });
 
         movingHeadDanceFloor.FixtureGroups.Add(movingHeadGroupFloor);
         movingHeadDJ.FixtureGroups.Add(movingHeadGroupBooth);
+        laserCollection.FixtureGroups.Add(LaserGroupBooth);
 
         var sharedEffect = LightMixerBootStrap.UnityContainer.Resolve<SharedEffectModel>();
         FixtureCollection poolRgbLed = new RGBLedFixtureCollection();
