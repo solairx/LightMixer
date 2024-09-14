@@ -2,6 +2,7 @@
 using LightMixer.Model.Fixture;
 using LightMixer.Model.Service;
 using LightMixer.View;
+using LightMixerStandard.Model.Fixture.Laser;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -78,7 +79,7 @@ namespace LightMixer.Model
                         .SelectMany(o => o.Zones)
                         .SelectMany(o => o.FixtureTypes)
                         .ToList()
-                        .ForEach(o => o.CurrentEffect.DmxFrameCall(activeDeck));
+                        .ForEach(o => o.CurrentEffect?.DmxFrameCall(activeDeck));
 
                     var allfixture = sceneService.Scenes
                         .SelectMany(o => o.Zones)
@@ -106,6 +107,7 @@ namespace LightMixer.Model
                 catch (Exception vexp)
                 {
                     Debug.WriteLine(vexp.ToString());
+                    
                 }
                // Debug.WriteLine("FRAME TIME : " + sw.ElapsedMilliseconds);
                 Thread.Sleep(FrameRate);
@@ -221,6 +223,41 @@ namespace LightMixer.Model
             var h = new object[1] { newEffect.Name};
             //LightMixerHubBackGroundService.HubContext.Clients.All.SendCoreAsync("SendMessage", h);
             
+        }
+
+        public void SetCurrentLaserEffect(string scene, string zone, string newEffect) 
+        {
+            var selectedZone =
+            sceneService.Scenes
+            .First(o => o.Name == scene)
+            .Zones.Where(z => z.Name == zone);
+
+            var laserCollection = selectedZone.Single().FixtureTypes.OfType<LaserFixtureCollection>()
+            .First();
+
+            var laser = laserCollection.FixtureGroups.First().FixtureInGroup.First() as Laser;
+
+            laser.SetEffectExternal( laser.Effects.First(e=> e.Name == newEffect));
+        }
+
+        public void SetCurrentLaserEffectMood(string scene, string zone, LaserEffectMood mood)
+        {
+            SetCurrentLaserEffectMood(scene, zone, mood, true);
+        }
+
+            public void SetCurrentLaserEffectMood(string scene, string zone, LaserEffectMood mood, bool loop)
+        {
+            var selectedZone =
+            sceneService.Scenes
+            .First(o => o.Name == scene)
+            .Zones.Where(z => z.Name == zone);
+
+            var laserCollection = selectedZone.Single().FixtureTypes.OfType<LaserFixtureCollection>()
+            .First();
+
+            var laser = laserCollection.FixtureGroups.First().FixtureInGroup.First() as Laser;
+
+            laser.SetEffectExternalRandomMood(mood, loop);
         }
 
         public void SetMovingHeadProgramEffect(string scene, string zone, Program newProgram)

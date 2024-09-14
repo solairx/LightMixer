@@ -60,6 +60,8 @@ namespace LightMixer.Model
             {
                 dmxChaser.mBpmDetector.BeatRepeat = 1;
             }
+            //SceneRenderedService.SetCurrentLaserEffect(SceneService.indoorSceneName, SceneService.djboothZoneName, "Empty");
+            SceneRenderedService.SetCurrentLaserEffectMood(SceneService.indoorSceneName, SceneService.djboothZoneName, LightMixerStandard.Model.Fixture.Laser.LaserEffectMood.Low, false);
         }
     }
 }

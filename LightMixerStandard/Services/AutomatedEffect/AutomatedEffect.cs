@@ -25,7 +25,8 @@ namespace LightMixer.Model
             new Chorus();
             new Before20SecBeatKickIn();
             new BeforeBeatKickIn();
-            new Intro(); 
+            new Intro();
+            new LaserHigh();
         }
         public AutomatedEffect(string name)
         {

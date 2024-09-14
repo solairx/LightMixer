@@ -1,14 +1,28 @@
 ﻿using ILDA.net;
+using System.Runtime.CompilerServices;
 
 namespace LightMixerStandard.Model.Fixture.Laser
 {
+    public enum LaserEffectMood
+    {
+        None = 0 ,
+        Low = 1 ,
+        Mid = 2 ,
+        Hight = 3 
+    }
+
     public class LaserEffect
     {
         public string Name { get; set; }
         public HeliosPoint[][] Points { get; set; }
 
-        public static LaserEffect LoadFrom(string fileName, string name)
+        public LaserEffectMood Mood { get; set; }
+
+        
+
+        public static LaserEffect LoadFrom(LaserEffectMood mood, string fileName, string name)
         {
+            
             int frameId = 0;
             //var file = IldaFile.Open("example1114.ild");
             //var file = IldaFile.Open("example1227.ild");
@@ -37,7 +51,8 @@ namespace LightMixerStandard.Model.Fixture.Laser
             return new LaserEffect
             {
                 Name = name,
-                Points = frames
+                Points = frames,
+                Mood = mood,
             };
         }
         static ushort GetShortUshortValue(short ildaValue)

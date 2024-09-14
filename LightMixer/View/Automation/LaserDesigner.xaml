@@ -16,6 +16,7 @@
             </StackPanel>
             <StackPanel Orientation="Vertical">
                 <CheckBox Content="Laser On:" IsChecked="{Binding LaserOn}" />
+                <CheckBox Content="Loop:" IsChecked="{Binding Loop}" />
                 <CheckBox Content="Ilda file:" IsChecked="{Binding UseCustomIlda}" />
             </StackPanel>
         </StackPanel>
