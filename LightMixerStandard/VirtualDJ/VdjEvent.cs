@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Linq;
 
 namespace BeatDetector
@@ -18,7 +19,13 @@ namespace BeatDetector
 
         public string FilePath { get; set; }
 
-        
+        public DateTime Created { get; set; }
+
+        public VdjEvent()
+        {
+            Created = DateTime.Now;
+        }
+
 
         private DateTime elapsedsettime = DateTime.Now;
         public string Elapsed
@@ -46,6 +53,23 @@ namespace BeatDetector
                 double bpm = 1;
                 double.TryParse(BPM, out bpm);
                 return bpm;
+            }
+        }
+
+        public TimeSpan ExtrapoledElapsedBpmAdjusted
+        {
+            get
+            {
+
+                double elapsed = 1;
+                double.TryParse(Elapsed, out elapsed);
+
+                double bpm = 1;
+                double.TryParse(VDJSong?.Scans?.First()?.Bpm, out bpm);
+                bpm = 60 / bpm;
+                double ratio = (BpmAsDouble / bpm);
+                var gap = DateTime.Now.Subtract(Created).TotalMilliseconds * ratio;
+                return TimeSpan.FromMilliseconds(elapsed * ratio + gap);
             }
         }
 
@@ -91,7 +115,7 @@ namespace BeatDetector
             else
             {
                 VDJPoi currentPoi = null;
-                if (VDJSong?.UseZPlane == true || this.VDJSong?.VDJPoiPlausible !=true)
+                if (VDJSong?.UseZPlane == true || this.VDJSong?.VDJPoiPlausible != true)
                 {
                     currentPoi = this.VDJSong?.ZPlanePois?
                             .ToArray()

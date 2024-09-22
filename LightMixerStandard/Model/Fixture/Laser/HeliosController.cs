@@ -258,6 +258,7 @@ namespace LightMixerStandard.Model.Fixture.Laser
                 frameBuffer[bufPos++] = (byte)(numOfPointsActual >> 8);
                 frameBuffer[bufPos++] = flags;
 
+                
                 // Send USB transaction
                 var result = bulkEndpointWriter.Write(frameBuffer, 0, bufPos, 8 + (bufPos >> 5), out int transferLength);
 

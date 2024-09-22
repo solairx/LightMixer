@@ -1,4 +1,6 @@
-﻿namespace LightMixer.Model.Fixture
+﻿using BeatDetector;
+
+namespace LightMixer.Model.Fixture
 {
     public abstract class FixtureBase
     {
@@ -27,7 +29,9 @@
         public EffectBase currentEffect { get => currentEffect1; set => currentEffect1 = value; }
 
         protected FixtureBase()
-        { }
+        {
+            this.CurrentVDJEvent = new VdjEvent { };
+        }
 
         public FixtureBase(int dmxAddress)
         {
@@ -46,7 +50,19 @@
         }
 
         public abstract int DmxLenght { get; }
+        protected VdjEvent CurrentVDJEvent { get; private set; }
 
         public abstract byte?[] Render();
+
+        public virtual void ProcessNotification() { }
+
+        internal void NotifyUpdate(VdjEvent currentDeck)
+        {
+            if (currentDeck !=null)
+            {
+                this.CurrentVDJEvent = currentDeck;
+                ProcessNotification();
+            }
+        }
     }
 }

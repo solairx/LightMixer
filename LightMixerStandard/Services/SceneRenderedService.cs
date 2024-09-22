@@ -3,6 +3,7 @@ using LightMixer.Model.Fixture;
 using LightMixer.Model.Service;
 using LightMixer.View;
 using LightMixerStandard.Model.Fixture.Laser;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -87,6 +88,15 @@ namespace LightMixer.Model
                         .SelectMany(o => o.FixtureGroups)
                         .SelectMany(o => o.FixtureInGroup);
                     byte?[] dmxFrameArray = RenderDMXFrame(allfixture);
+                    var currentDeck = activeDeck?.FirstOrDefault();
+                    if (currentDeck != null && allfixture != null)
+                    {
+
+                        foreach (var fixture in allfixture)
+                        {
+                            fixture.NotifyUpdate(currentDeck);
+                        }
+                    }
                     if (legacyChaser.LedEffectCollection.Count != 0)
                     {
                         if (legacyChaser.LedEffectCollection[0]._sharedEffectModel.AutoChangeColorOnBeat)

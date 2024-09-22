@@ -18,7 +18,7 @@ namespace LightMixer.View
         public bool Loop { get => Model.Loop; set => Model.Loop = value; }
         public bool UseCustomIlda { get; set; }
 
-        public ObservableCollection<LaserEffect> Effects => Model.Effects;
+        public ObservableCollection<LaserEffect>  Effects => new ObservableCollection<LaserEffect>( Model.Effects.Where(o=>!o.Stretch));
 
         public LaserEffect SelectedEffect
         {

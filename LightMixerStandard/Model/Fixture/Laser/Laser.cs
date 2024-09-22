@@ -1,4 +1,6 @@
-﻿using LightMixer.Model.Fixture;
+﻿using BeatDetector;
+using LightMixer;
+using LightMixer.Model.Fixture;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 
@@ -12,12 +14,38 @@ namespace LightMixerStandard.Model.Fixture.Laser
         private CancellationTokenSource currentEffectTokenSource;
         private bool loop;
         DateTime startedLoop = DateTime.Now;
-
         public event PropertyChangedEventHandler PropertyChanged;
-
-        
-
         public ObservableCollection<LaserEffect> Effects { get; private set; } = new ObservableCollection<LaserEffect>();
+
+
+        public override void ProcessNotification()
+        {
+            var ev = CurrentVDJEvent;
+
+            var filename = ev.VDJSong.FilePath + ".ild";
+            var name = ev.FileName;
+            //here we process vdjupdate event
+            LightMixerBootStrap.Dispatcher.Invoke(() =>
+            {
+                var existingEffect = Effects.FirstOrDefault(o => o.FileName == filename);
+                if (existingEffect == null)
+                {
+                    existingEffect = LaserEffect.LoadFromAsync(LaserEffectMood.None, filename, name);
+                    Effects.Add(existingEffect);
+                }
+                if (selectedEffect != existingEffect && existingEffect.Points?.Any() == true)
+                {
+                    SelectedEffect = existingEffect;
+                }
+                else if (selectedEffect != existingEffect && selectedEffect.Stretch)
+                {
+                    SelectedEffect = Effects.Single(o => o.Name == "Done");
+                }
+            });
+
+        }
+
+
         public bool Loop
         {
             get => loop;
@@ -51,7 +79,10 @@ namespace LightMixerStandard.Model.Fixture.Laser
                         Loop = false;
                     }
                 }
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedEffect)));
+                LightMixerBootStrap.Dispatcher.Invoke(() =>
+                {
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedEffect)));
+                });
             }
         }
 
@@ -112,8 +143,9 @@ namespace LightMixerStandard.Model.Fixture.Laser
 
         private void RenderIlda(LaserEffect effect, CancellationToken token)
         {
-            
             HeliosPoint[][] frames = effect.Points;
+            if (frames?.Any() == false)
+                return;
             int numberOfDevices = 1;
             int deviceId = 0;
             var now = DateTime.Now;
@@ -121,9 +153,11 @@ namespace LightMixerStandard.Model.Fixture.Laser
             int framepersecond = 60;
 
             Console.WriteLine("\nSending a test animation to each DAC...");
-            int j = 0;
-            for (j = 0; j < frames.Count(); j++)
+            int frameNumber = 0;
+            while (frameNumber <= frames.Count()-1 || effect.Stretch)
+            //for (frameNumber = 0; frameNumber < frames.Count(); frameNumber++)
             {
+                var currentEffect = CurrentVDJEvent;
                 if (token.IsCancellationRequested)
                 {
                     return;
@@ -141,30 +175,39 @@ namespace LightMixerStandard.Model.Fixture.Laser
                             break;
                         }
                     }
-                    if (k > 46)
-                        Console.WriteLine(k);
-                    // Send the next frame if received a ready signal
                     if (isReady)
                     {
                         var elapsed = DateTime.Now.Subtract(now);
+                        if (effect.Stretch)
+                        {
+                            elapsed = currentEffect.ExtrapoledElapsedBpmAdjusted;
+                        }
+                                                
                         var currentFrame = elapsed.TotalMilliseconds / (1000 / framepersecond);
-                         if (j % 60 == 0)
+                        if (frameNumber > currentFrame)
                         {
-                            Console.WriteLine(j + " " + DateTime.Now.Second + " " + currentFrame);
+                            frameNumber = Convert.ToInt32(currentFrame);
                         }
-                        if (j > currentFrame)
+                        if (frameNumber < currentFrame)
                         {
-                            j = Convert.ToInt32(currentFrame);
-                        }
-                        if (j < currentFrame)
-                        {
-                            j = Convert.ToInt32(currentFrame);
-                            if (j >= frames.Count())
+                            frameNumber = Convert.ToInt32(currentFrame);
+                            if (frameNumber >= frames.Count() -1 )
                             {
-                                j = frames.Count() - 1;
+                                frameNumber = frames.Count() - 1;
                             }
                         }
-                        heliosController.WriteFrame(deviceId, 25000, frames[j++]);
+                        if (heliosController.GetStatus(deviceId))
+                        {
+                            if (frameNumber >= frames.Count() - 1 || frameNumber < 0 )
+                            {
+                                heliosController.WriteFrame(deviceId, 25000, new HeliosPoint[1]);
+                            }
+                            else 
+                            {
+                                heliosController.WriteFrame(deviceId, 25000, frames[frameNumber]);
+                            }
+                        }
+                        frameNumber++;
                     }
                 }
                 catch (Exception ex)
@@ -176,7 +219,7 @@ namespace LightMixerStandard.Model.Fixture.Laser
             var elapsedForcurrentLoop = DateTime.Now.Subtract(startedLoop).TotalSeconds;
             if (selectedEffect != Effects.First() && selectedEffect != Effects.Skip(1).First())
             {
-                if (elapsedForcurrentLoop < 10 ||(Loop && SelectedEffect.Mood != LaserEffectMood.None))
+                if (elapsedForcurrentLoop < 10 || (Loop && SelectedEffect.Mood != LaserEffectMood.None))
                 //if ((Loop && SelectedEffect.Mood != LaserEffectMood.None))
                 {
                     Shuffle(SelectedEffect.Mood);
@@ -188,6 +231,8 @@ namespace LightMixerStandard.Model.Fixture.Laser
                 }
             }
         }
+
+        
 
         private void LoadDefault()
         {

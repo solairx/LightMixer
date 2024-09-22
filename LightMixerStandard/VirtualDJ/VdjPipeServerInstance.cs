@@ -79,9 +79,6 @@ namespace BeatDetector
                     vdjEvent.Elapsed = keyValuePairs["elapsed"];
                     vdjEvent.BPM = keyValuePairs["bpm"];
                     vdjEvent.CrossFader = GetDoubleFromMessage(keyValuePairs, "crossfader");
-                    //vdjEvent.BeatNumber = GetDoubleFromMessage(keyValuePairs, "beatNum");
-                    //vdjEvent.BeatBar16 = GetDoubleFromMessage(keyValuePairs, "beatBar16");
-                    //vdjEvent.BeatBar = GetDoubleFromMessage(keyValuePairs, "beatBar");
                     vdjEvent.BeatGrid = GetDoubleFromMessage(keyValuePairs, "beatGrid");
                     vdjEvent.BeatPos = GetDoubleFromMessage(keyValuePairs, "beatPos");
                     vdjEvent.Volume = GetDoubleFromMessage(keyValuePairs, "volume");
