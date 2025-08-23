@@ -50,7 +50,7 @@ namespace LightMixer
             UnityContainer.RegisterInstance<SharedEffectModel>(new SharedEffectModel(virtualDjServer));
 
             var dmxWrapper = new VComWrapper();
-            dmxWrapper.initPro("com3");
+            var success = dmxWrapper.initPro("com3");
             dmxWrapper.sendGetWidgetParametersRequest((ushort)0);
             UnityContainer.RegisterInstance(dmxWrapper);
 

@@ -88,12 +88,12 @@ namespace LightMixer.Model.Fixture
 
                 if (WhiteValue == 0 || UseDarkMode || this.currentEffect is AllOffEffect)
                 {
-                    newQuery = "http://192.168.1.252/light/0?turn=off&brightness=100";
+                    newQuery = "http://192.168.1.110/light/0?turn=off&brightness=100";
                 }
                 else
                 {
                     isOnInternalState = true;
-                    newQuery = "http://192.168.1.252/light/0?turn=on&brightness=" + dimmerValue;
+                    newQuery = "http://192.168.1.110/light/0?turn=on&brightness=" + dimmerValue;
                 }
 
                 if (newQuery != PreparatedQuery && (minDelay.ElapsedMilliseconds > 150 || WhiteValue > 10))

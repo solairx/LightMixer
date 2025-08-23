@@ -59,33 +59,46 @@ namespace LightMixerStandard.Model.Fixture.Laser
         {
             return Task.Run<HeliosPoint[][]>(() =>
             {
-                var file = IldaFile.Open(fileName);
-                if (file == null)
-                    return null;
-                int frameId = 0;
-                HeliosPoint[][] frames = new HeliosPoint[file.Count()][];
-                foreach (var ildaFrame in file)
+                IldaFile file;
+                try
+                {
+                    file = IldaFile.Open(fileName);
+                    if (file == null)
+                        return null;
+                    int frameId = 0;
+                    HeliosPoint[][] frames = new HeliosPoint[file.Count()][];
+                    foreach (var ildaFrame in file)
+                    {
+
+                        int pointId = 0;
+                        frames[frameId] = new HeliosPoint[ildaFrame.Count()];
+                        foreach (var ildaPoint in ildaFrame)
+                        {
+                            frames[frameId][pointId] = new HeliosPoint
+                            {
+                                Blue = ildaPoint.Color.B,
+                                Red = ildaPoint.Color.R,
+                                Green = ildaPoint.Color.G,
+                                X = GetShortUshortValue(ildaPoint.X),
+                                Y = GetShortUshortValue(ildaPoint.Y),
+                                Intensity = 0xFF
+                            };
+                            pointId++;
+                        }
+                        frameId++;
+                    }
+
+                    return frames;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    throw;
+                }
+                finally
                 {
                     
-                    int pointId = 0;
-                    frames[frameId] = new HeliosPoint[ildaFrame.Count()];
-                    foreach (var ildaPoint in ildaFrame)
-                    {
-                        frames[frameId][pointId] = new HeliosPoint
-                        {
-                            Blue = ildaPoint.Color.B,
-                            Red = ildaPoint.Color.R,
-                            Green = ildaPoint.Color.G,
-                            X = GetShortUshortValue(ildaPoint.X),
-                            Y = GetShortUshortValue(ildaPoint.Y),
-                            Intensity = 0xFF
-                        };
-                        pointId++;
-                    }
-                    frameId++;
                 }
-
-                return frames;
             });
         }
 

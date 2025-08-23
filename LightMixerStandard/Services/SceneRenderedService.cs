@@ -117,29 +117,29 @@ namespace LightMixer.Model
                 catch (Exception vexp)
                 {
                     Debug.WriteLine(vexp.ToString());
-                    
+
                 }
-               // Debug.WriteLine("FRAME TIME : " + sw.ElapsedMilliseconds);
+                // Debug.WriteLine("FRAME TIME : " + sw.ElapsedMilliseconds);
                 Thread.Sleep(FrameRate);
             }
         }
 
         public IEnumerable<KeyValuePair<double, AutomatedEffect>> GetEffectBasedOnPosition()
         {
-            
+
             var list = new List<KeyValuePair<double, AutomatedEffect>>();
             var activeDeck = ActiveDeckSelector.Select(LastVdjEvent.Values).FirstOrDefault();
-            
-            if (activeDeck !=null)
+
+            if (activeDeck != null)
             {
                 KeyValuePair<double, AutomatedEffect> currentEffect = new KeyValuePair<double, AutomatedEffect>();
-                
+
                 for (long position = 0; position < 100000000; position = position + 20000)
                 {
                     var effect = DmxEffectSelector.SelectEventToRun(legacyChaser, activeDeck, position);
-                    if (currentEffect.Value !=effect)
+                    if (currentEffect.Value != effect)
                     {
-                        var ajustedPos = (position / activeDeck.BpmAsDouble/1000) ;
+                        var ajustedPos = (position / activeDeck.BpmAsDouble / 1000);
                         currentEffect = new KeyValuePair<double, AutomatedEffect>(ajustedPos, effect);
                         list.Add(currentEffect);
                     }
@@ -230,12 +230,12 @@ namespace LightMixer.Model
 
             selectedZone.Single().FixtureTypes.OfType<T>()
             .First().CurrentEffect = newEffect;
-            var h = new object[1] { newEffect.Name};
+            var h = new object[1] { newEffect.Name };
             //LightMixerHubBackGroundService.HubContext.Clients.All.SendCoreAsync("SendMessage", h);
-            
+
         }
 
-        public void SetCurrentLaserEffect(string scene, string zone, string newEffect) 
+        public void SetCurrentLaserEffect(string scene, string zone, string newEffect)
         {
             var selectedZone =
             sceneService.Scenes
@@ -247,7 +247,7 @@ namespace LightMixer.Model
 
             var laser = laserCollection.FixtureGroups.First().FixtureInGroup.First() as Laser;
 
-            laser.SetEffectExternal( laser.Effects.First(e=> e.Name == newEffect));
+            laser.SetEffectExternal(laser.Effects.First(e => e.Name == newEffect));
         }
 
         public void SetCurrentLaserEffectMood(string scene, string zone, LaserEffectMood mood)
@@ -255,7 +255,7 @@ namespace LightMixer.Model
             SetCurrentLaserEffectMood(scene, zone, mood, true);
         }
 
-            public void SetCurrentLaserEffectMood(string scene, string zone, LaserEffectMood mood, bool loop)
+        public void SetCurrentLaserEffectMood(string scene, string zone, LaserEffectMood mood, bool loop)
         {
             var selectedZone =
             sceneService.Scenes

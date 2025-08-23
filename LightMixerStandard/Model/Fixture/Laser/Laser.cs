@@ -183,7 +183,7 @@ namespace LightMixerStandard.Model.Fixture.Laser
                             elapsed = currentEffect.ExtrapoledElapsedBpmAdjusted;
                         }
                                                 
-                        var currentFrame = elapsed.TotalMilliseconds / (1000 / framepersecond);
+                        var currentFrame = elapsed.TotalMilliseconds / ((double)1000 / framepersecond);
                         if (frameNumber > currentFrame)
                         {
                             frameNumber = Convert.ToInt32(currentFrame);
