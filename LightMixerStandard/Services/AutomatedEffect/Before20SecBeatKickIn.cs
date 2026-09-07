@@ -11,7 +11,7 @@ namespace LightMixer.Model
             Color = System.Drawing.Color.Red;
             DisplayName = "Flash all, Balancing"; 
         }
-        public override void RunInternal(VdjEvent workingEvent)
+        public override void RunInternal(VdjEvent workingEvent, bool isChained = false)
         {
             SceneRenderedService.SetMovingHeadAlternateColor(SceneService.indoorSceneName, SceneService.basementZoneName, false);
             SceneRenderedService.SetMovingHeadDelayedPosition(SceneService.indoorSceneName, SceneService.basementZoneName, true);
@@ -31,7 +31,8 @@ namespace LightMixer.Model
             SceneRenderedService.SetMovingHeadProgramEffect(SceneService.indoorSceneName, SceneService.djboothZoneName, Fixture.MovingHeadFixture.Program.Circle);
             SceneRenderedService.SetMovingHeadAlternateColor(SceneService.indoorSceneName, SceneService.basementZoneName, true);
             //SceneRenderedService.SetCurrentLaserEffect(SceneService.indoorSceneName, SceneService.djboothZoneName, "Empty");
-            SceneRenderedService.SetCurrentLaserEffectMood(SceneService.indoorSceneName, SceneService.djboothZoneName, LightMixerStandard.Model.Fixture.Laser.LaserEffectMood.Mid, true);
+            if (!isChained)
+                SceneRenderedService.SetCurrentLaserEffectMood(SceneService.indoorSceneName, SceneService.djboothZoneName, LightMixerStandard.Model.Fixture.Laser.LaserEffectMood.Mid, true);
 
         }
     }

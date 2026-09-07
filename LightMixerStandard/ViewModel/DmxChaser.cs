@@ -293,11 +293,19 @@ namespace LightMixer.Model
             }
         }
 
+        public AutomatedEffect previous = null;
+
+
+
         public AutomatedEffect CurrentAutomationEffect
         {
             get => currentAutomationEffect;
             set
             {
+                if (currentAutomationEffect != value)
+                {
+                    previous = currentAutomationEffect;
+                }
                 currentAutomationEffect = value;
                 this.AutoChaser = false;
                 this.AsyncOnPropertyChange(o => this.CurrentAutomationEffect);

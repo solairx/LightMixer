@@ -149,23 +149,36 @@ namespace BeatDetector
 
         public VDJPoi GetNextPoiBasedOnPosition(long position)
         {
-            VDJPoi currentPoi = this.VDJSong?.ZPlanePois?
+            if (VDJSong?.UseAutomation == true)
+            {
+                return this.VDJSong?.AutomatedPois?
+                    .ToArray()
+                    .Where(o => position > o.Position)
+                    .OrderBy(o => o.Position)
+                    .LastOrDefault() ?? DefaultPOI;
+            }
+            else
+            {
+
+                VDJPoi currentPoi = this.VDJSong?.ZPlanePois?
                                     .Where(o => position < o.Position && o.Type == "Zplane")
                                     .OrderBy(o => o.Position)
                                     .FirstOrDefault();
 
-            if (currentPoi == null)
-            {
-                currentPoi = this.VDJSong?.Pois
-                    .Where(o => position < o.Position && o.Type == "remix")
-                    .OrderBy(o => o.Position)
-                    .FirstOrDefault();
-            }
-            if (currentPoi != null)
-            {
-                return currentPoi;
+                if (currentPoi == null)
+                {
+                    currentPoi = this.VDJSong?.Pois
+                        .Where(o => position < o.Position && o.Type == "remix")
+                        .OrderBy(o => o.Position)
+                        .FirstOrDefault();
+                }
+                if (currentPoi != null)
+                {
+                    return currentPoi;
+                }
             }
             return DefaultPOI;
+
         }
 
         public double GetEffectiveVolume

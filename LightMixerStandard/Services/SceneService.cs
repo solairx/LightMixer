@@ -43,16 +43,17 @@ public class SceneService
         RgbFixture bootDjLed5 = new RgbFixture(36);
         RgbFixture bootDjLed6 = new RgbFixture(39);
 
-        var haRgb1 = new WledFixture("192.168.1.46");
-        var haRgb2 = new WledFixture("192.168.1.31");
-        var haRgb3 = new WledFixture("192.168.1.6");
-        var haRgb4 = new WledFixture("192.168.1.3");
-        var haRgb5 = new WledFixture("192.168.1.37");
-        var haRgb6 = new WledFixture("192.168.1.11");
-        var haRgb7 = new WledFixture("192.168.1.51");
+        var haRgb1 = new WledFixture("192.168.1.124");
+        var haRgb2 = new WledFixture("192.168.1.135");
+        var haRgb3 = new WledFixture("192.168.1.116");
+        var haRgb4 = new WledFixture("192.168.1.231");
+        var haRgb5 = new WledFixture("192.168.1.206");
+        
+        var haRgb6 = new WledFixture("192.168.1.207");
+        var haRgb7 = new WledFixture("192.168.1.208");
         var haRgbDM = new ShellyDimmerFixture("light.dimmer_plafond_ss");
 
-        WledServer djBoothWled = new WledServer("192.168.1.9");
+        WledServer djBoothWled = new WledServer("192.168.1.204");
         var wledBooth1 = new WledFixture(djBoothWled, djBoothWled.State.seg[0]);
         var wledBooth2 = new WledFixture(djBoothWled, djBoothWled.State.seg[1]);
         var wledBooth3 = new WledFixture(djBoothWled, djBoothWled.State.seg[2]);
@@ -135,13 +136,13 @@ public class SceneService
         FixtureGroup group2 = new FixtureGroup();
         group2.FixtureInGroup.Add(fixtureLed3);
         group2.FixtureInGroup.Add(haRgb3);
-        group2.FixtureInGroup.Add(haRgb6);
+        //group2.FixtureInGroup.Add(haRgb6);
         group2.FixtureInGroup.Add(fixtureLed4);
 
         FixtureGroup group3 = new FixtureGroup();
         group3.FixtureInGroup.Add(fixtureLed5);
         group3.FixtureInGroup.Add(haRgb4);
-        group3.FixtureInGroup.Add(haRgb7);
+       // group3.FixtureInGroup.Add(haRgb7);
         group3.FixtureInGroup.Add(fixtureLed6);
 
         FixtureGroup group4 = new FixtureGroup();

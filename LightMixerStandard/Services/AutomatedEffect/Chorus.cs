@@ -13,7 +13,7 @@ namespace LightMixer.Model
             Color = Color.Blue;
             DisplayName = "Chorus Alternate+Delayed"; 
         }
-        public override void RunInternal(VdjEvent workingEvent)
+        public override void RunInternal(VdjEvent workingEvent, bool isChained = false)
         {
             SceneRenderedService.SetMovingHeadDelayedPosition(SceneService.indoorSceneName, SceneService.basementZoneName, true);
             SceneRenderedService.SetMovingHeadAlternateColor(SceneService.indoorSceneName, SceneService.djboothZoneName, false);
@@ -34,7 +34,8 @@ namespace LightMixer.Model
             //this.SceneRenderedService.SetMovingHeadDelayedPosition(SceneService.indoorSceneName, SceneService.basementZoneName, true);
             SceneRenderedService.SetCurrentEffect<RGBLedFixtureCollection>(SceneService.indoorSceneName, SceneService.basementZoneName, dmxChaser.LedEffectCollection.OfType<AllOffEffect>().First());
             //   SceneRenderedService.SetCurrentLaserEffect(SceneService.indoorSceneName, SceneService.djboothZoneName, "Empty");
-            SceneRenderedService.SetCurrentLaserEffectMood(SceneService.indoorSceneName, SceneService.djboothZoneName, LightMixerStandard.Model.Fixture.Laser.LaserEffectMood.Hight, false);
+            if (!isChained)
+                SceneRenderedService.SetCurrentLaserEffectMood(SceneService.indoorSceneName, SceneService.djboothZoneName, LightMixerStandard.Model.Fixture.Laser.LaserEffectMood.Hight, false);
             
         }
     }

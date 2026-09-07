@@ -22,26 +22,29 @@ namespace LightMixerStandard.Model.Fixture.Laser
         {
             var ev = CurrentVDJEvent;
 
-            var filename = ev.VDJSong.FilePath + ".ild";
-            var name = ev.FileName;
-            //here we process vdjupdate event
-            LightMixerBootStrap.Dispatcher.Invoke(() =>
+            if (ev.VDJSong != null)
             {
-                var existingEffect = Effects.FirstOrDefault(o => o.FileName == filename);
-                if (existingEffect == null)
+                var filename = ev.VDJSong?.FilePath + ".ild";
+                var name = ev.FileName;
+                //here we process vdjupdate event
+                LightMixerBootStrap.Dispatcher.Invoke(() =>
                 {
-                    existingEffect = LaserEffect.LoadFromAsync(LaserEffectMood.None, filename, name);
-                    Effects.Add(existingEffect);
-                }
-                if (selectedEffect != existingEffect && existingEffect.Points?.Any() == true)
-                {
-                    SelectedEffect = existingEffect;
-                }
-                else if (selectedEffect != existingEffect && selectedEffect.Stretch)
-                {
-                    SelectedEffect = Effects.Single(o => o.Name == "Done");
-                }
-            });
+                    var existingEffect = Effects.FirstOrDefault(o => o.FileName == filename);
+                    if (existingEffect == null)
+                    {
+                        existingEffect = LaserEffect.LoadFromAsync(LaserEffectMood.None, filename, name);
+                        Effects.Add(existingEffect);
+                    }
+                    if (selectedEffect != existingEffect && existingEffect.Points?.Any() == true)
+                    {
+                        SelectedEffect = existingEffect;
+                    }
+                    else if (selectedEffect != existingEffect && selectedEffect.Stretch)
+                    {
+                        SelectedEffect = Effects.Single(o => o.Name == "Done");
+                    }
+                });
+            }
 
         }
 
@@ -59,6 +62,8 @@ namespace LightMixerStandard.Model.Fixture.Laser
                 }
             }
         }
+
+        public LaserEffectMood Mood { get; private set; }
 
         public LaserEffect SelectedEffect
         {
@@ -97,6 +102,13 @@ namespace LightMixerStandard.Model.Fixture.Laser
         public void SetEffectExternalRandomMood(LaserEffectMood mood, bool loop)
         {
             this.Loop = loop;
+
+            if (this.Mood != mood)
+            {
+                this.Mood = mood;
+                startedLoop = DateTime.Now;
+                this.SelectedEffect = Effects.First();
+            }
             if (mood == LaserEffectMood.None)
             {
                 startedLoop = DateTime.Now;
@@ -127,44 +139,39 @@ namespace LightMixerStandard.Model.Fixture.Laser
 
             Connect();
             RunSelectedEffect();
-        }
-
-        private void RunSelectedEffect()
-        {
-            var tokensource = currentEffectTokenSource;
-            if (tokensource != null && !tokensource.IsCancellationRequested)
-            {
-                tokensource.Cancel();
-                currentEffectTokenSource = null;
-            }
             currentEffectTokenSource = new CancellationTokenSource();
             Task.Run(() => RenderIlda(SelectedEffect, currentEffectTokenSource.Token), currentEffectTokenSource.Token);
         }
 
+        private void RunSelectedEffect()
+        {
+            /*  var tokensource = currentEffectTokenSource;
+              if (tokensource != null && !tokensource.IsCancellationRequested)
+              {
+                  tokensource.Cancel();
+                  //currentEffectTokenSource = null;
+              }*/
+
+
+        }
+
         private void RenderIlda(LaserEffect effect, CancellationToken token)
         {
-            HeliosPoint[][] frames = effect.Points;
-            if (frames?.Any() == false)
-                return;
-            int numberOfDevices = 1;
-            int deviceId = 0;
-            var now = DateTime.Now;
-
-            int framepersecond = 60;
-
-            Console.WriteLine("\nSending a test animation to each DAC...");
-            int frameNumber = 0;
-            while (frameNumber <= frames.Count()-1 || effect.Stretch)
-            //for (frameNumber = 0; frameNumber < frames.Count(); frameNumber++)
-            {
-                var currentEffect = CurrentVDJEvent;
-                if (token.IsCancellationRequested)
-                {
-                    return;
-                }
+            while (true)
                 try
                 {
-                    // Wait for ready status
+                    HeliosPoint[][] frames = effect.Points;
+                    if (frames?.Any() == false)
+                        return;
+                    int numberOfDevices = 1;
+                    int deviceId = 0;
+
+
+                    int framepersecond = 60;
+
+                    Console.WriteLine("\nSending a test animation to each DAC...");
+                    int frameNumber = 0;
+
                     bool isReady = false;
                     int k;
                     for (k = 0; k < 50; k++)
@@ -172,79 +179,182 @@ namespace LightMixerStandard.Model.Fixture.Laser
                         if (heliosController.GetStatus(deviceId))
                         {
                             isReady = true;
-                            break;
+                            //break;
                         }
                     }
-                    if (isReady)
+
+                    while (true)
                     {
-                        var elapsed = DateTime.Now.Subtract(now);
-                        if (effect.Stretch)
+
+                        effect = selectedEffect;
+                        var points = selectedEffect?.Points;
+                        if (points != null)
+                            frames = selectedEffect.Points;
+                        frameNumber = 0;
+                        var now = DateTime.Now;
+                        bool skipShuffle = false;
+                        try
                         {
-                            elapsed = currentEffect.ExtrapoledElapsedBpmAdjusted;
+                            RenderEffect(effect, frames, deviceId, framepersecond, isReady, now, ref skipShuffle);
                         }
-                                                
-                        var currentFrame = elapsed.TotalMilliseconds / ((double)1000 / framepersecond);
-                        if (frameNumber > currentFrame)
+                        catch (Exception ex)
                         {
-                            frameNumber = Convert.ToInt32(currentFrame);
+                            Console.WriteLine("Failure during writing of laser frame to Helios DAC: " + ex.Message);
                         }
-                        if (frameNumber < currentFrame)
-                        {
-                            frameNumber = Convert.ToInt32(currentFrame);
-                            if (frameNumber >= frames.Count() -1 )
-                            {
-                                frameNumber = frames.Count() - 1;
-                            }
-                        }
-                        if (heliosController.GetStatus(deviceId))
-                        {
-                            if (frameNumber >= frames.Count() - 1 || frameNumber < 0 )
-                            {
-                                heliosController.WriteFrame(deviceId, 25000, new HeliosPoint[1]);
-                            }
-                            else 
-                            {
-                                heliosController.WriteFrame(deviceId, 25000, frames[frameNumber]);
-                            }
-                        }
-                        frameNumber++;
                     }
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine("Failure during writing of laser frame to Helios DAC: " + ex.Message);
                 }
-            }
+        }
 
-            var elapsedForcurrentLoop = DateTime.Now.Subtract(startedLoop).TotalSeconds;
-            if (selectedEffect != Effects.First() && selectedEffect != Effects.Skip(1).First())
+        private void RenderEffect(LaserEffect effect, HeliosPoint[][] frames, int deviceId, int framepersecond, bool isReady, DateTime now, ref bool skipShuffle)
+        {
+            var empty = new List<HeliosPoint>();
+
+            empty.Add(new HeliosPoint() { Blue = 0, Red = 0, Green = 0, Intensity = 1, X = 3522, Y = 0 });
+            empty.Add(new HeliosPoint() { Blue = 0, Red = 0, Green = 0, Intensity = 1, X = 3522, Y = 0 });
+            empty.Add(new HeliosPoint() { Blue = 0, Red = 0, Green = 0, Intensity = 1, X = 3522, Y = 0 });
+            empty.Add(new HeliosPoint() { Blue = 0, Red = 0, Green = 0, Intensity = 1, X = 3522, Y = 0 });
+            empty.Add(new HeliosPoint() { Blue = 0, Red = 0, Green = 0, Intensity = 1, X = 3522, Y = 0 });
+            empty.Add(new HeliosPoint() { Blue = 0, Red = 0, Green = 0, Intensity = 1, X = 3522, Y = 0 });
+            empty.Add(new HeliosPoint() { Blue = 0, Red = 0, Green = 0, Intensity = 1, X = 3522, Y = 0 });
+            empty.Add(new HeliosPoint() { Blue = 0, Red = 0, Green = 0, Intensity = 1, X = 3522, Y = 0 });
+            empty.Add(new HeliosPoint() { Blue = 0, Red = 0, Green = 0, Intensity = 1, X = 3522, Y = 0 });
+            empty.Add(new HeliosPoint() { Blue = 0, Red = 0, Green = 0, Intensity = 1, X = 3522, Y = 0 });
+            empty.Add(new HeliosPoint() { Blue = 0, Red = 0, Green = 0, Intensity = 1, X = 3522, Y = 0 });
+            empty.Add(new HeliosPoint() { Blue = 0, Red = 0, Green = 0, Intensity = 1, X = 3522, Y = 0 });
+            empty.Add(new HeliosPoint() { Blue = 0, Red = 0, Green = 0, Intensity = 1, X = 3522, Y = 0 });
+            empty.Add(new HeliosPoint() { Blue = 0, Red = 0, Green = 0, Intensity = 1, X = 3522, Y = 0 });
+            empty.Add(new HeliosPoint() { Blue = 0, Red = 0, Green = 0, Intensity = 1, X = 3522, Y = 0 });
+            empty.Add(new HeliosPoint() { Blue = 0, Red = 0, Green = 0, Intensity = 1, X = 3522, Y = 0 });
+            empty.Add(new HeliosPoint() { Blue = 0, Red = 0, Green = 0, Intensity = 1, X = 3522, Y = 0 });
+            empty.Add(new HeliosPoint() { Blue = 0, Red = 0, Green = 0, Intensity = 1, X = 3522, Y = 0 });
+            empty.Add(new HeliosPoint() { Blue = 0, Red = 0, Green = 0, Intensity = 1, X = 3810, Y = 0 });
+            empty.Add(new HeliosPoint() { Blue = 0, Red = 0, Green = 0, Intensity = 1, X = 3810, Y = 0 });
+            empty.Add(new HeliosPoint() { Blue = 0, Red = 0, Green = 0, Intensity = 1, X = 3810, Y = 0 });
+            empty.Add(new HeliosPoint() { Blue = 0, Red = 0, Green = 0, Intensity = 1, X = 3810, Y = 0 });
+            empty.Add(new HeliosPoint() { Blue = 0, Red = 0, Green = 0, Intensity = 1, X = 3810, Y = 0 });
+            empty.Add(new HeliosPoint() { Blue = 0, Red = 0, Green = 0, Intensity = 1, X = 3810, Y = 0 });
+            empty.Add(new HeliosPoint() { Blue = 0, Red = 0, Green = 0, Intensity = 1, X = 3810, Y = 0 });
+            empty.Add(new HeliosPoint() { Blue = 0, Red = 0, Green = 0, Intensity = 1, X = 3810, Y = 0 });
+            empty.Add(new HeliosPoint() { Blue = 0, Red = 0, Green = 0, Intensity = 1, X = 3810, Y = 0 });
+            empty.Add(new HeliosPoint() { Blue = 0, Red = 0, Green = 0, Intensity = 1, X = 3810, Y = 0 });
+            empty.Add(new HeliosPoint() { Blue = 0, Red = 0, Green = 0, Intensity = 1, X = 3810, Y = 0 });
+            empty.Add(new HeliosPoint() { Blue = 0, Red = 0, Green = 0, Intensity = 1, X = 3810, Y = 0 });
+
+
+
+            var frameNumber = 0;
+            while (frameNumber <= frames.Count() - 1 || effect.Stretch)
             {
-                if (elapsedForcurrentLoop < 10 || (Loop && SelectedEffect.Mood != LaserEffectMood.None))
-                //if ((Loop && SelectedEffect.Mood != LaserEffectMood.None))
+                if (effect != selectedEffect)
                 {
-                    Shuffle(SelectedEffect.Mood);
-                    RunSelectedEffect();
+                    return;
                 }
-                else
+                var currentEffect = CurrentVDJEvent;
+                try
                 {
-                    this.SelectedEffect = Effects.Skip(1).First();
+                    int retry = 0;
+                    while (!heliosController.GetStatus(deviceId))
+                    {
+                        System.Threading.Thread.Sleep(10);
+                        retry++;
+                        if (retry > 100)
+                        {
+                            Console.WriteLine("Helios DAC is not ready for writing frame, skipping frame");
+                            break;
+                        }
+                    }
+
+                    var elapsed = DateTime.Now.Subtract(now);
+                    if (effect.Stretch)
+                    {
+                        elapsed = currentEffect.ExtrapoledElapsedBpmAdjusted;
+                    }
+
+                    var currentFrame = elapsed.TotalMilliseconds / ((double)1000 / framepersecond);
+                    if (frameNumber > currentFrame)
+                    {
+                        frameNumber = Convert.ToInt32(currentFrame);
+                    }
+                    if (frameNumber < currentFrame)
+                    {
+                        frameNumber = Convert.ToInt32(currentFrame);
+                        if (frameNumber >= frames.Count() - 1)
+                        {
+                            frameNumber = frames.Count() - 1;
+                        }
+                    }
+
+
+                    if (frameNumber >= frames.Count() - 1 || frameNumber < 0)
+                    {
+                        // Console.WriteLine($"-{frameNumber} {effect?.Name}");
+                        if (LaserOn)
+                        {
+                            heliosController.WriteFrame(deviceId, 25000, empty.ToArray());
+                        }
+                        else
+                        {
+                            heliosController.WriteFrame(deviceId, 25000, new HeliosPoint[1]);
+                        }
+                    }
+                    else
+                    {
+                        //   Console.WriteLine($"+{frameNumber} {effect?.Name}");
+
+                        heliosController.WriteFrame(deviceId, 25000, frames[frameNumber], 0b1);
+                    }
+
+                    frameNumber++;
+                    System.Threading.Thread.Sleep(15);
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Failure during writing of laser frame to Helios DAC: " + ex.Message);
+                }
+            }
+            if (!skipShuffle)
+            {
+                var elapsedForcurrentLoop = DateTime.Now.Subtract(startedLoop).TotalSeconds;
+                if (selectedEffect != Effects.First() && selectedEffect != Effects.Skip(1).First())
+                {
+                    if (elapsedForcurrentLoop < 10 || (Loop && SelectedEffect.Mood != LaserEffectMood.None))
+                    //if ((Loop && SelectedEffect.Mood != LaserEffectMood.None))
+                    {
+                        if (effect != selectedEffect)
+                        {
+                            return;
+                        }
+                        Shuffle(SelectedEffect.Mood);
+                        //  RunSelectedEffect();
+                    }
+                    else
+                    {
+                        if (effect != selectedEffect)
+                        {
+                            return;
+                        }
+                        this.SelectedEffect = Effects.Skip(1).First();
+                    }
                 }
             }
         }
-
-        
 
         private void LoadDefault()
         {
             Effects.Add(LaserEffect.LoadFrom(LaserEffectMood.None, "empty.ild", "Empty"));
             Effects.Add(LaserEffect.LoadFrom(LaserEffectMood.None, "empty.ild", "Done"));
             Effects.Add(LaserEffect.LoadFrom(LaserEffectMood.None, "example1114.ild", "Test"));
-            Effects.Add(LaserEffect.LoadFrom(LaserEffectMood.Hight, "SpinningHexa.ild", "SpinningHexa"));
+            Effects.Add(LaserEffect.LoadFrom(LaserEffectMood.Intro, "SpinningHexa.ild", "SpinningHexa"));
             Effects.Add(LaserEffect.LoadFrom(LaserEffectMood.Mid, "Sky.ild", "Sky"));
             Effects.Add(LaserEffect.LoadFrom(LaserEffectMood.Hight, "ShrinkingSky.ild", "Shrinking Sky"));
             Effects.Add(LaserEffect.LoadFrom(LaserEffectMood.Low, "SkiDot.ild", "Ski Dot"));
             Effects.Add(LaserEffect.LoadFrom(LaserEffectMood.Mid, "SpiningSmallLines.ild", "Spinning SmallLines"));
-            Effects.Add(LaserEffect.LoadFrom(LaserEffectMood.Low, "5DotMoving.ild", "5 Dot Moving"));
+            Effects.Add(LaserEffect.LoadFrom(LaserEffectMood.Point, "5DotMoving.ild", "5 Dot Moving"));
             Effects.Add(LaserEffect.LoadFrom(LaserEffectMood.Hight, "ScalingCircle.ild", "Scaling Circle"));
             Effects.Add(LaserEffect.LoadFrom(LaserEffectMood.Low, "DancingDot.ild", "Dancing Dot"));
             Effects.Add(LaserEffect.LoadFrom(LaserEffectMood.Hight, "HexaGone.ild", "Hexa Gone"));
@@ -276,6 +386,7 @@ namespace LightMixerStandard.Model.Fixture.Laser
                 }
                 catch (Exception ex)
                 {
+
                     numberOfDevices = 0;
                     Console.WriteLine("Failure during detecting and opening of Helios DACs: " + ex.Message);
                     Thread.Sleep(1000);

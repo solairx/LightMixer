@@ -27,6 +27,8 @@ namespace LightMixer.Model
             new BeforeBeatKickIn();
             new Intro();
             new LaserHigh();
+            new LaserOnlyInto();
+            new LaserPoint();
         }
         public AutomatedEffect(string name)
         {
@@ -36,7 +38,7 @@ namespace LightMixer.Model
 
         public static AutomatedEffect Get(string name) => AutomatedEffectList[name];
 
-        public abstract void RunInternal(VdjEvent workingEvent);
+        public abstract void RunInternal(VdjEvent workingEvent, bool isChained = false);
 
         public void Run(VdjEvent workingEvent)
         {

@@ -11,7 +11,7 @@ namespace LightMixer.Model
         public Beat() : base(ID) {
             Color = Color.Brown;
             DisplayName = "Beat Rotate, MH DJ Flash"; }
-        public override void RunInternal(VdjEvent workingEvent)
+        public override void RunInternal(VdjEvent workingEvent, bool ischained = false)
         {
             
             SceneRenderedService.SetMovingHeadAlternateColor(SceneService.indoorSceneName, SceneService.basementZoneName, false);
@@ -32,6 +32,7 @@ namespace LightMixer.Model
             SceneRenderedService.SetMovingHeadProgramEffect(SceneService.indoorSceneName, SceneService.djboothZoneName, MovingHeadFixture.Program.Balancing1);
             SceneRenderedService.SetCurrentEffect<RGBLedFixtureCollection>(SceneService.indoorSceneName, SceneService.basementZoneName, dmxChaser.LedEffectCollection.OfType<ZoneRotateEffect>().First());
             //SceneRenderedService.SetCurrentLaserEffect(SceneService.indoorSceneName, SceneService.djboothZoneName, "Empty");
+            if (!ischained)
             SceneRenderedService.SetCurrentLaserEffectMood(SceneService.indoorSceneName, SceneService.djboothZoneName, LightMixerStandard.Model.Fixture.Laser.LaserEffectMood.Low, false);
         }
     }

@@ -419,32 +419,40 @@ namespace LightMixerStandard.Model.Fixture.Laser
         {
             // If we send {0x05, 0} we should get {0x85, [name]} in return.
 
-            try
+            for (int retry = 0; retry < 10; retry++)
             {
-                if (!mutex.WaitOne(3000))
-                    throw new Exception("Could not acquire mutex.");
-
-                var errorCode = interruptEndpointWriter.Write(new byte[] { 0x05, 0 }, 16, out int writeTransferLength);
-                if (errorCode == ErrorCode.Ok && writeTransferLength == 2)
+                try
                 {
-                    byte[] readData = new byte[32];
-                    errorCode = interruptEndpointReader.Read(readData, 32, out int readTransferLength);
-                    if (errorCode == ErrorCode.Ok && readTransferLength > 2 && readData[0] == 0x85)
-                        return Encoding.ASCII.GetString(readData.Skip(1).TakeWhile((character, index) => { return character != 0 && index < readTransferLength; }).ToArray());
+
+                    if (!mutex.WaitOne(3000))
+                        throw new Exception("Could not acquire mutex.");
+
+                    var errorCode = interruptEndpointWriter.Write(new byte[] { 0x05, 0 }, 16, out int writeTransferLength);
+                    if (errorCode == ErrorCode.Ok && writeTransferLength == 2)
+                    {
+                        byte[] readData = new byte[32];
+                        errorCode = interruptEndpointReader.Read(readData, 32, out int readTransferLength);
+                        if (errorCode == ErrorCode.Ok && readTransferLength > 2 && readData[0] == 0x85)
+                            return Encoding.ASCII.GetString(readData.Skip(1).TakeWhile((character, index) => { return character != 0 && index < readTransferLength; }).ToArray());
+                        else
+                            throw new Exception("Did not get valid response from DAC. Error code: " + errorCode.ToString());
+                    }
                     else
-                        throw new Exception("Did not get valid response from DAC. Error code: " + errorCode.ToString());
+                        throw new Exception("Failed to send USB interrupt packet. Error code: " + errorCode.ToString());
+
                 }
-                else
-                    throw new Exception("Failed to send USB interrupt packet. Error code: " + errorCode.ToString());
+
+                catch (Exception e)
+                {
+                    System.Threading.Thread.Sleep(250);
+                    throw e;
+                }
+                finally
+                {
+                    mutex.ReleaseMutex();
+                }
             }
-            catch (Exception e)
-            {
-                throw e;
-            }
-            finally
-            {
-                mutex.ReleaseMutex();
-            }
+            throw new Exception("Failed to get DAC name after 10 retries.");
         }
 
         /// <summary>
@@ -489,7 +497,14 @@ namespace LightMixerStandard.Model.Fixture.Laser
         /// </summary>
         public void Close()
         {
-            usbDevice.Close();
+            try
+            {
+                usbDevice.Close();
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine("Failed to close USB device: " + e.Message);
+            }
         }
     }
 

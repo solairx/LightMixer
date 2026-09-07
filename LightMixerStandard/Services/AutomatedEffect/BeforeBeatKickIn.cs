@@ -15,7 +15,7 @@ namespace LightMixer.Model
             DisplayName = "Beat repeat"; 
         }
 
-        public override void RunInternal(VdjEvent workingEvent)
+        public override void RunInternal(VdjEvent workingEvent, bool isChained = false)
         {
             var nextPoi = workingEvent?.GetNextPoi;
             SceneRenderedService.SetMovingHeadAlternateColor(SceneService.indoorSceneName, SceneService.basementZoneName, false);
@@ -42,11 +42,11 @@ namespace LightMixer.Model
             }
             if (GetSecondBeforeNextPOI(workingEvent, nextPoi) < 3)
             {
-                dmxChaser.mBpmDetector.BeatRepeat = 10;
+                dmxChaser.mBpmDetector.BeatRepeat = 5.5;
             }
             else if (GetSecondBeforeNextPOI(workingEvent, nextPoi) < 5)
             {
-                dmxChaser.mBpmDetector.BeatRepeat = 4;
+                dmxChaser.mBpmDetector.BeatRepeat = 3;
             }
             else if (GetSecondBeforeNextPOI(workingEvent, nextPoi) < 6)
             {
@@ -54,14 +54,15 @@ namespace LightMixer.Model
             }
             else if (GetSecondBeforeNextPOI(workingEvent, nextPoi) < 10)
             {
-                dmxChaser.mBpmDetector.BeatRepeat = 2;
+                dmxChaser.mBpmDetector.BeatRepeat = 1.5;
             }
             else
             {
                 dmxChaser.mBpmDetector.BeatRepeat = 1;
             }
             //SceneRenderedService.SetCurrentLaserEffect(SceneService.indoorSceneName, SceneService.djboothZoneName, "Empty");
-            SceneRenderedService.SetCurrentLaserEffectMood(SceneService.indoorSceneName, SceneService.djboothZoneName, LightMixerStandard.Model.Fixture.Laser.LaserEffectMood.Low, false);
+            if (!isChained)
+                SceneRenderedService.SetCurrentLaserEffectMood(SceneService.indoorSceneName, SceneService.djboothZoneName, LightMixerStandard.Model.Fixture.Laser.LaserEffectMood.None, false);
         }
     }
 }
